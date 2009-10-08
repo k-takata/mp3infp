@@ -109,7 +109,8 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 	CString strTmp;
 	CWnd wnd;
 	int totalLen = 1;
-	for(int i=0; idArray[i]!=0; i++)
+	int i=0;
+	for(; idArray[i]!=0; i++)
 	{
 		totalLen += 4/*ID*/ + 4/*Size*/ + 4/*end of*/;
 		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]));
@@ -165,11 +166,12 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 	CString strTmp;
 	CWnd wnd;
 	int totalLen = 1;
+	int i=0;
 	
 	totalLen += strFileName.GetLength();
 	totalLen += strlen("\r\n");
 
-	for(int i=0; editWndArray[i]!=0; i++)
+	for(; editWndArray[i]!=0; i++)
 	{
 		if(staticWndArray[i] != -1)
 		{
@@ -388,37 +390,41 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
 		}
 		return MP3;
 	}
-	else if(stricmp(getExtName(szFileName),".wav") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".tta") == 0)
+	{
+		return MP3;
+	}
+	/*else*/ if(stricmp(getExtName(szFileName),".wav") == 0)
 	{
 		return WAVE;
 	}
-	else if(stricmp(getExtName(szFileName),".avi") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".avi") == 0)
 	{
 		return AVI;
 	}
-	else if(stricmp(getExtName(szFileName),".vqf") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".vqf") == 0)
 	{
 		return VQF;
 	}
-	else if((stricmp(getExtName(szFileName),".wma") == 0) ||
+	/*else*/ if((stricmp(getExtName(szFileName),".wma") == 0) ||
 			(stricmp(getExtName(szFileName),".wmv") == 0) ||
 			(stricmp(getExtName(szFileName),".asf") == 0) )
 	{
 		return WMA;
 	}
-	else if(stricmp(getExtName(szFileName),".m3u") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".m3u") == 0)
 	{
 		return M3U;
 	}
-	else if(stricmp(getExtName(szFileName),".ogg") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".ogg") == 0)
 	{
 		return OGG;
 	}
-	else if(stricmp(getExtName(szFileName),".ape") == 0)
+	/*else*/ if(stricmp(getExtName(szFileName),".ape") == 0)
 	{
 		return APE;
 	}
-	else if((stricmp(getExtName(szFileName),".mp4") == 0) ||
+	/*else*/ if((stricmp(getExtName(szFileName),".mp4") == 0) ||
 			(stricmp(getExtName(szFileName),".m4v") == 0) ||
 			(stricmp(getExtName(szFileName),".m4a") == 0) ||
 			(stricmp(getExtName(szFileName),".3gp") == 0) ||
@@ -426,6 +432,14 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
 	{
 		return MP4;
 	}
+
+	DWORD dwUseExtra=0;
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"UseExperimentalSupport",&dwUseExtra,FALSE);
+	if(dwUseExtra){
+		if(stricmp(getExtName(szFileName),".tta") == 0)return MP3;
+		if(stricmp(getExtName(szFileName),".tak") == 0)return APE;
+	}
+
 	return UNKNOWN;
 }
 

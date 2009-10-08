@@ -1045,37 +1045,37 @@ CString CShellExt::GetInfoTip_vqf()
 			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Vqf.GetFormatString();
+				strInfoTip += (LPCSTR)m_Vqf.GetFormatString();
 			}
 			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Vqf.GetTimeString();
+				strInfoTip += (LPCSTR)m_Vqf.GetTimeString();
 			}
 			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
 			{
 				i += 3;
-				strInfoTip += m_Vqf.GetField('N','A','M','E',&dwSize);
+				strInfoTip += (LPCSTR)m_Vqf.GetField('N','A','M','E',&dwSize);
 			}
 			else if(strncmp(&pFormatString[i],"IART",4) == 0)
 			{
 				i += 3;
-				strInfoTip += m_Vqf.GetField('A','U','T','H',&dwSize);
+				strInfoTip += (LPCSTR)m_Vqf.GetField('A','U','T','H',&dwSize);
 			}
 			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
 			{
 				i += 3;
-				strInfoTip += m_Vqf.GetField('C','O','M','T',&dwSize);
+				strInfoTip += (LPCSTR)m_Vqf.GetField('C','O','M','T',&dwSize);
 			}
 			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
 			{
 				i += 3;
-				strInfoTip += m_Vqf.GetField('(','c',')',' ',&dwSize);
+				strInfoTip += (LPCSTR)m_Vqf.GetField('(','c',')',' ',&dwSize);
 			}
 			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
 			{
 				i += 3;
-				strInfoTip += m_Vqf.GetField('F','I','L','E',&dwSize);
+				strInfoTip += (LPCSTR)m_Vqf.GetField('F','I','L','E',&dwSize);
 			}
 		}
 		else

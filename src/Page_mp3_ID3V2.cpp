@@ -119,7 +119,7 @@ static void SetEncodeCB(HWND hDlg)
 				0,
 				0
 				);
-		int ret = SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_GETCOUNT,0,0);
+		LRESULT ret = SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_GETCOUNT,0,0);
 		if((ret == CB_ERR) || (ret == 0))
 		{
 			break;
@@ -360,7 +360,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLong(hDlg,DWL_USER);
+	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
 
 	switch(uMessage){
@@ -373,7 +373,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 		{
 			lpcs = (LPCSHELLEXT )((LPPROPSHEETPAGE )lParam)->lParam;
 			lpcs->m_hwndId3v2 = hDlg;
-			SetWindowLong(hDlg, DWL_USER, (DWORD )lpcs);
+			SetWindowLongPtr(hDlg, DWLP_USER, (LONG_PTR)lpcs);
 			lpcs->m_bId3v2Apply = FALSE;
 
 			//Ver情報
@@ -395,7 +395,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					0,
 					(LPARAM )(LPCSTR )""	//空白
 				);
-			for(int i=0; i<256; i++)
+			int i=0;
+			for(; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
 					SendMessage(
@@ -898,12 +899,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					//「このファイルは「読み込み専用」です」
 					AfxMessageBox(IDS_PAGE_THIS_READONLY,MB_ICONINFORMATION);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 				lpcs->m_bId3v2Apply = FALSE;
 
-				long cur = ::SendMessage(
+				LRESULT cur = ::SendMessage(
 							GetDlgItem(hDlg,IDC_EDIT_ID3VER),
 							CB_GETCURSEL,
 							0,
@@ -1059,7 +1060,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						//システムエラーを表示
 						errMessageBox(hDlg,dwRet);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 
@@ -1067,7 +1068,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				DispInfo(hDlg,lpcs);
 				lpcs->m_bId3v2Apply = FALSE;
 
-				SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_NOERROR);
+				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
 				
 				//シェルに変更を通知
 				SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_PATH,lpcs->m_strSelectFile,NULL);

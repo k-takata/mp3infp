@@ -98,7 +98,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 	return NOERROR;
 }
 
-STDMETHODIMP CShellExt::GetCommandString(UINT idCmd,
+STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 							 UINT uFlags,
 							 UINT FAR *reserved,
 							 LPSTR pszName,

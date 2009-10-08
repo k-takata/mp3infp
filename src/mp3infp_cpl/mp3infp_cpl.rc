@@ -375,7 +375,7 @@ IDC_HAND2               CURSOR  DISCARDABLE     "res\\HAND.CUR"
 // 24
 //
 
-CONTROL_PANEL_RESOURCE_ID 24      MOVEABLE PURE   "res\\mp3infp.cpl.manifest"
+123 24      MOVEABLE PURE   "res\\mp3infp.cpl.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //

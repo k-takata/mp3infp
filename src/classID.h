@@ -5,9 +5,9 @@ DEFINE_GUID(CLSID_ShellExt,
 #define CLSID_STR_ShellExt "{DDB066B3-8D19-11d2-8763-006052014B08}"
 
 #define LANG_VER 248
-#define SOFT_NAME "mp3infp Ver.2.54a"
+#define SOFT_NAME "mp3infp Ver.2.54f5"
 #define APP_NAME "mp3infp"
-#define COPY_RIGHT "Copyright(c) 1998-2007 T-Matsuo\nmailto:tms2@win32lab.com\nhttp://win32lab.com/"
+#define COPY_RIGHT "Copyright(c) 1998-2009 T-Matsuo\nmailto:tms2@win32lab.com\nhttp://win32lab.com/"
 #define HELP_FILE "mp3infp.chm"
 #define README_FILE "mp3infp.txt"
 #define MP3INFP_REG_ENTRY "Software\\win32lab.com\\mp3infp"

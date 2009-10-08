@@ -6,22 +6,12 @@
 ;--------------------------------
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
-!define MUI_VERSION "2.54a" ;Define your own software version here
-OutFile mp3infp254a.exe
+!define MUI_VERSION "2.54f5" ;Define your own software version here
+OutFile mp3infp254f5_x86.exe
 
-Var PRGMMAN_HWND
-
-;--------------------------------
-;--------------------------------
-
-
-
-
-
-
+;Var PRGMMAN_HWND
 
 InstallDir "$PROGRAMFILES\${MUI_PRODUCT}"
-InstallDirRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
 XPStyle on
 
 ;--------------------------------
@@ -49,6 +39,8 @@ LangString LangRegKey ${LANG_ENGLISH} "default"
 ;!include "..\lang\Chinese_Traditional.nsh"
 ;!include "..\lang\Chinese_Simplified.nsh"
 !include "Japanese.nsh"
+!include "x64.nsh"
+
 
 Name $(Name)
 
@@ -79,7 +71,11 @@ UninstPage instfiles
 Section "main files" SecCopyUI
 
 	SetOutPath "$INSTDIR"
-	File "..\mp3infp_regist\Release\mp3infp_regist.exe"
+;	${If} ${RunningX64}
+;		File "..\x64\mp3infp_regist.exe"
+;	${Else}
+		File "..\x86\mp3infp_regist.exe"
+;	${EndIf}
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
 	CreateDirectory "$INSTDIR\language"
@@ -107,7 +103,11 @@ Section "main files" SecCopyUI
 		StrCpy "$0" "Japanese.lng.$1"
 		IfFileExists "$0" jpnExists
 	jpnCpy:
-	File /oname=$0 "..\lang_japanese\Release\Japanese.lng"
+;	${If} ${RunningX64}
+;		File /oname=$0 "..\x64\Japanese.lng"
+;	${Else}
+		File /oname=$0 "..\x86\Japanese.lng"
+;	${EndIf}
 	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Japanese.lng"
 	
 	; ChineseTraditional
@@ -163,33 +163,35 @@ Section "main files" SecCopyUI
 	;----------------------------------------------------------------
 	SetOutPath "$SYSDIR"
 	
-	StrCpy "$0" "MP3INFP.DLL"
+	StrCpy "$0" "mp3infp.dll"
 	Delete "$SYSDIR\$0"
 	IfFileExists "$SYSDIR\$0" 0 dllCpy
 	StrCpy "$1" "0"
 	dllExists:
 		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "MP3INFP.$1"
+		StrCpy "$0" "mp3infp.$1"
 		IfFileExists "$0" dllExists
 	dllCpy:
-	File /oname=$0 "..\Release\mp3infp.dll"
+	File /oname=$0 "..\x86\mp3infp.dll"
 	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
 	IfRebootFlag YesReboot 0
-		RegDLL "MP3INFP.DLL"
+		RegDLL "mp3infp.dll"
 	YesReboot:
-	
-	StrCpy "$0" "MP3INFP.CPL"
+
+	${Unless} ${RunningX64}
+	StrCpy "$0" "mp3infp.cpl"
 	Delete "$SYSDIR\$0"
 	IfFileExists "$0" 0 cplCpy
 	StrCpy "$1" "0"
 	cplExists:
 		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "MP3INFC.$1"
+		StrCpy "$0" "mp3infc.$1"
 		IfFileExists "$0" cplExists
 	cplCpy:
-	File /oname=$0 "..\mp3infp_cpl\Release\mp3infp.cpl"
+	File /oname=$0 "..\x86\mp3infp.cpl"
 	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.cpl"
-	
+	${EndIf}
+
 	;Language set
 	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Language" "$(LangRegKey)"
 	
@@ -198,7 +200,7 @@ Section "main files" SecCopyUI
 	
 	;[2] Uninstall list
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION} (x86)"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	
 	;[3] Store install folder
@@ -211,6 +213,11 @@ SectionEnd
 ;--------------------------------
 
 Function .onInit
+
+	ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
+	StrCmp $INSTDIR "" 0 regok
+	StrCpy $INSTDIR "$PROGRAMFILES\${MUI_PRODUCT}"
+	regok:
 
 	;Language selection dialog
 
@@ -252,10 +259,12 @@ Section "Uninstall"
 
   ;ADD YOUR OWN STUFF HERE!
 
-
 	UnRegDLL "mp3infp.dll"
-	Delete /REBOOTOK "$SYSDIR\MP3INFP.DLL"
-	Delete /REBOOTOK "$SYSDIR\MP3INFP.CPL"
+	Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
+	${Unless} ${RunningX64}
+	Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
+	${EndIf}
+
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp.txt"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_eng.txt"
@@ -295,8 +304,9 @@ FunctionEnd
 ;Uninstaller Functions
 
 Function un.onInit
-
-  ;Get language from registry
-  ReadRegStr $LANGUAGE HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
-  
+	;Get language from registry
+	ReadRegStr $LANGUAGE HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
+	StrCmp $LANGUAGE "" 0 regok
+	StrCpy $LANGUAGE "English"
+	regok:
 FunctionEnd

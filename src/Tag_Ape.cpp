@@ -566,7 +566,7 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 			{
 				continue;
 			}
-			MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),(unsigned short *)dataUtf16,utf16len/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),(LPWSTR)dataUtf16,utf16len/sizeof(WCHAR));
 			// UNICODE -> UTF-8
 			utf8len = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,utf16len/sizeof(WCHAR),NULL,0,NULL,NULL);
 			dataUtf8 = (unsigned char *)malloc(utf8len);

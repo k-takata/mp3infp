@@ -243,7 +243,7 @@ public:
 											 UINT idCmdLast, 
 											 UINT uFlags);
 	STDMETHODIMP			InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi);
-	STDMETHODIMP			GetCommandString(UINT idCmd, 
+	STDMETHODIMP			GetCommandString(UINT_PTR idCmd, 
 											 UINT uFlags, 
 											 UINT FAR *reserved, 
 											 LPSTR pszName, 

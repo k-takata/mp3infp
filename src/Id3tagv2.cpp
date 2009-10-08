@@ -78,11 +78,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 		{
 			//UTF-16 -> Ansi
 			int a = p->second.GetSize();
-			int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
+			int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
 			size++;
 			char *buf = new char[size];
 			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
+			WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
 			buf[size-1] = '\0';
 			CString strRet(buf);
 			delete buf;
@@ -92,12 +92,12 @@ CString CId3tagv2::GetId3String(const char szId[])
 		{
 			//UTF-16(BE) -> Ansi
 			int a = p->second.GetSize();
-			UTF16toUTF16BE((unsigned short *)&data[3],(p->second.GetSize()-3)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
+			UTF16toUTF16BE((LPWSTR)&data[3],(p->second.GetSize()-3)/2);
+			int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[3],(p->second.GetSize()-3)/2,0,0,NULL,NULL);
 			size++;
 			char *buf = new char[size];
 			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
+			WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[3],(p->second.GetSize()-3)/2,buf,size,NULL,NULL);
 			buf[size-1] = '\0';
 			CString strRet(buf);
 			delete buf;
@@ -107,12 +107,12 @@ CString CId3tagv2::GetId3String(const char szId[])
 		{
 			//UTF-16(BE) -> Ansi
 			int a = p->second.GetSize();
-			UTF16toUTF16BE((unsigned short *)&data[1],(p->second.GetSize()-1)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[1],(p->second.GetSize()-1)/2,0,0,NULL,NULL);
+			UTF16toUTF16BE((LPWSTR)&data[1],(p->second.GetSize()-1)/2);
+			int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[1],(p->second.GetSize()-1)/2,0,0,NULL,NULL);
 			size++;
 			char *buf = new char[size];
 			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[1],(p->second.GetSize()-1)/2,buf,size,NULL,NULL);
+			WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[1],(p->second.GetSize()-1)/2,buf,size,NULL,NULL);
 			buf[size-1] = '\0';
 			CString strRet(buf);
 			delete buf;
@@ -193,10 +193,10 @@ CString CId3tagv2::GetId3String(const char szId[])
 			{
 				i += 2;
 				//UNICODE -> Ansi
-				int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+				int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 				char *buf = new char[size];
 				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+				WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 				CString strRet(buf);
 				delete buf;
 				return strRet;
@@ -221,11 +221,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 			{
 				i += 2;
 				//UNICODE(BE) -> Ansi
-				UTF16toUTF16BE((unsigned short *)&data[i],(p->second.GetSize()-i)/2);
-				int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+				UTF16toUTF16BE((LPWSTR)&data[i],(p->second.GetSize()-i)/2);
+				int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 				char *buf = new char[size];
 				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+				WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 				CString strRet(buf);
 				delete buf;
 				return strRet;
@@ -248,11 +248,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 			i += 2;
 			
 			//UNICODE(BE) -> Ansi
-			UTF16toUTF16BE((unsigned short *)&data[i],(p->second.GetSize()-i)/2);
-			int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+			UTF16toUTF16BE((LPWSTR)&data[i],(p->second.GetSize()-i)/2);
+			int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 			char *buf = new char[size];
 			if(!buf) break;
-			WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+			WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 			CString strRet(buf);
 			delete buf;
 			return strRet;
@@ -363,10 +363,10 @@ CString CId3tagv2::GetId3String(const char szId[])
 				{
 					i += 2;
 					//UNICODE -> Ansi
-					int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+					int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 					char *buf = new char[size+1];
 					if(!buf) break;
-					WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+					WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 					buf[size] = '\0';
 					CString strRet(buf);
 					delete buf;
@@ -380,11 +380,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 				{
 					i += 2;
 					//UNICODE(BE) -> Ansi
-					UTF16toUTF16BE((unsigned short *)&data[i],(p->second.GetSize()-i)/2);
-					int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+					UTF16toUTF16BE((LPWSTR)&data[i],(p->second.GetSize()-i)/2);
+					int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 					char *buf = new char[size];
 					if(!buf) break;
-					WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+					WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 					CString strRet(buf);
 					delete buf;
 					return strRet;
@@ -397,12 +397,12 @@ CString CId3tagv2::GetId3String(const char szId[])
 			if(p->second.GetSize() >= (1+3/*Language*/+1/*0*/))
 			{
 				//UNICODE(BE) -> Ansi
-				UTF16toUTF16BE((unsigned short *)&data[i],(p->second.GetSize()-i)/2);
-				int size = WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
+				UTF16toUTF16BE((LPWSTR)&data[i],(p->second.GetSize()-i)/2);
+				int size = WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,0,0,NULL,NULL);
 				size++;
 				char *buf = new char[size];
 				if(!buf) break;
-				WideCharToMultiByte(CP_ACP,0,(const unsigned short *)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
+				WideCharToMultiByte(CP_ACP,0,(LPWSTR)&data[i],(p->second.GetSize()-i)/2,buf,size,NULL,NULL);
 				buf[size-1] = '\0';
 				CString strRet(buf);
 				delete buf;
@@ -503,7 +503,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[0] = 1;	//encoding
 			data[1] = 0xff;	//BOM
 			data[2] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[3],(size-3)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[3],(size-3)/sizeof(WCHAR));
 			break;
 #else
 			//Ansi -> UNICODE
@@ -517,8 +517,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[0] = 1;	//encoding
 			data[1] = 0xfe;	//BOM
 			data[2] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[3],(size-3)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[3],(size-3)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[3],(size-3)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[3],(size-3)/sizeof(WCHAR));
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
@@ -531,8 +531,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 				return;
 			}
 			data[0] = 0x02;	//encoding
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[1],(size-1)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[1],(size-1)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[1],(size-1)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[1],(size-1)/sizeof(WCHAR));
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
 			{
@@ -544,7 +544,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 				{
 					return;
 				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)dataUtf16,size/sizeof(WCHAR));
+				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
 				// UNICODE -> UTF-8
 				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
 				size += 1;
@@ -610,7 +610,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[4] = 0;
 			data[5] = 0xff;	//BOM
 			data[6] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[7],(size-7)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
 			break;
 #else	// ビックエンディアン
 			//Ansi -> UNICODE
@@ -628,8 +628,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[4] = 0;
 			data[5] = 0xfe;	//BOM
 			data[6] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[7],(size-7)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[7],(size-7)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[7],(size-7)/sizeof(WCHAR));
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
@@ -644,8 +644,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[0] = 2;	//encoding
 			data[1] = 0;	//説明文(省略)
 			data[2] = 0;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[3],(size-3)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[3],(size-3)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[3],(size-3)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[3],(size-3)/sizeof(WCHAR));
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
 			{
@@ -657,7 +657,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 				{
 					return;
 				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)dataUtf16,size/sizeof(WCHAR));
+				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
 				// UNICODE -> UTF-8
 				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
 				size += 2;
@@ -733,7 +733,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[7] = 0;
 			data[8] = 0xff;	//BOM
 			data[9] = 0xfe;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[10],(size-10)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
 			break;
 #else	// ビッグエンディアン
 			//Ansi -> UNICODE
@@ -754,8 +754,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[7] = 0;
 			data[8] = 0xfe;	//BOM
 			data[9] = 0xff;
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[10],(size-10)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[10],(size-10)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[10],(size-10)/sizeof(WCHAR));
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
@@ -773,8 +773,8 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 			data[3] = 'g';
 			data[4] = 0;	//説明文(省略)
 			data[5] = 0;	//説明文(省略)
-			MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)&data[6],(size-6)/sizeof(WCHAR));
-			UTF16toUTF16BE((unsigned short *)&data[6],(size-6)/sizeof(WCHAR));
+			MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)&data[6],(size-6)/sizeof(WCHAR));
+			UTF16toUTF16BE((LPWSTR)&data[6],(size-6)/sizeof(WCHAR));
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
 			{
@@ -786,7 +786,7 @@ void CId3tagv2::SetId3String(const char szId[],const char *szString,const char *
 				{
 					return;
 				}
-				MultiByteToWideChar(CP_ACP,0,szString,-1,(unsigned short *)dataUtf16,size/sizeof(WCHAR));
+				MultiByteToWideChar(CP_ACP,0,szString,-1,(LPWSTR)dataUtf16,size/sizeof(WCHAR));
 				// UNICODE -> UTF-8
 				size = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,-1,NULL,0,NULL,NULL);
 				size += 5;

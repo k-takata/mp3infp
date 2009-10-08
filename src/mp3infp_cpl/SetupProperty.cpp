@@ -128,7 +128,7 @@ TRACE("strHelPath=%s\n",strHelpPath);
 //			HH_INITIALIZE,
 //			(DWORD )&dwCookie);//Hhctrl.ocx ‚É‚æ‚è•Ô‚³‚ê‚é cookie
 	
-	HWND hwndHelp = HtmlHelp(hWnd,strHelpPath,HH_DISPLAY_INDEX,(DWORD )szViewFile);
+	HWND hwndHelp = ::HtmlHelp(hWnd,strHelpPath,HH_DISPLAY_INDEX,(DWORD )szViewFile);
 /*	if(hwndHelp)
 	{
 		HtmlHelp(

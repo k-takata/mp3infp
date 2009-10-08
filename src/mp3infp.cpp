@@ -130,7 +130,7 @@ int CMp3infpApp::ExitInstance()
 
 CMp3infpApp theApp;
 
-AFX_MANAGE_STATE(AfxGetStaticModuleState());
+int AFX_MANAGE_STATE(AfxGetStaticModuleState());
 //
 // Global variables
 //

@@ -187,7 +187,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLong(hDlg,DWL_USER);
+	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
 
 	switch(uMessage){
@@ -200,7 +200,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 		{
 			lpcs = (LPCSHELLEXT )((LPPROPSHEETPAGE )lParam)->lParam;
 			lpcs->m_hwndMp3Ape = hDlg;
-			SetWindowLong(hDlg, DWL_USER, (DWORD )lpcs);
+			SetWindowLongPtr(hDlg, DWLP_USER, (LONG_PTR)lpcs);
 			lpcs->m_bMp3ApeApply = FALSE;
 
 			//Ver情報
@@ -512,7 +512,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 					//「このファイルは「読み込み専用」です」
 					AfxMessageBox(IDS_PAGE_THIS_READONLY,MB_ICONINFORMATION);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 
@@ -567,7 +567,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 						//システムエラーを表示
 						errMessageBox(hDlg,dwRet);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 
@@ -582,7 +582,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 				DispInfo(hDlg,lpcs);
 				lpcs->m_bMp3ApeApply = FALSE;
 				
-				SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_NOERROR);
+				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
 				
 				//シェルに変更を通知
 				SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,lpcs->m_strSelectFile,NULL);

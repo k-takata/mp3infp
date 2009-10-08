@@ -12,14 +12,26 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
-#if _DEBUG
-#pragma comment(lib,"ogg_static_d.lib")
-#pragma comment(lib,"vorbis_static_d.lib")
-#pragma comment(lib,"vorbisfile_static_d.lib")
+#if _WIN64
+ #if _DEBUG
+ #pragma comment(lib,"libogg_static_x64_d.lib")
+ #pragma comment(lib,"libvorbis_static_x64_d.lib")
+ #pragma comment(lib,"libvorbisfile_static_x64_d.lib")
+ #else
+ #pragma comment(lib,"libogg_static_x64.lib")
+ #pragma comment(lib,"libvorbis_static_x64.lib")
+ #pragma comment(lib,"libvorbisfile_static_x64.lib")
+ #endif
 #else
-#pragma comment(lib,"ogg_static.lib")
-#pragma comment(lib,"vorbis_static.lib")
-#pragma comment(lib,"vorbisfile_static.lib")
+ #if _DEBUG
+ #pragma comment(lib,"libogg_static_d.lib")
+ #pragma comment(lib,"libvorbis_static_d.lib")
+ #pragma comment(lib,"libvorbisfile_static_d.lib")
+ #else
+ #pragma comment(lib,"libogg_static.lib")
+ #pragma comment(lib,"libvorbis_static.lib")
+ #pragma comment(lib,"libvorbisfile_static.lib")
+ #endif
 #endif
 
 //////////////////////////////////////////////////////////////////////

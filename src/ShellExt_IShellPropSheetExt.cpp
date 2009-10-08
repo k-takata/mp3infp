@@ -18,6 +18,9 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	{
 		//「mp3infpの実行にはComctl32.dll Ver.5.80以上のインストールが必要です。」
 		//「http://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp」
+
+		// 2009-09-02 update.
+		// http://www.microsoft.com/downloads/details.aspx?familyid=cb2cf3a2-8025-4e8f-8511-9b476a8d35d2&displaylang=ja
 		CString tmp;
 		tmp.LoadString(IDS_COMCTL32_INFO);
 		CString ver;
@@ -108,7 +111,7 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	else
 		psp.pszTitle	= "ID3v1(*)";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_ID3V1);
-	psp.pfnDlgProc	= PageDlgProc_mp3_ID3V1;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_ID3V1;
 	psp.pfnCallback	= PageCallback_mp3_ID3V1;
 	hpage=CreatePropertySheetPage(&psp); 
 	if(!hpage) 
@@ -135,7 +138,7 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	else
 		psp.pszTitle	= "ID3v2(*)";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_ID3V2);
-	psp.pfnDlgProc	= PageDlgProc_mp3_ID3V2;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_ID3V2;
 	psp.pfnCallback	= PageCallback_mp3_ID3V2;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -163,7 +166,7 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 		else
 			psp.pszTitle	= "Riff SIF(*)";
 		psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_RMP);
-		psp.pfnDlgProc	= PageDlgProc_mp3_RMP;
+		psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_RMP;
 		psp.pfnCallback	= PageCallback_mp3_RMP;
 		hpage=CreatePropertySheetPage(&psp);
 		if(!hpage) 
@@ -198,7 +201,7 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 			psp.pszTitle	= "APE(*)";
 		}
 		psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_APE);
-		psp.pfnDlgProc	= PageDlgProc_mp3_APE;
+		psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_APE;
 		psp.pfnCallback	= PageCallback_mp3_APE;
 		hpage=CreatePropertySheetPage(&psp);
 		if(!hpage) 
@@ -270,7 +273,7 @@ void CShellExt::AddPages_wave(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_WAVE);
-	psp.pfnDlgProc	= PageDlgProc_wave;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_wave;
 	psp.pfnCallback	= PageCallback_wave;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -302,7 +305,7 @@ void CShellExt::AddPages_avi(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_AVI);
-	psp.pfnDlgProc	= PageDlgProc_avi;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_avi;
 	psp.pfnCallback	= PageCallback_avi;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -334,7 +337,7 @@ void CShellExt::AddPages_vqf(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_VQF);
-	psp.pfnDlgProc	= PageDlgProc_vqf;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_vqf;
 	psp.pfnCallback	= PageCallback_vqf;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -366,7 +369,7 @@ void CShellExt::AddPages_wma(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_WMA);
-	psp.pfnDlgProc	= PageDlgProc_wma;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_wma;
 	psp.pfnCallback	= PageCallback_wma;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -398,7 +401,7 @@ void CShellExt::AddPages_m3u(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_M3U);
-	psp.pfnDlgProc	= PageDlgProc_m3u;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_m3u;
 	psp.pfnCallback	= PageCallback_m3u;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -430,7 +433,7 @@ void CShellExt::AddPages_ogg(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_OGG);
-	psp.pfnDlgProc	= PageDlgProc_ogg;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_ogg;
 	psp.pfnCallback	= PageCallback_ogg;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -462,7 +465,7 @@ void CShellExt::AddPages_ape(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_APE);
-	psp.pfnDlgProc	= PageDlgProc_ape;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_ape;
 	psp.pfnCallback	= PageCallback_ape;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 
@@ -494,7 +497,7 @@ void CShellExt::AddPages_mp4(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	psp.pszTitle	= "mp3infp";
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP4);
-	psp.pfnDlgProc	= PageDlgProc_mp4;
+	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp4;
 	psp.pfnCallback	= PageCallback_mp4;
 	hpage=CreatePropertySheetPage(&psp);
 	if(!hpage) 

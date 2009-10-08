@@ -42,6 +42,9 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0005,"IBM CVSD"},
 		{0x0006,"CCITT A-Law"},
 		{0x0007,"CCITT u-Law"},
+		{0x0008,"Microsoft DTS"},
+		{0x0009,"Microsoft DRM"},
+		{0x000A,"Windows Media Audio 9 Voice"},
 		{0x0010,"OKI ADPCM"},
 		{0x0011,"IMA ADPCM"},
 		{0x0012,"MediaSpace ADPCM"},
@@ -78,6 +81,8 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0040,"G.721 ADPCM"},
 		{0x0041,"G.728 CELP"},
 		{0x0042,"MS G.723"},
+		{0x0043,"IBM AVC ADPCM"},
+		{0x0045,"SHARP G.726"},
 		{0x004f,"Ogg Vorbis(mode1)"},
 		{0x0050,"MPEG-1 layer 1, 2"},
 	//選択	{0x0050,"Ogg Vorbis(mode2)"},
@@ -117,13 +122,14 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0086,"DF GSM610"},
 		{0x0088,"ISIAudio"},
 		{0x0089,"Onlive"},
-		{0x0091,"SBC24"},
+		{0x0091,"Siemens SBC24"},
 		{0x0092,"Dolby AC3 SPDIF"},
 		{0x0097,"ZyXEL ADPCM"},
 		{0x0098,"Philips LPCBB"},
 		{0x0099,"Packed"},
 		{0x00A0,"Malden Electronics PHONYTALK"},
 		{0x00e1,"Microsoft ADPCM"},
+		{0x00FF,"Advanced Audio Coding"},
 		{0x0100,"Rhetorex ADPCM"},
 		{0x0101,"BeCubed Software's IRAT"},
 		{0x0111,"Vivo G.723"},
@@ -140,8 +146,10 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0150,"Qualcomm PUREVOICE"},
 		{0x0151,"Qualcomm HALFRATE"},
 		{0x0155,"Ring Zero Systems TUBGSM"},
-		{0x0160,"MS Audio1"},
+		{0x0160,"Windows Media Audio1"},
 		{0x0161,"DivX Audio(WMA)"},
+		{0x0162,"Windows Media Audio9 Professional"},
+		{0x0163,"Windows Media Audio9 Lossless"},
 		{0x0170,"UNISYS NAP ADPCM"},
 		{0x0171,"UNISYS NAP ULAW"},
 		{0x0172,"UNISYS NAP ALAW"},
@@ -165,7 +173,7 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0400,"BTV Digital"},
 		{0x0401,"Intel Music Coder"},
 		{0x0402,"Ligos Indeo Audio"},
-		{0x0450," QDesign Music"},
+		{0x0450,"QDesign Music"},
 		{0x0680,"AT&T Labs VME VMPCM"},
 		{0x0681,"AT&T Labs TPC"},
 		{0x1000,"Olivetti GSM"},
@@ -188,59 +196,141 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x1C0C,"Lucent SX5363S G.723 compliant codec"},
 		{0x1F03,"CUseeMe DigiTalk (ex-Rocwell)"},
 		{0x1FC4,"NTC ALF2CD ACM"},
+		{0x2001,"DTS"},
+		{0x2002,"RealAudio?(14_4)"},
+		{0x2003,"RealAudio?(28_8)"},
+		{0x2004,"RealAudio?(COOK)"},
+		{0x2005,"RealAudio?(DNET)"},
 		{0x674f,"Ogg Vorbis (mode 1)"},
 		{0x6750,"Ogg Vorbis (mode 2)"},
 		{0x6751,"Ogg Vorbis (mode 3)"},
 		{0x676f,"Ogg Vorbis (mode 1+)"},
 		{0x6770,"Ogg Vorbis (mode 2+)"},
 		{0x6771,"Ogg Vorbis (mode 3+)"},
+		{0x7A21,"GSM-AMR (CBR no SID)"},
+		{0x7A22,"GSM-AMR (VBR including SID)"},
+		{0x77A1,"The True Audio"},
+		{0xC0CC,"GigaLink Audio Codec"},
 		{0xDFAC,"DebugMode SonicFoundry Vegas FrameServer ACM Codec"},
+		{0xF1AC,"CoreFLAC ACM"},
 		{0xFFFE,"Extensible wave format"},
 		{0xFFFF,"In Development / Unregistered"}
 	};
 
 VIDEO_CODEC_TYPE divx_vers[] =
 {
-	{"DivX500Build413","DivX5.0"},
-	{"DivX501b450","DivX5.0.1"},
-	{"DivX501b481","DivX5.0.2"},
-	{"DivX501b484","DivX5.0.2"},
-	{"DivX501b487","DivX5.0.2"},
-	{"DivX503b696","DivX5.0.3"},	// 2004-07-21 (自信なし)
-	{"DivX503b740","DivX5.0.3"},
-	{"DivX503b822","DivX5.0.4"},
-	{"DivX503b830","DivX5.0.5"},
-	{"DivX503b894","DivX5.0.5"},
-	{"DivX503b959","DivX5.1"},// 2003-09-05
-	{"DivX503b1031","DivX5.1.1"},// 2003-11-24
-	{"DivX503b1263","DivX5.2"},// 2004-07-19
-	{"DivX503b1314","DivX Pro 5.2.1 Codec (X-Transcoder)"},	// 2006-11-13
-	{"DivX503b1328","DivX5.2.1"},	// 2004-09-24
-	{"DivX503b1338","DivX5.2.1"},	// 2004-11-07
-	{"DivX503b1394p","DivX Pro Plasma Codec Ver.5.3.0 Build 1394"},
-	{"DivX503b1408p","DivX Pro Plasma Codec Ver.5.3.0 Build 1408"},
-	{"DivX503b1453p","DivX Pro Fusion Beta Build 1453 (DivX Ver.5.9)"},
-	{"DivX503b1461p","DivX Pro Fusion Beta Build 1461 (DivX Ver.5.9)"},
-	{"DivX503b1571","DivX6.0"},	// 2005-07-08 BBS7592
-	{"DivX503b1594","DivX6.0"},
-	{"DivX503b1697","DivX6.0.3"},	// 2005-12-04 BBS8167
-	{"DivX503b1786","DivX6.1"},		// 2006-03-12 BBS8433
-	{"DivX503b1828","DivX6.1.1"},	// 2006-03-12 BBS8433
-	{"DivX503b1828","DivX6.1.1"},	// 2006-03-12 BBS8433
-	{"DivX503b1838","DivX6 (TMPGEnc)"},	// 2007-07-17 BBS8655
-	{"DivX503b1893","DivX6.2.0 Beta 1"},	// 2006-04-01 BBS8463
-	{"DivX503b1910","DivX6.2"},	// 2006-04-12
-	{"DivX503b1913","DivX6.2.1"},	// 2006-04-24 BBS8489
-	{"DivX503b1920","DivX6.2.2"},	// 2006-04-24
-	{"DivX503b1974","DivX6.2.5"},	// 2007-07-26 BBS8688 
-	{"DivX503b1977","DivX6.2.5"},	// 2007-07-17 BBS8670
-	{"DivX503b1988","DivX6.2.5"},	// 2007-08-27 BBS8715
-	{"DivX503b2081","DivX6.4 Beta 1"},	// 2007-10-03 BBS8757
-	{"DivX503b2086","DivX6.4"},		// 2007-10-03 BBS8781
-	{"DivX503b2201","DivX6.5"},		// 2007-08-26 BBS9011
-	{"DivX503b2207","DivX6.5.1"},	// 2007-08-26 BBS9019
-	{"DivX503b2292","DivX6.6.0"},	// 2007-08-26 BBS9114
-	{"DivX503b2306","DivX6.6.1"},	// 2007-08-26 BBS9125
+		{"DivX999b000","XviD MPEG4"},
+		{"DivX500Build413","DivX 5.0.0"},
+		{"DivX501b413","DivX 5.0.0"}, //Unconfirmed
+		{"DivX501b450","DivX 5.0.1"},
+		{"DivX501b481","DivX 5.0.2"},
+		{"DivX501b484","DivX 5.0.2"},
+		{"DivX501b487","DivX 5.0.2"},
+		{"DivX503b688","DivX 5.0.3 Beta"},
+		{"DivX503b696","DivX 5.0.3 Beta"},	// 2004-07-21 (自信なし)
+		{"DivX503b740","DivX 5.0.3"},
+		{"DivX503b795","DivX 5.0.4 Beta1-2"},
+		{"DivX503b804","DivX 5.0.4 Beta3"},
+		{"DivX503b814","DivX 5.0.4 Beta4"},
+		{"DivX503b822","DivX 5.0.4"},
+		{"DivX503b830","DivX 5.0.5.830"},
+		{"DivX503b894","DivX 5.0.5 Kauehi"},
+		{"DivX503b922","DivX 5.1.0 Beta1"},
+		{"DivX503b936","DivX 5.1.0 Beta2"},
+		{"DivX503b959","DivX 5.1.0.959"},// 2003-09-05
+		{"DivX503b0985","DivX 5.1(DivX HD)"},
+		{"DivX503b1009","DivX 5.1.1 Beta1"},
+		{"DivX503b1025","DivX 5.1.1 Beta2"},
+		{"DivX503b1031","DivX 5.1.1.1031"},// 2003-11-24
+		{"DivX503b1263","DivX 5.2.0"},// 2004-07-19
+		{"DivX503b1272","DivX 5.2.0(Dr.DivX 1.0.5)"},
+		{"DivX503b1307","DivX 5.2.1 Alpha(Dr.DivX)"},
+		{"DivX503b1314","DivX Pro 5.2.1 Codec (X-Transcoder)"},	// 2006-11-13
+		{"DivX503b1328","DivX 5.2.1"},	// 2004-09-24
+		{"DivX503b1338","DivX 5.2.1(Dr.DivX 1.0.6)"},	// 2004-11-07
+		{"DivX503b1394","DivX Pro Plasma Codec Ver.5.3.0 Build 1394"},
+		{"DivX503b1408","DivX Pro Plasma Codec Ver.5.3.0 Build 1408"},
+		{"DivX503b1453","DivX Pro Fusion Beta Build 1453 (DivX Ver.5.9)"},
+		{"DivX503b1461","DivX Pro Fusion Beta Build 1461 (DivX Ver.5.9)"},
+		{"DivX503b1528","DivX 5.9 Fusion"},
+		{"DivX503b1571","DivX 6.0.0"},	// 2005-07-08 BBS7592
+		{"DivX503b1594","DivX 6.0.0 (DivX Converter 1.0)"},
+		{"DivX503b1599","DivX 6 Helium"},
+		{"DivX503b1612","DivX 6 Helium"},
+		{"DivX503b1670","Dr.DivX 1.07"},
+		{"DivX503b1697","DivX 6.0.3"},	// 2005-12-04 BBS8167
+		{"DivX503b1737","DivX He-3"},
+		{"DivX503b1786","DivX 6.1.0"},		// 2006-03-12 BBS8433
+		{"DivX503b1807","DivX 6.1.0 Patch 1 Beta"},
+		{"DivX503b1814","DivX 6.1.0 Patch 2 Beta"},
+		{"DivX503b1828","DivX 6.1.1"},	// 2006-03-12 BBS8433
+		{"DivX503b1838","DivX 6 (TMPGEnc)"},	// 2007-07-17 BBS8655
+		{"DivX503b1893","DivX 6.2.0 Beta 1"},	// 2006-04-01 BBS8463
+		{"DivX503b1910","DivX 6.2.0"},	// 2006-04-12
+		{"DivX503b1913","DivX 6.2.1"},	// 2006-04-24 BBS8489
+		{"DivX503b1915","DivX 6.2.1 Patch 1 Beta"},
+		{"DivX503b1920","DivX 6.2.2"},	// 2006-04-24
+		{"DivX503b1974","DivX 6.2.5"},	// 2007-07-26 BBS8688 
+		{"DivX503b1977","DivX 6.2.5"},	// 2007-07-17 BBS8670
+		{"DivX503b1988","DivX 6.2.5 (DivX Converter 6.2.1)"},	// 2007-08-27 BBS8715
+		{"DivX503b2081","DivX 6.4 Beta 1"},	// 2007-10-03 BBS8757
+		{"DivX503b2086","DivX 6.4"},		// 2007-10-03 BBS8781
+		{"DivX503b2151","DivX 6.4 (DivX Author)"},
+		{"DivX503b2201","DivX 6.5.0"},		// 2007-08-26 BBS9011
+		{"DivX503b2207","DivX6.5.1"},	// 2007-08-26 BBS9019
+		{"DivX503b2292","DivX6.6.0"},	// 2007-08-26 BBS9114
+		{"DivX503b2306","DivX6.6.1"},	// 2007-08-26 BBS9125
+		{"DivX503b2309","DivX 6.6.1"},
+		{"DivX503b2318","DivX 6.6.1.4"},
+		{"DivX503b2376","DivX 6 (Stage6)"},
+		{"DivX503b2396","DivX 6.7 Beta"},
+		{"DivX503b2432","DivX 6.7.0.28"},
+		{"DivX503b2510","DivX 6.8.0.14"},
+		{"DivX503b2521","DivX 6.8.0 (DivX Converter 6.6)"},
+		{"DivX503b2559","DivX 6.8.2.6"},
+		{"DivX503b2676","DivX 6.8.3.13"},
+		{"DivX503b2816","DivX 6.8.5.5"},	//090626 BBS10017
+};
+
+VIDEO_CODEC_TYPE xvid_vers[] =
+{
+		{"XviD0009","XviD 0.9 BitStream 9"},
+		{"XviD0011","XviD 0.9 Patch-66"},
+		{"XviD0012","XviD 0.9 BitStream 12"},
+		{"XviD0016","XviD 1.0 Patch-13"},
+		{"XviD0019","XviD 1.0 Patch-47"},
+		{"XviD0020","XviD 1.0 Patch-61"},
+		{"XviD0021","XviD 1.0.0 Beta1"},
+		{"XviD0022","XviD 1.0.0 Beta1.5"},
+		{"XviD0023","XviD 1.0.0 Beta2"},
+		{"XviD0024","XviD 1.0.0 Beta2.5"},
+		{"XviD0025","XviD 1.0.0 Beta3"},
+		{"XviD0026","XviD 1.0.0 RC1"},
+		{"XviD0027","XviD 1.0.0 RC1b"},
+		{"XviD0028","XviD 1.0.0 RC2"},
+		{"XviD0029","XviD 1.0.0 RC3"},
+		{"XviD0030","XviD 1.0.0 RC4"},
+		{"XviD0031","XviD 1.0.0 RC4b"},
+		{"XviD0032","XviD 1.0.0 RC4c"},
+		{"XviD0033","XviD 1.0.0 RC4d"},
+		{"XviD0034","XviD 1.0.0"},
+		{"XviD0035","XviD 1.0.1"},
+		{"XviD0036","XviD 1.0.2"},
+		{"XviD0037","XviD 1.0.3"},
+		{"XviD0038","XviD 1.1.0 Beta1"},
+		{"XviD0039","XviD 1.1.0 Beta2"},
+		{"XviD0040","XviD 1.1.0"},
+		{"XviD0041","XviD 1.1.0 Final"},
+		{"XviD0042","XviD 1.2.-127"},
+		{"XviD0043","XviD 1.2 SMP"},
+		{"XviD0044","XviD 1.1 1"},
+		{"XviD0045","XviD 1.2.-127"},
+		{"XviD0046","XviD 1.1.2 Final"},
+		{"XviD0047","XviD 1.1.-127"},
+		{"XviD0048","XviD 1.2.-127"},
+		{"XviD0049","XviD 1.2.0"},
+		{"XviD0050","XviD 1.2.1"},
+		{"XviD0055","XviD 1.3.-127"},
 };
 
 VIDEO_CODEC_TYPE video_codecs[] =
@@ -248,41 +338,53 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		//非圧縮
 		{"DIB ","NoCompress(DIB)"},
 		{"RGB ","NoCompress(RGB)"},
+		{"BGR ","NoCompress(RGB32)"},
 		{"RAW ","NoCompress(RAW)"},
 		//圧縮
 		{"3IVX","3ivx Delta x.x"},
+		{"3IVD","DivX3/MS MPEG4-V3(3IVD)"},
 		{"3IV0","3ivx Delta 1.0-3.5(3IV0)"},
 		{"3IV1","3ivx Delta 1.0-3.5(3IV1)"},
 		{"3IV2","3ivx Delta 4.0"},
-		{"AASC","Autodesk Animator"},
+		{"AAS4","Autodesk Animator (AAS4)"},
+		{"AASC","Autodesk Animator (AASC)"},
 		{"ABYR","Kensington?"},
 		{"ADV1","Loronix WaveCodec"},
 		{"ADVJ","Avid M-JPEG(ADVJ)"},
+		{"AEIK","Intel Indeo 3.2"},
 		{"AEMI","Array VideoONE MPEG1-I Capture"},
 		{"AFLI","Autodesk Animator(FLI)"},
 		{"AFLC","Autodesk Animator(FLC)"},
+		{"AJPG","Animated JPEG"}, //Unconfirmed
+		{"AMM2","AMV2 MT Codec"},
 		{"AMPG","Array VideoONE MPEG"},
+		{"AMV3","AMV3 Codec"},
 		{"ANIM","Intel RDX(ANIM)"},
 		{"AP41","AngelPotion MPEG4-V3 Hacked"},
+		{"ASLC","Alparysoft Lossless Video Codec"},
 		{"ASV1","Asus Video"},
 		{"ASV2","Asus Video(2)"},
 		{"ASVX","Asus Video 2.0"},
 		{"AUR2","Aura 2 YUV 422"},
 		{"AURA","Aura 1 YUV 411"},
+		{"AVC1","H.264(AVC1)"},
 		{"AVRN","Avid M-JPEG(AVRN)"},
 		{"BINK","Bink Video"},
+		{"BLZ0","DivX 5.x(BLZ0)"},
 		{"BT20","Conexant Prosumer Video"},
 		{"BTCV","Conexant Composite Video"},
 		{"BW10","Broadway MPEG Capture/Compression"},
 		{"CC12","Intel YUV12"},
 		{"CDVC","Canopus DV"},
 		{"CFCC","DPS Perception"},
+		{"CFHD","Adobe Premiere HDV"},
 		{"CGDI","Microsoft Camcorder Video"},
 		{"CHAM","Winnov Caviara Champagne"},
 		{"CJPG","Creative WebCam JPEG"},
 		{"CLJR","Cirrus Logic YUV"},
 		{"CMYK","Colorgraph 32Bit CMYK"},
-		{"PNG1","CorePNG v8"},	// 2004-01-21 追加 BBS4900
+		{"COL0","DivX3/MS MPEG4-V3(COL0)"},
+		{"COL1","DivX3/MS MPEG4-V3(COL1)"},
 		{"CPLA","Weitek YUV 4:2:0"},
 		{"CRAM","Microsoft Video 1(CRAM)"},
 		{"CVID","Radius Cinepak"},
@@ -291,7 +393,10 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"CYUY","ATI YUV"},
 		{"D261","DEC H.261"},
 		{"D263","DEC H.263"},
-		
+		{"DAVC","H.264(DAVC)"},
+		{"DCL1","Data Connection Conferencing"},
+		{"DIVA","DivA MPEG-4"},
+
 		{"DIVX","DivX4"},	// biCommpress を見てDivx5 or Divx4を確定
 		{"DIV2","Microsoft MPEG4-V1/V2"},
 		{"DIV3","DivX ;-) MPEG-4 Video Codec (low motion)"},
@@ -303,19 +408,31 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"DVSD","DV Codec \"Iris\" [vdsd]"},	// 2004-03-13
 		{"DVRS","DV Codec \"Iris\" Reference AVI"},	// 2004-03-13
 
+		{"DM4V","Dicas MPEGable MPEG-4"},
 		{"DMB1","Matrox Rainbow Runner MJPEG"},
 		{"DMB2","Paradigm MJPG?"},
+		{"DMK2","ViewSonic V36"},
+		{"DOHC","DummyCodec"},
+		{"DP02","DynaPel MPEG-4"},
+		{"DPS0","DPS Reality"},
+		{"DPSC","DPS PAR"},
 		{"DSVD","DV Codec(DSVD)"},
 		{"DV25","Matrox DVCPRO"},
 		{"DV50","Matrox DVCPRO50"},
 		{"DVAN","?(DVAN)"},
+		{"DVC ","DV Codec(DVC )"},
 		{"DVCP","DV Codec(DVCP)"},
+		{"DVCS","DV Codec(DVCS)"},
 		{"DVE2","Insoft DVE-2 Videoconferencing"},
-		{"DVSD","DV Codec(DVSD)"},
+		{"DVH1","Panasonic SMPTE 370M"},
+		{"DVHD","DV Codec(DVHD)"},
+		{"DVMA","Darim Vision DVMPEG"},
+		{"DVSL","DV Codec(DVSL)"},
 		{"DUCK","Duck TrueMotion 1.0"},
 		{"DVX1","Lucent DVX1000SP"},
 		{"DVX2","Lucent DVX2000S"},
 		{"DVX3","Lucent DVX3000S"},
+		{"DXGM","EA/CinemaWare Game Movie"},
 		{"DXT1","DirectX Compressed Texture(DXT1)"},
 		{"DXT2","DirectX Compressed Texture(DXT2)"},
 		{"DXT3","DirectX Compressed Texture(DXT3)"},
@@ -328,14 +445,21 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"DXTC","DirectX Texture Compression"},
 		{"ELK0","Elsa YUV(ELK0)"},
 		{"EKQ0","Elsa YUV(EKQ0)"},
+		{"EM2V","Etymonix MPEG-2 I-frame"},
 		{"ESCP","Eidos Escape"},
 		{"ETV1","eTreppid Video(ETV1)"},
 		{"ETV2","eTreppid Video(ETV2)"},
 		{"ETVC","eTreppid Video(ETVC)"},
+		{"FFV1","FFMPEG"},
 		{"FLJP","D-Vision Field Encoded Motion JPEG"},
+		{"FMP4","FFmpeg MPEG4"},
+		{"FPS1","Fraps Movie Capture"},
 		{"FRWA","SoftLab-Nsk Forward Motion JPEG with alpha channel"},
-		{"FRWD","SoftLab-Nsk Forward Motion JPEG"},
+		{"FRWD","SoftLab-Nsk Forward Motion JPEG(FRWD)"},
+		{"FRWT","SoftLab-Nsk Forward Motion JPEG(FRWT)"},
+		{"FRWU","Darim Vision Forward"},
 		{"FVF1","Fractal Video Frame"},
+		{"FVFW","FFVFW"},
 		{"GLCC","GigaLink Video Codec"},
 		{"GLZW","Motion LZW"},
 		{"GPEG","Motion JPEG(GPEG)"},
@@ -363,6 +487,7 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"ILVC","Intel Layered Video"},
 		{"ILVR","ITU H.263+"},
 		{"IPDV","I/O DATA Giga AVI DV"},
+		{"IPJ2","Image Power JPEG2000"},
 		{"IR21","Intel Indeo 2.1"},
 		{"IRAW","Intel Uncompressed UYUV"},
 		{"IR45","?(IR45)"},
@@ -387,22 +512,29 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"IV48","Intel Indeo 4.8"},
 		{"IV49","Intel Indeo 4.9"},
 		{"IV50","Intel Indeo 5.0"},
+		{"IYUV","Intel Indeo iYUV R2.0"},
 		{"JBYR","Kensington?"},
 		{"JPEG","Microsoft StillImage JPEG"},
-		{"JPGL","JPEG Light?"},
+		{"JPGL","DIVIO JPEG Light"},
 		{"KMVC","Karl Morton's Video"},
 		{"L261","Lead H.261"},
 		{"L263","Lead H.263"},
+		{"LBYR","?(LBYR)"},
 		{"LCMW","Lead Motion CMW"},
 		{"LEAD","LEAD Video"},
+		{"LJ2K","Lead JPEG 2000"},
 		{"LJPG","LEAD MJPEG"},
 		{"LGRY","Lead Grayscale Image"},
+		{"LSVM","Vianet Lighting Strike Vmail"},
+		{"LZO1","Lempel-Ziv-Oberhumer"},
 		{"M261","Microsoft H.261"},
 		{"M263","Microsoft H.263"},
+		{"M4CC","Divio MPEG-4"},
 		{"M4S2","MPEG-4 version 2 simple profile"},
 		{"MC12","ATI Motion Compensation Format(MC12)"},
 		{"MCAM","ATI Motion Compensation Format(MCAM)"},
 		{"MJ2C","Motion JPEG2000"},
+		{"MJPA","Pinnacle ReelTime MJPG-A Software"},
 		{"MJPG","Motion JPEG(MJPG)"},
 		{"MMES","Matrox MPEG-2 ES"},
 		{"MP2A","Media Excel MPEG-2 Audio"},
@@ -415,12 +547,16 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"MP4T","Media Excel MPEG-4 Transport Stream"},
 		{"MP4V","Media Excel MPEG-4 Video"},
 		{"MPEG","Chromatic MPEG1 Video I Frame"},
-		{"MPG4","Microsoft MPEG4(MPG4)"},
+		{"MPG3","DivX3/MS MPEG4-V3(MPG3)"},
+		{"MPG4","Microsoft MPEG4-V1"},
 		{"MPGI","Sigma Designs MPEG"},
+		{"MPNG","PNG images decoder"},
+		{"MR16","?(MR16)"},
 		{"MRCA","FAST Multimedia Mrcodec"},
 		{"MRLE","Microsoft RLE"},
 		{"MSVC","Microsoft Video1(MSVC)"},
 		{"MSZH","AVImszh"},
+		{"MTGA","TGA images decoder"},
 		{"MTX1","Matrox(MTX1)"},
 		{"MTX2","Matrox(MTX2)"},
 		{"MTX3","Matrox(MTX3)"},
@@ -431,10 +567,16 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"MTX8","Matrox(MTX8)"},
 		{"MTX9","Matrox(MTX9)"},
 		{"MV12","?(MV12)"},
-		{"MVI1","Motion Pixels"},
+		{"MVI1","Motion Pixels MVI1"},
+		{"MVI2","Motion Pixels MVI2"},
 		{"MWV1","Aware Motion Wavelets"},
 		{"NAVI","NAVI"},
+		{"NT00","NewTek LigtWave HDTV"},
 		{"NTN1","Nogatech Video Compression 1"},
+		{"NTN2","Nogatech Video Compression 2"},
+		{"NTZ0","netsuzo"}, //Unconfirmed
+		{"NTZO","netsuzo"}, //Unconfirmed
+		{"NUV1","NuppelVideo"},
 		{"NVDS","nVIDIA GeForce3 Texture(NVDS)"},
 		{"NVHS","nVIDIA GeForce3 Texture(NVHS)"},
 		{"NVHU","nVIDIA GeForce3 Texture(NVHU)"},
@@ -457,11 +599,15 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"PIM2","Pegasus Imaging Lossless JPEG(PIM2)"},
 		{"PIMJ","Pegasus Imaging Lossless JPEG(PIMJ)"},
 		{"PIXL","Pinnacle Video XL"},
+		{"PNG1","CorePNG v8"},	// 2004-01-21 追加 BBS4900
 		{"PVEZ","Horizons Technology PowerEZ"},
 		{"PVMM","PacketVideo Corporation MPEG-4"},
-		{"PVW2","Pegasus Wavelet Compression"},
-		{"QPEQ","Q-Team QPEG 1.1"},
-		{"QPEG","Q-Team QPEG"},
+		{"PVWV","Pegasus Wavelet Compression(PVWV)"},
+		{"PVW2","Pegasus Wavelet Compression(PVW2)"},
+		{"Q1.0","Q-Team QPEG(Q1.0)"},
+		{"Q1.1","Q-Team QPEG(Q1.1)"},
+		{"QPEQ","Q-Team QPEG(QPEQ)"},
+		{"QPEG","Q-Team QPEG(QPEG)"},
 		{"RAVI","GTRON ReferenceAVI(RAVI)"},
 		{"RAV_","GTRON ReferenceAVI(RAV_)"},
 		{"RGBT","Computer Concepts 32Bits RGB"},
@@ -469,22 +615,35 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"RLE4","Microsoft RLE4"},
 		{"RLE8","Microsoft RLE8"},
 		{"RMP4","REALMagic MPEG4"},
+		{"ROQV","Id RoQ File Video Decoder"},
 		{"RPZA","Apple Video"},
 		{"RT21","Intel Real Time Video 2.1"},
+		{"RTV0","NewTek VideoToaster"},
+		{"RUD0","nico Rududu"},
+		{"RUSH","RushCodec"},
 		{"RV10","RealVideo 1.0"},
 		{"RV20","Real G2"},
 		{"RV30","Real 8"},
+		{"RV40","Real 9/10"},	//090627
 		{"RVX ","intel RDX(RVX)"},
 		{"S422","Tekram VideoCap C210 YUV"},
 		{"SAN3","DivX 3.11a Copy"},
 		{"SDCC","Sun Digital Camera"},
+		{"SEDG","Samsung MPEG-4"},
 		{"SFMC","CrystalNet Surface Fitting Method"},
 		{"SHYU","Huffyuvs v2.1.1"},
 		{"SMSC","Radius Proprietary"},
 		{"SMSD","Radius Proprietary"},
 		{"SMSV","WorldConnect Wavelet Video"},
+		{"SNOW","SNOW"},
+		{"SP40","Sunplus SP40"},
 		{"SP44","Sunplus SP44"},
-		{"SP54","Sunplus SP54"},
+		{"SP53","Aiptek MegaCam(SP53)"},
+		{"SP54","Aiptek MegaCam(SP54)"},
+		{"SP55","Aiptek MegaCam(SP55)"},
+		{"SP56","Aiptek MegaCam(SP56)"},
+		{"SP57","Aiptek MegaCam(SP57)"},
+		{"SP58","Aiptek MegaCam(SP58)"},
 		{"SPIG","Radius Spigot"},
 		{"SPLC","Splash Studios ACM"},
 		{"SQZ2","Microsoft VXTreme V2"},
@@ -504,13 +663,18 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"TR20","Duck TrueMotion RT 2.0"},
 		{"TSCC","TechSmith Screen Capture"},
 		{"TV10","Tecomac Low-Bit Rate"},
-		{"TVJP","?(TVJP)"},
-		{"TVMJ","?(TVMJ)"},
+		{"TVJP","Truevision TARGA 2000(TVJP)"},
+		{"TVMJ","Truevision TARGA 2000(TVMJ)"},
 		{"TY2C","Trident Decompression(TY2C)"},
 		{"TY2N","Trident Decompression(TY2N)"},
 		{"TY0N","Trident Decompression(TY0N)"},
-		{"UCOD","eMajix ClearVideo"},
+		{"U263","UB Video StreamForce"},
+		{"UCOD","eMagix ClearVideo"},
 		{"ULTI","IBM Ultimotion"},
+		{"ULRG","Ut Video Codec RGB"},
+		{"ULY0","Ut Video Codec YUV420"},
+		{"ULY2","Ut Video Codec YUV422"},
+		{"UMP4","DivX3/MS MPEG4-V1(UMP4)"},
 		{"UYVY","Microsoft UYVY 4:2:2"},
 		{"V261","Lucent VX2000S"},
 		{"V422","Vitec Multimedia 24bitYUV"},
@@ -528,6 +692,7 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"VDEC","?(VDEC)"},
 		{"VDOM","VDOWave"},
 		{"VDOW","VDOLive"},
+		{"VDST","VirtualDub remote frameclient"},
 		{"VDTZ","Darim Vision VideoTizer YUV"},
 		{"VGPX","Alaris Wee Cam"},
 		{"VIDS","Vitec YUV 4:2:2 CCIR 601 for V422"},
@@ -537,10 +702,18 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"VLV1","VideoLogic?"},
 		{"VP30","On2 Open-Source VP3(VP30)"},
 		{"VP31","On2 Open-Source VP3(VP31)"},
-		{"VP40","VP40R Compressor"},		// 2004-01-21 追加
-		{"VP60","VP60R Simple Profile"},	// 2004-01-21 追加
-		{"VP61","VP61R Advanced Profile"},	// 2004-01-21 追加
-		{"VQC2","?(VQC2)"},
+		{"VP40","On2 VP4"},
+		{"VP50","On2 VP5"},
+		{"VP60","On2 VP6(Simple)"},
+		{"VP61","On2 VP6(Advanced)"},
+		{"VP62","On2 VP6(VP62)"},
+		{"VP70","On2 VP7"},
+		{"VSSH","H.264(VSSH)"},
+		{"VQC1","ViewQuest VideoQuest Codec 1"},
+		{"VQC2","ViewQuest VideoQuest Codec 2"},
+		{"VSSV","Vanguard Software VSS Video"},
+		{"VTLP","Alaris VideoGram QuickVideo VGPixel(VTLP)"},
+		{"VUUU","?(VUUU)"},
 		{"VX1K","Lucent VX1000S"},
 		{"VX2K","Lucent VX2000S"},
 		{"VXSP","Lucent VX1000SP"},
@@ -557,10 +730,15 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"WVC1","WMV9 Advanced Profile (WVC1)"},
 		{"WNIX","WniWni Video3"},
 		{"WNV1","Winnov Hardware Compression"},
+		{"WRPR","VideoTools VideoServer Client Codec"},
 		{"X263","Xirlink H.263 Video Codec"},
+		{"X264","H.264(X264)"},
 		{"XLV0","NetXL XL Video Decoder"},
+		{"XLV1","Videologic VLCAP"},
 		{"XMPG","XING IFlameOnry MPEG"},
+		{"XTOR","Dxtory"},
 		{"XVID","XviD MPEG4"},
+		{"XVIX","DivX3/MS MPEG4-V2(XVIX)"},
 		{"XVW0","XiWave Video(XVW0)"},
 		{"XVW1","XiWave Video(XVW1)"},
 		{"XVW2","XiWave Video(XVW2)"},
@@ -584,13 +762,19 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"YC12","Intel YUV12"},
 		{"YU92","Intel YUV(YU92)"},
 		{"YUV8","Winnov Caviar YUV8"},
-		{"YUV9","Intel Indeo Raw YUV9"},
+		{"YUV9","Indeo Video Raw(YUV9)"},
+		{"YUVP","uncompressed YCrCb 4:2:2"},
 		{"YUY2","Microsoft Raw uncompressed YUV 4:2:2"},
 		{"YUYV","Canopus YUVY"},
 		{"YV12","Weitek YVU12"},
-		{"YVUY","Microsoft YVYU 4:2:2"},
+		{"YV16","Elecard YUV 4:2:2 Planar"},
+		{"YV92","Intel Smart Video Recorder"},
+		{"YVU9","Indeo Video Raw(YVU9)"},
+		{"YVYU","Microsoft YVYU 4:2:2"},
 		{"ZLIB","AVIzlib(LCL)"},
-		{"ZPEG","Metheus Video Zipper"}
+		{"ZPEG","Metheus Video Zipper"},
+		{"ZYGO","ZyGo ZyGoVideo"},
+		{"ZYYY","?(ZYYY)"},
 //		{" ","無圧縮"}
 	};
 
@@ -878,7 +1062,8 @@ BOOL findVideoCodecName1(CString &strVideoFormat,DWORD biCompression,DWORD fccHe
 		}
 		return TRUE;
 	}
-	for(int i=0; i<sizeof(video_codecs)/sizeof(video_codecs[0]); i++)
+	int i=0;
+	for(; i<sizeof(video_codecs)/sizeof(video_codecs[0]); i++)
 	{
 		if(mmioFOURCC(video_codecs[i].type[0],video_codecs[i].type[1],video_codecs[i].type[2],video_codecs[i].type[3]) == fccHeader)
 		{
@@ -1220,7 +1405,7 @@ void GetAviFormat(IN const char *szFileName,
 						strDivx5Version = divx_vers[ver].format;
 						break;
 					}
-					else if(memcmp(&tmp[tmpPtr],"DivX5",4) == 0)
+					else if(memcmp(&tmp[tmpPtr],"DivX5",5) == 0)
 					{
 						char buildNo[15];
 						memset(buildNo,0,sizeof(buildNo));
@@ -1234,6 +1419,89 @@ void GetAviFormat(IN const char *szFileName,
 							buildNo[a] = c;
 						}
 						strDivxVerEtc = "DivX5/6.\?.\?(";
+						strDivxVerEtc += buildNo;
+						strDivxVerEtc += ")";
+						break;
+					}
+				}
+				if(strDivx5Version.GetLength() > 0)
+				{
+					break;
+				}
+			}
+			if(strDivx5Version.GetLength() > 0)
+			{
+				break;
+			}
+		}
+		if(strDivx5Version.GetLength() == 0)
+		{
+			strDivx5Version = strDivxVerEtc;
+		}
+		if(strDivx5Version.GetLength())
+		{
+			strVideoFormat = strDivx5Version;
+		}
+	}
+
+	/////////////////////////////////////////////////////////////
+	// XviDのバージョンを区別する処理
+	if(strVideoFormat.Compare("XviD MPEG4") == 0)
+	{
+		SetFilePointer64(hFile,llPtr,FILE_BEGIN);
+		//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		// LIST-moviを検索
+		if(!findChunk(hFile,dwRiffAviSize+8,MMIO_FINDLIST,mmioFOURCC('m','o','v','i'),&dwSize))
+		{
+			goto exit;
+		}
+		__int64 llPtrMovi = SetFilePointer64(hFile,0,FILE_CURRENT);
+		//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		// 00dbチャンクを検索
+		DWORD dwMoviSize = dwSize;
+		CString strDivx5Version;
+		CString strDivxVerEtc;
+		for(int i=0; i<50; i++)
+//		while(1)
+		{
+			if(!findChunk2(hFile,llPtrMovi+dwMoviSize,&dwSize))
+			{
+				break;
+			}
+			__int64 ptr = SetFilePointer64(hFile,0,FILE_CURRENT) + 8;
+			// 先頭の0x30バイト読み取る
+			char tmp[0x30];
+			memset(tmp,0,sizeof(tmp));
+			if(!ReadFile(hFile,&tmp,sizeof(tmp),&dwRet,NULL))
+			{
+				break;
+			}
+			SetFilePointer64(hFile,ptr,FILE_BEGIN);
+
+			// divxバージョン情報を検索する
+			for(int ver=0; ver<sizeof_array(xvid_vers); ver++)
+			{
+				for(DWORD tmpPtr=0; tmpPtr<(sizeof(tmp)-strlen(xvid_vers[ver].type)); tmpPtr++)
+				{
+					if(memcmp(&tmp[tmpPtr],xvid_vers[ver].type,strlen(xvid_vers[ver].type)) == 0)
+					{
+						strDivx5Version = xvid_vers[ver].format;
+						break;
+					}
+					else if(memcmp(&tmp[tmpPtr],"XviD0",5) == 0)
+					{
+						char buildNo[15];
+						memset(buildNo,0,sizeof(buildNo));
+						for(int a=0; a<8; a++)
+						{
+							int c = (int )((&tmp[tmpPtr])[a]) & 0x000000ff;
+							if(!__isascii(c))
+							{
+								break;
+							}
+							buildNo[a] = c;
+						}
+						strDivxVerEtc = "XviD (";
 						strDivxVerEtc += buildNo;
 						strDivxVerEtc += ")";
 						break;
@@ -1367,7 +1635,7 @@ static const char *SCMPX_CLASS = "SCMPX";
 void PlayWinamp0()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{
@@ -1379,7 +1647,7 @@ void PlayWinamp0()
 void PlayWinamp(HWND hWnd,char *szPlayFile)
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 	if(hwndWinamp)
 	{
 		//Winamp専用再生コマンド
@@ -1419,7 +1687,7 @@ void PlayWinamp(HWND hWnd,char *szPlayFile)
 void PauseWinamp()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{
@@ -1441,7 +1709,7 @@ void PauseWinamp()
 void StopWinamp()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 	DWORD dwID = WINAMP_BUTTON4;
 
 	if(hwndWinamp == NULL)
@@ -1459,7 +1727,7 @@ void StopWinamp()
 void Rew5Winamp()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{
@@ -1471,7 +1739,7 @@ void Rew5Winamp()
 void Ffw5Winamp()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{
@@ -1487,7 +1755,7 @@ int IsPlayingWinamp(char *szFileName)
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
 //	HWND hwndWinampPE = FindWindow(WINAMP_PE_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	// If it returns 1, it is playing. if it returns 3, it is paused, if it returns 0, it is not playing.
 	if(hwndWinamp)
@@ -1532,7 +1800,7 @@ int IsPlayingWinamp(char *szFileName)
 int GetPosWinamp()
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{
@@ -1546,7 +1814,7 @@ int GetPosWinamp()
 void SetPosWinamp(int pos)
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
-	DWORD dwRet;
+	DWORD_PTR dwRet;
 
 	if(hwndWinamp)
 	{

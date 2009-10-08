@@ -246,7 +246,8 @@ void CShellExt::DrawControl(HWND hWnd,LPDRAWITEMSTRUCT lpInfo)
 				(lpInfo->rcItem).bottom-(lpInfo->rcItem).top,
 				hMemDC,0,0,SRCAND);
 			//右
-			for(int i=(lpInfo->rcItem).top; i<(lpInfo->rcItem).bottom; i++)
+			int i;
+			for(i=(lpInfo->rcItem).top; i<(lpInfo->rcItem).bottom; i++)
 				SetPixel(lpInfo->hDC,(lpInfo->rcItem).right-1,i,GetSysColor(COLOR_3DHILIGHT));
 			//下
 			for(i=(lpInfo->rcItem).left; i<(lpInfo->rcItem).right; i++)
@@ -276,8 +277,9 @@ void CShellExt::DrawControl(HWND hWnd,LPDRAWITEMSTRUCT lpInfo)
 				(lpInfo->rcItem).right-(lpInfo->rcItem).left,
 				(lpInfo->rcItem).bottom-(lpInfo->rcItem).top,
 				hMemDC,0,0,SRCAND);
+			int i;
 			//右
-			for(int i=(lpInfo->rcItem).top; i<(lpInfo->rcItem).bottom; i++)
+			for(i=(lpInfo->rcItem).top; i<(lpInfo->rcItem).bottom; i++)
 				SetPixel(lpInfo->hDC,(lpInfo->rcItem).right-1,i,GetSysColor(COLOR_3DSHADOW));
 			//下
 			for(i=(lpInfo->rcItem).left; i<(lpInfo->rcItem).right; i++)
@@ -310,7 +312,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLong(hDlg,DWL_USER);
+	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
 	int id3maxline = 30;
 
@@ -324,7 +326,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 		{
 			lpcs = (LPCSHELLEXT )((LPPROPSHEETPAGE )lParam)->lParam;
 			lpcs->m_hwndId3v1 = hDlg;
-			SetWindowLong(hDlg, DWL_USER, (DWORD )lpcs);
+			SetWindowLongPtr(hDlg, DWLP_USER, (LONG_PTR)lpcs);
 			lpcs->m_bId3v1Apply = FALSE;
 
 			//Ver情報
@@ -760,7 +762,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 					//「このファイルは「読み込み専用」です」
 					AfxMessageBox(IDS_PAGE_THIS_READONLY,MB_ICONINFORMATION);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 				lpcs->m_bId3v1Apply = FALSE;
@@ -816,7 +818,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 						//システムエラーを表示
 						errMessageBox(hDlg,dwRet);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 
@@ -830,7 +832,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				DispInfo(hDlg,lpcs);
 				lpcs->m_bId3v1Apply = FALSE;
 
-				SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_NOERROR);
+				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
 				
 				//シェルに変更を通知
 				SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,lpcs->m_strSelectFile,NULL);

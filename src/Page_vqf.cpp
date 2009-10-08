@@ -153,7 +153,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	TRACE(_T("PageDlgProc_avi(mes=%08x,wParam=%08x,lParam=%08x\r\n"),uMessage,wParam,lParam);
-	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLong(hDlg,DWL_USER);
+	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
 
 	switch(uMessage){
@@ -161,7 +161,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		{
 			lpcs = (LPCSHELLEXT )((LPPROPSHEETPAGE )lParam)->lParam;
 			lpcs->m_hwndPage = hDlg;
-			SetWindowLong(hDlg, DWL_USER, (DWORD )lpcs);
+			SetWindowLongPtr(hDlg, DWLP_USER, (LONG_PTR)lpcs);
 			lpcs->m_bApply = FALSE;
 
 			//Ver情報
@@ -303,7 +303,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					//「このファイルは「読み込み専用」です」
 					AfxMessageBox(IDS_PAGE_THIS_READONLY,MB_ICONINFORMATION);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 				lpcs->m_bApply = FALSE;
@@ -349,7 +349,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 						//システムエラーを表示
 						errMessageBox(hDlg,dwRet);
 					//適用ボタンは引き続き有効
-					SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_INVALID);
+					SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_INVALID);
 					break;
 				}
 
@@ -362,7 +362,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				//情報を表示
 				DispInfo(hDlg,lpcs);
 
-				SetWindowLong(hDlg,DWL_MSGRESULT,PSNRET_NOERROR);
+				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
 				
 				//シェルに変更を通知
 				SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_PATH,lpcs->m_strSelectFile,NULL);

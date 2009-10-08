@@ -125,6 +125,14 @@ static char* PrintAudioInfo(
 	    
 	    if (pAacConfig != NULL && aacConfigLength >= 2) {
 	      type = (pAacConfig[0] >> 3) & 0x1f;
+			//check sbr. irresponsibly adapted from gpac.tar.gz/gpac/src/media_tools/av_parsers.c
+			if(type==2)
+				if(aacConfigLength>1)
+					if(pAacConfig[1]&0x2){
+						if(aacConfigLength>5&&(pAacConfig[3]&0x3<<9)+(pAacConfig[4]<<1)+(pAacConfig[5]>>7)==0x2b7&&pAacConfig[5]&0x2)type=5;
+					}else{
+						if(aacConfigLength>4&&(pAacConfig[2]<<3)+(pAacConfig[3]>>5)==0x2b7&&pAacConfig[4]&0x80)type=5;
+					}
 	      if (type == 0 || /* type == 5 || */ type == 10 || type == 11 ||
 		  type == 18 || type >= 28) {
 		typeName = "MPEG-4 Unknown Profile";

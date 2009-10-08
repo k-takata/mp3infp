@@ -131,7 +131,7 @@ void regGetDword(HKEY hRootKey,char* szSubkey,char* szEntry,DWORD* pdwVal,DWORD 
 	DWORD	dwType;
 	*pdwVal = dwDefault;
 	
-	if(RegOpenKeyEx(HKEY_CURRENT_USER,szSubkey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
+	if(RegOpenKeyEx(hRootKey,szSubkey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
 	{
 		dwSize = 4;
 		if(RegQueryValueEx(hKey,szEntry,NULL,&dwType,(LPBYTE)pdwVal,&dwSize) == ERROR_SUCCESS)

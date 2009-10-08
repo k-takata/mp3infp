@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54a for Windows2000/XP
+Ver.2.54f5 for Windows98/Me/2000/XP/2003
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ※※※mp3infpはフリーソフトウェアです※※※
@@ -61,11 +61,71 @@ Windowsのシェルエクステンション機能を利用して、エクスプローラにタグ参照・
 
 ■ライセンス
 LGPLライセンスを採用しています (v2.54～)
+※verpatchはパブリックドメインです
+
+注
+2.54b以降のライセンスは、GPL-compatibleにする以外は、
+T-Matsuo氏によって決定されるものとします。
+(http://www.gnu.org/licenses/gpl-faq.html#Considerに関する特記事項)
 
 ■ソースコード・SDK
 http://win32lab.com/ で配布しています
 
 ■改変履歴
+2.54f5 (091008)
+clean.batを再作成
+今度こそx86と干渉しないようになった
+インストーラーにfallbackを付けた
+cplのmanifestを修正
+
+2.54f4 (beta for x64) (091005)
+インストーラーを修正
+・x86とx64を分離(x86 on x64ではmp3infp.cplはインストールされません)
+・x64ではSetRegView 64/DisableX64FSRedirection/$PROGRAMFILES64を使用し、x86と干渉しないように(?)
+
+2.54f3 (alpha for x64) (091002)
+1. x86では正式版に移行
+2. インストール時のcaseを考慮(ごく一部、caseが考慮される環境があるため)
+3. x64ではx64\Japanese.lngを展開するようにした
+4. x64ではRegDLL "mp3infp.dll"をやめて!system "regsvr32 /s mp3infp.dll"に
+5. x64にはverpatchを適用しないようバッチファイルを修正
+
+2.54f2 alpha (090904)
+1. regGetDword()内のtypoを修正
+2. 隠し設定: HKEY_CURRENT_USER\Software\win32lab.com\mp3infp\UseExperimentalSupportにDWORDで非0を書き込むと、
+   ttaのid3タグ、takのapeタグが使用可能になります。ただし当然ながらタグ以外は取得できません。玄人向け。
+3. インストーラーを修正。x64版とx86版は統合されました。x64OSの場合x86版のmp3infp_regist.exeは解凍されません。
+
+2.54f1 prealpha (090903)
+1. libvorvisを1.2.3に、liboggを1.1.4に更新
+2. Highly experimental version for x64.
+   Many changes in solution file, so not compatible with before; VC6 workspace and clean.bat have been removed.
+
+2.54f (090726)
+Win9x用パッチを確実に当てるようバッチファイルとともに同梱
+
+2.54e (090701)
+1. FMP4 (FFmpeg MPEG4)を識別するようにした
+2. 更新履歴の整備
+3. ソースからbyteswapおよびgetoptを除去
+
+2.54d1 "Diff" (090701)
+1. MMCommand.cppにおいて"Xvid MPEG4"とtypoしていたのを"XviD MPEG4"に修正
+2. XviDのバージョン取得に対応した(ロジックは2.54dに含まれていたがtypoのために働いていなかった)
+
+2.54d (090627)
+1. http://xmm.sourceforge.net/DivX5-6_Xvid_Bitstream_version.php
+およびsinkuhadouken_090613.zip/codecs.iniをマージ。
+判別コーデック数とDivXバージョンが増加。
+2. YVYUがYVUYとtypoされていたのを修正
+3. 未知のDivXのビルド番号を取得する時、「DivX5」ではなく「DivX」で比較していたバグを修正
+
+2.54c (090626)
+
+2.54b (090616)
+1. AAC HEが正しく表示されるようになった
+2. VC2008でコンパイル可能になった。※unicows.libをlibcmt.libに結合するか、リンカ入力に追加するかすること
+
 2007/08/26  Ver.2.54a
 ・条件によって文字エンコードの変更が反映されない問題を修正[BBS8825]
 ・DivX Ver.6.5に対応[BBS9011]

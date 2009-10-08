@@ -27,7 +27,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_LAME(HWND hDlg, UINT uMessage, WPARAM w
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLong(hDlg,DWL_USER);
+	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
 
 	switch(uMessage){
@@ -37,7 +37,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_LAME(HWND hDlg, UINT uMessage, WPARAM w
 	case WM_INITDIALOG:
 		{
 			lpcs = (LPCSHELLEXT )((LPPROPSHEETPAGE )lParam)->lParam;
-			SetWindowLong(hDlg, DWL_USER, (DWORD )lpcs);
+			SetWindowLongPtr(hDlg, DWLP_USER, (LONG_PTR)lpcs);
 			//Verî•ñ
 			SetDlgItemText(hDlg,IDC_STATIC_VER_INFO,SOFT_NAME);
 			//î•ñ‚ğ•\¦
