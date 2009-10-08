@@ -1,0 +1,17 @@
+// VerUpdate AddIn (vua.dll)によって自動更新されます
+// 適当にインクルードしてバージョン情報ダイアログ等から利用してください
+// このバージョン情報はプロジェクト名.rcのバージョン情報と同期しています
+// 作成:2005-01-23 18:27:46
+//
+#define FILE_VER_MAJOR		0
+#define FILE_VER_MINOR		0
+#define FILE_VER_BUILD		1
+#define FILE_VER_PRIVATE	0
+#define FILE_VER_STR		"0.0.1.0"
+#define FILE_VER_STR2		"0.0.1"
+#define PRODUCT_VER_MAJOR	0
+#define PRODUCT_VER_MINOR	0
+#define PRODUCT_VER_BUILD	1
+#define PRODUCT_VER_PRIVATE	0
+#define PRODUCT_VER_STR		"0.0.1.0"
+#define PRODUCT_VER_STR2	"0.0.1"

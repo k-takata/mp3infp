@@ -1,0 +1,371 @@
+# Microsoft Developer Studio Generated Dependency File, included by mp3infp.mak
+
+.\Id3tagv1.cpp : \
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\Id3tagv2.cpp : \
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\Mp3Info.cpp : \
+	".\GlobalCommand.h"\
+	".\Mp3Info.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\RiffSIF.cpp : \
+	".\GlobalCommand.h"\
+	".\RiffSIF.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\RMP.cpp : \
+	".\GlobalCommand.h"\
+	".\RMP.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\Vqf.cpp : \
+	".\GlobalCommand.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\Page_avi.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\Page_mp3_ID3V1.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\Page_mp3_ID3V2.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\Page_mp3_RMP.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\Page_vqf.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\Page_wave.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\GlobalCommand.cpp : \
+	".\Frontend.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\mp3infp.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\mp3infp_ExportFunc.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\RegAccess.cpp : \
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	
+
+.\ShellExt.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IColumnProvider.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IContextMenu.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IPersist.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IPersistFile.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IQueryInfo.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IShellExtInit.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExt_IShellPropSheetExt.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\ShellExtClassFactory.cpp : \
+	".\classID.h"\
+	".\Frontend.h"\
+	".\GlobalCommand.h"\
+	".\Id3tagv1.h"\
+	".\Id3tagv2.h"\
+	".\Mp3Info.h"\
+	".\mp3infp.h"\
+	".\RegAccess.h"\
+	".\RiffSIF.h"\
+	".\RMP.h"\
+	".\ShellExt.h"\
+	".\ShellExtClassFactory.h"\
+	".\Vqf.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\htmlhelp.h"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	"c:\program files\microsoft platform sdk\include\basetsd.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\propidl.h"\
+	"c:\program files\microsoft platform sdk\include\shldisp.h"\
+	"c:\program files\microsoft platform sdk\include\tvout.h"\
+	
+
+.\mp3infp.rc : \
+	".\res\ffw.bmp"\
+	".\res\mp3infp.rc2"\
+	".\res\pause.bmp"\
+	".\res\play.bmp"\
+	".\res\rew.bmp"\
+	".\res\stop.bmp"\
+	

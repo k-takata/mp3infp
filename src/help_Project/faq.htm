@@ -1,0 +1,55 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=x-sjis">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<title>FAQ (よくある質問と回答)</title>
+<STYLE>
+<!--
+	a:hover {color:#FFFFFF; background-color:#7060B0;}
+	-->
+</STYLE>
+</head>
+
+<body bgcolor="#FFFFF7">
+
+<h1><font size="5">FAQ (よくある質問と回答)</font></h1>            
+ 
+<hr> 
+ 
+<p><font color="#000080" size="2"><strong>☆Windows2000でInfoTipやステータスバーに情報が表示されない</strong></font></p> 
+ 
+<p><font size="2"><img border="0" src="expset.png" width="448" height="434"></font></p> 
+ 
+<p><font size="2">エクスプローラのメニューで「ツール」→「フォルダ   
+オプション」→「表示」で、[フォルダとデスクトップの項目の説明をポップアップで表示する。]が有効になっているか確認してください。</font></p> 
+ 
+<p><font color="#000080" size="2"><strong>☆Windows2000でWeb形式のエクスプローラ表示中に、選択しているファイルの情報書き換えができない(エラーが発生する)</strong></font></p> 
+ 
+<p><font size="2">メディアプレイヤーコンポーネントが選択中のファイルを、「他プロセスによる書き込み不可」でオープンしているためです。エクスプローラの表示形式を「ツール(T)」→「フォルダオプション(O)」→「Webの表示      
+- 従来のWindowsフォルダを使う」に設定してください。</font></p>      
+ 
+<p><font size="2">なお、以下のようレジストリを書き換えることで、Web形式表示を維持しつつメディアプレイヤーのエクスプローラでの出現を抑止できます。</font></p>
+
+<p><font size="2"><strong>修正する値</strong></font></p>
+
+<p><font size="2">HKEY_CLASSES_ROOT\Directory\shellex\ExtShellFolderViews\{5984FFE0-28D4-11CF-AE66-08002B2E1262}\<br>
+PersistMoniker = file://%webdir%\folder.htt</font></p> 
+ 
+<p><font size="2">HKEY_CLASSES_ROOT\CLSID\{e17d4fc0-5564-11d1-83f2-00a0c90dc849}\shellex\ExtShellFolderViews\{5984FFE0-28D4-11CF-AE66-08002B2E1262}\<br>
+PersistMoniker = file://%webdir%\fsresult.htt</font></p> 
+ 
+<p><font size="2"><strong>修正後</strong></font></p> 
+ 
+<p><font size="2">HKEY_CLASSES_ROOT\Directory\shellex\ExtShellFolderViews\{5984FFE0-28D4-11CF-AE66-08002B2E1262}\<br>
+PersistMoniker = file://%webdir%\<b>default</b>.htt</font></p> 
+ 
+<p><font size="2">HKEY_CLASSES_ROOT\CLSID\{e17d4fc0-5564-11d1-83f2-00a0c90dc849}\shellex\ExtShellFolderViews\{5984FFE0-28D4-11CF-AE66-08002B2E1262}\<br>
+PersistMoniker = file://%webdir%\<b>default</b>.htt</font></p> 
+ 
+<hr> 
+ 
+<p><font size="2">Copyright(C)1998-2007 T-Matsuo</font></p> 
+</body> 
+</html>

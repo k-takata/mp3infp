@@ -1,0 +1,31 @@
+; mp3infp.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "mp3infp"
+DESCRIPTION  'mp3infp Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+    DllCanUnloadNow private
+    DllGetClassObject private
+	DllRegisterServer private
+	DllUnregisterServer private
+
+	mp3infp_GetVer
+	mp3infp_ViewProp
+	mp3infp_ViewPropEx
+	mp3infp_Load
+	mp3infp_GetType
+	mp3infp_GetValue
+	mp3infp_mp3_GetTagType
+	mp3infp_SetConf
+	mp3infp_SetValue
+	mp3infp_Save
+	mp3infp_mp3_MakeId3v1
+	mp3infp_mp3_DelId3v1
+	mp3infp_mp3_MakeId3v2
+	mp3infp_mp3_DelId3v2
+	mp3infp_mp3_MakeRMP
+	mp3infp_mp3_DelRMP
+	mp3infp_mp3_MakeApeTag
+	mp3infp_mp3_DelApeTag
+	

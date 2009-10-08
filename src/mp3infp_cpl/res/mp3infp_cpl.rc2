@@ -1,0 +1,61 @@
+//
+// MP3INFP_CPL.RC2 - このリソースは Microsoft Visual C++ で直接編集することはできません
+//
+
+#ifdef APSTUDIO_INVOKED
+	#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 独自にリソースを編集する場合はこの場所に追加してください...
+#ifndef _MAC
+
+#include "../ver.h"	//バージョン情報
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION MAJOR_REL,MINOR_REL,BUILD_NUM,0
+ PRODUCTVERSION MAJOR_REL,MINOR_REL,BUILD_NUM,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "win32lab.com\0"
+            VALUE "FileDescription", "mp3infp_cpl DLL\0"
+            VALUE "FileVersion", BUILD_STR
+            VALUE "InternalName", "mp3infp_cpl\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2005 T-Matsuo\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mp3infp.cpl\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "mp3infp.cpl ﾀﾞｲﾅﾐｯｸ ﾘﾝｸ ﾗｲﾌﾞﾗﾘ\0"
+            VALUE "ProductVersion", PRODUCT_STR
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////

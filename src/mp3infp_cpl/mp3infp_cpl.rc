@@ -1,0 +1,575 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mp3infp_cpl.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 英語 (ｱﾒﾘｶ) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DUMY DIALOG DISCARDABLE  0, 0, 187, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "???????"
+FONT 8, "Tahoma"
+BEGIN
+END
+
+IDD_SETUP_WMA DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "WMA/WMV/ASF"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,48,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,41,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_WAVE DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "WAV"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,48,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,42,11
+    GROUPBOX        "The codec name acquisition method",IDC_STATIC,6,129,214,
+                    55,NOT WS_VISIBLE | WS_GROUP
+    CONTROL         "mp3infp internal -> Windows API (Hi speed)",
+                    IDC_RADIO_AVICODEC_FIND1,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE | WS_GROUP,12,139,185,10
+    CONTROL         "Windows API -> mp3infp internal (Low speed)",
+                    IDC_RADIO_AVICODEC_FIND2,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE,12,149,185,10
+    CONTROL         "mp3infp internal (Hi speed)",IDC_RADIO_AVICODEC_FIND3,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,12,159,186,
+                    10
+    CONTROL         "Windows API (Lo speed)",IDC_RADIO_AVICODEC_FIND4,"Button",
+                    BS_AUTORADIOBUTTON | NOT WS_VISIBLE,12,169,178,10
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_VQF DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "TwinVQ(VQF)"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,48,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,52,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_OGG DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "Ogg"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,45,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,44,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_MP3 DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "mp3"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",-1,6,7,214,58
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,17,37,11
+    CONTROL         "RiffSIF tab hidden when it is not RiffSIF form.",
+                    IDC_CHECK_RIFF_DISABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,54,17,160,11
+    CONTROL         "A SCMPX extension genre is used.",
+                    IDC_CHECK_ID3V1SCMPX_GENRE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,27,146,11
+    LTEXT           """Encoder && Settings (ID3V2)"" Default value",
+                    IDC_STATIC_SOFT_DEFAULT,12,38,187,8
+    EDITTEXT        IDC_EDIT_RIFF_SOFT,13,47,188,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+    GROUPBOX        "InfoTip",-1,6,68,214,63
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,116,177,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,76,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,78,44,11
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,142,49,11
+    GROUPBOX        "Column",-1,6,133,214,23
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,118,22,8
+END
+
+IDD_SETUP_M3U DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "M3U"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",-1,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,58,11
+    GROUPBOX        "InfoTip",-1,6,33,214,23
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,42,54,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_AVI DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "AVI"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,48,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,58,11
+    GROUPBOX        "The codec name acquisition method",IDC_STATIC,6,129,214,
+                    55,NOT WS_VISIBLE | WS_GROUP
+    CONTROL         "mp3infp internal -> Windows API (Hi speed)",
+                    IDC_RADIO_AVICODEC_FIND1,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE | WS_GROUP,12,139,185,10
+    CONTROL         "Windows API -> mp3infp internal (Low speed)",
+                    IDC_RADIO_AVICODEC_FIND2,"Button",BS_AUTORADIOBUTTON | 
+                    NOT WS_VISIBLE,12,149,185,10
+    CONTROL         "mp3infp internal (Hi speed)",IDC_RADIO_AVICODEC_FIND3,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,12,159,186,
+                    10
+    CONTROL         "Windows API (Lo speed)",IDC_RADIO_AVICODEC_FIND4,"Button",
+                    BS_AUTORADIOBUTTON | NOT WS_VISIBLE,12,169,178,10
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP_APE DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "Ape"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,55,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,56,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+IDD_SETUP DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "General"
+FONT 8, "Tahoma"
+BEGIN
+    CONTROL         "Time-stamp is not changed at the time of renewal of a tag.",
+                    IDC_SAVE_TIMESTAMP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    6,7,196,10
+    CONTROL         "The drive which does not use mp3infp is specified.",
+                    IDC_CHECK_SELECT_DRIVE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,6,19,169,10
+    CONTROL         "FDD",IDC_CHECK_DISABLE_FDD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,31,73,10
+    CONTROL         "Removable",IDC_CHECK_DISABLE_REMOVABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,94,31,90,10
+    CONTROL         "CD-ROM",IDC_CHECK_DISABLE_CDROM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,43,74,10
+    CONTROL         "Network",IDC_CHECK_DISABLE_NETWORK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,94,43,87,10
+    CONTROL         """mp3infp"" is added to a context menu.",
+                    IDC_CHECK_ADD_CONTEXTMENU,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,6,55,155,10
+    LTEXT           "Language pack",IDC_STATIC,7,71,164,8
+    COMBOBOX        IDC_COMBO_LANGUAGE,7,81,150,93,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Explorer Column extension",IDC_STATIC,6,114,214,27
+    CONTROL         "8.3 file name / file size(bytes) / extension",
+                    IDC_CHECK_COLUMN_8_3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,126,151,10
+    LTEXT           "2222",IDC_STATIC_INFO,6,145,214,36,SS_SUNKEN
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+    LTEXT           "Translation",IDC_STATIC_TRANSLATE,7,97,36,8
+    LTEXT           "Static",IDC_STATIC_TRANSLATOR,47,97,173,8
+END
+
+IDD_SETUP_MP4 DIALOG DISCARDABLE  0, 0, 227, 207
+STYLE WS_POPUP | WS_CAPTION
+CAPTION "mp4/m4a/m4v/3gp/3g2"
+FONT 8, "Tahoma"
+BEGIN
+    GROUPBOX        "Property",IDC_STATIC,6,7,214,23
+    CONTROL         "Enable",IDC_CHECK_PROP_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,16,44,11
+    GROUPBOX        "InfoTip",IDC_STATIC,6,33,214,63
+    CONTROL         "Enable",IDC_CHECK_INFOTIP_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,43,55,11
+    EDITTEXT        IDC_EDIT_INFOTIP_INFO,91,41,123,39,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
+                    WS_VSCROLL
+    LTEXT           "Format",IDC_STATIC_INFOTIP_FORMAT,12,83,22,8
+    EDITTEXT        IDC_EDIT_INFOTIP_FORMAT,37,81,177,12,ES_AUTOHSCROLL
+    GROUPBOX        "Column",IDC_STATIC,6,101,214,24
+    CONTROL         "Enable",IDC_COLUMN_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,110,56,11
+    PUSHBUTTON      "Help",IDC_HELPVIEW,6,186,33,14
+    PUSHBUTTON      "Default",IDC_DEFAULT,160,186,60,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "res\\mp3infp.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_HAND2               CURSOR  DISCARDABLE     "res\\HAND.CUR"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+CONTROL_PANEL_RESOURCE_ID 24      MOVEABLE PURE   "res\\mp3infp.cpl.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHANKU (and there are no spaces, such as JUNK CHANKU which pushes in LIST-INFO)."
+    IDS_CAN_NOT_CREATE_TEMP_FILE 
+                            "Do not make Temp file.The availability of a disk may be insufficient."
+    IDS_CAN_NOT_HTMLHELP_OPEN 
+                            "In order to peruse a help, it is necessary to install 5 or more Microsoft Internet Explorer 5."
+    IDS_COMCTL32_INFO       "It needs to be installed for execution of mp3infp beyond Comctl32.dll Ver.5.80.\n\nhttp://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp"
+    IDS_CPL_CAPTION         "mp3infp setup"
+    IDS_CPL_INFO            "A setup of mp3infp of operation is performed."
+    IDS_CPL_NAME            "mp3infp"
+    IDS_INFOTIP_MAXLINE_OVER "(It omits after 30 line)"
+    IDS_INFOTIP_NOTINFO     "(No tag information)"
+    IDS_LANG_VER_ERROR      "Since the version is old, this language pack cannot be used.\n->%s"
+    IDS_LANGUAGE_NAME       "English"
+    IDS_LANGUAGE_VER        "248"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEF_INFOTIP_MP3_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nTag version:\\t\\TYPE\\nFormat:\\t\\AFMT\\n"
+    IDS_DEF_INFOTIP_OGG_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nFormat:\\t\\AFMT\\n"
+    IDS_DEF_INFOTIP_VQF_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nFormat:\\t\\AFMT\\n"
+    IDS_DEF_INFOTIP_WAVE_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nFormat:\\t\\AFMT\\n"
+    IDS_DEF_INFOTIP_WMA_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nAudio:\\t\\AFMT\\nVideo:\\t\\VFMT\\n"
+    IDS_DEF_INFOTIP_APE_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nFormat:\\t\\AFMT\\n"
+    IDS_DEF_INFOTIP_AVI_FORMAT 
+                            "Title:\\t\\ISBJ\\nArtist:\\t\\IART\\nalbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nDate:\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nTime:\\t\\TIME\\nAudio:\\t\\AFMT\\nVideo:\\t\\VFMT\\n"
+    IDS_DEF_INFOTIP_MP4_FORMAT 
+                            "Title:\\t\\INAM\\nArtist:\\t\\IART\\nAlbum:\\t\\IPRD\\nGenre:\\t\\IGNR\\nYear:\\t\\t\\ICRD\\nComment:\\t\\ICMT\\nSize:\\t\\SIZK KB\\nAudio:\\t\\AFMT\\nVideo:\\t\\VFMT\\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEF_INFOTIP_INF_APE_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= format\r\n\\TIME\t= play time\r\n\\\\  = \\\r\n\\INAM = title\r\n\\IART = artist\r\n\\IPRD = album\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n\\TRACK = track#\r\n\r\n"
+    IDS_DEF_INFOTIP_INF_AVI_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= audio format\r\n\\VFMT\t= video format\r\n\\TIME\t= time\r\n\\\\  = \\\r\n\\ISBJ = title\r\n\\IART = artist\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n\\ICOP = copy right\r\n\\ISFT = software\r\n\\ISRC = source\r\n\\IENG = engineer\r\n\\AVIV = AVI version\r\n"
+    IDS_DEF_INFOTIP_INF_MP3_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\r\n\\AFMT\t= format\r\n\\TIME\t= play time\r\n\\TYPE\t= tag version\r\n\\\\  = \\\r\n(ID3v1/v2/APE/RiffSIF)\r\n\\INAM = title\r\n\\IART = artist\r\n\\IPRD = album\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n(ID3v2/RiffSIF)\r\n\\ICOP = copy right\r\n\\ISFT = software\r\n(RiffSIF)\r\n\\ISRC = source\r\n\\IENG = engineer\r\n(ID3v2)\r\n\\COMP = composer\r\n\\OART = Orig.artist\r\n\\IURL = URL\r\n\\IENC = The person who encoded\r\n(ID3v1/v2/APE)\r\n\\TRACK = track#\r\n\r\n"
+    IDS_DEF_INFOTIP_INF_OGG_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= format\r\n\\TIME\t= play time\r\n\\\\  = \\\r\n\\INAM = title\r\n\\IART = artist\r\n\\IPRD = album\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n\\TRACK = track#\r\n\r\n"
+    IDS_DEF_INFOTIP_INF_VQF_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= format\r\n\\TIME\t= play time\r\n\\\\  = \\\r\n\\INAM = title\r\n\\IART = artist\r\n\\ICMT = comment\r\n\\ICOP = copy right\r\n\\FILE = save file\r\n\r\n"
+    IDS_DEF_INFOTIP_INF_WAVE_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file sizez(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= format\r\n\\TIME\t= play time\r\n\\\\  = \\\r\n\\INAM = title\r\n\\IART = artist\r\n\\IPRD = album\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n\\ICOP = copy right\r\n\\ISFT = software\r\n\\ISRC = source\r\n\\IENG = engineer\r\n\r\n"
+    IDS_DEF_INFOTIP_INF_WMA_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\\AFMT\t= audio format\r\n\\VFMT\t= video format\r\n\\TIME\t= time\r\n\\\\  = \\\r\n\\INAM = title\r\n\\TRACK = track#\r\n\\IART = artist\r\n\\IPRD = album\r\n\\ICMT = comment\r\n\\ICRD = date\r\n\\IGNR = genre\r\n\\ICOP = copy right\r\n\\URL1 = URL(Album)\r\n\\URL2 = URL(Promotion)"
+    IDS_DEF_INFOTIP_INF_MP4_FORMAT 
+                            "\\n   = (new line)\r\n\\t   = tab\r\n\\FILE\t= file name\r\n\\FEXT\t= extension\r\n\\PATH\t= path\r\n\\SIZ1\t= file size(bytes)\r\n\\SIZK\t= file size(KB)\r\n\\SIZM\t= file size(MB)\r\n\\AFMT\t= audio format\r\n\\VFMT\t= video format\\\\  = \\\r\n\\INAM = title\r\n\\IART = artist\r\n\\IPRD = album\r\n\\IGRP = group\r\n\\COMPOSER = composer\r\n\\IGNR = genre\r\n\\TRACK = track#\r\n\\DISC = disc#\r\n\\BPM = tempo(BPM)\r\n\\ICRD = year\r\n\\COMPILATION = compilation\r\n\\ICMT = comment\r\n\\TOOL = tool"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_MEMERROR            "Memory allocation error "
+    IDS_NO_AUDIO_STREAM     "None"
+    IDS_NO_VIDEO_STREAM     "None"
+    IDS_OGG_BAD_CHAR        "The prohibition character is contained in the field name. The character sequence which can be used for \n field name is as follows.\n\n[Space]\n!""#$%&'()*+,-.\n0123456789:;<>?\na～z\nA～Z"
+    IDS_OVER_2G             "The file exceeding 2 G bytes cannot be treated."
+    IDS_PAGE_BROKEN         "A file has not been updated correctly.\n"
+    IDS_PAGE_CAN_NOT_OPEN   "File not open."
+    IDS_PAGE_MP3APE_DEL_APE "APE Tag is deleted. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3APE_MAKE_APE 
+                            "APE Tag is created. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3ID3V1_CAN_NOT_DEL 
+                            "ID3TAG is not eliminable because of present RMP form. (It is the specification of mp3infp)"
+    IDS_PAGE_MP3ID3V1_COUNT "%dchars [max=%d (at ID3v1)]"
+    IDS_PAGE_MP3ID3V1_COUNT_OVER "%dchars(over %dchars) [max=%d (at ID3v1)]"
+    IDS_PAGE_MP3ID3V1_DEL_ID3TAG 
+                            "ID3v1 TAG is deleted. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3ID3V1_MAKE_ID3TAG 
+                            "ID3v1 TAG is created. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3ID3V1_NOTFOUND_ID3 "Not found ID3v1 tag."
+    IDS_PAGE_MP3ID3V11_COUNT "%dchars [max=%d (at ID3v1.1)]"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLUMN_8_3          "* 8.3 file name"
+    IDS_COLUMN_ALBUM        "* Album"
+    IDS_COLUMN_ARTIST       "* Artist"
+    IDS_COLUMN_AUDIO_FORMAT "* Audio format"
+    IDS_COLUMN_AVIVER       "* AVI version"
+    IDS_COLUMN_COMMENT      "* Comment"
+    IDS_COLUMN_DATE         "* Date"
+    IDS_COLUMN_DESC_8_3     "[mp3infp]8.3 file name"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLUMN_DESC_ALBUM   "[mp3infp]Album"
+    IDS_COLUMN_DESC_ARTIST  "[mp3infp]Artist"
+    IDS_COLUMN_DESC_AUDIO_FORMAT "[mp3infp]Audio format"
+    IDS_COLUMN_DESC_AVIVER  "[mp3infp]AVI Version"
+    IDS_COLUMN_DESC_COMMENT "[mp3infp]Comment"
+    IDS_COLUMN_DESC_DATE    "[mp3infp]Date"
+    IDS_COLUMN_DESC_EXTENSION "[mp3infp]Extension"
+    IDS_COLUMN_DESC_GENRE   "[mp3infp]Genre"
+    IDS_COLUMN_DESC_SIZE    "[mp3infp]Size(Bytes)"
+    IDS_COLUMN_DESC_TAGTYPE "[mp3infp]mp3 TAG Version"
+    IDS_COLUMN_DESC_TIME    "[mp3infp]Time"
+    IDS_COLUMN_DESC_TITLE   "[mp3infp]Title"
+    IDS_COLUMN_DESC_TRACK   "[mp3infp]Track"
+    IDS_COLUMN_DESC_VIDEO_FORMAT "[mp3infp]Video format"
+    IDS_COLUMN_EXTENSION    "* Extension"
+    IDS_COLUMN_GENRE        "* Genre"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLUMN_SIZE         "* Size (bytes)"
+    IDS_COLUMN_TAGTYPE      "* mp3 tag version"
+    IDS_COLUMN_TIME         "* Time"
+    IDS_COLUMN_TITLE        "* Title"
+    IDS_COLUMN_TRACK        "* Track"
+    IDS_COLUMN_VIDEO_FORMAT "* Video format"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PAGE_MP3ID3V11_COUNT_OVER 
+                            "%dchars(over %dchars) [max=%d (at ID3v1.1)]"
+    IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE 
+                            "ID3v2 TAG cannot be created because of present RMP form. Please delete Riff SIF."
+    IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE_APE 
+                            "APE Tag cannot be created because of present RMP form. Please delete Riff SIF."
+    IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE2 
+                            "RiffSIF (RMP form) and ID 3v2 cannot live together. Is RiffSIF removed after copying the contents of \nRiffSIF? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3ID3V2_CANNOT_WRITE 
+                            "Information has not been updated. It is write-protected in whether the file is locked."
+    IDS_PAGE_MP3ID3V2_DEL_ID3TAG 
+                            "ID3v2 TAG is deleted. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3ID3V2_MAKE_ID3TAG 
+                            "ID3v2 TAG is created. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3RIFF_BROKEN_RIFF "Do not read RIFF."
+    IDS_PAGE_MP3RIFF_CAN_NOT_MAKE 
+                            "Since there is ID3v2 TAG, it is not convertible for RMP form."
+    IDS_PAGE_MP3RIFF_CAN_NOT_MAKE_APE 
+                            "Since there is APE Tag, it is not convertible for RMP form."
+    IDS_PAGE_MP3RIFF_CAN_NOT_MAKE2 
+                            "ID 3v2 and RiffSIF (RMP form) cannot live together. After copying the contents of \nID 3v2, is ID3v2 TAG removed? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3RIFF_CONV_MP3 
+                            "It changes into MP3 form. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_MP3RIFF_CONV_RMP 
+                            "It changes into RMP form. Is it all right? \n (this change is reflected immediately)"
+    IDS_PAGE_THIS_READONLY  "This file is Read Only."
+    IDS_PAGE_VQF_BROKEN     "A file was not able to be read correctly."
+    IDS_PLEASE_TAG_NAME     "Please input a field name."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RELOAD_CPL          "Change of a language pack is effective after the reboot of a dialog. \n (change of the language pack of a shell extension is reflected after the reboot of Explorer)"
+    IDS_TRANSLATOR          "T-Matsuo (http://win32lab.com/)"
+    IDS_UNKNOWN             "Unknown"
+    IDS_VIEW_PROP           "A property is displayed (mp3infp)."
+END
+
+#endif    // 英語 (ｱﾒﾘｶ) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif //_WIN32
+#include "res\mp3infp_cpl.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

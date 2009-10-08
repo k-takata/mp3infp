@@ -1,0 +1,13 @@
+# Microsoft Developer Studio Generated Dependency File, included by mp3infp_regist.mak
+
+.\mp3infp_regist.cpp : \
+	"..\classID.h"\
+	"..\RegAccess.h"\
+	
+
+.\StdAfx.cpp : \
+	".\StdAfx.h"\
+	"c:\program files\microsoft platform sdk\include\basetsd.h"\
+	"c:\program files\microsoft platform sdk\include\guiddef.h"\
+	"c:\program files\microsoft platform sdk\include\tvout.h"\
+	

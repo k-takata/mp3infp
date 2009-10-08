@@ -1,0 +1,186 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=x-sjis">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<title>.WAV</title>
+<STYLE>
+<!--
+	a:hover {color:#FFFFFF; background-color:#7060B0;}
+	-->
+</STYLE>
+<base target="_self">
+</head>
+
+<body bgcolor="#FFFFF7">
+
+<h1>対応フォーマットの説明</h1>
+<hr>
+
+<h1 id="mp4"><span style="font-weight: 400"><font size="5">MP4</font></span></h1>
+
+<p><font size="2">MP4ファイルの情報を表示・編集できます。&nbsp;</font></p>     
+ 
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.mp4</li>
+  <li>.m4a</li>
+  <li>.m4v</li>
+  <li>.3gp</li>
+  <li>.3g2</li>
+</ul>
+   
+<hr>
+
+<h1 id="mp3"><span style="font-weight: 400"><font size="5">MPEG1 Audio Layer1-3 (mp3)</font></span></h1>
+
+<p><font size="2">mp3infpではID3v1/ID3v2/RiffSIFの３種類のタグフォーマットに対応しています。ID3v1がもっとも基本的なタグフォーマットですが、文字数制限が厳しくなっています。(半角で30文字)</font></p>     
+   
+<p><font size="2">ID3v2/RiffSIFでは文字数制限がありません。ご使用のプレイヤーの対応状況に応じて使い分けるとよいでしょう。</font></p>     
+   
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.mp1</li>
+  <li>.mp2</li>
+  <li>.mp3</li>
+  <li>.rmp</li>
+</ul>
+   
+<h3><span style="font-weight: 400; font-style: italic">プロパティ拡張</span></h3>  
+   
+<p><font size="2"><strong>[Encode]<br>  
+・</strong>ISO-8859-1<br>
+文字列をSJIS形式のまま保存します。ほとんどのmp3プレイヤーで正しく表示可能です。</font></p>  
+<p><font size="2">・UTF-16(Unicode)<br>
+文字列をUTF-16形式に変換して保存します。</font></p>  
+<p><font size="2">・UTF-8(Unicode)<br>
+文字列をUTF-8形式に変換して保存します。ID3v2.4でのみ選択可能です。</font></p>  
+<p><font size="2">※UTF-8/UTF-16形式ではUnicode ID3v2非対応プレイヤー(Winamp   
+5/WMP 6.4/WMP 9)で読み込めなくなります。また、ID3v2に対応していないプレイヤー(SCMPX        
+1.5.1等)では曲頭にノイズが入ったり再生ができないことがあります。(UnicodeのBOMがmp3フレームヘッダと誤認識されるためです)</font></p>  
+<p><font size="2"><strong>[Unsync]<br>  
+</strong>・mp3ファイルの互換性を高めるためにID3v2タグを非同期化します。ID3v2非対応プレイヤーでID3v2をmp3フレームと誤認識するのを防ぐことができます。</font></p>  
+<p><font size="2">※非同期化とは11111111b 111xxxxxbというパターン(UnicodeのBOMや埋め込み画像でよく現れる)が、mp3のフレームヘッダと誤認識されないようにエンコード(→11111111b 00000000b 111xxxxxb)することをいいます。<br>   
+<br>
+※もしID3v2に非対応のプレイヤーで非同期化をしていないID3v2(特にUnicode文字列or画像)入りmp3を再生すると、mp3を認識できなかったり曲の頭にノイズが入ります。<br>
+<br>
+※逆に非同期化したID3v2をiTunes for Windowsに読み込ませると、タグが正常に表示されなくなってしまいます。アートワークも壊れているかのように見えてしまいます。(実際には壊れていません)</font></p>     
+<p><font size="2"><strong>[ID3v1]<br>  
+</strong>・v1.0/1.1形式に対応しています。<br>  
+・(トラックを入力するとVer.1.1形式となります)</font></p>  
+<p><font size="2"><strong>[ID3v2]<br>  
+</strong>・v2.2/v2.3/v2.4形式に対応しています。</font></p>  
+<p><font size="2"><strong>[RIFF MP3 SI Field]<br>       
+</strong></font><a target="top" href="http://yurichan.nerv.org/"><font size="2">YunaSoft</font></a><font size="2">さんのSexyFont           
+Plug-in 2000 v7.52Jに添付の「RIFF MP3 技術情報(1998-04-09版)」に準拠しています。<br>          
+同文書で規定されているフィールドのうち、INAM、IART、IPRD、ICMT、ICRD、IGNR、ICOP、IENG、ISRC、ISFT、IID3の読み書きができます。</font></p>  
+<p><font size="2"><strong>[ID3TAG文字数ガイド]</strong><br>  
+<img src="prop_mp3_2.png" width="425" height="54"><br>  
+ID3TAG v1の過酷な文字数制限内で情報をやりくりするための機能です。文字数オーバーした場合はその旨表示します。</font></p>      
+<p><font size="2"><strong>[WinAMP control]<br>   
+</strong>Winampコントロールの「再生」ボタンは、Winampが未起動のときは右クリックメニューの「開く」をエミュレートします。「再生」ボタンが機能しないときは、Winampの関連づけを再設定してみて下さい。<br>  
+既にWinampが起動しているときはWinampに直接指示を送ります。SCMPXの「再生」「停止」コマンドにも対応しています。</font></p>  
+   
+<h3><span style="font-weight: 400"><i>InfoTip</i></span></h3>    
+  
+<p><font size="2">タグ情報を複数持つ場合の優先順はID3v2&gt;Ape&gt;RiffSIF&gt;ID3v1です。</font></p>    
+  
+<hr>    
+  
+<h1 id="wav"><span style="font-weight: 400"><font size="5">WAV形式</font></span></h1>  
+
+<p><font size="2">WavファイルのRiffSIFフォーマットに対応しています。</font></p>  
+
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.wav</li>
+</ul>
+   
+<hr>
+
+<h1 id="avi"><span style="font-weight: 400"><font size="5">AVI</font></span></h1>
+
+<p><font size="2">AVI1.0(VfW)/2.0(OpenDML)フォーマットに対応しています。</font></p>
+
+<p><font size="2">※AVI2.0(OpenDML)のファイルでRIFF-AVIXチャンクがあり、JUNKチャンクにLIST-INFOを押し込めない場合、書き換えはできません。</font></p>
+
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.avi</li>
+</ul>
+   
+<hr> 
+ 
+<h1 id="wma"><span style="font-weight: 400"><font size="5">Windows Media (.WMA/WMV/ASF)</font></span></h1>
+
+<p><font size="2">Windows Mediaフォーマット形式ファイルの情報を表示・編集できます。</font></p>
+
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.wma</li>
+  <li>.wmv</li>
+  <li>.asf</li>
+</ul>
+   
+<hr> 
+ 
+<h1 id="m3u"><span style="font-weight: 400"><font size="5">Winampプレイリスト (.M3U)</font></span></h1>    
+
+<p><font size="2">Winampで利用可能なプレイリストファイルを表示・編集できます。</font></p>    
+
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.m3u</li>
+</ul>
+   
+<hr>
+
+<h1 id="ogg"><span style="font-weight: 400"><font size="5">OggVorbis</font></span></h1>
+
+<p><font size="2">OggVorbis形式ファイルの情報を表示・編集できます。&nbsp;&nbsp;</font></p> 
+ 
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.ogg</li>
+</ul>
+   
+<hr>
+
+<h1 id="ape"><span style="font-weight: 400"><font size="5">Monkey's Audio (.ape)</font></span></h1>
+
+<p><font size="2">Monkey's Audio形式ファイルの情報を表示・編集できます。&nbsp;&nbsp;</font></p>     
+ 
+<p><font size="2">ID3TAG1.1とAPE Tag v1/v2の読み込みに対応しています。     
+保存・更新はAPE Tag v2形式で行われます。（ID3TAGは取り除かれます)</font></p>    
+ 
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.ape</li>
+</ul>
+   
+<hr> 
+ 
+<h1 id="vqf"><span style="font-weight: 400"><font size="5">TwinVQ</font></span></h1>
+
+<p><font size="2">TwinVQ形式ファイルの情報を表示・編集できます。</font></p>
+
+<h3><span style="font-weight: 400; font-style: italic">対応拡張子</span></h3>     
+   
+<ul>
+  <li>.vqf</li>
+</ul>
+   
+<hr> 
+ 
+<p><font size="2">Copyright(C)1998-2007 T-Matsuo</font></p>   
+</body>   
+</html>

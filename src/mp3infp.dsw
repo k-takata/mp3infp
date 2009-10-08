@@ -1,0 +1,104 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# åxçê: Ç±ÇÃ‹∞∏ΩÕﬂ∞Ω Ãß≤Ÿ Çï“èWÇ‹ÇΩÇÕçÌèúÇµÇ»Ç¢Ç≈Ç≠ÇæÇ≥Ç¢!
+
+###############################################################################
+
+Project: "lang_japanese"=.\lang_japanese\lang_japanese.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libmissing60"=".\lib\mpeg4ip-1.4.1\lib\gnu\libmissing60.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "libmp4v2"=".\lib\mpeg4ip-1.4.1\lib\mp4v2\libmp4v260.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mp3infp"=.\mp3infp.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name mp3infp_cpl
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mp3infp_regist
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name lang_japanese
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmissing60
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libmp4v2
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "mp3infp_cpl"=.\mp3infp_cpl\mp3infp_cpl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mp3infp_regist"=.\mp3infp_regist\mp3infp_regist.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
