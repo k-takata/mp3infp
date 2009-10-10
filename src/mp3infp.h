@@ -23,9 +23,9 @@
 #include "ver.h"
 #pragma data_seg()
 
-#include <Ntquery.h>
+//#include <Ntquery.h>
 #include <htmlhelp.h>
-#include <atlbase.h>
+//#include <atlbase.h>
 
 #include "Resource.h"
 //#include "Frontend.h"

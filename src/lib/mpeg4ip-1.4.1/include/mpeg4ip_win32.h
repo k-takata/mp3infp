@@ -24,7 +24,7 @@
 #define HAVE_IN_PORT_T
 #define HAVE_SOCKLEN_T
 #define NEED_SDL_VIDEO_IN_MAIN_THREAD
-#define _WIN32_WINNT 0x0400
+//#define _WIN32_WINNT 0x0400
 #define _WINSOCKAPI_
 #define _INTEGRAL_MAX_BITS 64
 #include <windows.h>
@@ -120,6 +120,7 @@ int gettimeofday(struct timeval *t, void *);
 extern "C" {
 #endif
 char *strcasestr(const char *haystack, const char *needle);
+int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer);
 #ifdef __cplusplus
 }
 #endif

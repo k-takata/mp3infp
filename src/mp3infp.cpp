@@ -4,8 +4,10 @@
 #include "stdafx.h"
 #include "mp3infp.h"
 
+#ifdef _DEBUG
 #include "psapi.h"
 #pragma comment(lib,"psapi.lib")
+#endif
 
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "htmlhelp.lib")
@@ -130,7 +132,7 @@ int CMp3infpApp::ExitInstance()
 
 CMp3infpApp theApp;
 
-int AFX_MANAGE_STATE(AfxGetStaticModuleState());
+//AFX_MANAGE_STATE(AfxGetStaticModuleState());
 //
 // Global variables
 //

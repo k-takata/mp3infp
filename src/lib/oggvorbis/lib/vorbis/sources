@@ -1,0 +1,46 @@
+TARGETNAME=vorbis
+
+TARGETPATH=obj
+
+TARGETTYPE=LIBRARY
+
+TARGETLIBS=
+
+INCLUDES=$(DDK_INC_PATH);..\..\include
+
+SOURCES=\
+	analysis.c \
+	barkmel.c \
+	bitrate.c \
+	block.c \
+	codebook.c \
+	envelope.c \
+	floor0.c \
+	floor1.c \
+	info.c \
+	lookup.c \
+	lpc.c \
+	lsp.c \
+	mapping0.c \
+	mdct.c \
+	psy.c \
+#	psytune.c \
+	registry.c \
+	res0.c \
+	sharedbook.c \
+	smallft.c \
+	synthesis.c \
+#	tone.c \
+	vorbisenc.c \
+	vorbisfile.c \
+	window.c 
+
+C_DEFINES=/DOV_EXCLUDE_STATIC_CALLBACKS
+
+386_STDCALL=0
+
+COMPILER_WX_SWITCH=
+
+#USE_MFC=1
+#USE_MFCUNICODE=1
+USE_MSVCRT=1

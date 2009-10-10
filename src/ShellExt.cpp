@@ -3,8 +3,10 @@
 
 #include "GetFloppyType.h"
 
+#ifdef _DEBUG
 #include "psapi.h"
 #pragma comment(lib,"psapi.lib")
+#endif
 
 void DlgContextMenu(HWND hDlg,LONG lParam,BOOL isEnable)
 {
@@ -29,8 +31,8 @@ void DlgContextMenu(HWND hDlg,LONG lParam,BOOL isEnable)
 	}
 	TrackPopupMenu(hPopup,
 					TPM_LEFTALIGN|TPM_LEFTBUTTON|TPM_VERTICAL,
-					LOWORD(lParam),// X
-					HIWORD(lParam),// Y
+					GET_X_LPARAM(lParam),
+					GET_Y_LPARAM(lParam),
 					0,
 					hDlg,
 					0);

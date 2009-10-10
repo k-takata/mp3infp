@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 #include "mp3infp.h"
 
+#ifdef _DEBUG
 #include "psapi.h"
 #pragma comment(lib,"psapi.lib")
+#endif
 
 CShellExtClassFactory::CShellExtClassFactory()
 {

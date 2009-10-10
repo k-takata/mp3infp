@@ -1,0 +1,24 @@
+TARGETNAME=mpeg4ip-gnu
+
+TARGETPATH=obj
+
+TARGETTYPE=LIBRARY
+
+TARGETLIBS=
+
+INCLUDES=$(DDK_INC_PATH);..\..\include
+
+SOURCES=\
+	need_for_win32.c \
+	strcasestr.c \
+	strsep.c 
+
+C_DEFINES=
+
+386_STDCALL=0
+
+COMPILER_WX_SWITCH=
+
+#USE_MFC=1
+#USE_MFCUNICODE=1
+USE_MSVCRT=1

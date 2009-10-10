@@ -1,0 +1,130 @@
+TARGETNAME=mp3infp
+TARGETEXT=dll
+
+TARGETPATH=obj
+
+TARGETTYPE=DYNLINK
+
+TARGETLIBS=\
+	$(SDK_LIB_PATH)\kernel32.lib \
+	$(SDK_LIB_PATH)\user32.lib \
+	$(SDK_LIB_PATH)\gdi32.lib \
+	$(SDK_LIB_PATH)\advapi32.lib \
+	$(SDK_LIB_PATH)\shell32.lib \
+	$(SDK_LIB_PATH)\comctl32.lib \
+	$(SDK_LIB_PATH)\ole32.lib \
+	$(SDK_LIB_PATH)\oleaut32.lib \
+	$(SDK_LIB_PATH)\version.lib \
+	$(SDK_LIB_PATH)\winmm.lib \
+	$(SDK_LIB_PATH)\msacm32.lib \
+	$(SDK_LIB_PATH)\vfw32.lib \
+	$(SDK_LIB_PATH)\htmlhelp.lib \
+	$(SDK_LIB_PATH)\uuid.lib \
+	$(SDK_LIB_PATH)\ws2_32.lib \
+	$(SDK_LIB_PATH)\oldnames.lib \
+	..\lib\mpeg4ip-1.4.1\lib\mp4v2\obj$(BUILD_ALT_DIR)\*\mpeg4ip.lib \
+	..\lib\mpeg4ip-1.4.1\lib\gnu\obj$(BUILD_ALT_DIR)\*\mpeg4ip-gnu.lib \
+	..\lib\oggvorbis\lib\ogg\obj$(BUILD_ALT_DIR)\*\ogg.lib \
+	..\lib\oggvorbis\lib\vorbis\obj$(BUILD_ALT_DIR)\*\vorbis.lib \
+
+INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH); \
+	..\lib\mpeg4ip-1.4.1\include; \
+	..\lib\mpeg4ip-1.4.1\lib\mp4v2; \
+	..\lib\oggvorbis\include
+
+DLLDEF=..\mp3infp.def
+
+SOURCES=\
+	..\DlgWriteProgress.cpp \
+	..\Dlg_ogg_exttag.cpp \
+	..\GetFloppyType.cpp \
+	..\GlobalCommand.cpp \
+	..\Id3tagv1.cpp \
+	..\Id3tagv2.cpp \
+	..\Info_MonkeysAudio.cpp \
+	..\M3u.cpp \
+	..\MMCommand.cpp \
+	..\Mp3Info.cpp \
+	..\mp3infp.cpp \
+	..\mp3infp_ExportFunc.cpp \
+	..\Page_ape.cpp \
+	..\Page_avi.cpp \
+	..\Page_m3u.cpp \
+	..\Page_mp3_APE.cpp \
+	..\Page_mp3_ID3V1.cpp \
+	..\Page_mp3_ID3V2.cpp \
+	..\Page_mp3_LAME.cpp \
+	..\Page_mp3_RMP.cpp \
+	..\Page_mp4.cpp \
+	..\Page_ogg.cpp \
+	..\Page_vqf.cpp \
+	..\Page_wave.cpp \
+	..\Page_wma.cpp \
+	..\RegAccess.cpp \
+	..\RiffSIF.cpp \
+	..\RMP.cpp \
+	..\ShellExt.cpp \
+	..\ShellExtClassFactory.cpp \
+	..\ShellExt_IColumnProvider.cpp \
+	..\ShellExt_IContextMenu.cpp \
+	..\ShellExt_IPersist.cpp \
+	..\ShellExt_IPersistFile.cpp \
+	..\ShellExt_IQueryInfo.cpp \
+	..\ShellExt_IShellExtInit.cpp \
+	..\ShellExt_IShellPropSheetExt.cpp \
+	..\StdAfx.cpp \
+	..\Tag_Ape.cpp \
+	..\Tag_Mp4.cpp \
+	..\Tag_Ogg.cpp \
+	..\Tag_OpenDML.cpp \
+	..\Tag_Wma.cpp \
+	..\Vqf.cpp \
+	..\w2kstub.cpp \
+	..\mp3infp.rc
+
+#BUILD_ALLOW_COMPILER_WARNINGS=1
+COMPILER_WX_SWITCH=
+
+386_STDCALL=0
+
+ISOLATION_AWARE_ENABLED=1
+
+C_DEFINES=/D_MBCS /DOV_EXCLUDE_STATIC_CALLBACKS
+#USER_C_FLAGS=/D_MBCS
+
+USE_MFC=1
+#USE_MFCUNICODE=1
+
+#USE_NATIVE_EH=1
+USE_RTTI=1
+
+#USE_ATL=1
+
+USE_STL=1
+#STL_VER=70
+STL_VER=60
+
+#LINKER_FLAGS=/FORCE:MULTIPLE
+#LINKER_WX_SWITCH=
+
+
+#_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WIN2K)
+
+
+
+
+# Win2k build
+!if $(_NT_TARGET_VERSION) == $(_NT_TARGET_VERSION_WIN2K)
+MFC_LIB_PATH=$(SDK_LIB_PATH)
+!ifdef USE_MFCUNICODE
+MFC_LIBS=$(MFC_LIB_PATH)\mfcs42u.lib $(MFC_LIB_PATH)\mfc42u.lib
+!else
+MFC_LIBS=$(MFC_LIB_PATH)\mfcs42.lib $(MFC_LIB_PATH)\mfc42.lib
+!endif
+!endif
+
+!if $(AMD64) || $(IA64)
+DLLBASE=0x6005d500000
+!else
+DLLBASE=0x5d500000
+!endif
