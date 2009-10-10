@@ -676,13 +676,14 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					
 					//シェルに変更を通知
 					SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,lpcs->m_strSelectFile,NULL);
-				//他の形式タブを更新
-				if(lpcs->m_hwndId3v1)
-					PostMessage(lpcs->m_hwndId3v1,WM_USER+1,0,0);
-				if(lpcs->m_hwndMp3Ape)
-					PostMessage(lpcs->m_hwndMp3Ape,WM_USER+1,0,0);
-				if(lpcs->m_hwndRiffSIF)
-					PostMessage(lpcs->m_hwndRiffSIF,WM_USER+1,0,0);
+					
+					//他の形式タブを更新
+					if(lpcs->m_hwndId3v1)
+						PostMessage(lpcs->m_hwndId3v1,WM_USER+1,0,0);
+					if(lpcs->m_hwndMp3Ape)
+						PostMessage(lpcs->m_hwndMp3Ape,WM_USER+1,0,0);
+					if(lpcs->m_hwndRiffSIF)
+						PostMessage(lpcs->m_hwndRiffSIF,WM_USER+1,0,0);
 				}
 			}
 			break;
@@ -735,12 +736,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				}*/
 				DWORD dwRet = lpcs->m_Rmp3.DelTag(hDlg,lpcs->m_strSelectFile);
 				
-				//タイムスタンプを復元
-				if(lpcs->m_bSaveTimeStamp)
-				{
-					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
-				}
-				
 				// Winampを再開
 /*				if(nowPlaying)
 				{
@@ -776,6 +771,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					errMessageBox(hDlg,dwRet);
 					break;
 				}
+				//タイムスタンプを復元
+				if(lpcs->m_bSaveTimeStamp)
+				{
+					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
+				}
+				
 				lpcs->m_Id3tagv2.SetTitle(strTitle);
 				lpcs->m_Id3tagv2.SetArtist(strArtist);
 				lpcs->m_Id3tagv2.SetAlbum(strAlbum);
