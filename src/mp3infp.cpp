@@ -90,7 +90,7 @@ BOOL CMp3infpApp::InitInstance()
 	strLanguage += ".lng";
 	
 	strLangPath += strLanguage;
-	theApp.m_hResource = LoadLibrary(strLangPath);
+	theApp.m_hResource = LoadLibraryEx(strLangPath,0,LOAD_LIBRARY_AS_DATAFILE);
 	if(theApp.m_hResource)
 	{
 		AfxSetResourceHandle(theApp.m_hResource);

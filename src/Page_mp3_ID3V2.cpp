@@ -735,12 +735,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				}*/
 				DWORD dwRet = lpcs->m_Rmp3.DelTag(hDlg,lpcs->m_strSelectFile);
 				
-				//タイムスタンプを復元
-				if(lpcs->m_bSaveTimeStamp)
-				{
-					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
-				}
-				
 				// Winampを再開
 /*				if(nowPlaying)
 				{
@@ -776,6 +770,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					errMessageBox(hDlg,dwRet);
 					break;
 				}
+
+				//タイムスタンプを復元
+				if(lpcs->m_bSaveTimeStamp)
+				{
+					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
+				}
+
 				lpcs->m_Id3tagv2.SetTitle(strTitle);
 				lpcs->m_Id3tagv2.SetArtist(strArtist);
 				lpcs->m_Id3tagv2.SetAlbum(strAlbum);

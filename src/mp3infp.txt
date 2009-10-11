@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54f5 for Windows98/Me/2000/XP/2003
+Ver.2.54g for Windows98/Me/2000/XP/2003
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ※※※mp3infpはフリーソフトウェアです※※※
@@ -72,6 +72,11 @@ T-Matsuo氏によって決定されるものとします。
 http://win32lab.com/ で配布しています
 
 ■改変履歴
+2.54g (091010)
+1.ID3v2とRIFF SIFの相互変換時、タイムスタンプを変更しない設定にしていた場合でも、タイムスタンプ修正のタイミングを誤っていたため変更されてしまっていたバグを修正
+2.実験的サポートがttaについては常時有効になっていたバグを修正
+3.japanese.lngのリンカオプションに/NOENTRYを付加。言語ファイル読み取りもLoadLibraryからLoadLibraryExに
+
 2.54f5 (091008)
 clean.batを再作成
 今度こそx86と干渉しないようになった

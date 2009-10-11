@@ -251,7 +251,7 @@ LONG CMp3infp_cplApp::LoadLanguage()
 	OutputDebugString(strLangPath);
 	OutputDebugString("\n");
 #endif
-	m_pThis->m_hResource = LoadLibrary(strLangPath);
+	m_pThis->m_hResource = LoadLibraryEx(strLangPath,0,LOAD_LIBRARY_AS_DATAFILE);
 	if(m_pThis->m_hResource)
 	{
 		AfxSetResourceHandle(theApp.m_hResource);

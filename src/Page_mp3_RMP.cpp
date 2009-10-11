@@ -484,6 +484,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 					errMessageBox(hDlg,dwRet);
 					break;
 				}
+
+				//タイムスタンプを復元
+				if(lpcs->m_bSaveTimeStamp)
+				{
+					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
+				}
+
 				lpcs->m_Rmp3.SetNAM(strTitle);
 				lpcs->m_Rmp3.SetART(strArtist);
 				lpcs->m_Rmp3.SetPRD(strAlbum);
@@ -508,11 +515,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 				NMHDR nmhdr;
 				nmhdr.code = PSN_APPLY;
 				PageDlgProc_mp3_RMP(hDlg,WM_NOTIFY,0,(LPARAM )&nmhdr);
-				//タイムスタンプを復元
-				if(lpcs->m_bSaveTimeStamp)
-				{
-					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
-				}
 			}
 			break;
 		case IDC_BUTTON_PLAY:

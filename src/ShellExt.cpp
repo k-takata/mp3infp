@@ -390,10 +390,6 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
 		}
 		return MP3;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".tta") == 0)
-	{
-		return MP3;
-	}
 	/*else*/ if(stricmp(getExtName(szFileName),".wav") == 0)
 	{
 		return WAVE;
