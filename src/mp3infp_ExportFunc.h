@@ -3,6 +3,9 @@
 
 /*
 ¡‰ü•Ï—š—ğ
+2009-10-12 Ver.2.54g/u1
+Unicode”ÅAPI‚ğ’Ç‰Á
+
 2006-07-17 Ver.2.53
 mp3infp_GetType()/mp3infp_GetValue()/mp3infp_SetValue()‚Åmp4‚É‘Î‰
 

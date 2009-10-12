@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "mp3infp.h"
+#include "GlobalCommand.h"
 
 extern "C" DWORD __stdcall mp3infp_GetVer()
 {
@@ -154,6 +155,13 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 	return ret;
 }
 
+#ifdef UNICODE
+extern "C" int __stdcall mp3infp_ViewPropExA(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2)
+{
+	return mp3infp_ViewPropExW(hWnd,CString(szFileName),dwPage,modeless,param1,param2);
+}
+#endif
+
 extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,LPCTSTR szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -194,6 +202,13 @@ extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,LPCTSTR szFileName,DWORD d
 	return PropertySheet(&psh);
 }
 
+#ifdef UNICODE
+extern "C" BOOL __stdcall mp3infp_ViewPropA(HWND hWnd,const char *szFileName,DWORD dwPage)
+{
+	return mp3infp_ViewPropW(hWnd,CString(szFileName),dwPage);
+}
+#endif
+
 extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,LPCTSTR szFileName,DWORD dwPage)
 {
 	SHELLEXECUTEINFO execinfo;
@@ -224,6 +239,13 @@ extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,LPCTSTR szFileName,DWORD dw
 
 	return ShellExecuteEx(&execinfo);
 }
+
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_LoadA(HWND hWnd,const char *szFileName)
+{
+	return mp3infp_LoadW(hWnd,CString(szFileName));
+}
+#endif
 
 extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,LPCTSTR szFileName)
 {
@@ -362,6 +384,23 @@ extern "C" DWORD __stdcall mp3infp_GetType()
 	}
 	return MP3INFP_FILE_UNKNOWN;
 }
+
+#ifdef UNICODE
+extern "C" BOOL __stdcall mp3infp_GetValueA(const char *szValueName,char **buf)
+{
+	static char strRet[512];
+	TCHAR *tbuf;
+	
+	*buf = NULL;
+	BOOL ret = mp3infp_GetValueW(CString(szValueName), &tbuf);
+	if (ret) {
+		strRet[0] = '\0';
+		TstrToData(tbuf, -1, strRet, sizeof(strRet), DTC_CODE_ANSI);
+		*buf = strRet;	// QQQ strRetのサイズをオーバーするときは値を返せない
+	}
+	return ret;
+}
+#endif
 
 extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 {
@@ -1282,6 +1321,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_GetTagType()
 	return dwRet;
 }
 
+#ifdef UNICODE
+extern "C" BOOL __stdcall mp3infp_SetConfA(char *tag,char *value)
+{
+	return mp3infp_SetConfW((LPTSTR)(LPCTSTR)CString(tag),(LPTSTR)(LPCTSTR)CString(value));
+}
+#endif
+
 extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
 {
 	if(lstrcmp(tag,_T("wave_CodecFind")) == 0)
@@ -1367,6 +1413,13 @@ extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
 
 	return FALSE;
 }
+
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_SetValueA(const char *szValueName,const char *buf)
+{
+	return mp3infp_SetValueW(CString(szValueName),CString(buf));
+}
+#endif
 
 extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 {
@@ -1854,6 +1907,13 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 	return ERROR_SUCCESS;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_SaveA(const char *szFileName)
+{
+	return mp3infp_SaveW(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -1959,6 +2019,13 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 	return dwRet;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1A(const char *szFileName)
+{
+	return mp3infp_mp3_MakeId3v1W(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2027,6 +2094,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 	return dwRet;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1A(const char *szFileName)
+{
+	return mp3infp_mp3_DelId3v1W(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2094,6 +2168,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 	return ERROR_SUCCESS;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2A(const char *szFileName)
+{
+	return mp3infp_mp3_MakeId3v2W(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2158,6 +2239,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(LPCTSTR szFileName)
 	return ERROR_SUCCESS;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2A(const char *szFileName)
+{
+	return mp3infp_mp3_DelId3v2W(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2215,6 +2303,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(LPCTSTR szFileName)
 	
 	return ERROR_SUCCESS;
 }
+
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_MakeRMPA(const char *szFileName)
+{
+	return mp3infp_mp3_MakeRMPW(CString(szFileName));
+}
+#endif
 
 extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 {
@@ -2283,6 +2378,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 	return ERROR_SUCCESS;
 }
 
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_DelRMPA(const char *szFileName)
+{
+	return mp3infp_mp3_DelRMPW(CString(szFileName));
+}
+#endif
+
 extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -2340,6 +2442,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(LPCTSTR szFileName)
 	
 	return ERROR_SUCCESS;
 }
+
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTagA(const char *szFileName)
+{
+	return mp3infp_mp3_MakeApeTagW(CString(szFileName));
+}
+#endif
 
 extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(LPCTSTR szFileName)
 {
@@ -2404,6 +2513,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(LPCTSTR szFileName)
 	
 	return ERROR_SUCCESS;
 }
+
+#ifdef UNICODE
+extern "C" DWORD __stdcall mp3infp_mp3_DelApeTagA(const char *szFileName)
+{
+	return mp3infp_mp3_DelApeTagW(CString(szFileName));
+}
+#endif
 
 extern "C" DWORD __stdcall mp3infp_mp3_DelApeTag(LPCTSTR szFileName)
 {

@@ -1,0 +1,97 @@
+mp3infp シェル拡張型タグエディタ (mp3インフピー)
+Ver.2.54g/u1 for Windows2000/XP/Vista
+Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
+
+■概要
+T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が改良した mp3infp 2.54g を
+K.Takata が Unicode ビルドした改造版です。
+OS は、Win2k 以降の対応となっています。
+
+  ※※ 注 意 ※※
+
+本バージョンは十分にテストが行われていません。エクスプローラがクラッシュ
+するなどの致命的な不具合が残っている可能性があります。
+それ以外にも、ファイル内容が破壊されるなどの可能性があります。
+タグを編集する際には必ずファイルのバックアップを取った上で保存してください。
+またタグを編集した後は、複数のソフトでファイルが正しく読めるか確認することを
+お薦めします。
+
+
+■制限事項
+現時点で判明している制限事項は以下の通りです。
+・Unicode ファイル名の MP4 ファイルを扱えない。
+・mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
+
+※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
+
+
+■公開関数
+今までの mp3infp_～ という関数に加え、mp3infp_～A、mp3infp_～W という
+関数をエクスポートしています。（mp3infp_unicode.def 参照）
+
+例)
+  mp3infp_Load      従来通りの ANSI 版関数
+  mp3infp_LoadA     mp3infp_Load と同一
+  mp3infp_LoadW     Unicode 版関数
+
+※ 動作未確認です。
+
+
+■ビルド方法
+本バージョンは Windows Driver Kit (WDK) 6001.18002 を使ってビルドされています。
+現在は WDK 7.0.0 (7600.16385.0) が無料で入手できます。
+（WDK には MFC も含まれています。）
+
+http://www.microsoft.com/downloads/details.aspx?FamilyID=2105564e-1a9a-4bf4-8d74-ec5b52da3d00&displaylang=en
+
+WDK 7.0.0 をインストールしている場合、スタートメニューから
+
+  Windows Driver Kits
+    WDK 7600.16385.0
+      Build Environments
+        Windows XP
+          x86 Free Build Environment
+
+を選択すると、WinXP (32bit) のリリースビルド用の環境が開きます。
+mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
+実行するとビルドされます。mp3infp.dll は dll ディレクトリの下に
+ディレクトリが作成され、その下に出力されます。
+
+64bit 実行ファイルをビルドするときは、
+
+  Windows Driver Kits
+    WDK 7600.16385.0
+      Build Environments
+        Windows Server 2003
+          x64 Free Build Environment
+
+を選択するとよいでしょう。
+
+※ WDK 7.0.0 では、Win2k 用の実行ファイルはビルドできません。
+   旧バージョンの WDK 6001.18002 が必要です。
+   また、WDK 6001.18002 を使った場合でも、一部の関数を使用すると、
+   Win2k では実行できないファイルができてしまいます。w2kstub.cpp は
+   それを無理やり修正するためのソースです。
+
+※ WDK に含まれている MFC は 6.0 です。（Visual C++ 6.0 と同等）
+   MFC 7.0 からは CString が拡張され、Unicode 化がやりやすくなっている
+   のですが、今回はそれらの機能は使用できないため、ソースが分かりにくく
+   なっている部分があるかもしれません。
+
+
+■改変履歴
+2.54g/u1 (091012)
+・Rem 氏の 2.54g を元に Unicode 化
+・WDK でビルドできるように、sources, dirs ファイルを追加
+・WDK でビルドできるように、リソースファイルなどを一部修正
+・プロパティ画面でビジュアルスタイルが有効になっていなかったのを修正
+・GetDriveFormFactor() に含まれる Win9x 用の処理を Unicode ビルドや x64 ビルド
+  では除外するように修正。
+・mp3infp.dll のベースアドレスを他とぶつかりにくいアドレスに設定
+  (x86: 0x5d500000, x64: 0x6005d500000)
+・Winamp SDK のヘッダファイルを更新 (WA5.55_SDK.exe)
+・Winamp SDK のヘッダファイルを lib 以下に移動
+・インストーラの実行部分を UPX で圧縮するようにスクリプトを修正
+・インストーラのデータを LZMA で圧縮するようにスクリプトを修正
+・使われなくなったファイルを削除 (*.dep, mp3infp_ExportFunc.def)
+

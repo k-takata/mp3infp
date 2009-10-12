@@ -7,14 +7,19 @@
 #include <sys/stat.h>
 #include <io.h>
 
+#ifndef _WIN64
 void __declspec(noreturn) AFXAPI AfxThrowInvalidArgException()
 {
 	THROW(0);
 }
+#endif
 
 extern "C"
 int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 {
+#ifdef _WIN64
+	return _fstati64(fd, buffer);
+#else
 	HANDLE hFile;
 	struct _stat buf;
 	int ret;
@@ -46,11 +51,15 @@ int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 		}
 	}
 	return ret;
+#endif
 }
 
 extern "C"
 int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 {
+#ifdef _WIN64
+	return _fseeki64(stream, offset, whence);
+#else
 	HANDLE hFile;
 	LARGE_INTEGER li;
 	int ret;
@@ -69,4 +78,5 @@ int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 		return -1;
 	}
 	return 0;
+#endif
 }

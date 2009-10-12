@@ -4,14 +4,17 @@
 ; The user can select the language on startup
 
 ;--------------------------------
+!packhdr "$%TEMP%\exehead.tmp" '"upx.exe" -9 "$%TEMP%\exehead.tmp"'
+
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
 !define MUI_VERSION "2.54g" ;Define your own software version here
-OutFile mp3infp254g_x64.exe
+OutFile mp3infp254g_u1_x64.exe
 
 ;Var PRGMMAN_HWND
 
 InstallDir "$PROGRAMFILES64\${MUI_PRODUCT}"
+SetCompressor /SOLID lzma
 XPStyle on
 
 ;--------------------------------

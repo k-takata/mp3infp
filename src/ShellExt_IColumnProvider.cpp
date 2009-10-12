@@ -564,19 +564,18 @@ BOOL CShellExt::GetItemData_vqf(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		return FALSE;
 	}
 
-	DWORD dwSize;
 	int iSize;
 	CString strVal;
 	pvarData->vt = VT_BSTR;
 	switch(pscid->pid){
 	case IDX_TITLE:	//ISBJ songname
-		strVal = m_Vqf.GetField('N','A','M','E',&dwSize);
+		strVal = m_Vqf.GetField('N','A','M','E');
 		break;
 	case IDX_ARTIST:	//IART アーティスト名
-		strVal = m_Vqf.GetField('A','U','T','H',&dwSize);
+		strVal = m_Vqf.GetField('A','U','T','H');
 		break;
 	case IDX_COMMENT:	//ICMT コメント
-		strVal = m_Vqf.GetField('C','O','M','T',&dwSize);
+		strVal = m_Vqf.GetField('C','O','M','T');
 		break;
 	case IDX_AFMT:	//音声フォーマット
 		strVal = m_Vqf.GetFormatString();

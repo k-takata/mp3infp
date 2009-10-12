@@ -1,3 +1,6 @@
+UNICODE=1
+
+
 TARGETNAME=mp3infp
 TARGETEXT=dll
 
@@ -33,8 +36,11 @@ INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH); \
 	..\lib\oggvorbis\include; \
 	..\lib\winamp\include
 
-#DLLDEF=..\mp3infp.def
+!if $(UNICODE)
 DLLDEF=..\mp3infp_unicode.def
+!else
+DLLDEF=..\mp3infp.def
+!endif
 
 SOURCES=\
 	..\DlgWriteProgress.cpp \
@@ -91,12 +97,16 @@ COMPILER_WX_SWITCH=
 
 ISOLATION_AWARE_ENABLED=1
 
-#C_DEFINES=/D_MBCS /DOV_EXCLUDE_STATIC_CALLBACKS
-C_DEFINES=/DOV_EXCLUDE_STATIC_CALLBACKS
-#USER_C_FLAGS=/D_MBCS
 
-#USE_MFC=1
+!if $(UNICODE)
 USE_MFCUNICODE=1
+!else
+USE_MFC=1
+C_DEFINES=/D_MBCS
+!endif
+
+USER_C_FLAGS=/DOV_EXCLUDE_STATIC_CALLBACKS
+
 
 #USE_NATIVE_EH=1
 USE_RTTI=1
@@ -112,7 +122,6 @@ STL_VER=60
 
 
 #_NT_TARGET_VERSION=$(_NT_TARGET_VERSION_WIN2K)
-
 
 
 
