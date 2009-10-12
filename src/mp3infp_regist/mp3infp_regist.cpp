@@ -15,7 +15,7 @@ void regDll()
 	// Systemディレクトリ取得
 	char szSystemDirectory[MAX_PATH];
 	GetSystemDirectory(szSystemDirectory,sizeof(szSystemDirectory));
-	strcat(szSystemDirectory,"\\mp3infp.dll");
+	lstrcat(szSystemDirectory,"\\mp3infp.dll");
 
 	//自己登録DLLを登録
 	OutputDebugString(szSystemDirectory);
@@ -52,20 +52,20 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	char szSystemPath[MAX_PATH];
 	char szDeleteFile[MAX_PATH];
 	GetSystemDirectory(szSystemPath,sizeof(szSystemPath));
-	strcat(szSystemPath,"\\");
+	lstrcat(szSystemPath,"\\");
 	
 	//Systemフォルダのmp3infp.dllを削除
-//	strcpy(szDeleteFile,szSystemPath);
-//	strcat(szDeleteFile,"mp3infp.dll");
+//	lstrcpy(szDeleteFile,szSystemPath);
+//	lstrcat(szDeleteFile,"mp3infp.dll");
 //	DeleteFile(szDeleteFile);
 	//Systemフォルダのmp3infpr.dllを削除
-	strcpy(szDeleteFile,szSystemPath);
-	strcat(szDeleteFile,"mp3infpr.dll");
+	lstrcpy(szDeleteFile,szSystemPath);
+	lstrcat(szDeleteFile,"mp3infpr.dll");
 	DeleteFile(szDeleteFile);
 #if 1	//旧バージョン対策
 	//Systemフォルダのmp3infpw.dllを削除
-	strcpy(szDeleteFile,szSystemPath);
-	strcat(szDeleteFile,"mp3infpw.dll");
+	lstrcpy(szDeleteFile,szSystemPath);
+	lstrcat(szDeleteFile,"mp3infpw.dll");
 	DeleteFile(szDeleteFile);
 #endif
 
