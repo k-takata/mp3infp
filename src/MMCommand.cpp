@@ -2,6 +2,7 @@
 
 #include "wa_ipc.h"
 #include "ipc_pe.h"
+#include "winampcmd.h"
 #include "resource.h"		// ÉÅÉCÉì ÉVÉìÉ{Éã
 #include "GlobalCommand.h"
 
@@ -1641,13 +1642,13 @@ void PlayWinamp(HWND hWnd,LPCTSTR szPlayFile)
 		COPYDATASTRUCT cds;
 
 #ifdef UNICODE
-		cds.dwData = 1100; //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
+		cds.dwData = IPC_PLAYFILEW; //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
 #else
-		cds.dwData = 100; //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
+		cds.dwData = IPC_PLAYFILE;  //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
 #endif
 		cds.lpData = (void*)szPlayFile;
 		cds.cbData = (lstrlen(szPlayFile) + 1) * sizeof(TCHAR);
-		if(!SendMessageTimeout(hwndWinamp, WM_USER, 0, 101,
+		if(!SendMessageTimeout(hwndWinamp, WM_WA_IPC, 0, IPC_DELETE,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet)) // Clears Winamp's internal playlist. 
 			return;
 		if(!SendMessageTimeout(hwndWinamp, WM_COPYDATA, NULL, (LPARAM)&cds,

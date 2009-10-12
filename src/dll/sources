@@ -30,7 +30,8 @@ TARGETLIBS=\
 INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH); \
 	..\lib\mpeg4ip-1.4.1\include; \
 	..\lib\mpeg4ip-1.4.1\lib\mp4v2; \
-	..\lib\oggvorbis\include
+	..\lib\oggvorbis\include; \
+	..\lib\winamp\include
 
 #DLLDEF=..\mp3infp.def
 DLLDEF=..\mp3infp_unicode.def
