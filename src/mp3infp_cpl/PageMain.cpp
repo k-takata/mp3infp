@@ -123,7 +123,7 @@ BOOL CPageMain::OnApply()
 	strLangPath += "language\\";
 	strLangPath += strLanguage;
 	strLangPath += ".lng";
-	HMODULE hResource = LoadLibrary(strLangPath);
+	HMODULE hResource = LoadLibraryEx(strLangPath,0,LOAD_LIBRARY_AS_DATAFILE);
 	if(hResource)
 	{
 		char tmp[20];

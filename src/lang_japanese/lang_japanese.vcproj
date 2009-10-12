@@ -80,6 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				AdditionalOptions="/NOENTRY"
 				OutputFile="$(PlatformName)\$(ConfigurationName)/Japanese.lng"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -179,6 +180,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				AdditionalOptions="/NOENTRY"
 				OutputFile="$(PlatformName)\$(ConfigurationName)/Japanese.lng"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -276,6 +278,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				AdditionalOptions="/NOENTRY"
 				OutputFile="../x86/Japanese.lng"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -372,6 +375,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
+				AdditionalOptions="/NOENTRY"
 				OutputFile="../x64/Japanese.lng"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
