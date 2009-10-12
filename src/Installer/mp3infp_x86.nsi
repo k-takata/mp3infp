@@ -9,7 +9,7 @@
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
 !define MUI_VERSION "2.54g" ;Define your own software version here
-OutFile mp3infp254g_u1_x86.exe
+OutFile mp3infp254g_u2_x86.exe
 
 ;Var PRGMMAN_HWND
 
