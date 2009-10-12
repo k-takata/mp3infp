@@ -62,6 +62,18 @@ BOOL CVqf::SetField(char id1,char id2,char id3,char id4,const unsigned char *szD
 	return TRUE;
 }
 
+BOOL CVqf::SetField(char id1,char id2,char id3,char id4,LPCTSTR szStr)
+{
+	int size;
+	char *buf = TstrToDataAlloc(szStr, lstrlen(szStr), &size, DTC_CODE_ANSI);
+	if (buf == NULL) {
+		return FALSE;
+	}
+	BOOL ret = SetField(id1, id2, id3, id4, (unsigned char *)buf, size);
+	free(buf);
+	return ret;
+}
+
 unsigned char *CVqf::GetField(char id1,char id2,char id3,char id4,DWORD *pdwSize)
 {
 	map<DWORD,CVqfTag>::iterator p = m_fields.find(MakeKey(id1,id2,id3,id4));
@@ -71,6 +83,13 @@ unsigned char *CVqf::GetField(char id1,char id2,char id3,char id4,DWORD *pdwSize
 	}
 	*pdwSize = p->second.GetSize();
 	return p->second.GetData();
+}
+
+CString CVqf::GetField(char id1,char id2,char id3,char id4)
+{
+	DWORD dwSize;
+	unsigned char *data = GetField(id1, id2, id3, id4, &dwSize);
+	return CString((LPSTR)data, dwSize);
 }
 
 DWORD CVqf::GetTotalFieldSize()
@@ -89,7 +108,7 @@ DWORD CVqf::GetTotalFieldSize()
 	return dwSize;
 }
 
-DWORD CVqf::Load(const char *szFileName)
+DWORD CVqf::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
@@ -129,12 +148,12 @@ DWORD CVqf::Load(const char *szFileName)
 		}
 		else
 		{
-			m_strVer = "v2+";
+			m_strVer = _T("v2+");
 		}
 	}
 	else
 	{
-		m_strVer = "v2";
+		m_strVer = _T("v2");
 	}
 	
 	m_bEnable = TRUE;
@@ -236,7 +255,7 @@ DWORD CVqf::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CVqf::Save(HWND hWnd,const char *szFileName)
+DWORD CVqf::Save(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	if(!m_bEnable)
@@ -313,11 +332,11 @@ DWORD CVqf::Save(HWND hWnd,const char *szFileName)
 
 	//==================テンポラリを作成==================
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	char szTempFile[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
+	lstrcpy(szTempPath,szFileName);
 	cutFileName(szTempPath);
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -424,8 +443,8 @@ DWORD CVqf::Save(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 	
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);
@@ -464,11 +483,11 @@ CString CVqf::GetFormatString()
 		return strFormat;
 	}
 
-	strFormat.Format("TwinVQ %s, %dkHz, %dkbps, %s",
+	strFormat.Format(_T("TwinVQ %s, %dkHz, %dkbps, %s"),
 					GetVer(),
 					GetSamplFreq(),
 					GetRate(),
-					(GetStereo()&0x03)?"Stereo":"Mono"
+					(GetStereo()&0x03)?_T("Stereo"):_T("Mono")
 					);
 	return strFormat;
 }
@@ -486,7 +505,7 @@ CString CVqf::GetTimeString()
 	if(dwTime)
 	{
 		dwTime = GetStreamSize()/dwTime;
-		strTime.Format("%ld:%02ld (%ldsec)",
+		strTime.Format(_T("%ld:%02ld (%ldsec)"),
 						dwTime/60,
 						dwTime%60,
 						dwTime);

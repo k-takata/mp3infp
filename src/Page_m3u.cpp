@@ -21,18 +21,18 @@ UINT CALLBACK CShellExt::PageCallback_m3u(HWND hWnd,UINT uMessage,LPPROPSHEETPAG
 
 static void DispInfo(HWND hDlg,CShellExt *lpcs)
 {
-	TRACE("DispInfo()\n");
+	TRACE(_T("DispInfo()\n"));
 
-	TRACE("DispInfo() - Load\n");
+	TRACE(_T("DispInfo() - Load\n"));
 	int i = 0;
 	CString strTmp;
 	CString strEdit;
 	while(lpcs->m_M3u.GetLine(i++,strTmp))
 	{
 		strEdit += strTmp;
-		strEdit += "\r\n";
+		strEdit += _T("\r\n");
 	}
-	SetDlgItemText(hDlg,IDC_EDIT_LIST,(char *)(LPCSTR )strEdit);
+	SetDlgItemText(hDlg,IDC_EDIT_LIST,(LPCTSTR )strEdit);
 
 	if(lpcs->m_bPropAOT)
 	{
@@ -106,7 +106,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		wnd.GetWindowText(strTmp);
 		wnd.Detach();
 
-		char szFile[MAX_PATH];
+		TCHAR szFile[MAX_PATH];
 		//ドロップされたファイル数
 		UINT iFileNum=DragQueryFile((HDROP )wParam,-1,NULL,0);
 		for(UINT i=0; i<iFileNum; i++)
@@ -114,12 +114,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			DragQueryFile((HDROP )wParam,i,szFile,MAX_PATH);
 			switch(lpcs->m_bM3uProp_Fullpath){
 			case 0:	// 相対パスで追加
-				if(strncmp(szFile,lpcs->m_strSelectFile,3) == 0)
+				if(_tcsncmp(szFile,lpcs->m_strSelectFile,3) == 0)
 				{
 					// 相対パスを作る
 					int offset = 0;
-					int m3uLen = strlen(lpcs->m_strSelectFile);
-					int mp3Len = strlen(szFile);
+					int m3uLen = lstrlen(lpcs->m_strSelectFile);
+					int mp3Len = lstrlen(szFile);
 					for(int j=0; j<((m3uLen<mp3Len)?m3uLen:mp3Len); j++)
 					{
 						if(IsDBCSLeadByte(lpcs->m_strSelectFile[j]) && IsDBCSLeadByte(szFile[j]))
@@ -141,16 +141,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 						}
 					}
 					int yenCount = 0;
-					unsigned char *yenPtr = (unsigned char *)&(((LPCTSTR )lpcs->m_strSelectFile)[offset]);
+					LPTSTR yenPtr = (LPTSTR)&(((LPCTSTR )lpcs->m_strSelectFile)[offset]);
 					while(1)
 					{
-						yenPtr = _mbschr((unsigned char *)yenPtr+1,'\\');
+						yenPtr = _tcschr(yenPtr+1,'\\');
 						if(yenPtr == NULL)
 						{
 							break;
 						}
 						yenCount++;
-						strTmp += "..\\";
+						strTmp += _T("..\\");
 					}
 					strTmp += &szFile[offset];
 				}
@@ -165,10 +165,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				break;
 			case 2:	// ファイル名で追加
 			default:
-				strTmp += (char *)getFileName(szFile);
+				strTmp += getFileName(szFile);
 				break;
 			}
-			strTmp += "\r\n";
+			strTmp += _T("\r\n");
 		}
 		DragFinish((HDROP )wParam);
 
@@ -206,7 +206,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			{
 				lpcs->m_bM3uProp_Fullpath = 2;
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"m3u_Prop_Fullpath",(DWORD )lpcs->m_bM3uProp_Fullpath);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("m3u_Prop_Fullpath"),(DWORD )lpcs->m_bM3uProp_Fullpath);
 			break;
 		case IDC_CHECK_AOT:
 			if(IsDlgButtonChecked(hDlg,IDC_CHECK_AOT) == BST_CHECKED)
@@ -221,24 +221,24 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,7",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,7"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		}
 		break;
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -247,10 +247,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 //			break;
 		case PSN_APPLY:
 			//保存
-			TRACE("WM_NOTIFY(PSN_APPLY)\n");
+			TRACE(_T("WM_NOTIFY(PSN_APPLY)\n"));
 			if(SendMessage(GetDlgItem(hDlg,IDC_EDIT_LIST),EM_GETMODIFY,0,0))
 			{
-				TRACE("WM_NOTIFY(PSN_APPLY) - 保存\n");
+				TRACE(_T("WM_NOTIFY(PSN_APPLY) - 保存\n"));
 				//ファイルが書き込み可能か調べる
 				if(GetFileAttributes(lpcs->m_strSelectFile) & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY))
 				{
@@ -270,22 +270,22 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				lpcs->m_M3u.Release();
 				//終端に改行をつける
 				if( (strTmp.GetLength() > 1) &&
-					(strcmp((char *)(LPCSTR )strTmp+(strTmp.GetLength()-2),"\r\n") != 0) )
+					(lstrcmp((LPCTSTR )strTmp+(strTmp.GetLength()-2),_T("\r\n")) != 0) )
 				{
-					strTmp += "\r\n";
+					strTmp += _T("\r\n");
 				}
 				int start = 0;
 				int end = 0;
 				while(1)
 				{
-					end = strTmp.Find("\r\n",start);
+					end = strTmp.Find(_T("\r\n"),start);
 					if(end == -1)
 					{
 						break;
 					}
-					strLine = CString((char *)(LPCSTR )strTmp+start,end-start);
-					lpcs->m_M3u.Add((char *)(LPCSTR )strLine);
-					TRACE("lpcs->m_M3u.Add(%s)\n",strLine);
+					strLine = CString((LPCTSTR )strTmp+start,end-start);
+					lpcs->m_M3u.Add((LPCTSTR )strLine);
+					TRACE(_T("lpcs->m_M3u.Add(%s)\n"),strLine);
 					
 					start = end + 2;
 				}

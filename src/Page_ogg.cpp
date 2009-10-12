@@ -48,7 +48,7 @@ static int editWnd[] =
 class COggExt
 {
 public:
-	COggExt(char *name,char *value)
+	COggExt(LPCTSTR name,LPCTSTR value)
 	{
 		m_strName = name;
 		m_strValue = value;
@@ -58,23 +58,23 @@ public:
 	};
 
 	CString GetName(){return m_strName;};
-	void SetName(char *name){m_strName = name;};
+	void SetName(LPCTSTR name){m_strName = name;};
 	CString GetValue(){return m_strValue;};
-	void SetValue(char *value){m_strValue = value;};
+	void SetValue(LPCTSTR value){m_strValue = value;};
 	CString Get1LineDisp()
 	{
 		//改行があるときは(...)に置き換え
 		CString strValue;
-		int crlf = m_strValue.FindOneOf("\r\n");
+		int crlf = m_strValue.FindOneOf(_T("\r\n"));
 		if(crlf != -1)
 		{
-			strValue = CString(m_strValue,crlf) + "(...)";
+			strValue = CString(m_strValue,crlf) + _T("(...)");
 		}
 		else
 		{
 			strValue = m_strValue;
 		}
-		return m_strName + "=" + strValue;
+		return m_strName + _T("=") + strValue;
 	}
 
 private:
@@ -108,24 +108,24 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	//その他の情報
 	CString strAvg;
 	if(lpcs->m_Ogg.GetBitrateAvg() != -1)
-		strAvg.Format(" %ld(avg)",lpcs->m_Ogg.GetBitrateAvg());
+		strAvg.Format(_T(" %ld(avg)"),lpcs->m_Ogg.GetBitrateAvg());
 	CString strUpper;
 	if(lpcs->m_Ogg.GetBitrateUpper() != -1)
-		strUpper.Format(" %ld(upper)",lpcs->m_Ogg.GetBitrateUpper());
+		strUpper.Format(_T(" %ld(upper)"),lpcs->m_Ogg.GetBitrateUpper());
 	CString strNominal;
 	if(lpcs->m_Ogg.GetBitrateNominal() != -1)
-		strNominal.Format(" %ld(nominal)",lpcs->m_Ogg.GetBitrateNominal());
+		strNominal.Format(_T(" %ld(nominal)"),lpcs->m_Ogg.GetBitrateNominal());
 	CString strLower;
 	if(lpcs->m_Ogg.GetBitrateLower() != -1)
-		strLower.Format(" %ld(lower)",lpcs->m_Ogg.GetBitrateLower());
+		strLower.Format(_T(" %ld(lower)"),lpcs->m_Ogg.GetBitrateLower());
 	CString strWindow;
 	if(lpcs->m_Ogg.GetBitrateWindow() != 0)
-		strWindow.Format(" %ld(window)",lpcs->m_Ogg.GetBitrateWindow());
+		strWindow.Format(_T(" %ld(window)"),lpcs->m_Ogg.GetBitrateWindow());
 
 	CString tmp;
-	tmp.Format( "Version = %ld ,Serial=%ld\n"
-				"Bitrate = %s%s%s%s%s\n"
-				"Vendor = %s\n",
+	tmp.Format( _T("Version = %ld ,Serial=%ld\n")
+				_T("Bitrate = %s%s%s%s%s\n")
+				_T("Vendor = %s\n"),
 				lpcs->m_Ogg.GetVersion(),
 				lpcs->m_Ogg.GetSerial(),
 				strAvg,
@@ -137,25 +137,25 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 				);
 	SetDlgItemText(hDlg,IDC_STATIC_ETC_INFO,tmp);
 
-	lpcs->m_Ogg.GetComment("TITLE",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("TITLE"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_SBJ,tmp);
 
-	lpcs->m_Ogg.GetComment("TRACKNUMBER",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("TRACKNUMBER"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_TRK,tmp);
 	
-	lpcs->m_Ogg.GetComment("ARTIST",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("ARTIST"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_ART,tmp);
 	
-	lpcs->m_Ogg.GetComment("ALBUM",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("ALBUM"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_PRD,tmp);
 	
-	lpcs->m_Ogg.GetComment("DATE",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("DATE"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_CRD,tmp);
 	
-	lpcs->m_Ogg.GetComment("GENRE",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("GENRE"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_GNR,tmp);
 	
-	lpcs->m_Ogg.GetComment("COMMENT",0,tmp);
+	lpcs->m_Ogg.GetComment(_T("COMMENT"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_CMT,tmp);
 
 	lpcs->m_bApply = FALSE;
@@ -211,19 +211,19 @@ static void DispInfoExt(HWND hDlg,CShellExt *lpcs)
 			//標準名は除外
 			if((j == 1) &&
 				(
-				!strName.Compare("TITLE") ||
-				!strName.Compare("TRACKNUMBER") ||
-				!strName.Compare("ARTIST") ||
-				!strName.Compare("ALBUM") ||
-				!strName.Compare("DATE") ||
-				!strName.Compare("GENRE") ||
-				!strName.Compare("COMMENT"))
+				!strName.Compare(_T("TITLE")) ||
+				!strName.Compare(_T("TRACKNUMBER")) ||
+				!strName.Compare(_T("ARTIST")) ||
+				!strName.Compare(_T("ALBUM")) ||
+				!strName.Compare(_T("DATE")) ||
+				!strName.Compare(_T("GENRE")) ||
+				!strName.Compare(_T("COMMENT")))
 				)
 			{
 				continue;
 			}
-//			TRACE("OGG %s %s\n",strName,strValue);
-			COggExt *oggExt = new COggExt((char *)(LPCSTR )strName,(char *)(LPCSTR )strValue);
+//			TRACE(_T("OGG %s %s\n"),strName,strValue);
+			COggExt *oggExt = new COggExt((LPCTSTR )strName,(LPCTSTR )strValue);
 			SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,0,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
 			SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_SETITEMDATA,items,(LPARAM )oggExt);
 			items++;
@@ -265,7 +265,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )""	//空白
+					(LPARAM )(LPCTSTR )_T("")	//空白
 				);
 			for(int i=0; i<256; i++)
 			{
@@ -274,7 +274,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 							GetDlgItem(hDlg,IDC_EDIT_GNR),
 							CB_ADDSTRING,
 							0,
-							(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
+							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
 						);
 			}
 			//オーナードローボタンの初期化
@@ -321,7 +321,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				CDlg_ogg_exttag dlg;
 				if(dlg.DoModal() == IDOK)
 				{
-					COggExt *oggExt = new COggExt((char *)(LPCSTR )dlg.m_strName,(char *)(LPCSTR )dlg.m_strValue);
+					COggExt *oggExt = new COggExt((LPCTSTR )dlg.m_strName,(LPCTSTR )dlg.m_strValue);
 					long index = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,0,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
 					if(index == LB_ERR)
 					{
@@ -373,8 +373,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				dlg.m_strValue = oggExt->GetValue();
 				if(dlg.DoModal() == IDOK)
 				{
-					oggExt->SetName((char *)(LPCSTR )dlg.m_strName);
-					oggExt->SetValue((char *)(LPCSTR )dlg.m_strValue);
+					oggExt->SetName((LPCTSTR )dlg.m_strName);
+					oggExt->SetValue((LPCTSTR )dlg.m_strValue);
 					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_DELETESTRING,item,0);
 					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,item,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
 					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_SETITEMDATA,item,(LPARAM )oggExt);
@@ -407,7 +407,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -443,13 +443,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,8",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,8"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -478,11 +478,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -493,7 +493,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			//保存
 			if(lpcs->m_bApply)
 			{
-				TRACE("WM_NOTIFY(PSN_APPLY) - 保存\n");
+				TRACE(_T("WM_NOTIFY(PSN_APPLY) - 保存\n"));
 				//ファイルが書き込み可能か調べる
 				if(GetFileAttributes(lpcs->m_strSelectFile) & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY))
 				{
@@ -513,37 +513,37 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SBJ));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("TITLE",strTmp);
+				lpcs->m_Ogg.AddComment(_T("TITLE"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRK));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("TRACKNUMBER",strTmp);
+				lpcs->m_Ogg.AddComment(_T("TRACKNUMBER"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("ARTIST",strTmp);
+				lpcs->m_Ogg.AddComment(_T("ARTIST"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("ALBUM",strTmp);
+				lpcs->m_Ogg.AddComment(_T("ALBUM"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("DATE",strTmp);
+				lpcs->m_Ogg.AddComment(_T("DATE"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("GENRE",strTmp);
+				lpcs->m_Ogg.AddComment(_T("GENRE"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lpcs->m_Ogg.AddComment("COMMENT",strTmp);
+				lpcs->m_Ogg.AddComment(_T("COMMENT"),strTmp);
 
 				//その他分を保存
 				long items = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCOUNT,0,0);

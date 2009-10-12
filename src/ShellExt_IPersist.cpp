@@ -5,7 +5,7 @@
 STDMETHODIMP CShellExt::GetClassID(CLSID *pClassID)
 {
 //	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetClassID()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetClassID()\n"),APP_NAME);
 
 	if(!pClassID)
 		return E_FAIL;

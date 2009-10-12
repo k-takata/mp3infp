@@ -17,9 +17,9 @@ public:
 	void	Release();
 	BOOL	IsEnable(){return TRUE;};
 
-	DWORD	Load(const char *szFileName);
-	DWORD	Save(const char *szFileName);
-	BOOL	Add(char *szLine);
+	DWORD	Load(LPCTSTR szFileName);
+	DWORD	Save(LPCTSTR szFileName);
+	BOOL	Add(LPCTSTR szLine);
 	BOOL	GetLine(int iLine,CString &str);
 
 private:

@@ -55,17 +55,17 @@ void CTag_Wma::Release()
 	m_bUseDRMv1 = FALSE;
 	m_bUseDRMv7 = FALSE;
 	m_llPlayTime = 0;
-	m_strAudioCodec = "";
-	m_strVideoCodec = "";
+	m_strAudioCodec = _T("");
+	m_strVideoCodec = _T("");
 	m_dwVideoWidth = 0;
 	m_dwVideoHeight = 0;
 	m_dwBitCount = 0;
 	
-	m_strTitle = "";
-	m_strAuthor = "";
-	m_strCopyright = "";
-	m_strDescription = "";
-	m_strRating = "";
+	m_strTitle = _T("");
+	m_strAuthor = _T("");
+	m_strCopyright = _T("");
+	m_strDescription = _T("");
+	m_strRating = _T("");
 	m_comments.clear();
 }
 
@@ -74,7 +74,7 @@ CString CTag_Wma::GetNAM()
 	return m_strTitle;
 }
 
-void CTag_Wma::SetNAM(const char *str)
+void CTag_Wma::SetNAM(LPCTSTR str)
 {
 	m_strTitle = str;
 	m_bEnable = TRUE;
@@ -85,35 +85,35 @@ CString CTag_Wma::GetTRACK()
 	DWORD dwRet;
 	CString ret;
 	// "WM/TrackNumber"を優先的に読み込む
-	if(GetCommentString("WM/TrackNumber",ret))
+	if(GetCommentString(_T("WM/TrackNumber"),ret))
 	{
 		return ret;
 	}
 	// 互換性のためにSTRING or DWORDのWM/Trackも認識する
-	else if(GetCommentDword("WM/Track",dwRet))
+	else if(GetCommentDword(_T("WM/Track"),dwRet))
 	{
-		ret.Format("%d",dwRet+1);
+		ret.Format(_T("%d"),dwRet+1);
 	}
-	else if(GetCommentString("WM/Track",ret))
+	else if(GetCommentString(_T("WM/Track"),ret))
 	{
 		ret.Format(_T("%d"),_ttoi(ret)+1);
 	}
 	return ret;
 }
 
-void CTag_Wma::SetTRACK(const char *str)
+void CTag_Wma::SetTRACK(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/Track");
-		DellComment("WM/TrackNumber");
+		DellComment(_T("WM/Track"));
+		DellComment(_T("WM/TrackNumber"));
 	}
 	else
 	{
 		// 0base
-		AddCommentDword("WM/Track",atoi(str)-1);
+		AddCommentDword(_T("WM/Track"),_ttoi(str)-1);
 		// 1base
-		AddCommentString("WM/TrackNumber",str);
+		AddCommentString(_T("WM/TrackNumber"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -123,7 +123,7 @@ CString CTag_Wma::GetART()
 	return m_strAuthor;
 }
 
-void CTag_Wma::SetART(const char *str)
+void CTag_Wma::SetART(LPCTSTR str)
 {
 	m_strAuthor = str;
 	m_bEnable = TRUE;
@@ -132,22 +132,22 @@ void CTag_Wma::SetART(const char *str)
 CString CTag_Wma::GetPRD()
 {
 	CString ret;
-	if(GetCommentString("WM/AlbumTitle",ret))
+	if(GetCommentString(_T("WM/AlbumTitle"),ret))
 	{
 		return ret;
 	}
-	return "";
+	return _T("");
 }
 
-void CTag_Wma::SetPRD(const char *str)
+void CTag_Wma::SetPRD(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/AlbumTitle");
+		DellComment(_T("WM/AlbumTitle"));
 	}
 	else
 	{
-		AddCommentString("WM/AlbumTitle",str);
+		AddCommentString(_T("WM/AlbumTitle"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -157,7 +157,7 @@ CString CTag_Wma::GetCMT()
 	return m_strDescription;
 }
 
-void CTag_Wma::SetCMT(const char *str)
+void CTag_Wma::SetCMT(LPCTSTR str)
 {
 	m_strDescription = str;
 	m_bEnable = TRUE;
@@ -166,22 +166,22 @@ void CTag_Wma::SetCMT(const char *str)
 CString CTag_Wma::GetCRD()
 {
 	CString ret;
-	if(GetCommentString("WM/Year",ret))
+	if(GetCommentString(_T("WM/Year"),ret))
 	{
 		return ret;
 	}
-	return "";
+	return _T("");
 }
 
-void CTag_Wma::SetCRD(const char *str)
+void CTag_Wma::SetCRD(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/Year");
+		DellComment(_T("WM/Year"));
 	}
 	else
 	{
-		AddCommentString("WM/Year",str);
+		AddCommentString(_T("WM/Year"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -189,22 +189,22 @@ void CTag_Wma::SetCRD(const char *str)
 CString CTag_Wma::GetGNR()
 {
 	CString ret;
-	if(GetCommentString("WM/Genre",ret))
+	if(GetCommentString(_T("WM/Genre"),ret))
 	{
 		return ret;
 	}
-	return "";
+	return _T("");
 }
 
-void CTag_Wma::SetGNR(const char *str)
+void CTag_Wma::SetGNR(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/Genre");
+		DellComment(_T("WM/Genre"));
 	}
 	else
 	{
-		AddCommentString("WM/Genre",str);
+		AddCommentString(_T("WM/Genre"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -214,7 +214,7 @@ CString CTag_Wma::GetCOPY()
 	return m_strCopyright;
 }
 
-void CTag_Wma::SetCOPY(const char *str)
+void CTag_Wma::SetCOPY(LPCTSTR str)
 {
 	m_strCopyright = str;
 	m_bEnable = TRUE;
@@ -223,22 +223,22 @@ void CTag_Wma::SetCOPY(const char *str)
 CString CTag_Wma::GetUrl1()
 {
 	CString ret;
-	if(GetCommentString("WM/AlbumCoverURL",ret))
+	if(GetCommentString(_T("WM/AlbumCoverURL"),ret))
 	{
 		return ret;
 	}
-	return "";
+	return _T("");
 }
 
-void CTag_Wma::SetUrl1(const char *str)
+void CTag_Wma::SetUrl1(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/AlbumCoverURL");
+		DellComment(_T("WM/AlbumCoverURL"));
 	}
 	else
 	{
-		AddCommentString("WM/AlbumCoverURL",str);
+		AddCommentString(_T("WM/AlbumCoverURL"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -246,22 +246,22 @@ void CTag_Wma::SetUrl1(const char *str)
 CString CTag_Wma::GetUrl2()
 {
 	CString ret;
-	if(GetCommentString("WM/PromotionURL",ret))
+	if(GetCommentString(_T("WM/PromotionURL"),ret))
 	{
 		return ret;
 	}
-	return "";
+	return _T("");
 }
 
-void CTag_Wma::SetUrl2(const char *str)
+void CTag_Wma::SetUrl2(LPCTSTR str)
 {
-	if(strlen(str) == 0)
+	if(lstrlen(str) == 0)
 	{
-		DellComment("WM/PromotionURL");
+		DellComment(_T("WM/PromotionURL"));
 	}
 	else
 	{
-		AddCommentString("WM/PromotionURL",str);
+		AddCommentString(_T("WM/PromotionURL"),str);
 	}
 	m_bEnable = TRUE;
 }
@@ -271,7 +271,7 @@ CString CTag_Wma::GetRating()
 	return m_strRating;
 }
 
-void CTag_Wma::SetRating(const char *str)
+void CTag_Wma::SetRating(LPCTSTR str)
 {
 	m_strRating = str;
 	m_bEnable = TRUE;
@@ -304,7 +304,7 @@ __int64 CTag_Wma::SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD d
 	return dwPtrLow | ((__int64 )lDistanceToMoveHight)<<32;
 }
 
-DWORD CTag_Wma::Load(const char *szFileName)
+DWORD CTag_Wma::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	
@@ -353,7 +353,7 @@ DWORD CTag_Wma::ReadGUID_Size(HANDLE hFile,GUID_SIZE *guidSize)
 	DWORD	dwRet;
 
 	__int64 lldwHeaderPtr = SetFilePointer64(hFile,0,FILE_CURRENT);
-	TRACE("Ptr=0x%I64x\n",lldwHeaderPtr);
+	TRACE(_T("Ptr=0x%I64x\n"),lldwHeaderPtr);
 	if(!ReadFile(hFile,guidSize,sizeof(GUID_SIZE),&dwRet,NULL))
 	{
 		return GetLastError();
@@ -364,7 +364,7 @@ DWORD CTag_Wma::ReadGUID_Size(HANDLE hFile,GUID_SIZE *guidSize)
 	}
 	if(guidSize->size < sizeof(GUID_SIZE))
 	{
-		TRACE("guidSize->size < sizeof(GUID_SIZE)\n");
+		TRACE(_T("guidSize->size < sizeof(GUID_SIZE)\n"));
 		return -1;
 	}
 
@@ -392,7 +392,7 @@ DWORD CTag_Wma::Walk(HANDLE hFile,__int64 llSize)
 	{
 		return -1;
 	}
-	TRACE("GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n",
+	TRACE(_T("GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n"),
 		guidSize.guid.Data1,guidSize.guid.Data2,guidSize.guid.Data3,
 		guidSize.guid.Data4[0],guidSize.guid.Data4[1],guidSize.guid.Data4[2],guidSize.guid.Data4[3],guidSize.guid.Data4[4],guidSize.guid.Data4[5],guidSize.guid.Data4[6],guidSize.guid.Data4[7],
 		guidSize.size
@@ -400,7 +400,7 @@ DWORD CTag_Wma::Walk(HANDLE hFile,__int64 llSize)
 
 	if(guidSize.guid == ASF_Header_Object)
 	{
-		TRACE("(ASF_Header_Object)\n");
+		TRACE(_T("(ASF_Header_Object)\n"));
 		m_bEnable = TRUE;
 		dwWin32errorCode = HeaderWalk(hFile,guidSize.size-sizeof(guidSize));
 		if(dwWin32errorCode != ERROR_SUCCESS)
@@ -430,7 +430,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
 	}
-	TRACE("dwNumberOfHeaderObjects = %d\n",dwNumberOfHeaderObjects);
+	TRACE(_T("dwNumberOfHeaderObjects = %d\n"),dwNumberOfHeaderObjects);
 	if(!ReadFile(hFile,reserved,sizeof(reserved),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -446,7 +446,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 			dwWin32errorCode = GetLastError();
 			return dwWin32errorCode;
 		}
-		TRACE(">>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n",
+		TRACE(_T(">>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n"),
 			guidSize.guid.Data1,guidSize.guid.Data2,guidSize.guid.Data3,
 			guidSize.guid.Data4[0],guidSize.guid.Data4[1],guidSize.guid.Data4[2],guidSize.guid.Data4[3],guidSize.guid.Data4[4],guidSize.guid.Data4[5],guidSize.guid.Data4[6],guidSize.guid.Data4[7],
 			guidSize.size
@@ -454,11 +454,11 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 
 		if(guidSize.guid == ASF_Extended_Stream_Properties_Object)
 		{
-			TRACE(">>(ASF_Extended_Stream_Properties_Object)\n");
+			TRACE(_T(">>(ASF_Extended_Stream_Properties_Object)\n"));
 		}
 		else if(guidSize.guid == ASF_Stream_Properties_Object)
 		{
-			TRACE(">>(ASF_Stream_Properties_Object)\n");
+			TRACE(_T(">>(ASF_Stream_Properties_Object)\n"));
 			GUID streamType;
 			GUID errorCorrectionType;
 			ULONGLONG timeOffset;
@@ -541,9 +541,9 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 					m_dwVideoWidth = formatData->biWidth;
 					m_dwVideoHeight = formatData->biHeight;
 					m_dwBitCount = formatData->biBitCount;
-					CString strCodecName = "Unknown";
+					CString strCodecName = _T("Unknown");
 					findVideoCodecName1(strCodecName,0,formatData->biCompression);
-					m_strVideoCodec.Format("%s, %dx%d, %dBitColor",strCodecName,m_dwVideoWidth,m_dwVideoHeight,m_dwBitCount);
+					m_strVideoCodec.Format(_T("%s, %dx%d, %dBitColor"),strCodecName,m_dwVideoWidth,m_dwVideoHeight,m_dwBitCount);
 					free(formatData);
 				}
 			}
@@ -552,7 +552,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		{
 			GUID reserved;
 			DWORD codecEntriesCount;
-			TRACE(">>(ASF_Codec_List_Object)\n");
+			TRACE(_T(">>(ASF_Codec_List_Object)\n"));
 			if(!ReadFile(hFile,&reserved,sizeof(reserved),&dwRet,NULL))
 			{
 				dwWin32errorCode = GetLastError();
@@ -563,7 +563,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 				dwWin32errorCode = GetLastError();
 				return dwWin32errorCode;
 			}
-			TRACE("codecEntriesCount=%d\n",codecEntriesCount);
+			TRACE(_T("codecEntriesCount=%d\n"),codecEntriesCount);
 			WORD wType;
 			WORD wCodecNameLength;
 			WORD wDescriptionLength;
@@ -575,7 +575,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 					dwWin32errorCode = GetLastError();
 					return dwWin32errorCode;
 				}
-				TRACE("wType=%d\n",wType);
+				TRACE(_T("wType=%d\n"),wType);
 				if(wType == 0x0001)	// Video codec
 				{
 					if(!ReadFile(hFile,&wCodecNameLength,sizeof(wCodecNameLength),&dwRet,NULL))
@@ -592,9 +592,9 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 					CString strTmp = ReadWchar(hFile,wDescriptionLength*sizeof(WCHAR));
 					if(strTmp.GetLength() > 0)
 					{
-						m_strVideoCodec += " (" + strTmp + ")";
+						m_strVideoCodec += _T(" (") + strTmp + _T(")");
 					}
-					TRACE("m_strVideoCodec=%s\n",m_strVideoCodec);
+					TRACE(_T("m_strVideoCodec=%s\n"),m_strVideoCodec);
 					if(!ReadFile(hFile,&wCodecInfomationLength,sizeof(wCodecInfomationLength),&dwRet,NULL))
 					{
 						dwWin32errorCode = GetLastError();
@@ -622,9 +622,9 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 					CString strTmp = ReadWchar(hFile,wDescriptionLength*sizeof(WCHAR));
 					if(strTmp.GetLength() > 0)
 					{
-						m_strAudioCodec += " (" + strTmp + ")";
+						m_strAudioCodec += _T(" (") + strTmp + _T(")");
 					}
-					TRACE("m_strAudioCodec=%s\n",m_strAudioCodec);
+					TRACE(_T("m_strAudioCodec=%s\n"),m_strAudioCodec);
 					if(!ReadFile(hFile,&wCodecInfomationLength,sizeof(wCodecInfomationLength),&dwRet,NULL))
 					{
 						dwWin32errorCode = GetLastError();
@@ -652,7 +652,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 			DWORD maximumDataPacketSize;
 			DWORD maximumBitrate;
 
-			TRACE(">>(ASF_File_Properties_Object)\n");
+			TRACE(_T(">>(ASF_File_Properties_Object)\n"));
 			if(!ReadFile(hFile,&fileID,sizeof(fileID),&dwRet,NULL))
 			{
 				dwWin32errorCode = GetLastError();
@@ -717,7 +717,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		else if(guidSize.guid == ASF_Extended_Content_Description_Object)
 		{
 			////////////////////////////////////////////////////////
-			TRACE(">>(ASF_Extended_Content_Description_Object)\n");
+			TRACE(_T(">>(ASF_Extended_Content_Description_Object)\n"));
 			dwWin32errorCode = ReadDescString(hFile);
 			if(dwWin32errorCode != ERROR_SUCCESS)
 			{
@@ -728,7 +728,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		{
 			GUID reserved1;
 			WORD reserved2;
-			TRACE(">>(ASF_Header_Extension_Object)\n");
+			TRACE(_T(">>(ASF_Header_Extension_Object)\n"));
 			if(!ReadFile(hFile,&reserved1,sizeof(reserved1),&dwRet,NULL))
 			{
 				dwWin32errorCode = GetLastError();
@@ -760,7 +760,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 					break;
 				}
 				GUID_SIZE *guidSize2 = (GUID_SIZE *)&data[offset];
-				TRACE(">> >>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n",
+				TRACE(_T(">> >>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n"),
 					guidSize2->guid.Data1,guidSize2->guid.Data2,guidSize2->guid.Data3,
 					guidSize2->guid.Data4[0],guidSize2->guid.Data4[1],guidSize2->guid.Data4[2],guidSize2->guid.Data4[3],guidSize2->guid.Data4[4],guidSize2->guid.Data4[5],guidSize2->guid.Data4[6],guidSize2->guid.Data4[7],
 					guidSize2->size
@@ -776,7 +776,7 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		else if(guidSize.guid == ASF_Content_Description_Object)
 		{
 			////////////////////////////////////////////////////////
-			TRACE(">>(ASF_Content_Description_Object)\n");
+			TRACE(_T(">>(ASF_Content_Description_Object)\n"));
 			WORD wTitleLength;
 			WORD wAuthorLength;
 			WORD wCopyrightLength;
@@ -815,21 +815,21 @@ DWORD CTag_Wma::HeaderWalk(HANDLE hFile,__int64 llSize)
 		}
 		else if(guidSize.guid == ASF_Content_Encryption_Object)
 		{
-			TRACE(">>(ASF_Content_Encryption_Object) m_bUseDRMv1\n");
+			TRACE(_T(">>(ASF_Content_Encryption_Object) m_bUseDRMv1\n"));
 			m_bUseDRMv1 = TRUE;
 		}
 		else if(guidSize.guid == ASF_Extended_Content_Encryption_Object)
 		{
-			TRACE(">>(ASF_Extended_Content_Encryption_Object) m_bUseDRMv7\n");
+			TRACE(_T(">>(ASF_Extended_Content_Encryption_Object) m_bUseDRMv7\n"));
 			m_bUseDRMv7 = TRUE;
 		}
 		else if(guidSize.guid == ASF_Stream_Bitrate_Properties_Object)
 		{
-			TRACE(">>(ASF_Stream_Bitrate_Properties_Object)\n");
+			TRACE(_T(">>(ASF_Stream_Bitrate_Properties_Object)\n"));
 		}
 		else
 		{
-			TRACE(">>(unknown)\n");
+			TRACE(_T(">>(unknown)\n"));
 		}
 
 		SetFilePointer64(hFile,llTop+guidSize.size,FILE_BEGIN);
@@ -842,26 +842,22 @@ CString CTag_Wma::ReadWchar(HANDLE hFile,WORD len)
 {
 	if(len == 0)
 	{
-		return "";
+		return _T("");
 	}
 	CString ret;
 	DWORD dwRet;
 	WCHAR *tmp;
-	char *ctmp;
 	tmp = (WCHAR *)malloc(len);
+	if (tmp == NULL) {
+		return _T("");
+	}
 	if(!ReadFile(hFile,tmp,len,&dwRet,NULL))
 	{
 		free(tmp);
-		return "";
+		return _T("");
 	}
-	
-	int clength = WideCharToMultiByte(CP_ACP,0,(LPWSTR )tmp,len/sizeof(WCHAR),NULL,0,NULL,NULL);
-	ctmp = (char *)malloc(clength+1);	// +1はNUL文字(入力にNULが無かった場合に備えて)
-	WideCharToMultiByte(CP_ACP,0,(LPWSTR )tmp,len/sizeof(WCHAR),ctmp,clength,NULL,NULL);
-	ctmp[clength] = '\0';	// 入力にNULが無かった場合に備えて
-	ret = ctmp;
+	ret = CString(tmp, len/sizeof(WCHAR));
 	free(tmp);
-	free(ctmp);
 	
 	return ret;
 }
@@ -869,12 +865,15 @@ CString CTag_Wma::ReadWchar(HANDLE hFile,WORD len)
 DWORD CTag_Wma::WriteWchar(HANDLE hFile,CString str)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
-	int clength = MultiByteToWideChar(CP_ACP,0,(LPCTSTR )str,str.GetLength()+1,NULL,0);
-	WCHAR *ctmp = (WCHAR *)malloc(clength*sizeof(WCHAR));
-	MultiByteToWideChar(CP_ACP,0,(LPCTSTR )str,str.GetLength()+1,ctmp,clength);
+	
+	int size;
+	char *ctmp = TstrToDataAlloc(str, -1, &size, DTC_CODE_UTF16LE);
+	if (ctmp == NULL) {
+		return ERROR_INSUFFICIENT_BUFFER;
+	}
 	
 	DWORD dwRet;
-	if(!WriteFile(hFile,ctmp,clength*sizeof(WCHAR),&dwRet,NULL))
+	if(!WriteFile(hFile,ctmp,size,&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
 		free(ctmp);
@@ -976,25 +975,27 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 		WORD len = desc->m_wLen;
 		char *buf = desc->m_buf;
 		// Descriptor Name Length
-		WORD clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )*name,name->GetLength()+1,NULL,0);
-		clength *= sizeof(WORD);
-		if(!WriteFile(hFile,&clength,sizeof(clength),&dwRet,NULL))
-		{
-			dwWin32errorCode = GetLastError();
-			return dwWin32errorCode;
-		}
-		ullNewLength += sizeof(clength);
-		// Descriptor Name
-		WCHAR *wname = (WCHAR *)malloc(clength);
-		MultiByteToWideChar(CP_ACP,0,(LPCTSTR )*name,name->GetLength()+1,wname,clength/sizeof(WCHAR));
-		if(!WriteFile(hFile,wname,clength,&dwRet,NULL))
-		{
-			dwWin32errorCode = GetLastError();
+		int size;
+		char *wname = TstrToDataAlloc(*name, -1, &size, DTC_CODE_UTF16LE);
+		if (wname != NULL) {
+			WORD clength = (WORD)size;
+			if(!WriteFile(hFile,&clength,sizeof(clength),&dwRet,NULL))
+			{
+				dwWin32errorCode = GetLastError();
+				free(wname);
+				return dwWin32errorCode;
+			}
+			ullNewLength += sizeof(clength);
+			// Descriptor Name
+			if(!WriteFile(hFile,wname,clength,&dwRet,NULL))
+			{
+				dwWin32errorCode = GetLastError();
+				free(wname);
+				return dwWin32errorCode;
+			}
 			free(wname);
-			return dwWin32errorCode;
+			ullNewLength += clength;
 		}
-		free(wname);
-		ullNewLength += clength;
 		// Descriptor Value Data Type
 		if(!WriteFile(hFile,&type,sizeof(type),&dwRet,NULL))
 		{
@@ -1021,7 +1022,7 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 	return dwWin32errorCode;
 }
 
-BOOL CTag_Wma::AddComment(const char *name,WORD type,char *buf,WORD len)
+BOOL CTag_Wma::AddComment(LPCTSTR name,WORD type,char *buf,WORD len)
 {
 	map<CString,CTag_WmaComment>::iterator p;
 	p = m_comments.find(CString(name));
@@ -1035,7 +1036,7 @@ BOOL CTag_Wma::AddComment(const char *name,WORD type,char *buf,WORD len)
 	return TRUE;
 }
 
-BOOL CTag_Wma::DellComment(const char *name)
+BOOL CTag_Wma::DellComment(LPCTSTR name)
 {
 	map<CString,CTag_WmaComment>::iterator p;
 	p = m_comments.find(CString(name));
@@ -1048,21 +1049,24 @@ BOOL CTag_Wma::DellComment(const char *name)
 	return TRUE;
 }
 
-BOOL CTag_Wma::AddCommentString(const char *name,CString str)
+BOOL CTag_Wma::AddCommentString(LPCTSTR name,CString str)
 {
-	int clength = MultiByteToWideChar(CP_ACP,0,(LPCTSTR )str,str.GetLength()+1,NULL,0);
-	WCHAR *buf = (WCHAR *)malloc(clength*sizeof(WCHAR));
-	MultiByteToWideChar(CP_ACP,0,(LPCTSTR )str,str.GetLength()+1,buf,clength);
-
-	return AddComment(name,0,(char *)buf,clength*sizeof(WCHAR));
+	BOOL ret = FALSE;
+	int size;
+	char *buf = TstrToDataAlloc(str, -1, &size, DTC_CODE_UTF16LE);
+	if (buf != NULL) {
+		ret = AddComment(name, 0, buf, size);
+		free(buf);
+	}
+	return ret;
 }
 
-BOOL CTag_Wma::AddCommentDword(const char *name,DWORD val)
+BOOL CTag_Wma::AddCommentDword(LPCTSTR name,DWORD val)
 {
 	return AddComment(name,3,(char *)&val,sizeof(DWORD));
 }
 
-BOOL CTag_Wma::GetComment(const char *name,WORD *type,WORD *len,char **buf)
+BOOL CTag_Wma::GetComment(LPCTSTR name,WORD *type,WORD *len,char **buf)
 {
 	map<CString,CTag_WmaComment>::iterator p;
 	p = m_comments.find(CString(name));
@@ -1079,7 +1083,7 @@ BOOL CTag_Wma::GetComment(const char *name,WORD *type,WORD *len,char **buf)
 	return TRUE;
 }
 
-BOOL CTag_Wma::GetCommentString(const char *name,CString &str)
+BOOL CTag_Wma::GetCommentString(LPCTSTR name,CString &str)
 {
 	WORD type;
 	WORD len;
@@ -1103,7 +1107,7 @@ BOOL CTag_Wma::GetCommentString(const char *name,CString &str)
 	return TRUE;
 }
 
-BOOL CTag_Wma::GetCommentDword(const char *name,DWORD &val)
+BOOL CTag_Wma::GetCommentDword(LPCTSTR name,DWORD &val)
 {
 	WORD type;
 	WORD len;
@@ -1122,7 +1126,7 @@ BOOL CTag_Wma::GetCommentDword(const char *name,DWORD &val)
 	return TRUE;
 }
 
-DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
+DWORD CTag_Wma::Save(LPCTSTR szFileName,LPTCPPROGRESS cbProgress)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
@@ -1151,10 +1155,10 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 	}
 
 	//==================テンポラリを作成==================
-	char szTempFile[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
 	strPath = getPathName(CString(szFileName));
 	// テンポラリファイルを実際に作成
-	if(!GetTempFileName(strPath,"tms",0,szTempFile))
+	if(!GetTempFileName(strPath,_T("tms"),0,szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		goto err_exit;
@@ -1183,7 +1187,7 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 			dwWin32errorCode = ERROR_SUCCESS;
 			break;	// EOF
 		}
-		TRACE("GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n",
+		TRACE(_T("GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n"),
 			guidSize.guid.Data1,guidSize.guid.Data2,guidSize.guid.Data3,
 			guidSize.guid.Data4[0],guidSize.guid.Data4[1],guidSize.guid.Data4[2],guidSize.guid.Data4[3],guidSize.guid.Data4[4],guidSize.guid.Data4[5],guidSize.guid.Data4[6],guidSize.guid.Data4[7],
 			guidSize.size
@@ -1204,13 +1208,13 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 			////////////////////////////////////////////////
 			// ASF_Header_Object
 			//
-			TRACE("--->(ASF_Header_Object)\n");
+			TRACE(_T("--->(ASF_Header_Object)\n"));
 			dwWin32errorCode = Save_Header_Object(hFile,hTempFile,guidSize.size-sizeof(guidSize),ullHeaderSize);
 			if(dwWin32errorCode != ERROR_SUCCESS)
 			{
 				goto err_exit;
 			}
-			TRACE("    len=%I64d\n",ullHeaderSize);
+			TRACE(_T("    len=%I64d\n"),ullHeaderSize);
 			if(cbProgress)
 			{
 				cbProgress(SetFilePointer64(hFile,0,FILE_CURRENT),GetFileSize64(hFile));
@@ -1221,7 +1225,7 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 			////////////////////////////////////////////////
 			// それ以外
 			//
-			TRACE("--->(それ以外)\n");
+			TRACE(_T("--->(それ以外)\n"));
 
 			ULONGLONG ullRemain = guidSize.size - sizeof(guidSize);
 			DWORD dwReadSize;
@@ -1255,7 +1259,7 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 				}
 			}
 			while(ullRemain > 0);
-			TRACE("    len=%I64d\n",ullHeaderSize);
+			TRACE(_T("    len=%I64d\n"),ullHeaderSize);
 		}
 		// *****************************************
 		// ヘッダの書き込み[確定]
@@ -1303,8 +1307,8 @@ DWORD CTag_Wma::Save(const char *szFileName,LPTCPPROGRESS cbProgress)
 		CloseHandle(hTempFile);
 	}
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(strPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(strPath,_T("tms"),0,szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);
@@ -1390,7 +1394,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 			dwWin32errorCode = ERROR_SUCCESS;
 			break;	// 読み取り終了
 		}
-		TRACE(">>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n",
+		TRACE(_T(">>GUID = {%08lX-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} (%I64dbytes)\n"),
 			guidSize.guid.Data1,guidSize.guid.Data2,guidSize.guid.Data3,
 			guidSize.guid.Data4[0],guidSize.guid.Data4[1],guidSize.guid.Data4[2],guidSize.guid.Data4[3],guidSize.guid.Data4[4],guidSize.guid.Data4[5],guidSize.guid.Data4[6],guidSize.guid.Data4[7],
 			guidSize.size
@@ -1405,7 +1409,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 		if(	(guidSize.guid == ASF_Extended_Content_Description_Object) ||
 			(guidSize.guid == ASF_Content_Description_Object) )
 		{
-			TRACE("Skip\n");
+			TRACE(_T("Skip\n"));
 			if(SetFilePointer64(hFile,guidSize.size-sizeof(guidSize),FILE_CURRENT) < 0)
 			{
 				dwWin32errorCode = GetLastError();
@@ -1457,7 +1461,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 			while(ullRemain > 0);
 		}
 		
-		TRACE(">>len=%I64d\n",ullNewSize);
+		TRACE(_T(">>len=%I64d\n"),ullNewSize);
 		// *******************************************************
 		// ヘッダの書き込み[1-確定]
 		if(SetFilePointer64(hTempFile,llHeaderPtr+sizeof(guidSize.guid),FILE_BEGIN) < 0)
@@ -1496,8 +1500,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	ullNewSize += sizeof(guidSize);
 
 	WORD clength;
-	clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )m_strTitle,m_strTitle.GetLength()+1,NULL,0);
-	clength *= sizeof(WCHAR);
+	clength = (WORD)TstrToData(m_strTitle, -1, NULL, 0, DTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1506,8 +1509,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )m_strAuthor,m_strAuthor.GetLength()+1,NULL,0);
-	clength *= sizeof(WCHAR);
+	clength = (WORD)TstrToData(m_strAuthor, -1, NULL, 0, DTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1516,8 +1518,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )m_strCopyright,m_strCopyright.GetLength()+1,NULL,0);
-	clength *= sizeof(WCHAR);
+	clength = (WORD)TstrToData(m_strCopyright, -1, NULL, 0, DTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1526,8 +1527,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )m_strDescription,m_strDescription.GetLength()+1,NULL,0);
-	clength *= sizeof(WCHAR);
+	clength = (WORD)TstrToData(m_strDescription, -1, NULL, 0, DTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1536,8 +1536,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD )MultiByteToWideChar(CP_ACP,0,(LPCTSTR )m_strRating,m_strRating.GetLength()+1,NULL,0);
-	clength *= sizeof(WCHAR);
+	clength = (WORD)TstrToData(m_strRating, -1, NULL, 0, DTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();

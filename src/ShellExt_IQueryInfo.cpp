@@ -5,77 +5,77 @@
 STDMETHODIMP CShellExt::GetInfoTip(DWORD dwFlags, WCHAR **ppwszTip)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetInfoTip()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetInfoTip()\n"),APP_NAME);
 
-	CString strInfoTip = "";
+	CString strInfoTip = _T("");
 	*ppwszTip = NULL;
 
-TRACE("[%s]CShellExt::GetInfoTip(10)\n",APP_NAME);
+TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 	switch(m_fileType){
 	case MP3:
 		if(!m_bMp3InfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_mp3();
+		strInfoTip += (LPCTSTR )GetInfoTip_mp3();
 		break;
 	case WAVE:
 		if(!m_bWaveInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_wave();
+		strInfoTip += (LPCTSTR )GetInfoTip_wave();
 		break;
 	case AVI:
 		if(!m_bAviInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_avi();
+		strInfoTip += (LPCTSTR )GetInfoTip_avi();
 		break;
 	case VQF:
 		if(!m_bVqfInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_vqf();
+		strInfoTip += (LPCTSTR )GetInfoTip_vqf();
 		break;
 	case WMA:
 		if(!m_bWmaInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_wma();
+		strInfoTip += (LPCTSTR )GetInfoTip_wma();
 		break;
 	case M3U:
 		if(!m_bM3uInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_m3u();
+		strInfoTip += (LPCTSTR )GetInfoTip_m3u();
 		break;
 	case OGG:
 		if(!m_bOggInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_ogg();
+		strInfoTip += (LPCTSTR )GetInfoTip_ogg();
 		break;
 	case APE:
-		TRACE("APE\n");
+		TRACE(_T("APE\n"));
 		if(!m_bApeInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_ape();
+		strInfoTip += (LPCTSTR )GetInfoTip_ape();
 		break;
 	case MP4:
-		TRACE("MP4\n");
+		TRACE(_T("MP4\n"));
 		if(!m_bMp4InfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCSTR )GetInfoTip_mp4();
+		strInfoTip += (LPCTSTR )GetInfoTip_mp4();
 		break;
 	case UNKNOWN:
 	default:
@@ -86,7 +86,7 @@ TRACE("[%s]CShellExt::GetInfoTip(10)\n",APP_NAME);
 	{
 		CString strTmp;
 		strInfoTip += m_strSelectFile;
-		strInfoTip += "\n";
+		strInfoTip += _T("\n");
 		//「(タグ情報はありません)」
 		strTmp.Format(IDS_INFOTIP_NOTINFO);
 		strInfoTip += strTmp;
@@ -105,7 +105,7 @@ TRACE("[%s]CShellExt::GetInfoTip(10)\n",APP_NAME);
 	if(!*ppwszTip)
 		return E_OUTOFMEMORY;
 
-	MultiByteToWideChar(CP_ACP,0,strInfoTip,-1,(WCHAR *)*ppwszTip,strInfoTip.GetLength()+1);
+	TstrToData(strInfoTip, -1, (char *)*ppwszTip, (strInfoTip.GetLength()+1)*sizeof(OLECHAR), DTC_CODE_UTF16LE);
 
 	return S_OK;
 }
@@ -114,9 +114,9 @@ TRACE("[%s]CShellExt::GetInfoTip(10)\n",APP_NAME);
 
 CString CShellExt::GetInfoTip_mp3()
 {
-	CString strInfoTip = "";
+	CString strInfoTip = _T("");
 	CString strTmp;
-	const char *pFormatString = m_strMp3InfoTipFormat;
+	LPCTSTR pFormatString = m_strMp3InfoTipFormat;
 
 	for(int i=0; i<m_strMp3InfoTipFormat.GetLength(); i++)
 	{
@@ -147,94 +147,94 @@ CString CShellExt::GetInfoTip_mp3()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_mp3info.GetFormatString();
+				strInfoTip += (LPCTSTR )m_mp3info.GetFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_mp3info.GetTimeString();
+				strInfoTip += (LPCTSTR )m_mp3info.GetTimeString();
 			}
-			else if(strncmp(&pFormatString[i],"TYPE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TYPE"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv1.IsEnable())
 				{
 					if(m_Id3tagv1.GetTrackNo().GetLength())
 					{
-						strInfoTip += "ID3v1.1 ";
+						strInfoTip += _T("ID3v1.1 ");
 					}
 					else
 					{
-						strInfoTip += "ID3v1.0 ";
+						strInfoTip += _T("ID3v1.0 ");
 					}
 				}
 				if(m_Id3tagv2.IsEnable())
 				{
 					WORD wVer = m_Id3tagv2.GetVer();
 					CString strVer;
-					strVer.Format("ID3v2.%d ",(wVer&0xff00)>>8);
+					strVer.Format(_T("ID3v2.%d "),(wVer&0xff00)>>8);
 					strInfoTip += strVer;
 				}
 				if(m_Ape.IsEnable())
 				{
 					CString strVer;
-					strVer.Format("APE Tag v%.0f ",double(m_Ape.GetApeVersion())/1000);
+					strVer.Format(_T("APE Tag v%.0f "),double(m_Ape.GetApeVersion())/1000);
 					strInfoTip += strVer;
 				}
-				strInfoTip += m_Rmp3.IsEnable()?"RiffSIF":"";
+				strInfoTip += m_Rmp3.IsEnable()?_T("RiffSIF"):_T("");
 			}
 			//Id3v1/v2/APE/RiffSIF
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetTitle();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetTitle();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -243,23 +243,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetNAM();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetNAM();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetTitle();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetTitle();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetArtist();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetArtist();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -268,23 +268,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetART();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetART();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetArtist();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetArtist();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetAlbum();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetAlbum();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -293,23 +293,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetPRD();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetPRD();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetAlbum();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetAlbum();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetComment();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetComment();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -318,23 +318,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetCMT();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetCMT();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetComment();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetComment();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetYear();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetYear();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -343,23 +343,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetCRD();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetCRD();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetYear();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetYear();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetGenre();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetGenre();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -368,23 +368,23 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetGNR();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetGNR();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetGenre();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetGenre();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"TRACK",5) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TRACK"),5) == 0)
 			{
 				i += 4;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetTrackNo();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetTrackNo();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -393,100 +393,100 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv1.GetTrackNo();
+					strInfoTip += (LPCTSTR )m_Id3tagv1.GetTrackNo();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
 
-			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetCopyright();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetCopyright();
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetCOP();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetCOP();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"ISFT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISFT"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Id3tagv2.GetEncoder();
+					strInfoTip += (LPCTSTR )m_Id3tagv2.GetEncoder();
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetSFT();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetSFT();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
 			//Riff SIF
-			else if(strncmp(&pFormatString[i],"ISRC",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISRC"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetSRC();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetSRC();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IENG",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IENG"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCSTR )m_Rmp3.GetENG();
+					strInfoTip += (LPCTSTR )m_Rmp3.GetENG();
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"COMP",4) == 0)			//id3v2
+			else if(_tcsncmp(&pFormatString[i],_T("COMP"),4) == 0)			//id3v2
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
@@ -495,18 +495,18 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"OART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("OART"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
@@ -515,18 +515,18 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IURL",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IURL"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
@@ -535,18 +535,18 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
-			else if(strncmp(&pFormatString[i],"IENC",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IENC"),4) == 0)
 			{
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
@@ -555,15 +555,15 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Ape.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 				else
 				{
-					strInfoTip += "";
+					strInfoTip += _T("");
 				}
 			}
 		}
@@ -579,8 +579,8 @@ CString CShellExt::GetInfoTip_wave()
 {
 	CString strFormat;
 	CString strTime;
-	CString strInfoTip = "";
-	const char *pFormatString = m_strWaveInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strWaveInfoTipFormat;
 
 	for(int i=0; i<m_strWaveInfoTipFormat.GetLength(); i++)
 	{
@@ -611,54 +611,54 @@ CString CShellExt::GetInfoTip_wave()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
 				if(strFormat.GetLength() == 0)
 				{
-					GetWaveAudioFormat((LPCSTR )m_strSelectFile,
+					GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -666,12 +666,12 @@ CString CShellExt::GetInfoTip_wave()
 				}
 				strInfoTip += strFormat;
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetWaveAudioFormat((LPCSTR )m_strSelectFile,
+					GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -680,7 +680,7 @@ CString CShellExt::GetInfoTip_wave()
 				strInfoTip += strTime;
 			}
 			//RiffSIF
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 //2002-02-10
 //INAMを優先、無ければISBJを表示
@@ -693,52 +693,52 @@ CString CShellExt::GetInfoTip_wave()
 				}
 				strInfoTip += tmp;
 			}
-			else if(strncmp(&pFormatString[i],"ISBJ",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISBJ"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','S','B','J');
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','A','R','T');
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','P','R','D');
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','C','M','T');
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','C','R','D');
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','G','N','R');
 			}
-			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','C','O','P');
 			}
-			else if(strncmp(&pFormatString[i],"ISFT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISFT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','S','F','T');
 			}
-			else if(strncmp(&pFormatString[i],"ISRC",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISRC"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','S','R','C');
 			}
-			else if(strncmp(&pFormatString[i],"IENG",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IENG"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_RiffSIF.GetField('I','E','N','G');
@@ -760,8 +760,8 @@ CString CShellExt::GetInfoTip_avi()
 	CString strTime;
 	BOOL bAvi2;
 
-	CString strInfoTip = "";
-	const char *pFormatString = m_strAviInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strAviInfoTipFormat;
 
 	for(int i=0; i<m_strAviInfoTipFormat.GetLength(); i++)
 	{
@@ -792,54 +792,54 @@ CString CShellExt::GetInfoTip_avi()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
 				if(strAudioFormat.GetLength() == 0)
 				{
-					GetAviFormat((LPCSTR )m_strSelectFile,
+					GetAviFormat((LPCTSTR )m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -847,15 +847,15 @@ CString CShellExt::GetInfoTip_avi()
 									bAvi2,
 									m_iAviCodecFind);
 				}
-				strTime = "";
+				strTime = _T("");
 				strInfoTip += strAudioFormat;
 			}
-			else if(strncmp(&pFormatString[i],"VFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
 				if(strVideoFormat.GetLength() == 0)
 				{
-					GetAviFormat((LPCSTR )m_strSelectFile,
+					GetAviFormat((LPCTSTR )m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -864,15 +864,15 @@ CString CShellExt::GetInfoTip_avi()
 									m_iAviCodecFind);
 				}
 				strInfoTip += strVideoFormat;
-				strInfoTip += ", ";
+				strInfoTip += _T(", ");
 				strInfoTip += strStreamFormat;
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetAviFormat((LPCSTR )m_strSelectFile,
+					GetAviFormat((LPCTSTR )m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -883,7 +883,7 @@ CString CShellExt::GetInfoTip_avi()
 				strInfoTip += strTime;
 			}
 			//RiffSIF
-			else if(strncmp(&pFormatString[i],"ISBJ",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISBJ"),4) == 0)
 			{
 //2002-03-17
 //INAMを優先、無ければISBJを表示
@@ -896,57 +896,57 @@ CString CShellExt::GetInfoTip_avi()
 				}
 				strInfoTip += tmp;
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','A','R','T');
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','P','R','D');
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','C','M','T');
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','C','R','D');
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','G','N','R');
 			}
-			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','C','O','P');
 			}
-			else if(strncmp(&pFormatString[i],"ISFT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISFT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','S','F','T');
 			}
-			else if(strncmp(&pFormatString[i],"ISRC",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ISRC"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','S','R','C');
 			}
-			else if(strncmp(&pFormatString[i],"IENG",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IENG"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_OpenDML.GetField('I','E','N','G');
 			}
-			else if(strncmp(&pFormatString[i],"AVIV",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AVIV"),4) == 0)
 			{
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetAviFormat((LPCSTR )m_strSelectFile,
+					GetAviFormat((LPCTSTR )m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -954,7 +954,7 @@ CString CShellExt::GetInfoTip_avi()
 									bAvi2,
 									m_iAviCodecFind);
 				}
-				strInfoTip += bAvi2?"AVI 2.0 (OpenDML)":"AVI 1.0 (VfW)";
+				strInfoTip += bAvi2?_T("AVI 2.0 (OpenDML)"):_T("AVI 1.0 (VfW)");
 			}
 		}
 		else
@@ -967,8 +967,8 @@ CString CShellExt::GetInfoTip_avi()
 
 CString CShellExt::GetInfoTip_vqf()
 {
-	CString strInfoTip = "";
-	const char *pFormatString = m_strVqfInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strVqfInfoTipFormat;
 
 	for(int i=0; i<m_strVqfInfoTipFormat.GetLength(); i++)
 	{
@@ -985,7 +985,6 @@ CString CShellExt::GetInfoTip_vqf()
 		else if(pFormatString[i] == '\\')
 		{
 			i++;
-			DWORD dwSize;
 			if(pFormatString[i] == '\0')
 				break;
 			if(pFormatString[i] == 'n')
@@ -1000,82 +999,82 @@ CString CShellExt::GetInfoTip_vqf()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetFormatString();
+				strInfoTip += (LPCTSTR)m_Vqf.GetFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetTimeString();
+				strInfoTip += (LPCTSTR)m_Vqf.GetTimeString();
 			}
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetField('N','A','M','E',&dwSize);
+				strInfoTip += (LPCTSTR)m_Vqf.GetField('N','A','M','E');
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetField('A','U','T','H',&dwSize);
+				strInfoTip += (LPCTSTR)m_Vqf.GetField('A','U','T','H');
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetField('C','O','M','T',&dwSize);
+				strInfoTip += (LPCTSTR)m_Vqf.GetField('C','O','M','T');
 			}
-			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetField('(','c',')',' ',&dwSize);
+				strInfoTip += (LPCTSTR)m_Vqf.GetField('(','c',')',' ');
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR)m_Vqf.GetField('F','I','L','E',&dwSize);
+				strInfoTip += (LPCTSTR)m_Vqf.GetField('F','I','L','E');
 			}
 		}
 		else
@@ -1088,8 +1087,8 @@ CString CShellExt::GetInfoTip_vqf()
 
 CString CShellExt::GetInfoTip_wma()
 {
-	CString strInfoTip = "";
-	const char *pFormatString = m_strWmaInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strWmaInfoTipFormat;
 
 	for(int i=0; i<m_strWmaInfoTipFormat.GetLength(); i++)
 	{
@@ -1120,109 +1119,109 @@ CString CShellExt::GetInfoTip_wma()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Wma.GetAudioFormatString();
+				strInfoTip += (LPCTSTR )m_Wma.GetAudioFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"VFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Wma.GetVideoFormatString();
+				strInfoTip += (LPCTSTR )m_Wma.GetVideoFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Wma.GetTimeString();
+				strInfoTip += (LPCTSTR )m_Wma.GetTimeString();
 			}
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetNAM();
 			}
-			else if(strncmp(&pFormatString[i],"TRACK",5) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TRACK"),5) == 0)
 			{
 				i += 4;
 				strInfoTip += m_Wma.GetTRACK();
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetART();
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetPRD();
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetCMT();
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetCRD();
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetGNR();
 			}
-			else if(strncmp(&pFormatString[i],"ICOP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetCOPY();
 			}
-			else if(strncmp(&pFormatString[i],"URL1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("URL1"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetUrl1();
 			}
-			else if(strncmp(&pFormatString[i],"URL2",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("URL2"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Wma.GetUrl2();
@@ -1238,7 +1237,7 @@ CString CShellExt::GetInfoTip_wma()
 
 CString CShellExt::GetInfoTip_m3u()
 {
-	CString strInfoTip = "";
+	CString strInfoTip = _T("");
 	CString strTmp;
 	int line = 0;
 	int i = 0;
@@ -1248,13 +1247,13 @@ CString CShellExt::GetInfoTip_m3u()
 		{
 			break;
 		}
-		if(strncmp((char *)(LPCSTR )strTmp,"#",1) == 0)
+		if(_tcsncmp((LPCTSTR )strTmp,_T("#"),1) == 0)
 		{
 			continue;
 		}
 		if(line)
 		{
-			strInfoTip += "\n";
+			strInfoTip += _T("\n");
 		}
 		strInfoTip += strTmp;
 		line++;
@@ -1262,7 +1261,7 @@ CString CShellExt::GetInfoTip_m3u()
 	if(line == M3U_INFOTIP_MAX_LINE)
 	{
 		strTmp.LoadString(IDS_INFOTIP_MAXLINE_OVER);
-		strInfoTip += "\n";
+		strInfoTip += _T("\n");
 		strInfoTip += strTmp;
 	}
 	
@@ -1272,8 +1271,8 @@ CString CShellExt::GetInfoTip_m3u()
 CString CShellExt::GetInfoTip_ogg()
 {
 	CString strTmp;
-	CString strInfoTip = "";
-	const char *pFormatString = m_strOggInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strOggInfoTipFormat;
 
 	for(int i=0; i<m_strOggInfoTipFormat.GetLength(); i++)
 	{
@@ -1304,98 +1303,98 @@ CString CShellExt::GetInfoTip_ogg()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Ogg.GetAudioFormatString();
+				strInfoTip += (LPCTSTR )m_Ogg.GetAudioFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Ogg.GetTimeString();
+				strInfoTip += (LPCTSTR )m_Ogg.GetTimeString();
 			}
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("TITLE",0,strTmp);
+				m_Ogg.GetComment(_T("TITLE"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"TRACK",5) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TRACK"),5) == 0)
 			{
 				i += 4;
-				m_Ogg.GetComment("TRACKNUMBER",0,strTmp);
+				m_Ogg.GetComment(_T("TRACKNUMBER"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("ARTIST",0,strTmp);
+				m_Ogg.GetComment(_T("ARTIST"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("ALBUM",0,strTmp);
+				m_Ogg.GetComment(_T("ALBUM"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("COMMENT",0,strTmp);
+				m_Ogg.GetComment(_T("COMMENT"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("DATE",0,strTmp);
+				m_Ogg.GetComment(_T("DATE"),0,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
-				m_Ogg.GetComment("GENRE",0,strTmp);
+				m_Ogg.GetComment(_T("GENRE"),0,strTmp);
 				strInfoTip += strTmp;
 			}
 		}
@@ -1410,8 +1409,8 @@ CString CShellExt::GetInfoTip_ogg()
 CString CShellExt::GetInfoTip_ape()
 {
 	CString strTmp;
-	CString strInfoTip = "";
-	const char *pFormatString = m_strApeInfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strApeInfoTipFormat;
 
 	for(int i=0; i<m_strApeInfoTipFormat.GetLength(); i++)
 	{
@@ -1442,95 +1441,95 @@ CString CShellExt::GetInfoTip_ape()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Monkeys.GetAudioFormatString();
+				strInfoTip += (LPCTSTR )m_Monkeys.GetAudioFormatString();
 			}
-			else if(strncmp(&pFormatString[i],"TIME",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Monkeys.GetTimeString();
+				strInfoTip += (LPCTSTR )m_Monkeys.GetTimeString();
 			}
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"TRACK",5) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TRACK"),5) == 0)
 			{
 				i += 4;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TRACK,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_YEAR,strTmp);
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_GENRE,strTmp);
@@ -1548,8 +1547,8 @@ CString CShellExt::GetInfoTip_ape()
 CString CShellExt::GetInfoTip_mp4()
 {
 	CString strTmp;
-	CString strInfoTip = "";
-	const char *pFormatString = m_strMp4InfoTipFormat;
+	CString strInfoTip = _T("");
+	LPCTSTR pFormatString = m_strMp4InfoTipFormat;
 
 	for(int i=0; i<m_strMp4InfoTipFormat.GetLength(); i++)
 	{
@@ -1580,89 +1579,89 @@ CString CShellExt::GetInfoTip_mp4()
 			{
 				strInfoTip += '\t';
 			}
-			else if(strncmp(&pFormatString[i],"FILE",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getFileName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"FEXT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("FEXT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getExtName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"PATH",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("PATH"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += getPathName(m_strSelectFile);
 			}
-			else if(strncmp(&pFormatString[i],"SIZ1",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZ1"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",m_i64FileSize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),m_i64FileSize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZK",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"SIZM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
 				i += 3;
 				CString strSize;
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-				strSize.Format("%I64u",fsize);
-				strInfoTip += divString((char *)(LPCSTR )strSize,',',3);
+				strSize.Format(_T("%I64u"),fsize);
+				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
 			}
-			else if(strncmp(&pFormatString[i],"AFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Mp4.GetAudioInfoString();
+				strInfoTip += (LPCTSTR )m_Mp4.GetAudioInfoString();
 			}
-			else if(strncmp(&pFormatString[i],"VFMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCSTR )m_Mp4.GetVideoInfoString();
+				strInfoTip += (LPCTSTR )m_Mp4.GetVideoInfoString();
 			}
-			else if(strncmp(&pFormatString[i],"INAM",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Name();
 			}
-			else if(strncmp(&pFormatString[i],"IART",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Artist();
 			}
-			else if(strncmp(&pFormatString[i],"IPRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IPRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Album();
 			}
-			else if(strncmp(&pFormatString[i],"IGRP",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGRP"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Group();
 			}
-			else if(strncmp(&pFormatString[i],"COMPOSER",8) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("COMPOSER"),8) == 0)
 			{
 				i += 7;
 				strInfoTip += m_Mp4.GetMetadata_Composer();
 			}
-			else if(strncmp(&pFormatString[i],"IGNR",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("IGNR"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Genre();
 			}
-			else if(strncmp(&pFormatString[i],"TRACK",5) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TRACK"),5) == 0)
 			{
 				i += 4;
 				int trk1 = m_Mp4.GetMetadata_Track1();
@@ -1685,7 +1684,7 @@ CString CShellExt::GetInfoTip_mp4()
 					strInfoTip += strTmp;
 				}
 			}
-			else if(strncmp(&pFormatString[i],"DISC",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("DISC"),4) == 0)
 			{
 				i += 3;
 				int dsc1 = m_Mp4.GetMetadata_Disc1();
@@ -1708,18 +1707,18 @@ CString CShellExt::GetInfoTip_mp4()
 					strInfoTip += strTmp;
 				}
 			}
-			else if(strncmp(&pFormatString[i],"BPM",3) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("BPM"),3) == 0)
 			{
 				i += 2;
 				strTmp.Format(_T("%d"),m_Mp4.GetMetadata_Tempo());
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICRD",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICRD"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Year();
 			}
-			else if(strncmp(&pFormatString[i],"COMPILATION",11) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("COMPILATION"),11) == 0)
 			{
 				i += 10;
 				int compilation = m_Mp4.GetMetadata_Compilation();
@@ -1733,12 +1732,12 @@ CString CShellExt::GetInfoTip_mp4()
 				}
 				strInfoTip += strTmp;
 			}
-			else if(strncmp(&pFormatString[i],"ICMT",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Comment();
 			}
-			else if(strncmp(&pFormatString[i],"TOOL",4) == 0)
+			else if(_tcsncmp(&pFormatString[i],_T("TOOL"),4) == 0)
 			{
 				i += 3;
 				strInfoTip += m_Mp4.GetMetadata_Tool();
@@ -1755,7 +1754,7 @@ CString CShellExt::GetInfoTip_mp4()
 STDMETHODIMP CShellExt::GetInfoFlags(LPDWORD pdwFlags)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetInfoFlags()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetInfoFlags()\n"),APP_NAME);
 
 	return E_NOTIMPL;
 }

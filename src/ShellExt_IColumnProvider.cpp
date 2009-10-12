@@ -1,11 +1,12 @@
 #include "StdAfx.h"
 #include "mp3infp.h"
+#include "GlobalCommand.h"
 
 //IColumnProvider Methods
 STDMETHODIMP CShellExt::Initialize(LPCSHCOLUMNINIT psci)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::Initialize(2) fldr=%S\n",APP_NAME,psci->wszFolder);
+	TRACE(_T("[%s]CShellExt::Initialize(2) fldr=%S\n"),APP_NAME,psci->wszFolder);
 
 	return S_OK;
 }
@@ -76,24 +77,24 @@ COLUMN_INFO cf[] = {
 STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex,SHCOLUMNINFO *psci)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetColumnInfo()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetColumnInfo()\n"),APP_NAME);
 
 	if(!m_bColumn_8_3 && (dwIndex >= IDX_NORMAL))
 	{
-		TRACE("[%s]CShellExt::GetColumnInfo() - dwIndex=%d,return=S_FALSE\n",APP_NAME,dwIndex);
+		TRACE(_T("[%s]CShellExt::GetColumnInfo() - dwIndex=%d,return=S_FALSE\n"),APP_NAME,dwIndex);
 		return S_FALSE;
 	}
 	if(dwIndex >= IDX_MAX)
 	{
-		TRACE("[%s]CShellExt::GetColumnInfo() - dwIndex=%d,return=S_FALSE\n",APP_NAME,dwIndex);
+		TRACE(_T("[%s]CShellExt::GetColumnInfo() - dwIndex=%d,return=S_FALSE\n"),APP_NAME,dwIndex);
 		return S_FALSE;
 	}
 
-	char szTitle[100];
-	char szDescription[100];
+	TCHAR szTitle[100];
+	TCHAR szDescription[100];
 
-	strcpy(szTitle,"");
-	strcpy(szDescription,"");
+	lstrcpy(szTitle,_T(""));
+	lstrcpy(szDescription,_T(""));
 
 	psci->scid.fmtid = CLSID_ShellExt;
 
@@ -102,10 +103,10 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex,SHCOLUMNINFO *psci)
 	psci->fmt		= cf[dwIndex].fmt;
 	psci->cChars	= cf[dwIndex].cChars;
 	psci->csFlags	= cf[dwIndex].csFlags | SHCOLSTATE_SLOW | SHCOLSTATE_SECONDARYUI;
-	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwTitleId,szTitle,sizeof(szTitle));
-	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwDescriptionId,szDescription,sizeof(szDescription));
-	MultiByteToWideChar(CP_ACP,0,szTitle,-1,psci->wszTitle,MAX_COLUMN_NAME_LEN);
-	MultiByteToWideChar(CP_ACP,0,szDescription,-1,psci->wszDescription,MAX_COLUMN_DESC_LEN);
+	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwTitleId,szTitle,sizeof_array(szTitle));
+	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwDescriptionId,szDescription,sizeof_array(szDescription));
+	TstrToData(szTitle, -1, (char *)psci->wszTitle, MAX_COLUMN_NAME_LEN*sizeof(WCHAR), DTC_CODE_UTF16LE);
+	TstrToData(szDescription, -1, (char *)psci->wszDescription, MAX_COLUMN_DESC_LEN*sizeof(WCHAR), DTC_CODE_UTF16LE);
 
 	return S_OK;
 }
@@ -113,21 +114,14 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex,SHCOLUMNINFO *psci)
 STDMETHODIMP CShellExt::GetItemData(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT *pvarData)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetItemData()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetItemData()\n"),APP_NAME);
 
 	if(pscid->fmtid != CLSID_ShellExt)
 	{
 		return S_FALSE;
 	}
 
-	//ファイル名を取得(unicode->ansi)
-	char szFileName[MAX_PATH];
-	if(!WideCharToMultiByte(CP_ACP,0,pscd->wszFile,-1,szFileName,MAX_PATH,NULL,NULL))
-	{
-		return S_FALSE;
-	}
-
-	m_strSelectFile = szFileName;
+	m_strSelectFile = pscd->wszFile;
 	if(GetItemData_all(pscid,pscd,pvarData))
 		return S_OK;
 
@@ -183,7 +177,7 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_SIZE_BYTE://サイズ(バイト単位)
 		if(pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
-			strVal = "<DIR>";
+			strVal = _T("<DIR>");
 		}
 		else
 		{
@@ -196,22 +190,22 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 				// ソート可能にするため、すべてのサイズを20桁になるように頭にスペースを入れる
 				CString strSize;
 				CString strSize2;
-				strSize.Format("%I64u",(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
-//				strVal.Format("%I64u",(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
-				strSize2 = divString((char *)(LPCSTR )strSize,',',3);
-				strVal = "";
+				strSize.Format(_T("%I64u"),(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
+//				strVal.Format(_T("%I64u"),(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
+				strSize2 = divString((LPTSTR)(LPCTSTR )strSize,',',3);
+				strVal = _T("");
 				for(int i=0; i<26-strSize2.GetLength(); i++)
 				{
-					strVal += " ";
+					strVal += _T(" ");
 				}
-				strVal += strSize2/* + " bytes"*/;
+				strVal += strSize2/* + _T(" bytes")*/;
 			}
 		}
 		break;
 	case IDX_8_3://8.3形式
 		{
-			char szBuff[MAX_PATH];
-			if(GetShortPathName(m_strSelectFile,szBuff,sizeof(szBuff)))
+			TCHAR szBuff[MAX_PATH];
+			if(GetShortPathName(m_strSelectFile,szBuff,sizeof_array(szBuff)))
 			{
 				strVal = getFileName(szBuff);
 			}
@@ -226,11 +220,11 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	default:
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -326,42 +320,42 @@ BOOL CShellExt::GetItemData_mp3(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 			strVal = m_Id3tagv1.GetTrackNo();
 		break;
 	case IDX_MP3TAG://タグ種別
-		strVal = "";
+		strVal = _T("");
 		if(m_Id3tagv1.IsEnable())
 		{
 			if(m_Id3tagv1.GetTrackNo().GetLength())
 			{
-				strVal += "ID3v1.1 ";
+				strVal += _T("ID3v1.1 ");
 			}
 			else
 			{
-				strVal += "ID3v1.0 ";
+				strVal += _T("ID3v1.0 ");
 			}
 		}
 		if(m_Id3tagv2.IsEnable())
 		{
 			WORD wVer = m_Id3tagv2.GetVer();
 			CString strVer;
-			strVer.Format("ID3v2.%d ",(wVer&0xff00)>>8);
+			strVer.Format(_T("ID3v2.%d "),(wVer&0xff00)>>8);
 			strVal += strVer;
 		}
 		if(m_Ape.IsEnable())
 		{
 			CString strVer;
-			strVer.Format("ApeTagV%.0f ",double(m_Ape.GetApeVersion())/1000);
+			strVer.Format(_T("ApeTagV%.0f "),double(m_Ape.GetApeVersion())/1000);
 			strVal += strVer;
 		}
 		if(m_Rmp3.IsEnable())
-			strVal += "RiffSIF";
+			strVal += _T("RiffSIF");
 		break;
 	default:
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -409,7 +403,7 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		strVal = m_RiffSIF.GetField('I','C','R','D');
 		break;
 	case IDX_AFMT:	//音声フォーマット
-		GetWaveAudioFormat((LPCSTR )m_strSelectFile,
+		GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
 			m_RiffSIF.GetStreamSize(),
 			strFormat,
 			strTime,
@@ -418,7 +412,7 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		break;
 //	case IDX_VFMT:	//映像フォーマット
 	case IDX_TIME:	//時間
-		GetWaveAudioFormat((LPCSTR )m_strSelectFile,
+		GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
 			m_RiffSIF.GetStreamSize(),
 			strFormat,
 			strTime,
@@ -433,11 +427,11 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		//ISFT ソフトウェア
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -491,7 +485,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//「なし」
 		if(strAudioFormat.GetLength() == 0)
 		{
-			GetAviFormat((LPCSTR )m_strSelectFile,
+			GetAviFormat((LPCTSTR )m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -504,7 +498,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_VFMT:	//映像フォーマット
 		if(strVideoFormat.GetLength() == 0)
 		{
-			GetAviFormat((LPCSTR )m_strSelectFile,
+			GetAviFormat((LPCTSTR )m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -513,13 +507,13 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 							m_iAviCodecFind);
 		}
 		strVal = strVideoFormat;
-		strVal += ", ";
+		strVal += _T(", ");
 		strVal += strStreamFormat;
 		break;
 	case IDX_TIME:	//時間
 		if(strTime.GetLength() == 0)
 		{
-			GetAviFormat((LPCSTR )m_strSelectFile,
+			GetAviFormat((LPCTSTR )m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -532,7 +526,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_AVI_VER:	//AVIバージョン
 		if(strTime.GetLength() == 0)
 		{
-			GetAviFormat((LPCSTR )m_strSelectFile,
+			GetAviFormat((LPCTSTR )m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -540,7 +534,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 							bAvi2,
 							m_iAviCodecFind);
 		}
-		strVal = bAvi2?"AVI 2.0 (OpenDML)":"AVI 1.0 (VfW)";
+		strVal = bAvi2?_T("AVI 2.0 (OpenDML)"):_T("AVI 1.0 (VfW)");
 		break;
 //	case IDX_TRACK://トラック
 	default:
@@ -550,11 +544,11 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//ISFT ソフトウェア
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -595,11 +589,11 @@ BOOL CShellExt::GetItemData_vqf(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	default:
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -613,7 +607,7 @@ BOOL CShellExt::GetItemData_wma(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	CString strAudioFormat;
 	CString strVideoFormat;
 	CString strTime;
-TRACE("CShellExt::GetItemData_wma(\n");
+TRACE(_T("CShellExt::GetItemData_wma(\n"));
 	if(pscd->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 	{
 		return FALSE;
@@ -659,11 +653,11 @@ TRACE("CShellExt::GetItemData_wma(\n");
 		//著作権
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -686,22 +680,22 @@ BOOL CShellExt::GetItemData_ogg(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	pvarData->vt = VT_BSTR;
 	switch(pscid->pid){
 	case IDX_TITLE:	//タイトル
-		m_Ogg.GetComment("TITLE",0,strVal);
+		m_Ogg.GetComment(_T("TITLE"),0,strVal);
 		break;
 	case IDX_ARTIST:	//アーティスト
-		m_Ogg.GetComment("ARTIST",0,strVal);
+		m_Ogg.GetComment(_T("ARTIST"),0,strVal);
 		break;
 	case IDX_ALBUM:	//アルバム
-		m_Ogg.GetComment("ALBUM",0,strVal);
+		m_Ogg.GetComment(_T("ALBUM"),0,strVal);
 		break;
 	case IDX_COMMENT:	//説明
-		m_Ogg.GetComment("COMMENT",0,strVal);
+		m_Ogg.GetComment(_T("COMMENT"),0,strVal);
 		break;
 	case IDX_GENRE:	//ジャンル
-		m_Ogg.GetComment("GENRE",0,strVal);
+		m_Ogg.GetComment(_T("GENRE"),0,strVal);
 		break;
 	case IDX_YEAR:	//作成日
-		m_Ogg.GetComment("DATE",0,strVal);
+		m_Ogg.GetComment(_T("DATE"),0,strVal);
 		break;
 	case IDX_AFMT:	//音声フォーマット
 		strVal = m_Ogg.GetAudioFormatString();
@@ -711,7 +705,7 @@ BOOL CShellExt::GetItemData_ogg(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		strVal = m_Ogg.GetTimeString();
 		break;
 	case IDX_TRACK://トラック
-		m_Ogg.GetComment("TRACKNUMBER",0,strVal);
+		m_Ogg.GetComment(_T("TRACKNUMBER"),0,strVal);
 		break;
 	default:
 		//URL(album)
@@ -719,11 +713,11 @@ BOOL CShellExt::GetItemData_ogg(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//著作権
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -779,11 +773,11 @@ BOOL CShellExt::GetItemData_ape(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//著作権
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -863,11 +857,11 @@ BOOL CShellExt::GetItemData_mp4(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//ツール
 		return FALSE;
 	}
-	iSize = MultiByteToWideChar(CP_ACP,0,strVal,-1,0,0);
+	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!MultiByteToWideChar(CP_ACP,0,strVal,-1,pvarData->bstrVal,iSize))
+	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;

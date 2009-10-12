@@ -63,25 +63,25 @@ UINT CALLBACK CShellExt::PageCallback_ape(HWND hWnd,UINT uMessage,LPPROPSHEETPAG
 
 static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SBJ),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRK),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRK),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_TRK),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TRK),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_PRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_PRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GNR),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_GNR),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
 	if(bEnable)
@@ -106,11 +106,11 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	strFormat = lpcs->m_Monkeys.GetFormatInfoString();
 	if(lpcs->m_Ape.IsEnable())
 	{
-		strFormat.Format("%sTag: APE Tag v%.0f",lpcs->m_Monkeys.GetFormatInfoString(),double(lpcs->m_Ape.GetApeVersion())/1000);
+		strFormat.Format(_T("%sTag: APE Tag v%.0f"),lpcs->m_Monkeys.GetFormatInfoString(),double(lpcs->m_Ape.GetApeVersion())/1000);
 	}
 	else
 	{
-		strFormat.Format("%sTag: n/a",lpcs->m_Monkeys.GetFormatInfoString());
+		strFormat.Format(_T("%sTag: n/a"),lpcs->m_Monkeys.GetFormatInfoString());
 	}
 	SetDlgItemText(hDlg,IDC_STATIC_FORMAT_INFO,strFormat);
 	SetDlgItemText(hDlg,IDC_STATIC_AUDIO_INFO,lpcs->m_Monkeys.GetAudioInfoString());
@@ -197,7 +197,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )""	//空白
+					(LPARAM )(LPCTSTR )_T("")	//空白
 				);
 			for(int i=0; i<256; i++)
 			{
@@ -206,7 +206,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 							GetDlgItem(hDlg,IDC_EDIT_GNR),
 							CB_ADDSTRING,
 							0,
-							(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
+							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
 						);
 			}
 			//オーナードローボタンの初期化
@@ -361,7 +361,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -397,13 +397,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,9",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,9"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -415,11 +415,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -430,7 +430,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			//保存
 			if(lpcs->m_bApply)
 			{
-				TRACE("WM_NOTIFY(PSN_APPLY) - 保存\n");
+				TRACE(_T("WM_NOTIFY(PSN_APPLY) - 保存\n"));
 				//ファイルが書き込み可能か調べる
 				if(GetFileAttributes(lpcs->m_strSelectFile) & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_READONLY))
 				{

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "M3u.h"
+#include "GlobalCommand.h"
 
 //////////////////////////////////////////////////////////////////////
 // ç\íz/è¡ñ≈
@@ -25,7 +26,7 @@ void CM3u::Release()
 	m_strLines.RemoveAll();
 }
 
-DWORD CM3u::Load(const char *szFileName)
+DWORD CM3u::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
@@ -48,7 +49,7 @@ DWORD CM3u::Load(const char *szFileName)
 	char buf[1024*64];
 	DWORD ptr;
 	DWORD dwReadSize;
-	CString str = "";
+	CString str = _T("");
 	while(ReadFile(hFile,buf,sizeof(buf),&dwReadSize,NULL) && (dwReadSize != 0))
 	{
 		ptr = 0;
@@ -62,7 +63,7 @@ DWORD CM3u::Load(const char *szFileName)
 				else
 				{
 					m_strLines.Add(str);	//1çsí«â¡
-					str = "";
+					str = _T("");
 				}
 				ptr++;
 				continue;
@@ -83,7 +84,7 @@ DWORD CM3u::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CM3u::Save(const char *szFileName)
+DWORD CM3u::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
@@ -114,11 +115,16 @@ DWORD CM3u::Save(const char *szFileName)
 	for(int i=0; i<=m_strLines.GetUpperBound(); i++)
 	{
 		str = m_strLines.GetAt(i);
-		str += "\r\n";
-		if(!WriteFile(hFile,(char *)(LPCSTR )str,str.GetLength(),&dwWritten,NULL))
-		{
-			dwWin32errorCode = GetLastError();
-			break;
+		str += _T("\r\n");
+		int size;
+		char *buf = TstrToDataAlloc(str, str.GetLength(), &size, DTC_CODE_ANSI);
+		if (buf != NULL) {
+			int ret = WriteFile(hFile,buf,size,&dwWritten,NULL);
+			free(buf);
+			if (!ret) {
+				dwWin32errorCode = GetLastError();
+				break;
+			}
 		}
 	}
 	CloseHandle(hFile);
@@ -126,7 +132,7 @@ DWORD CM3u::Save(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-BOOL CM3u::Add(char *szLine)
+BOOL CM3u::Add(LPCTSTR szLine)
 {
 	m_strLines.Add(CString(szLine));
 

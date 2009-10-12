@@ -32,10 +32,10 @@ void CTag_OpenDML::Release()
 	m_fields.clear();
 }
 
-BOOL CTag_OpenDML::SetField(char id1,char id2,char id3,char id4,const char *szData)
+BOOL CTag_OpenDML::SetField(char id1,char id2,char id3,char id4,LPCTSTR szData)
 {
 	m_fields.erase(mmioFOURCC(id1,id2,id3,id4));
-	if(strlen(szData))
+	if(lstrlen(szData))
 	{
 		m_fields.insert(pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
 	}
@@ -48,9 +48,9 @@ CString CTag_OpenDML::GetField(char id1,char id2,char id3,char id4)
 	p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
-		return "";
+		return _T("");
 	}
-	return (LPCSTR )p->second;
+	return (LPCTSTR )p->second;
 }
 
 DWORD CTag_OpenDML::GetTotalFieldSize()
@@ -164,7 +164,7 @@ DWORD CTag_OpenDML::FindJUNK_LISTINFO(HANDLE hFile,__int64 llFileSize)
 			}
 			break;
 		}
-		TRACE("%c%c%c%c %c%c%c%c %I64u(%lu)\n",
+		TRACE(_T("%c%c%c%c %c%c%c%c %I64u(%lu)\n"),
 			(((char *)(&id))[0]),(((char *)(&id))[1]),(((char *)(&id))[2]),(((char *)(&id))[3]),
 			(((char *)(&fType))[0]),(((char *)(&fType))[1]),(((char *)(&fType))[2]),(((char *)(&fType))[3]),
 			llChunkHead,dwSize
@@ -271,7 +271,7 @@ BOOL CTag_OpenDML::FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC ty
 			}
 			break;
 		}
-		TRACE("%c%c%c%c %c%c%c%c %I64u(%lu)\n",
+		TRACE(_T("%c%c%c%c %c%c%c%c %I64u(%lu)\n"),
 			(((char *)(&id))[0]),(((char *)(&id))[1]),(((char *)(&id))[2]),(((char *)(&id))[3]),
 			(((char *)(&fType))[0]),(((char *)(&fType))[1]),(((char *)(&fType))[2]),(((char *)(&fType))[3]),
 			llChunkHead,dwSize
@@ -321,7 +321,7 @@ __int64 CTag_OpenDML::SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWO
 /*
 	ret:	-1 = ロード失敗
 */
-DWORD CTag_OpenDML::Load(const char *szFileName,char id1,char id2,char id3,char id4)
+DWORD CTag_OpenDML::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
@@ -386,8 +386,8 @@ DWORD CTag_OpenDML::Load(const char *szFileName,char id1,char id2,char id3,char 
 		goto exit;
 	}
 	m_bEnable = TRUE;
-OutputDebugString("CTag_OpenDML::Load m_bEnable = TRUE\n");
-	TRACE("%s Len=%I64d(%08I64x) RiffLen=%lu(%08x)\n",szFileName,llFileSize,llFileSize,dwRiffAviSize,dwRiffAviSize);
+OutputDebugString(_T("CTag_OpenDML::Load m_bEnable = TRUE\n"));
+	TRACE(_T("%s Len=%I64d(%08I64x) RiffLen=%lu(%08x)\n"),szFileName,llFileSize,llFileSize,dwRiffAviSize,dwRiffAviSize);
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//LIST-INFOを検索(見つからないときはRiff論理終端に移動)
@@ -474,7 +474,7 @@ DWORD CTag_OpenDML::Save_1(HANDLE hFile)
 	ret:	-1 = 更新失敗
 			-2 = Avi2のため更新できず（avi2でriff-avixの書き換えは未実装なため）
 */
-DWORD CTag_OpenDML::Save(HWND hWnd,const char *szFileName)
+DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
@@ -549,7 +549,7 @@ DWORD CTag_OpenDML::Save(HWND hWnd,const char *szFileName)
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// LIST-INFOを押し込めるスペースを計算
 	dwLargeJunkSize = FindJUNK_LISTINFO(hFile,(__int64 )dwRiffAviSize);
-		TRACE("FindJUNK_LISTINFO=%d\n",dwLargeJunkSize);
+		TRACE(_T("FindJUNK_LISTINFO=%d\n"),dwLargeJunkSize);
 
 	// 付加するLIST-INFOのサイズを計算
 	dwInfoSize = GetInfoChunkSize();
@@ -643,7 +643,8 @@ DWORD CTag_OpenDML::Save(HWND hWnd,const char *szFileName)
 					{
 						if(m_strJunkHeader.GetLength() > i)
 						{
-							WriteFile(hFile,((char *)(LPCSTR )m_strJunkHeader)+i,1,&dwRet,NULL);
+							char c = (char)m_strJunkHeader[i];	// QQQ ANSI文字のみ対応
+							WriteFile(hFile,&c,1,&dwRet,NULL);
 						}
 						else
 						{
@@ -720,27 +721,28 @@ DWORD CTag_OpenDML::Save(HWND hWnd,const char *szFileName)
 
 	//////////////////////////////////////
 	// 残りスペースをJUNKで埋める
-		TRACE("dwLargeJunkSize=%d\n",dwLargeJunkSize);
-		TRACE("dwInfoSize=%d\n",dwInfoSize);
+		TRACE(_T("dwLargeJunkSize=%d\n"),dwLargeJunkSize);
+		TRACE(_T("dwInfoSize=%d\n"),dwInfoSize);
 	if(dwLargeJunkSize >= (dwInfoSize+8/*JUNK____*/))
 	{
 		dwSize = dwLargeJunkSize-dwInfoSize-8;
 		id = mmioFOURCC('J','U','N','K');
 		WriteFile(hFile,&id,sizeof(id),&dwRet,NULL);
 		WriteFile(hFile,&dwSize,sizeof(dwSize),&dwRet,NULL);
-		TRACE("Start dwSize=%d\n",dwSize);
+		TRACE(_T("Start dwSize=%d\n"),dwSize);
 		for(i=0; i<dwSize; i++)
 		{
 			if(m_strJunkHeader.GetLength() > i)
 			{
-				WriteFile(hFile,((char *)(LPCSTR )m_strJunkHeader)+i,1,&dwRet,NULL);
+				char c = (char)m_strJunkHeader[i];	// QQQ ANSI文字のみ対応
+				WriteFile(hFile,&c,1,&dwRet,NULL);
 			}
 			else
 			{
 				WriteFile(hFile,"",1,&dwRet,NULL);
 			}
 		}
-		TRACE("End dwSize=%d\n",dwSize);
+		TRACE(_T("End dwSize=%d\n"),dwSize);
 	}
 
 exit:

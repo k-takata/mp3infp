@@ -1,0 +1,61 @@
+; mp3infp.def : DLL 用のモジュール パラメータ宣言
+
+LIBRARY      "mp3infp"
+;DESCRIPTION  'mp3infp Windows Dynamic Link Library'
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+	DllCanUnloadNow private
+	DllGetClassObject private
+	DllRegisterServer private
+	DllUnregisterServer private
+
+	mp3infp_GetVer
+;	mp3infp_ViewProp
+;	mp3infp_ViewPropA
+	mp3infp_ViewPropW
+;	mp3infp_ViewPropEx
+;	mp3infp_ViewPropExA
+	mp3infp_ViewPropExW
+;	mp3infp_Load
+;	mp3infp_LoadA
+	mp3infp_LoadW
+	mp3infp_GetType
+;	mp3infp_GetValue
+;	mp3infp_GetValueA
+	mp3infp_GetValueW
+	mp3infp_mp3_GetTagType
+;	mp3infp_SetConf
+;	mp3infp_SetConfA
+	mp3infp_SetConfW
+;	mp3infp_SetValue
+;	mp3infp_SetValueA
+	mp3infp_SetValueW
+;	mp3infp_Save
+;	mp3infp_SaveA
+	mp3infp_SaveW
+;	mp3infp_mp3_MakeId3v1
+;	mp3infp_mp3_MakeId3v1A
+	mp3infp_mp3_MakeId3v1W
+;	mp3infp_mp3_DelId3v1
+;	mp3infp_mp3_DelId3v1A
+	mp3infp_mp3_DelId3v1W
+;	mp3infp_mp3_MakeId3v2
+;	mp3infp_mp3_MakeId3v2A
+	mp3infp_mp3_MakeId3v2W
+;	mp3infp_mp3_DelId3v2
+;	mp3infp_mp3_DelId3v2A
+	mp3infp_mp3_DelId3v2W
+;	mp3infp_mp3_MakeRMP
+;	mp3infp_mp3_MakeRMPA
+	mp3infp_mp3_MakeRMPW
+;	mp3infp_mp3_DelRMP
+;	mp3infp_mp3_DelRMPA
+	mp3infp_mp3_DelRMPW
+;	mp3infp_mp3_MakeApeTag
+;	mp3infp_mp3_MakeApeTagA
+	mp3infp_mp3_MakeApeTagW
+;	mp3infp_mp3_DelApeTag
+;	mp3infp_mp3_DelApeTagA
+	mp3infp_mp3_DelApeTagW
+	

@@ -3,12 +3,12 @@
 
 
 BOOL findVideoCodecName1(CString &strVideoFormat,DWORD biCompression,DWORD fccHeader);
-void GetWaveAudioFormat(IN const char *szFileName,
+void GetWaveAudioFormat(IN LPCTSTR szFileName,
 						IN DWORD dwStreamSize,
 						OUT CString &strFormat,
 						OUT CString &strTime,
 						IN int iWaveCodecFind);
-void GetAviFormat(IN const char *szFileName,
+void GetAviFormat(IN LPCTSTR szFileName,
 						OUT CString &strAudioFormat,
 						OUT CString &strVideoFormat,
 						OUT CString &strStreamFormat,
@@ -16,12 +16,12 @@ void GetAviFormat(IN const char *szFileName,
 						OUT BOOL &bAvi2,
 						IN int iAviCodecFind);
 
-void PlayWinamp(HWND hWnd,char *szPlayFile);
+void PlayWinamp(HWND hWnd,LPCTSTR szPlayFile);
 void PauseWinamp();
 void StopWinamp();
 void Rew5Winamp();
 void Ffw5Winamp();
-int IsPlayingWinamp(char *szFileName);
+int IsPlayingWinamp(LPCTSTR szFileName);
 int GetPosWinamp();
 void SetPosWinamp(int pos);
 CString GetPlayingFilenameWinamp();

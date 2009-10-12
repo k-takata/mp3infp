@@ -28,10 +28,10 @@ void CRiffSIF::Release()
 	m_fields.clear();
 }
 
-BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4,const char *szData)
+BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4,LPCTSTR szData)
 {
 	m_fields.erase(mmioFOURCC(id1,id2,id3,id4));
-	if(strlen(szData))
+	if(lstrlen(szData))
 	{
 		m_fields.insert(pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
 	}
@@ -44,9 +44,9 @@ CString CRiffSIF::GetField(char id1,char id2,char id3,char id4)
 	p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
-		return "";
+		return _T("");
 	}
-	return (LPCSTR )p->second;
+	return p->second;
 }
 
 DWORD CRiffSIF::GetTotalFieldSize()
@@ -143,7 +143,7 @@ BOOL CRiffSIF::FindChunk(HANDLE hFile,DWORD dwFileSize,UINT flag,FOURCC type,DWO
 			}
 			break;
 		}
-		TRACE("%c%c%c%c %c%c%c%c %lu(%lu)\n",
+		TRACE(_T("%c%c%c%c %c%c%c%c %lu(%lu)\n"),
 			(((char *)(&id))[0]),(((char *)(&id))[1]),(((char *)(&id))[2]),(((char *)(&id))[3]),
 			(((char *)(&fType))[0]),(((char *)(&fType))[1]),(((char *)(&fType))[2]),(((char *)(&fType))[3]),
 			dwChunkHead,dwSize
@@ -194,7 +194,7 @@ DWORD CRiffSIF::GetInfoChunkSize()
 	ret:	-1 = ロード失敗
 			-2 = ファイルサイズが2Gを超過している
 */
-DWORD CRiffSIF::Load(const char *szFileName,char id1,char id2,char id3,char id4)
+DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;
@@ -344,7 +344,7 @@ exit:
 	ret:	-1 = 更新失敗
 			-2 = ファイルサイズが2Gを超過している
 */
-DWORD CRiffSIF::Save(HWND hWnd,const char *szFileName)
+DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;

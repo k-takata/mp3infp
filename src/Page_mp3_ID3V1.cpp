@@ -84,25 +84,25 @@ static void EnableButton(HWND hDlg,CShellExt *lpcs)
 
 static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_NAM),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_TRACK),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TRACK),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_PRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_PRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GNR),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_GNR),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
 	if(bEnable)
@@ -112,7 +112,7 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
-		tcItem.pszText = "ID3v1";
+		tcItem.pszText = _T("ID3v1");
 		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),(LPARAM )&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
@@ -123,7 +123,7 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
-		tcItem.pszText = "ID3v1(*)";
+		tcItem.pszText = _T("ID3v1(*)");
 		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),(LPARAM )&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
@@ -158,7 +158,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_SELECTSTRING,
 					0,
-					(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GetGenre()
+					(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GetGenre()
 				);
 		lpcs->m_bId3v1Apply = FALSE;
 	}
@@ -347,7 +347,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )""	//空白
+					(LPARAM )(LPCTSTR )_T("")	//空白
 				);
 			for(int i=0; i<256; i++)
 			{
@@ -356,7 +356,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 							GetDlgItem(hDlg,IDC_EDIT_GNR),
 							CB_ADDSTRING,
 							0,
-							(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
+							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
 						);
 			}
 			//オーナードローボタンの初期化
@@ -365,7 +365,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			MapDialogRect(hDlg,&rect);
 			SetWindowPos(GetDlgItem(hDlg,IDC_BUTTON_REW),NULL,rect.left+25*0,rect.top,23,23,SWP_NOZORDER | SWP_SHOWWINDOW);
 			GetWindowRect(GetDlgItem(hDlg,IDC_STATIC_WINAMP),&rect2);
-			TRACE("GetDlgItem(rect.left,rect.top,rect.bottom,rect.right)=%d,%d,%d,%d\n",rect2.left,rect2.top,rect2.bottom,rect2.right);
+			TRACE(_T("GetDlgItem(rect.left,rect.top,rect.bottom,rect.right)=%d,%d,%d,%d\n"),rect2.left,rect2.top,rect2.bottom,rect2.right);
 			SetWindowPos(GetDlgItem(hDlg,IDC_BUTTON_PLAY),NULL,rect.left+25*1,rect.top,23,23,SWP_NOZORDER | SWP_SHOWWINDOW);
 			SetWindowPos(GetDlgItem(hDlg,IDC_BUTTON_PAUSE),NULL,rect.left+25*2,rect.top,23,23,SWP_NOZORDER | SWP_SHOWWINDOW);
 			SetWindowPos(GetDlgItem(hDlg,IDC_BUTTON_STOP),NULL,rect.left+25*3,rect.top,23,23,SWP_NOZORDER | SWP_SHOWWINDOW);
@@ -454,7 +454,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				wnd.Attach(GetDlgItem(hDlg,LOWORD(wParam)));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				int len = strlen(strTmp);
+				int len = lstrlen(strTmp);
 				if(lpcs->m_Id3tagv1.GetTrackNo().IsEmpty())
 				{
 					if(id3maxline < len)
@@ -491,7 +491,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			}
 			break;
 		case IDC_EDIT_TRACK:
-			SetWindowText(GetDlgItem(hDlg,IDC_STATIC_ID3GUIDE),"");
+			SetWindowText(GetDlgItem(hDlg,IDC_STATIC_ID3GUIDE),_T(""));
 			if( (HIWORD(wParam) == EN_CHANGE) &&
 				(IsWindowEnabled((HWND )lParam)) )
 			{
@@ -500,7 +500,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			}
 			break;
 		case IDC_EDIT_GNR:
-			SetWindowText(GetDlgItem(hDlg,IDC_STATIC_ID3GUIDE),"");
+			SetWindowText(GetDlgItem(hDlg,IDC_STATIC_ID3GUIDE),_T(""));
 			if( ((HIWORD(wParam) == CBN_SELENDOK) || (HIWORD(wParam) == CBN_EDITCHANGE)) &&
 				(IsWindowEnabled((HWND )lParam)) )
 			{
@@ -661,13 +661,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 						GetDlgItem(hDlg,IDC_EDIT_GNR),
 						CB_SELECTSTRING,
 						0,
-						(LPARAM )(LPCSTR )lpcs->m_Id3tagv2.GetGenre()
+						(LPARAM )(LPCTSTR )lpcs->m_Id3tagv2.GetGenre()
 					);	//Fix 2001-05-18
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),lpcs->m_Id3tagv2.GetComment());
 			break;
 		case IDC_COPY_FROM_RIFF:
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),lpcs->m_Rmp3.GetNAM());
-			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),"");
+			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),_T(""));
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),lpcs->m_Rmp3.GetART());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),lpcs->m_Rmp3.GetPRD());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),lpcs->m_Rmp3.GetCRD());
@@ -675,13 +675,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 						GetDlgItem(hDlg,IDC_EDIT_GNR),
 						CB_SELECTSTRING,
 						0,
-						(LPARAM )(LPCSTR )lpcs->m_Rmp3.GetGNR()
+						(LPARAM )(LPCTSTR )lpcs->m_Rmp3.GetGNR()
 					);	//Fix 2001-05-18
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),lpcs->m_Rmp3.GetCMT());
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -723,13 +723,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				PostMessage(lpcs->m_hwndRiffSIF,WM_USER+1,0,0);
 			if(lpcs->m_hwndMp3Ape)
 				PostMessage(lpcs->m_hwndMp3Ape,WM_USER+1,0,0);
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,2","",SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,2"),_T(""),SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -741,11 +741,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(GetParent(hDlg),szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(GetParent(hDlg),szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:

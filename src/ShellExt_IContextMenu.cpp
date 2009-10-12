@@ -9,7 +9,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 								UINT uFlags)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::QueryContextMenu()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::QueryContextMenu()\n"),APP_NAME);
 
 	UINT idCmd = idCmdFirst;
 
@@ -70,7 +70,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 				indexMenu++,
 				MF_STRING|MF_BYPOSITION,
 				idCmd++,
-				"mp&3infp");
+				_T("mp&3infp"));
 
 	//Must return number of menu items we added.
 	return ResultFromShort(idCmd-idCmdFirst); 
@@ -79,7 +79,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu,
 STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::InvokeCommand()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::InvokeCommand()\n"),APP_NAME);
 
 	HRESULT hr = E_INVALIDARG;
 
@@ -90,8 +90,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 	switch(LOWORD(lpcmi->lpVerb)){
 	case 0:
 		
-		mp3infp_ViewProp(lpcmi->hwnd,(char *)(LPCSTR )m_strSelectFile,0);
-//		MessageBox(NULL,"mp3infp",0,0);
+		mp3infp_ViewProp(lpcmi->hwnd,(LPCTSTR )m_strSelectFile,0);
+//		MessageBox(NULL,_T("mp3infp"),0,0);
 		break;
 	}
 
@@ -105,7 +105,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 							 UINT cchMax)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::GetCommandString()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::GetCommandString()\n"),APP_NAME);
 
 	CString strTmp;
 
@@ -121,24 +121,30 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 	if(uFlags & GCS_UNICODE)
 	{
 		//unicode
-		UINT len = MultiByteToWideChar(CP_ACP,0,strTmp,-1,(WCHAR *)pszName,0) * 2;
-		if(len > cchMax)
-		{
-			len = cchMax;
+		int len;
+		LPWSTR buf = (LPWSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_UTF16LE);
+		if (buf != NULL) {
+			if(len > cchMax) {
+				len = cchMax;
+			}
+			wcsncpy((LPWSTR)pszName, buf, len-1);
+			((LPWSTR)pszName)[len-1] = L'\0';
+			free(buf);
 		}
-		MultiByteToWideChar(CP_ACP,0,strTmp,-1,(WCHAR *)pszName,len);
-		pszName[len-1] = L'\0';
 	}
 	else
 	{
 		//ansi
-		UINT len = strlen(strTmp)+1;
-		if(len > cchMax)
-		{
-			len = cchMax;
+		int len;
+		LPSTR buf = (LPSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_ANSI);
+		if (buf != NULL) {
+			if(len > cchMax) {
+				len = cchMax;
+			}
+			strncpy(pszName, buf, len-1);
+			pszName[len-1] = '\0';
+			free(buf);
 		}
-		strncpy(pszName,strTmp,len-1);
-		pszName[len-1] = '\0';
 	}
 
 	return NOERROR;

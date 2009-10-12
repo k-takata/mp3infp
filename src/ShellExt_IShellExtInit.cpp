@@ -4,7 +4,7 @@
 BOOL CALLBACK CShellExt::AddPropSheetPageProc(HPROPSHEETPAGE hpage,LPARAM lParam)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::AddPropSheetPageProc()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::AddPropSheetPageProc()\n"),APP_NAME);
 	
 	CShellExt *mod = (CShellExt *)lParam;
 
@@ -16,7 +16,7 @@ BOOL CALLBACK CShellExt::AddPropSheetPageProc(HPROPSHEETPAGE hpage,LPARAM lParam
 void CShellExt::Initialize(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::Initialize(%s)\n",APP_NAME,szFileName);
+	TRACE(_T("[%s]CShellExt::Initialize(%s)\n"),APP_NAME,szFileName);
 	
 	m_tmpPropCount = 0;
 	m_strSelectFile = szFileName;
@@ -27,7 +27,7 @@ void CShellExt::Initialize(LPCTSTR szFileName)
 STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY hKeyID)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::Initialize(1)\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::Initialize(1)\n"),APP_NAME);
 
 	//Initialize can be called more than once
 	if(m_pDataObj)
@@ -64,7 +64,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 	if(cbFiles != 1)
 		return E_FAIL;//ï°êîëIëéûÇÕãpâ∫
 
-	char szFileName[MAX_PATH];
+	TCHAR szFileName[MAX_PATH];
 	DragQueryFile((HDROP)medium.hGlobal, 
 				0, 
 				szFileName,

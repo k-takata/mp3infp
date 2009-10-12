@@ -24,12 +24,12 @@ public:
 	virtual ~CTag_OpenDML();
 	void Release();
 	BOOL IsEnable(){return m_bEnable;};
-	void SetJunkHeader(char *junk){m_strJunkHeader = junk;};
+	void SetJunkHeader(LPCTSTR junk){m_strJunkHeader = junk;};
 	DWORD GetStreamSize(){return m_dwStreamSize;};
-	BOOL SetField(char id1,char id2,char id3,char id4,const char *szData);
+	BOOL SetField(char id1,char id2,char id3,char id4,LPCTSTR szData);
 	CString GetField(char id1,char id2,char id3,char id4);
-	DWORD Load(const char *szFileName,char id1,char id2,char id3,char id4);
-	DWORD Save(HWND hWnd,const char *szFileName);
+	DWORD Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4);
+	DWORD Save(HWND hWnd,LPCTSTR szFileName);
 
 protected:
 	BOOL m_bEnable;

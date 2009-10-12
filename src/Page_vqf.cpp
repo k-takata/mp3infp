@@ -58,30 +58,30 @@ UINT CALLBACK CShellExt::PageCallback_vqf(HWND hWnd,UINT uMessage,LPPROPSHEETPAG
 static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME_),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_NAM),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FILE),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_FILE),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_FILE),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_FILE),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_COP),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_COP),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 }
 
@@ -95,38 +95,22 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		SetDlgItemText(hDlg,IDC_STATIC_FORMAT,lpcs->m_Vqf.GetFormatString());
 		SetDlgItemText(hDlg,IDC_STATIC_TIME,lpcs->m_Vqf.GetTimeString());
 
-		DWORD dwSize;
-		unsigned char *data;
+		CString data;
 		//タイトル
-		data = lpcs->m_Vqf.GetField('N','A','M','E',&dwSize);
-		if(data)
-		{
-			SetDlgItemText(hDlg,IDC_EDIT_NAM,(const char *)data);
-		}
+		data = lpcs->m_Vqf.GetField('N','A','M','E');
+		SetDlgItemText(hDlg,IDC_EDIT_NAM,data);
 		//アーティスト
-		data = lpcs->m_Vqf.GetField('A','U','T','H',&dwSize);
-		if(data)
-		{
-			SetDlgItemText(hDlg,IDC_EDIT_ART,(const char *)data);
-		}
+		data = lpcs->m_Vqf.GetField('A','U','T','H');
+		SetDlgItemText(hDlg,IDC_EDIT_ART,data);
 		//保存名
-		data = lpcs->m_Vqf.GetField('F','I','L','E',&dwSize);
-		if(data)
-		{
-			SetDlgItemText(hDlg,IDC_EDIT_FILE,(const char *)data);
-		}
+		data = lpcs->m_Vqf.GetField('F','I','L','E');
+		SetDlgItemText(hDlg,IDC_EDIT_FILE,data);
 		//著作権
-		data = lpcs->m_Vqf.GetField('(','c',')',' ',&dwSize);
-		if(data)
-		{
-			SetDlgItemText(hDlg,IDC_EDIT_COP,(const char *)data);
-		}
+		data = lpcs->m_Vqf.GetField('(','c',')',' ');
+		SetDlgItemText(hDlg,IDC_EDIT_COP,data);
 		//コメント
-		data = lpcs->m_Vqf.GetField('C','O','M','T',&dwSize);
-		if(data)
-		{
-			SetDlgItemText(hDlg,IDC_EDIT_CMT,(const char *)data);
-		}
+		data = lpcs->m_Vqf.GetField('C','O','M','T');
+		SetDlgItemText(hDlg,IDC_EDIT_CMT,data);
 
 		lpcs->m_bApply = FALSE;
 	}
@@ -228,7 +212,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -264,13 +248,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,5",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,5"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -282,11 +266,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -312,27 +296,27 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				CWnd wnd;
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('N','A','M','E',(const unsigned char *)(LPCSTR )strTmp,strTmp.GetLength());
+				lpcs->m_Vqf.SetField('N','A','M','E',(LPCTSTR )strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('A','U','T','H',(const unsigned char *)(LPCSTR )strTmp,strTmp.GetLength());
+				lpcs->m_Vqf.SetField('A','U','T','H',(LPCTSTR )strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_FILE));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('F','I','L','E',(const unsigned char *)(LPCSTR )strTmp,strTmp.GetLength());
+				lpcs->m_Vqf.SetField('F','I','L','E',(LPCTSTR )strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COP));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('(','c',')',' ',(const unsigned char *)(LPCSTR )strTmp,strTmp.GetLength());
+				lpcs->m_Vqf.SetField('(','c',')',' ',(LPCTSTR )strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('C','O','M','T',(const unsigned char *)(LPCSTR )strTmp,strTmp.GetLength());
+				lpcs->m_Vqf.SetField('C','O','M','T',(LPCTSTR )strTmp);
 				wnd.Detach();
 
 				//タイムスタンプを保存

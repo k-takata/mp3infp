@@ -384,7 +384,7 @@ IDC_HAND2               CURSOR  DISCARDABLE     "res\\HAND.CUR"
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHANKU (and there are no spaces, such as JUNK CHANKU which pushes in LIST-INFO)."
+    IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which pushes in LIST-INFO)."
     IDS_CAN_NOT_CREATE_TEMP_FILE 
                             "Do not make Temp file.The availability of a disk may be insufficient."
     IDS_CAN_NOT_HTMLHELP_OPEN 

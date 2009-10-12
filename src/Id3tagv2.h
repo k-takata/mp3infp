@@ -112,7 +112,7 @@ public:
 //	BYTE id[5];
 //	memcpy(id,pData,sizeof(dwId));
 //	id[4] = '\0';
-//	TRACE("id=%s (size=%d)\n",id,size);
+//	TRACE(_T("id=%s (size=%d)\n"),id,size);
 		if(!dwId)
 		{
 			return 0;	//無効なフレームID
@@ -144,7 +144,7 @@ public:
 		BYTE id[3+1];
 		memcpy(&id,pData,sizeof(id));
 		id[3] = '\0';
-		TRACE("id=%s (size=%d)\n",id,size);
+		TRACE(_T("id=%s (size=%d)\n"),id,size);
 		//v2.2からv2.3へフレームIDを変換
 		if(memcmp(id,"TT2",sizeof(id)) == 0)
 		{
@@ -265,7 +265,7 @@ public:
 //	CId3tagv2(WORD defaultVersion = 0x0300/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/);
 	CId3tagv2();
 	virtual ~CId3tagv2();
-	void SetEncDefault(const char *szDefaultEnc);
+	void SetEncDefault(LPCTSTR szDefaultEnc);
 	BOOL IsEnable(){return m_bEnable;};
 //	void SetDefaultId3v2Version(DWORD version){m_wDefaultId3TagVersion = (WORD )version;};/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/
 	void SetVer(WORD ver){m_wVer = ver;};
@@ -281,36 +281,36 @@ public:
 	static const int	ID3V2CHARENCODE_UTF_8;
 	
 	CString GetTitle();	//TIT2
-	void SetTitle(const char *title);
+	void SetTitle(LPCTSTR title);
 	CString GetTrackNo();
-	void SetTrackNo(const char *szTrackNo);
+	void SetTrackNo(LPCTSTR szTrackNo);
 	CString GetArtist();
-	void SetArtist(const char *artist);
+	void SetArtist(LPCTSTR artist);
 	CString GetAlbum();
-	void SetAlbum(const char *album);
+	void SetAlbum(LPCTSTR album);
 	CString GetYear();
-	void SetYear(const char *year);
+	void SetYear(LPCTSTR year);
 	CString GetGenre();
-	void SetGenre(const char *szGenre);
+	void SetGenre(LPCTSTR szGenre);
 	CString GetComment();
-	void SetComment(const char *comment);
+	void SetComment(LPCTSTR comment);
 	CString GetComposer();
-	void SetComposer(const char *composer);
+	void SetComposer(LPCTSTR composer);
 	CString GetOrigArtist();
-	void SetOrigArtist(const char *origArtist);
+	void SetOrigArtist(LPCTSTR origArtist);
 	CString GetCopyright();
-	void SetCopyright(const char *copyright);
+	void SetCopyright(LPCTSTR copyright);
 	CString GetUrl();
-	void SetUrl(const char *url);
+	void SetUrl(LPCTSTR url);
 	CString GetEncoder();
-	void SetEncoder(const char *encoder);
+	void SetEncoder(LPCTSTR encoder);
 	CString GetEncodest();
-	void SetEncodest(const char *encoder);
+	void SetEncodest(LPCTSTR encoder);
 
-	DWORD Load(const char *szFileName);
-	DWORD Save(const char *szFileName);
-	DWORD DelTag(const char *szFileName);
-	DWORD MakeTag(const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
+	DWORD DelTag(LPCTSTR szFileName);
+	DWORD MakeTag(LPCTSTR szFileName);
 
 private:
 	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
@@ -318,11 +318,11 @@ private:
 	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
-	void SetId3String(const char szId[],const char *szString,const char *szDescription = NULL);
+	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
 	DWORD GetTotalFrameSize();
 	void _SetStringEncode(int encode);
 	void v23IDtov22ID(char *v23ID,char *v22ID);
-	void UTF16toUTF16BE(WCHAR *str,int len);
+//	void UTF16toUTF16BE(WCHAR *str,int len);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2が無い場合はFALSE

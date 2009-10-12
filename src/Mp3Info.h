@@ -66,7 +66,7 @@ public:
 	CMp3Info();
 	virtual ~CMp3Info();
 	BOOL Release();
-	BOOL Load(const char *szFileName,BOOL bVbrScan = FALSE);
+	BOOL Load(LPCTSTR szFileName,BOOL bVbrScan = FALSE);
 
 	CString GetFormatString(){return m_strFormat;};
 	CString GetTimeString(){return m_strTime;};

@@ -83,8 +83,19 @@ typedef DWORD (WINAPI *LPMP3INFP_GETVER)();
 戻値：	int 成功=0以上/失敗=-1
 対応：	Ver2.48～
 */
-int __stdcall mp3infp_ViewPropEx(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
-typedef int (WINAPI *LPMP3INFP_VIEWPROPEX)(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
+int __stdcall mp3infp_ViewPropExA(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
+typedef int (WINAPI *LPMP3INFP_VIEWPROPEXA)(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
+
+int __stdcall mp3infp_ViewPropExW(HWND hWnd,LPCWSTR szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
+typedef int (WINAPI *LPMP3INFP_VIEWPROPEXW)(HWND hWnd,LPCWSTR szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2);
+
+#ifdef UNICODE
+#define mp3infp_ViewPropEx		mp3infp_ViewPropExW
+#define LPMP3INFP_VIEWPROPEX	LPMP3INFP_VIEWPROPEXW
+#else
+#define mp3infp_ViewPropEx		mp3infp_ViewPropExA
+#define LPMP3INFP_VIEWPROPEX	LPMP3INFP_VIEWPROPEXA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_ViewProp
@@ -100,8 +111,19 @@ typedef int (WINAPI *LPMP3INFP_VIEWPROPEX)(HWND hWnd,const char *szFileName,DWOR
 戻値：	BOOL 成功=TRUE/失敗=FALSE
 対応：	Ver2.00～
 */
-BOOL __stdcall mp3infp_ViewProp(HWND hWnd,const char *szFileName,DWORD dwPage);
-typedef BOOL (WINAPI *LPMP3INFP_VIEWPROP)(HWND hWnd,const char *szFileName,DWORD dwPage);
+BOOL __stdcall mp3infp_ViewPropA(HWND hWnd,const char *szFileName,DWORD dwPage);
+typedef BOOL (WINAPI *LPMP3INFP_VIEWPROPA)(HWND hWnd,const char *szFileName,DWORD dwPage);
+
+BOOL __stdcall mp3infp_ViewPropW(HWND hWnd,LPCWSTR szFileName,DWORD dwPage);
+typedef BOOL (WINAPI *LPMP3INFP_VIEWPROPW)(HWND hWnd,LPCWSTR szFileName,DWORD dwPage);
+
+#ifdef UNICODE
+#define mp3infp_ViewProp	mp3infp_ViewPropW
+#define LPMP3INFP_VIEWPROP	LPMP3INFP_VIEWPROPW
+#else
+#define mp3infp_ViewProp	mp3infp_ViewPropA
+#define LPMP3INFP_VIEWPROP	LPMP3INFP_VIEWPROPA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_Load
@@ -115,8 +137,19 @@ typedef BOOL (WINAPI *LPMP3INFP_VIEWPROP)(HWND hWnd,const char *szFileName,DWORD
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver2.26～
 */
-DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_LOAD)(HWND hWnd,const char *szFileName);
+DWORD __stdcall mp3infp_LoadA(HWND hWnd,const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_LOADA)(HWND hWnd,const char *szFileName);
+
+DWORD __stdcall mp3infp_LoadW(HWND hWnd,LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
+
+#ifdef UNICODE
+#define mp3infp_Load	mp3infp_LoadW
+#define LPMP3INFP_LOAD	LPMP3INFP_LOADW
+#else
+#define mp3infp_Load	mp3infp_LoadA
+#define LPMP3INFP_LOAD	LPMP3INFP_LOADA
+#endif
 
 /*=======================================================================================
 ////////////////////////////////////////////////////////////////////
@@ -296,8 +329,19 @@ typedef DWORD (WINAPI *LPMP3INFP_GETTYPE)();
 戻値：	BOOL 成功=TRUE/失敗=FALSE
 対応：	Ver2.26～
 */
-BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf);
-typedef BOOL (WINAPI *LPMP3INFP_GETVALUE)(const char *szValueName,char **buf);
+BOOL __stdcall mp3infp_GetValueA(const char *szValueName,char **buf);
+typedef BOOL (WINAPI *LPMP3INFP_GETVALUEA)(const char *szValueName,char **buf);
+
+BOOL __stdcall mp3infp_GetValueW(LPCWSTR szValueName,WCHAR **buf);
+typedef BOOL (WINAPI *LPMP3INFP_GETVALUEW)(LPCWSTR szValueName,WCHAR **buf);
+
+#ifdef UNICODE
+#define mp3infp_GetValue	mp3infp_GetValueW
+#define LPMP3INFP_GETVALUE	LPMP3INFP_GETVALUEW
+#else
+#define mp3infp_GetValue	mp3infp_GetValueA
+#define LPMP3INFP_GETVALUE	LPMP3INFP_GETVALUEA
+#endif
 
 #define MP3INFP_HAS_MP3_ID3V1	0x00000001
 #define MP3INFP_HAS_MP3_ID3V2	0x00000002
@@ -340,8 +384,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_GETTAGTYPE)();
 補足：	・他のプロセスのmp3infp.dll/シェル拡張のmp3infpには影響しない
 		・設定内容は保存されない
 */
-BOOL __stdcall mp3infp_SetConf(char *tag,char *value);
-typedef BOOL (WINAPI *LPMP3INFP_SETCONF)(char *tag,char *value);
+BOOL __stdcall mp3infp_SetConfA(char *tag,char *value);
+typedef BOOL (WINAPI *LPMP3INFP_SETCONFA)(char *tag,char *value);
+
+BOOL __stdcall mp3infp_SetConfW(WCHAR *tag,WCHAR *value);
+typedef BOOL (WINAPI *LPMP3INFP_SETCONFW)(WCHAR *tag,WCHAR *value);
+
+#ifdef UNICODE
+#define mp3infp_SetConf		mp3infp_SetConfW
+#define LPMP3INFP_SETCONF	LPMP3INFP_SETCONFW
+#else
+#define mp3infp_SetConf		mp3infp_SetConfA
+#define LPMP3INFP_SETCONF	LPMP3INFP_SETCONFA
+#endif
 
 /*=======================================================================================
 ////////////////////////////////////////////////////////////////////
@@ -409,8 +464,19 @@ mp3infp_SetConf()指定する設定項目・値一覧
 		ERROR_SUCCESS=成功
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *buf);
-typedef DWORD (WINAPI *LPMP3INFP_SETVALUE)(const char *szValueName,const char *buf);
+DWORD __stdcall mp3infp_SetValueA(const char *szValueName,const char *buf);
+typedef DWORD (WINAPI *LPMP3INFP_SETVALUEA)(const char *szValueName,const char *buf);
+
+DWORD __stdcall mp3infp_SetValueW(LPCWSTR szValueName,LPCWSTR buf);
+typedef DWORD (WINAPI *LPMP3INFP_SETVALUEW)(LPCWSTR szValueName,LPCWSTR buf);
+
+#ifdef UNICODE
+#define mp3infp_SetValue	mp3infp_SetValueW
+#define LPMP3INFP_SETVALUE	LPMP3INFP_SETVALUEW
+#else
+#define mp3infp_SetValue	mp3infp_SetValueA
+#define LPMP3INFP_SETVALUE	LPMP3INFP_SETVALUEA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_Save
@@ -424,8 +490,19 @@ typedef DWORD (WINAPI *LPMP3INFP_SETVALUE)(const char *szValueName,const char *b
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_Save(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_SAVE)(const char *szValueName);
+DWORD __stdcall mp3infp_SaveA(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_SAVEA)(const char *szValueName);
+
+DWORD __stdcall mp3infp_SaveW(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_SAVEW)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_Save	mp3infp_SaveW
+#define LPMP3INFP_SAVE	LPMP3INFP_SAVEW
+#else
+#define mp3infp_Save	mp3infp_SaveA
+#define LPMP3INFP_SAVE	LPMP3INFP_SAVEA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_MakeId3v1
@@ -440,8 +517,19 @@ typedef DWORD (WINAPI *LPMP3INFP_SAVE)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_MakeId3v1(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V1)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_MakeId3v1A(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V1A)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_MakeId3v1W(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V1W)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_MakeId3v1	mp3infp_mp3_MakeId3v1W
+#define LPMP3INFP_MP3_MAKEID3V1	LPMP3INFP_MP3_MAKEID3V1W
+#else
+#define mp3infp_mp3_MakeId3v1	mp3infp_mp3_MakeId3v1A
+#define LPMP3INFP_MP3_MAKEID3V1	LPMP3INFP_MP3_MAKEID3V1A
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_DelId3v1
@@ -456,8 +544,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V1)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_DelId3v1(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V1)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_DelId3v1A(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V1A)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_DelId3v1W(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V1W)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_DelId3v1	mp3infp_mp3_DelId3v1W
+#define LPMP3INFP_MP3_DELID3V1	LPMP3INFP_MP3_DELID3V1W
+#else
+#define mp3infp_mp3_DelId3v1	mp3infp_mp3_DelId3v1A
+#define LPMP3INFP_MP3_DELID3V1	LPMP3INFP_MP3_DELID3V1A
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_MakeId3v2
@@ -472,8 +571,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V1)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_MakeId3v2(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V2)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_MakeId3v2A(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V2A)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_MakeId3v2W(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V2W)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_MakeId3v2	mp3infp_mp3_MakeId3v2W
+#define LPMP3INFP_MP3_MAKEID3V2	LPMP3INFP_MP3_MAKEID3V2W
+#else
+#define mp3infp_mp3_MakeId3v2	mp3infp_mp3_MakeId3v2A
+#define LPMP3INFP_MP3_MAKEID3V2	LPMP3INFP_MP3_MAKEID3V2A
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_DelId3v2
@@ -488,8 +598,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEID3V2)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_DelId3v2(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V2)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_DelId3v2A(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V2A)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_DelId3v2W(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V2W)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_DelId3v2	mp3infp_mp3_DelId3v2W
+#define LPMP3INFP_MP3_DELID3V2	LPMP3INFP_MP3_DELID3V2W
+#else
+#define mp3infp_mp3_DelId3v2	mp3infp_mp3_DelId3v2A
+#define LPMP3INFP_MP3_DELID3V2	LPMP3INFP_MP3_DELID3V2A
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_MakeRMP
@@ -504,8 +625,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_DELID3V2)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_MakeRMP(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKERMP)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_MakeRMPA(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKERMPA)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_MakeRMPW(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKERMPW)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_MakeRMP		mp3infp_mp3_MakeRMPW
+#define LPMP3INFP_MP3_MAKERMP	LPMP3INFP_MP3_MAKERMPW
+#else
+#define mp3infp_mp3_MakeRMP		mp3infp_mp3_MakeRMPA
+#define LPMP3INFP_MP3_MAKERMP	LPMP3INFP_MP3_MAKERMPA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_DelRMP
@@ -520,8 +652,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKERMP)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.43～
 */
-DWORD __stdcall mp3infp_mp3_DelRMP(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_DELRMP)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_DelRMPA(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELRMPA)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_DelRMPW(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELRMPW)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_DelRMP		mp3infp_mp3_DelRMPW
+#define LPMP3INFP_MP3_DELRMP	LPMP3INFP_MP3_DELRMPW
+#else
+#define mp3infp_mp3_DelRMP		mp3infp_mp3_DelRMPA
+#define LPMP3INFP_MP3_DELRMP	LPMP3INFP_MP3_DELRMPA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_MakeApeTag
@@ -536,8 +679,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_DELRMP)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.47～
 */
-DWORD __stdcall mp3infp_mp3_MakeApeTag(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEAPETAG)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_MakeApeTagA(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEAPETAGA)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_MakeApeTagW(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEAPETAGW)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_MakeApeTag		mp3infp_mp3_MakeApeTagW
+#define LPMP3INFP_MP3_MAKEAPETAG	LPMP3INFP_MP3_MAKEAPETAGW
+#else
+#define mp3infp_mp3_MakeApeTag		mp3infp_mp3_MakeApeTagA
+#define LPMP3INFP_MP3_MAKEAPETAG	LPMP3INFP_MP3_MAKEAPETAGA
+#endif
 
 /*=======================================================================================
 名前：	mp3infp_mp3_DelApeTag
@@ -552,8 +706,19 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_MAKEAPETAG)(const char *szValueName);
 		(その他)=Win32エラーコード (FormatMessageで文字列を取得できる)
 対応：	Ver.2.47～
 */
-DWORD __stdcall mp3infp_mp3_DelApeTag(const char *szFileName);
-typedef DWORD (WINAPI *LPMP3INFP_MP3_DELAPETAG)(const char *szValueName);
+DWORD __stdcall mp3infp_mp3_DelApeTagA(const char *szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELAPETAGA)(const char *szValueName);
+
+DWORD __stdcall mp3infp_mp3_DelApeTagW(LPCWSTR szFileName);
+typedef DWORD (WINAPI *LPMP3INFP_MP3_DELAPETAGW)(LPCWSTR szValueName);
+
+#ifdef UNICODE
+#define mp3infp_mp3_DelApeTag	mp3infp_mp3_DelApeTagW
+#define LPMP3INFP_MP3_DELAPETAG	LPMP3INFP_MP3_DELAPETAGW
+#else
+#define mp3infp_mp3_DelApeTag	mp3infp_mp3_DelApeTagA
+#define LPMP3INFP_MP3_DELAPETAG	LPMP3INFP_MP3_DELAPETAGA
+#endif
 
 #if __cplusplus
 }

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Tag_Mp4.h"
+#include "GlobalCommand.h"
 
 #include "mp4.h"
 #pragma comment (lib,"Ws2_32.lib")
@@ -59,24 +60,10 @@ void CTag_Mp4::ClearMetadata()
 
 static CString _CnvMetadata(char *utf8val)
 {
-	CString strRet;
-	int len = MultiByteToWideChar(CP_UTF8,0,utf8val,-1,NULL,0);
-	if(!len)
-	{
-		free(utf8val);
-		return _T("");
-	}
-	
-	WCHAR *wchar = (WCHAR *)malloc(len*sizeof(WCHAR));
-	MultiByteToWideChar(CP_UTF8,0,utf8val,-1,wchar,len);
-	strRet = wchar;
-	free(wchar);
-	
-	free(utf8val);
-
-	return strRet;
+	return DataToCString(utf8val, -1, DTC_CODE_UTF8);
 }
 
+#if 0
 static CString _Str2Utf8(LPCTSTR val)
 {
 	CString strRet;
@@ -101,6 +88,7 @@ static CString _Str2Utf8(LPCTSTR val)
 	
 	return strRet;
 }
+#endif
 
 static void _StripAudioInfo(LPCTSTR info,CString &strAudio,CString &strVideo)
 {
@@ -150,7 +138,9 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
-	char *info = MP4FileInfo(szFileName);
+	char bufFileName[MAX_PATH];
+	TstrToData(szFileName, -1, bufFileName, sizeof(bufFileName), DTC_CODE_ANSI);
+	char *info = MP4FileInfo(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
 	if(!info)
 	{
 		Release();
@@ -163,7 +153,7 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	// Audio/Video
 	_StripAudioInfo(m_strTrackInfo,m_strAudioInfo,m_strVideoInfo);
 
-	MP4FileHandle mp4file = MP4Read(szFileName);
+	MP4FileHandle mp4file = MP4Read(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
 	if(mp4file == MP4_INVALID_FILE_HANDLE)
 	{
 		Release();
@@ -255,7 +245,9 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		return -1;
 	}
 	
-	MP4FileHandle mp4file = MP4Modify(szFileName);
+	char bufFileName[MAX_PATH];
+	TstrToData(szFileName, -1, bufFileName, sizeof(bufFileName), DTC_CODE_ANSI);
+	MP4FileHandle mp4file = MP4Modify(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
 	if(mp4file == MP4_INVALID_FILE_HANDLE)
 	{
 		return -1;
@@ -263,7 +255,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Name.GetLength())
 	{
-		MP4SetMetadataName(mp4file,_Str2Utf8(m_strMetadata_Name));
+		char *buf = TstrToDataAlloc(m_strMetadata_Name, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataName(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -272,7 +268,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Artist.GetLength())
 	{
-		MP4SetMetadataArtist(mp4file,_Str2Utf8(m_strMetadata_Artist));
+		char *buf = TstrToDataAlloc(m_strMetadata_Artist, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataArtist(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -281,7 +281,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Album.GetLength())
 	{
-		MP4SetMetadataAlbum(mp4file,_Str2Utf8(m_strMetadata_Album));
+		char *buf = TstrToDataAlloc(m_strMetadata_Album, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataAlbum(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -290,7 +294,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Group.GetLength())
 	{
-		MP4SetMetadataGrouping(mp4file,_Str2Utf8(m_strMetadata_Group));
+		char *buf = TstrToDataAlloc(m_strMetadata_Group, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataGrouping(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -299,7 +307,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Composer.GetLength())
 	{
-		MP4SetMetadataWriter(mp4file,_Str2Utf8(m_strMetadata_Composer));
+		char *buf = TstrToDataAlloc(m_strMetadata_Composer, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataWriter(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -308,7 +320,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Genre.GetLength())
 	{
-		MP4SetMetadataGenre(mp4file,_Str2Utf8(m_strMetadata_Genre));
+		char *buf = TstrToDataAlloc(m_strMetadata_Genre, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataGenre(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -360,7 +376,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Year.GetLength())
 	{
-		MP4SetMetadataYear(mp4file,_Str2Utf8(m_strMetadata_Year));
+		char *buf = TstrToDataAlloc(m_strMetadata_Year, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataYear(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -378,7 +398,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Comment.GetLength())
 	{
-		MP4SetMetadataComment(mp4file,_Str2Utf8(m_strMetadata_Comment));
+		char *buf = TstrToDataAlloc(m_strMetadata_Comment, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataComment(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{
@@ -387,7 +411,11 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Tool.GetLength())
 	{
-		MP4SetMetadataTool(mp4file,_Str2Utf8(m_strMetadata_Tool));
+		char *buf = TstrToDataAlloc(m_strMetadata_Tool, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			MP4SetMetadataTool(mp4file,buf);
+			free(buf);
+		}
 	}
 	else
 	{

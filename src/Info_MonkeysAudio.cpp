@@ -44,7 +44,7 @@ void CInfo_MonkeysAudio::Release()
 	m_strTime = "";
 }
 
-DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
+DWORD CInfo_MonkeysAudio::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
@@ -110,7 +110,7 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 		{
 			nBitsPerSample = 16;
 		}
-		m_strAudioFormat.Format("Monkey's Audio v%.2lf, %dbit, %dHz, %dch",
+		m_strAudioFormat.Format(_T("Monkey's Audio v%.2lf, %dbit, %dHz, %dch"),
 								(double )header.nVersion/1000.0,
 								nBitsPerSample,
 								m_apeHeaderOld.nSampleRate,
@@ -118,26 +118,26 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 		CString strCompLevel;
 		switch(m_apeHeaderOld.nCompressionLevel){
 		case COMPRESSION_LEVEL_FAST:
-			strCompLevel.Format("Fast");	break;
+			strCompLevel.Format(_T("Fast"));	break;
 		case COMPRESSION_LEVEL_NORMAL:
-			strCompLevel.Format("Normal");	break;
+			strCompLevel.Format(_T("Normal"));	break;
 		case COMPRESSION_LEVEL_HIGH:
-			strCompLevel.Format("High");	break;
+			strCompLevel.Format(_T("High"));	break;
 		case COMPRESSION_LEVEL_EXTRA_HIGH:
-			strCompLevel.Format("Extra High");break;
+			strCompLevel.Format(_T("Extra High"));break;
 		default:
-			strCompLevel.Format("Unknown");	break;
+			strCompLevel.Format(_T("Unknown"));	break;
 		}
-		m_strFormatInfo.Format("Version: %.2lf\n"
-							"Mode: %s\n"
-							"Format Flags: 0x%x\n",
+		m_strFormatInfo.Format(_T("Version: %.2lf\n")
+							_T("Mode: %s\n")
+							_T("Format Flags: 0x%x\n"),
 				(double )header.nVersion/1000.0,
 				strCompLevel,
 				m_apeHeaderOld.nFormatFlags);
-		m_strAudioInfo.Format("Sample Rate: %d\n"
-							"Channels: %d\n"
-							"Bits Per Sample: %d\n"
-							"Peak Level: %d\n",
+		m_strAudioInfo.Format(_T("Sample Rate: %d\n")
+							_T("Channels: %d\n")
+							_T("Bits Per Sample: %d\n")
+							_T("Peak Level: %d\n"),
 				m_apeHeaderOld.nSampleRate,
 				m_apeHeaderOld.nChannels,
 				nBitsPerSample,
@@ -157,16 +157,16 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 
 		int wavSize = wavDataBytes+wavHeaderBytes+wavTerminatingBytes;
 		int apeSize = GetFileSize(hFile,NULL);
-		m_strSizeInfo.Format("Length: %d:%d\n"
-							"WAV: %.1lfMB\n"
-							"APE: %.1lfMB\n"
-							"Compression: %.1lf%%\n",
+		m_strSizeInfo.Format(_T("Length: %d:%d\n")
+							_T("WAV: %.1lfMB\n")
+							_T("APE: %.1lfMB\n")
+							_T("Compression: %.1lf%%\n"),
 							msec/1000/60,msec/1000%60,
 							(double )(wavSize/1024/1024.0),
 							(double )(apeSize/1024/1024.0),
 							(wavSize==0)?0.0:((double )apeSize/(double )wavSize*100.0)
 							);
-		m_strTime.Format("%ld:%02ld (%ldsec)",
+		m_strTime.Format(_T("%ld:%02ld (%ldsec)"),
 							msec/1000/60,
 							msec/1000%60,
 							msec/1000);
@@ -195,7 +195,7 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 			SetFilePointer(hFile,m_apeDescriptor.nHeaderBytes - dwRet,NULL,FILE_CURRENT);
 		}
 		// フォーマット文字列を作成
-		m_strAudioFormat.Format("Monkey's Audio v%.2lf, %dbit, %dHz, %dch",
+		m_strAudioFormat.Format(_T("Monkey's Audio v%.2lf, %dbit, %dHz, %dch"),
 								(double )header.nVersion/1000.0,
 								m_apeHeader.nBitsPerSample,
 								m_apeHeader.nSampleRate,
@@ -203,25 +203,25 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 		CString strCompLevel;
 		switch(m_apeHeader.nCompressionLevel){
 		case COMPRESSION_LEVEL_FAST:
-			strCompLevel.Format("Fast");	break;
+			strCompLevel.Format(_T("Fast"));	break;
 		case COMPRESSION_LEVEL_NORMAL:
-			strCompLevel.Format("Normal");	break;
+			strCompLevel.Format(_T("Normal"));	break;
 		case COMPRESSION_LEVEL_HIGH:
-			strCompLevel.Format("High");	break;
+			strCompLevel.Format(_T("High"));	break;
 		case COMPRESSION_LEVEL_EXTRA_HIGH:
-			strCompLevel.Format("Extra High");break;
+			strCompLevel.Format(_T("Extra High"));break;
 		default:
-			strCompLevel.Format("Unknown");	break;
+			strCompLevel.Format(_T("Unknown"));	break;
 		}
-		m_strFormatInfo.Format("Version: %.2lf\n"
-							"Mode: %s\n"
-							"Format Flags: 0x%x\n",
+		m_strFormatInfo.Format(_T("Version: %.2lf\n")
+							_T("Mode: %s\n")
+							_T("Format Flags: 0x%x\n"),
 				(double )header.nVersion/1000.0,
 				strCompLevel,
 				m_apeHeader.nFormatFlags);
-		m_strAudioInfo.Format("Sample Rate: %d\n"
-							"Channels: %d\n"
-							"Bits Per Sample: %d\n",
+		m_strAudioInfo.Format(_T("Sample Rate: %d\n")
+							_T("Channels: %d\n")
+							_T("Bits Per Sample: %d\n"),
 				m_apeHeader.nSampleRate,
 				m_apeHeader.nChannels,
 				m_apeHeader.nBitsPerSample
@@ -238,16 +238,16 @@ DWORD CInfo_MonkeysAudio::Load(const char *szFileName)
 
 		int wavSize = wavDataBytes+wavHeaderBytes+wavTerminatingBytes;
 		int apeSize = GetFileSize(hFile,NULL);
-		m_strSizeInfo.Format("Length: %d:%d\n"
-							"WAV: %.1lfMB\n"
-							"APE: %.1lfMB\n"
-							"Compression: %.1lf%%\n",
+		m_strSizeInfo.Format(_T("Length: %d:%d\n")
+							_T("WAV: %.1lfMB\n")
+							_T("APE: %.1lfMB\n")
+							_T("Compression: %.1lf%%\n"),
 							msec/1000/60,msec/1000%60,
 							(double )(wavSize/1024/1024.0),
 							(double )(apeSize/1024/1024.0),
 							(wavSize==0)?0.0:((double )apeSize/(double )wavSize*100.0)
 							);
-		m_strTime.Format("%ld:%02ld (%ldsec)",
+		m_strTime.Format(_T("%ld:%02ld (%ldsec)"),
 							msec/1000/60,
 							msec/1000%60,
 							msec/1000);

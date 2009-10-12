@@ -50,13 +50,13 @@ CTag_Ogg::~CTag_Ogg()
 
 void CTag_Ogg::Release()
 {
-	m_strAudioFormat = "";
-	m_strTime = "";
+	m_strAudioFormat = _T("");
+	m_strTime = _T("");
 
 	m_comments.clear();
 }
 
-BOOL CTag_Ogg::AddComment(const char *name,const char *value)
+BOOL CTag_Ogg::AddComment(LPCTSTR name,LPCTSTR value)
 {
 	CString _name(name);
 	_name.MakeUpper();
@@ -65,7 +65,7 @@ BOOL CTag_Ogg::AddComment(const char *name,const char *value)
 	return TRUE;
 }
 
-BOOL CTag_Ogg::DelComment(const char *name,int index)
+BOOL CTag_Ogg::DelComment(LPCTSTR name,int index)
 {
 	//nameのなかからdwIndexの値を取得
     pair<multimap<CString,CString>::iterator,multimap<CString,CString>::iterator> itp = m_comments.equal_range(CString(name));
@@ -85,9 +85,9 @@ BOOL CTag_Ogg::DelComment(const char *name,int index)
 	return FALSE;
 }
 
-BOOL CTag_Ogg::GetComment(const char *name,int index,CString &strValue)
+BOOL CTag_Ogg::GetComment(LPCTSTR name,int index,CString &strValue)
 {
-	strValue = "";
+	strValue = _T("");
 	//nameのなかからdwIndexの値を取得
     pair<multimap<CString,CString>::iterator,multimap<CString,CString>::iterator> itp = m_comments.equal_range(CString(name));
 	
@@ -123,13 +123,13 @@ void CTag_Ogg::GetCommentNames(CStringArray &strArray)
 	}
 }
 
-DWORD CTag_Ogg::Load(const char *szFileName)
+DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
 	//ファイルをオープン
-	FILE *fp = fopen(szFileName,"rb");
+	FILE *fp = _tfopen(szFileName,_T("rb"));
 	if(!fp)
 	{
 		dwWin32errorCode = GetLastError();
@@ -270,10 +270,10 @@ DWORD CTag_Ogg::Load(const char *szFileName)
 		m_strTagGENRE		= Utf82Acp(vorbis_comment_query(&vc,"GENRE",0));
 		m_strTagCOMMENT		= Utf82Acp(vorbis_comment_query(&vc,"COMMENT",0));
 */
-/*		m_strAudioFormat.Format("Ogg Vorbis, %ldHz, %ldKbits/s%s, %ldch",
+/*		m_strAudioFormat.Format(_T("Ogg Vorbis, %ldHz, %ldkbits/s%s, %ldch"),
 								vi.rate,
 								vi.bitrate_nominal/1000,
-								((vi.bitrate_nominal == vi.bitrate_lower) && (vi.bitrate_nominal == vi.bitrate_upper))?"":"(VBR)",
+								((vi.bitrate_nominal == vi.bitrate_lower) && (vi.bitrate_nominal == vi.bitrate_upper))?_T(""):_T("(VBR)"),
 								vi.channels
 								);*/
 		m_lChannels = vi.channels;
@@ -289,10 +289,10 @@ DWORD CTag_Ogg::Load(const char *szFileName)
 		while(*ptr)
 		{
 			CString str(*ptr);
-			int index = str.Find("=");
+			int index = str.Find(_T("="));
 			if(index != -1)
 			{
-				AddComment(CString(str,index),Utf82Acp(&((*ptr)[index+1])));
+				AddComment(CString(str,index),DataToCString(&((*ptr)[index+1]),-1,DTC_CODE_UTF8));
 			}
 
 //			fprintf(stderr,"%s\n",*ptr);
@@ -327,7 +327,7 @@ DWORD CTag_Ogg::Load(const char *szFileName)
 		/* print details about each logical bitstream in the input */
 		if(ov_seekable(&ov))
 		{
-			m_strTime.Format("%02ld:%02ld (%ldsec)",
+			m_strTime.Format(_T("%02ld:%02ld (%ldsec)"),
 						(DWORD )ov_time_total(&ov,-1)/60,
 						(DWORD )ov_time_total(&ov,-1)%60,
 						(DWORD )ov_time_total(&ov,-1));
@@ -343,10 +343,10 @@ DWORD CTag_Ogg::Load(const char *szFileName)
 		break;
 	}
 	
-	m_strAudioFormat.Format("Ogg Vorbis, %ldHz, %ldKbits/s%s, %ldch",
+	m_strAudioFormat.Format(_T("Ogg Vorbis, %ldHz, %ldkbits/s%s, %ldch"),
 							m_lSampleRate,
 							m_lBitrate_avg/1000,
-							((m_lBitrate_nominal == m_lBitrate_lower) && (m_lBitrate_nominal == m_lBitrate_upper))?"":"(VBR)",
+							((m_lBitrate_nominal == m_lBitrate_lower) && (m_lBitrate_nominal == m_lBitrate_upper))?_T(""):_T("(VBR)"),
 							m_lChannels
 							);
 	fclose(fp);
@@ -408,12 +408,12 @@ static int _commentheader_out(vorbis_comment *vc, char *vendor, ogg_packet *op)
 	return 0;
 }
 
-DWORD CTag_Ogg::Save(const char *szFileName)
+DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
 	//ファイルをオープン
-	FILE *fp = fopen(szFileName,"rb");
+	FILE *fp = _tfopen(szFileName,_T("rb"));
 	if(!fp)
 	{
 		dwWin32errorCode = GetLastError();
@@ -422,18 +422,18 @@ DWORD CTag_Ogg::Save(const char *szFileName)
 
 	//==================テンポラリを作成==================
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	char szTempFile[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	TCHAR szTempFile[MAX_PATH];
+	lstrcpy(szTempPath,szFileName);
 	cutFileName(szTempPath);
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		fclose(fp);
 		return dwWin32errorCode;
 	}
 	
-	FILE *fp_out = fopen(szTempFile,"wb");
+	FILE *fp_out = _tfopen(szTempFile,_T("wb"));
 	if(!fp_out)
 	{
 		dwWin32errorCode = GetLastError();
@@ -597,8 +597,14 @@ DWORD CTag_Ogg::Save(const char *szFileName)
 			}
 			if(strValue.GetLength())
 			{
-				vorbis_comment_add_tag(&_vc,(char *)(LPCSTR )strName,(char *)(LPCSTR )Acp2Utf8(strValue));
-				TRACE("vorbis_comment_add_tag(%s=%s)\n",strName,Acp2Utf8(strValue));
+				char bufName[256];
+				TstrToData(strValue, -1, bufName, sizeof(bufName), DTC_CODE_UTF8);
+				char *bufVal = TstrToDataAlloc(strValue, -1, NULL, DTC_CODE_UTF8);
+				if (bufVal != NULL) {
+					vorbis_comment_add_tag(&_vc,bufName,bufVal);
+					TRACE(_T("vorbis_comment_add_tag(%s=%s)\n"),bufName,bufVal);
+					free(bufVal);
+				}
 			}
 		}
 	}
@@ -634,7 +640,9 @@ DWORD CTag_Ogg::Save(const char *szFileName)
 		//
 		ogg_packet header_comments;
 //		vorbis_commentheader_out(&_vc,&header_comments);
-		_commentheader_out(&_vc,(char *)(LPCSTR )strVendor,&header_comments);
+		char bufVendor[256];
+		TstrToData(strVendor, -1, bufVendor, sizeof(bufVendor), DTC_CODE_UTF8);
+		_commentheader_out(&_vc,bufVendor,&header_comments);
 
 		ogg_stream_packetin(&streamout,&header_main);
 		ogg_stream_packetin(&streamout,&header_comments);
@@ -794,8 +802,8 @@ loaderr:
 	if(dwWin32errorCode == ERROR_SUCCESS)
 	{
 		//オリジナルファイルを退避(リネーム)
-		char szPreFile[MAX_PATH];
-		if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+		TCHAR szPreFile[MAX_PATH];
+		if(!GetTempFileName(szTempPath,_T("tms"),0,szPreFile))
 		{
 			dwWin32errorCode = GetLastError();
 			DeleteFile(szTempFile);
@@ -828,6 +836,7 @@ loaderr:
 	return dwWin32errorCode;
 }
 
+#if 0
 CString CTag_Ogg::Acp2Utf8(const char *str)
 {
 	WCHAR wc[1024];
@@ -959,3 +968,4 @@ void CTag_Ogg::Utf82Ucs2(const char *str,WCHAR *wBuf,int size)
 
 	wBuf[writePtr] = L'\0';
 }
+#endif

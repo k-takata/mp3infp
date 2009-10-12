@@ -21,7 +21,7 @@ public:
 	virtual ~CInfo_MonkeysAudio();
 	void	Release();
 	BOOL	IsEnable(){return TRUE;};
-	DWORD	Load(const char *szFileName);
+	DWORD	Load(LPCTSTR szFileName);
 
 	CString GetAudioFormatString(){return m_strAudioFormat;};
 	CString GetFormatInfoString(){return m_strFormatInfo;};

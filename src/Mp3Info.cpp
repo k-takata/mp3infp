@@ -8,7 +8,7 @@
 #include "Mp3Info.h"
 
 // 2003-08-18 フォーマット文字列が長くなりすぎるため簡略化
-static const char *modes[4] = {"Stereo","J-Stereo","D-Channel","Mono"};
+static const TCHAR *modes[4] = {_T("Stereo"),_T("J-Stereo"),_T("D-Channel"),_T("Mono")};
 static const int tabsel_123[][3][15] = {
 	   { {0,32,64,96,128,160,192,224,256,288,320,352,384,416,448},
 		 {0,32,48,56, 64, 80, 96,112,128,160,192,224,256,320,384},
@@ -40,8 +40,8 @@ BOOL CMp3Info::Release()
 {
 	m_listFrame.clear();
 	m_mpegInfo.bVbr = FALSE;
-	m_strFormat = "unknown";
-	m_strTime = "unknown";
+	m_strFormat = _T("unknown");
+	m_strTime = _T("unknown");
 	return TRUE;
 }
 
@@ -60,7 +60,7 @@ BOOL mp3head_check(unsigned long head)
     return TRUE;
 }
 
-BOOL CMp3Info::Load(const char *szFileName,BOOL bVbrScan)
+BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 {
 	DWORD dwBeginPtr;
 	unsigned char			hbuf[4];
@@ -78,7 +78,7 @@ BOOL CMp3Info::Load(const char *szFileName,BOOL bVbrScan)
 	long lDataPtr = 0;	//mp3ストリームの開始位置
 	ULONG dataSize = 0;
 	//RMP形式のストリームサイズを取得する==========================
-	HMMIO hmmio = mmioOpen((char *)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
 	if(hmmio)
 	{
 		//RMP3ファイルの確認
@@ -355,15 +355,15 @@ BOOL CMp3Info::Load(const char *szFileName,BOOL bVbrScan)
 	{
 		// 2003-08-18 フレーム数をTimeからFormatに移動
 		m_strFormat.Format(
-			IsVbr()?"MPEG%s Layer%ld %ldKb/s(VBR) %ldHz %s %dframes":"MPEG%s Layer%ld %ldKb/s %ldHz %s %dframes",
-			(LPCSTR )GetMpeg(),
+			IsVbr()?_T("MPEG%s Layer%ld %ldkb/s(VBR) %ldHz %s %dframes"):_T("MPEG%s Layer%ld %ldkb/s %ldHz %s %dframes"),
+			(LPCTSTR )GetMpeg(),
 			GetLayers(),
 			GetBps(),
 			GetFreqs(),
 			GetModes(),
 			GetFlmNum());
 		m_strTime.Format(
-			"%ld:%02ld (%ldsec)",
+			_T("%ld:%02ld (%ldsec)"),
 			(DWORD )GetMSec()/1000/60,
 			(DWORD )GetMSec()/1000%60,
 			(DWORD )GetMSec()/1000
@@ -379,7 +379,7 @@ const BOOL CMp3Info::IsVbr()
 
 const CString CMp3Info::GetMpeg()
 {
-	return (m_mpegInfo.mpeg25 ? "2.5" : (m_mpegInfo.lsf ? "2.0" : "1.0" ));
+	return (m_mpegInfo.mpeg25 ? _T("2.5") : (m_mpegInfo.lsf ? _T("2.0") : _T("1.0") ));
 }
 
 const long CMp3Info::GetLayers()

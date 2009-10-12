@@ -73,50 +73,50 @@ UINT CALLBACK CShellExt::PageCallback_wave(HWND hWnd,UINT uMessage,LPPROPSHEETPA
 static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME_),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SBJ),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_PRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_PRD),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_GNR),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GNR),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_COP),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_COP),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ENG),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENG),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENG),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ENG),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_SRC),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SRC),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SRC),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SRC),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_SFT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SFT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SFT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SFT),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_WINAMP),bEnable);
@@ -136,7 +136,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		//wave
 		CString strFormat;
 		CString strTime;
-		GetWaveAudioFormat((LPCSTR )lpcs->m_strSelectFile,
+		GetWaveAudioFormat((LPCTSTR )lpcs->m_strSelectFile,
 						lpcs->m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -227,7 +227,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )""	//空白
+					(LPARAM )(LPCTSTR )_T("")	//空白
 				);
 			for(int i=0; i<256; i++)
 			{
@@ -236,7 +236,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 							GetDlgItem(hDlg,IDC_EDIT_GNR),
 							CB_ADDSTRING,
 							0,
-							(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
+							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
 						);
 			}
 			//オーナードローボタンの初期化
@@ -252,10 +252,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 			DispInfo(hDlg,lpcs);
 
 			//「このファイルはWAV形式です。ID3タグは書き込めません。\n(書き換えられるのはRiffSIFのみです)」
-			if((stricmp(getExtName(lpcs->m_strSelectFile),".mp3") == 0) ||
-				(stricmp(getExtName(lpcs->m_strSelectFile),".mp2") == 0) ||
-				(stricmp(getExtName(lpcs->m_strSelectFile),".mp1") == 0) ||
-				(stricmp(getExtName(lpcs->m_strSelectFile),".rmp") == 0) )
+			if((lstrcmpi(getExtName(lpcs->m_strSelectFile),_T(".mp3")) == 0) ||
+				(lstrcmpi(getExtName(lpcs->m_strSelectFile),_T(".mp2")) == 0) ||
+				(lstrcmpi(getExtName(lpcs->m_strSelectFile),_T(".mp1")) == 0) ||
+				(lstrcmpi(getExtName(lpcs->m_strSelectFile),_T(".rmp")) == 0) )
 			{
 				ShowWindow(GetDlgItem(hDlg,IDC_STATIC_NOT_MP3),SW_SHOWNORMAL);
 			}
@@ -315,7 +315,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -351,13 +351,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,3",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,3"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -369,11 +369,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -402,7 +402,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 
 //2002-01-30
 //INAMを優先、ISBJは撤去
-				lpcs->m_RiffSIF.SetField('I','S','B','J',"");
+				lpcs->m_RiffSIF.SetField('I','S','B','J',_T(""));
 				lpcs->m_RiffSIF.SetField('I','N','A','M',strTmp);
 				wnd.Detach();
 

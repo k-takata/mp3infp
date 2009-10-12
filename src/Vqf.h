@@ -73,7 +73,9 @@ public:
 	void	Release();
 	BOOL	IsEnable(){return m_bEnable;};
 	BOOL	SetField(char id1,char id2,char id3,char id4,const unsigned char *szData,DWORD dwSize);
+	BOOL	SetField(char id1,char id2,char id3,char id4,LPCTSTR szStr);
 	unsigned char *GetField(char id1,char id2,char id3,char id4,DWORD *pdwSize);
+	CString GetField(char id1,char id2,char id3,char id4);
 	DWORD	GetTotalFieldSize();
 
 	DWORD	GetStreamSize(){return m_dwStreamSize;};
@@ -82,8 +84,8 @@ public:
 	DWORD	GetSamplFreq(){return m_dwSamplingFrequency;};
 	CString GetVer(){return m_strVer;};
 	
-	DWORD	Load(const char *szFileName);
-	DWORD	Save(HWND hWnd,const char *szFileName);
+	DWORD	Load(LPCTSTR szFileName);
+	DWORD	Save(HWND hWnd,LPCTSTR szFileName);
 
 	CString GetFormatString();
 	CString GetTimeString();

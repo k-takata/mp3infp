@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "mp3infp.h"
+#include "GlobalCommand.h"
 
 #ifdef _DEBUG
 #include "psapi.h"
@@ -10,10 +11,10 @@ CShellExtClassFactory::CShellExtClassFactory()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 #ifdef _DEBUG
-	char szProcessName[MAX_PATH];
+	TCHAR szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
-	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
-	TRACE("[%s]CShellExtClassFactory::CShellExtClassFactory(%d->%d) process=%s\n",APP_NAME,g_cRefThisDll,g_cRefThisDll+1,szProcessName);
+	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof_array(szProcessName));
+	TRACE(_T("[%s]CShellExtClassFactory::CShellExtClassFactory(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll+1,szProcessName);
 #endif
 
 	m_cRef = 1L;	//Inside DCOMŽQÆ
@@ -25,10 +26,10 @@ CShellExtClassFactory::~CShellExtClassFactory()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 #ifdef _DEBUG
-	char szProcessName[MAX_PATH];
+	TCHAR szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
-	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
-	TRACE("[%s]CShellExtClassFactory::~CShellExtClassFactory(%d->%d) process=%s\n",APP_NAME,g_cRefThisDll,g_cRefThisDll-1,szProcessName);
+	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof_array(szProcessName));
+	TRACE(_T("[%s]CShellExtClassFactory::~CShellExtClassFactory(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll-1,szProcessName);
 #endif
 
 	g_cRefThisDll--;
@@ -38,7 +39,7 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
 												   LPVOID FAR *ppv)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExtClassFactory::QueryInterface()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExtClassFactory::QueryInterface()\n"),APP_NAME);
 
 	*ppv = NULL;
 
@@ -56,7 +57,7 @@ STDMETHODIMP CShellExtClassFactory::QueryInterface(REFIID riid,
 STDMETHODIMP_(ULONG) CShellExtClassFactory::AddRef()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExtClassFactory::AddRef(%d->%d)\n",APP_NAME,m_cRef,m_cRef+1);
+	TRACE(_T("[%s]CShellExtClassFactory::AddRef(%d->%d)\n"),APP_NAME,m_cRef,m_cRef+1);
 
 	return ++m_cRef;
 }
@@ -64,7 +65,7 @@ STDMETHODIMP_(ULONG) CShellExtClassFactory::AddRef()
 STDMETHODIMP_(ULONG) CShellExtClassFactory::Release()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExtClassFactory::Release(%d->%d)\n",APP_NAME,m_cRef,m_cRef-1);
+	TRACE(_T("[%s]CShellExtClassFactory::Release(%d->%d)\n"),APP_NAME,m_cRef,m_cRef-1);
 
 	if (--m_cRef)
 		return m_cRef;
@@ -79,7 +80,7 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 													  LPVOID *ppvObj)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExtClassFactory::CreateInstance()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExtClassFactory::CreateInstance()\n"),APP_NAME);
 
 	*ppvObj = NULL;
 	
@@ -102,7 +103,7 @@ STDMETHODIMP CShellExtClassFactory::CreateInstance(LPUNKNOWN pUnkOuter,
 STDMETHODIMP CShellExtClassFactory::LockServer(BOOL fLock)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExtClassFactory::LockServer()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExtClassFactory::LockServer()\n"),APP_NAME);
 
 	return NOERROR;
 }

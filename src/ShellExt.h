@@ -9,7 +9,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CString strFileName);
 #define ResultFromShort(i)  ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(i)))
-#define CF_MP3INFP	"CF_MP3INFP"
+#define CF_MP3INFP	_T("CF_MP3INFP")
 #define CLP_NAM	1	// タイトル
 #define CLP_ART	2	// アーティスト
 #define CLP_PRD	3	// アルバム
@@ -35,6 +35,12 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 #define CLP_COMPILATION	25
 #define CLP_GROUP	26
 
+#ifdef UNICODE
+#define CF_TTEXT	CF_UNICODETEXT
+#else
+#define CF_TTEXT	CF_TEXT
+#endif
+
 #define DLG_CLIPBORD_MACRO(strFile)	\
 	case IDCANCEL:	\
 	{				\
@@ -47,7 +53,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 	{	\
 		if(!OpenClipboard(hDlg))	\
 		{	\
-			AfxMessageBox("clipboad fail!");	\
+			AfxMessageBox(_T("clipboad fail!"));	\
 			break;	\
 		}	\
 		EmptyClipboard();	\
@@ -57,7 +63,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			CloseClipboard();	\
 			break;	\
 		}	\
-		SetClipboardData(CF_TEXT,hg);	\
+		SetClipboardData(CF_TTEXT,hg);	\
 		hg = GetDlgOutlineTextSp(hDlg,ids,editWnd);	\
 		if(hg == NULL)	\
 		{	\
@@ -276,12 +282,12 @@ public:
 	STDMETHODIMP			GetItemData(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT *pvarData);
 
 public:
-	static EN_FILETYPE		GetFileType(char *szFileName);
+	static EN_FILETYPE		GetFileType(LPCTSTR szFileName);
 private:
 	BOOL Load();
-	void OpenHtmlHelp(HWND hWnd,char *szViewFile);
-	BOOL PushTimeStamp(const char *szFile);
-	BOOL PopTimeStamp(const char *szFile);
+	void OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile);
+	BOOL PushTimeStamp(LPCTSTR szFile);
+	BOOL PopTimeStamp(LPCTSTR szFile);
 	void ConfigLoad();
 	//IShellPropSheetExt methods
 	friend void EnableButton(HWND hDlg,CShellExt *lpcs);

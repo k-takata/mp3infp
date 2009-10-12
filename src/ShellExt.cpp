@@ -43,7 +43,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 {
 	if(!OpenClipboard(hDlg))
 	{
-		AfxMessageBox("clipboad fail!");
+		AfxMessageBox(_T("clipboad fail!"));
 		return;
 	}
 
@@ -79,12 +79,12 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 					if(_tcscmp(szClassName,_T("Button")) != 0)
 					{
 						// Edit
-						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),&(txtData[readOffset]));
+						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),(LPTSTR)&(txtData[readOffset]));
 					}
 					else
 					{
 						// Checkbox
-						int val = atoi(&(txtData[readOffset]));
+						int val = _ttoi((LPTSTR)&(txtData[readOffset]));
 						if(val)
 						{
 							CheckDlgButton(hDlg,editWndArray[i],1);
@@ -98,7 +98,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 				}
 			}
 		}
-		readOffset += strlen(&(txtData[readOffset])) + 1;
+		readOffset += (lstrlen((LPTSTR)&(txtData[readOffset])) + 1) * sizeof(TCHAR);
 		arrayOffset++;
 	}
 		
@@ -115,7 +115,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 	for(; idArray[i]!=0; i++)
 	{
 		totalLen += 4/*ID*/ + 4/*Size*/ + 4/*end of*/;
-		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]));
+		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]))*sizeof(TCHAR);
 	}
 	
 	HGLOBAL hg = GlobalAlloc(GHND,totalLen);
@@ -153,8 +153,8 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 			*(int *)(&(txtData[writeOffset])) = strTmp.GetLength();
 			writeOffset += sizeof(int);
 		}
-		strcpy(&(txtData[writeOffset]),(LPCTSTR )strTmp);
-		writeOffset += strTmp.GetLength() + 1;
+		lstrcpy((LPTSTR)&(txtData[writeOffset]),(LPCTSTR )strTmp);
+		writeOffset += (strTmp.GetLength() + 1) * sizeof(TCHAR);
 	}
 	*(int *)(&(txtData[writeOffset])) = 0;
 
@@ -171,7 +171,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 	int i=0;
 	
 	totalLen += strFileName.GetLength();
-	totalLen += strlen("\r\n");
+	totalLen += lstrlen(_T("\r\n"));
 
 	for(; editWndArray[i]!=0; i++)
 	{
@@ -180,15 +180,15 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			totalLen += GetWindowTextLength(GetDlgItem(hDlg,staticWndArray[i]));
 		}
 		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]));
-		totalLen += strlen("\t\r\n");
+		totalLen += lstrlen(_T("\t\r\n"));
 	}
 	
-	HGLOBAL hg = GlobalAlloc(GHND,totalLen);
-	char *txtData = (char *)GlobalLock(hg);
-	strcpy(txtData,"");
+	HGLOBAL hg = GlobalAlloc(GHND,totalLen*sizeof(TCHAR));
+	TCHAR *txtData = (TCHAR *)GlobalLock(hg);
+	lstrcpy(txtData,_T(""));
 				
-	strcat(txtData,(LPCTSTR )strFileName);
-	strcat(txtData,"\r\n");
+	lstrcat(txtData,(LPCTSTR )strFileName);
+	lstrcat(txtData,_T("\r\n"));
 
 	for(i=0; editWndArray[i]!=0; i++)
 	{
@@ -197,8 +197,8 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			wnd.Attach(GetDlgItem(hDlg,staticWndArray[i]));
 			wnd.GetWindowText(strTmp);
 			wnd.Detach();
-			strcat(txtData,(LPCTSTR )strTmp);
-			strcat(txtData,"\t");
+			lstrcat(txtData,(LPCTSTR )strTmp);
+			lstrcat(txtData,_T("\t"));
 		}
 
 		_TCHAR szClassName[100];
@@ -211,14 +211,14 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 				wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				strcat(txtData,(LPCTSTR )strTmp);
+				lstrcat(txtData,(LPCTSTR )strTmp);
 				if(staticWndArray[i+1] != -1)	// トラック番号など第二値を / 区切りする
 				{
-					strcat(txtData,"\r\n");
+					lstrcat(txtData,_T("\r\n"));
 				}
 				else
 				{
-					strcat(txtData," / ");
+					lstrcat(txtData,_T(" / "));
 				}
 			}
 		}
@@ -233,7 +233,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			{
 				strTmp = _T("No\r\n");
 			}
-			strcat(txtData,(LPCTSTR )strTmp);
+			lstrcat(txtData,(LPCTSTR )strTmp);
 		}
 	}
 
@@ -249,7 +249,7 @@ CShellExt::CShellExt()
 	char szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
 	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
-	TRACE("[%s]CShellExt::CShellExt(%d->%d) process=%s\n",APP_NAME,g_cRefThisDll,g_cRefThisDll+1,szProcessName);
+	TRACE(_T("[%s]CShellExt::CShellExt(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll+1,szProcessName);
 #endif
 
 	m_cRef = 1L;	//Inside DCOM参照
@@ -270,7 +270,7 @@ CShellExt::~CShellExt()
 	char szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
 	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
-	TRACE("[%s]CShellExt::~CShellExt(%d->%d) process=%s\n",APP_NAME,g_cRefThisDll,g_cRefThisDll-1,szProcessName);
+	TRACE(_T("[%s]CShellExt::~CShellExt(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll-1,szProcessName);
 #endif
 
 	if(m_pDataObj)
@@ -281,50 +281,50 @@ CShellExt::~CShellExt()
 STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::QueryInterface() ref=%d\n",APP_NAME,m_cRef+1);
+	TRACE(_T("[%s]CShellExt::QueryInterface() ref=%d\n"),APP_NAME,m_cRef+1);
 
 	*ppv = NULL;
 
 	if(!theApp.m_hResource)
 	{
-		TRACE("[%s]リソースDLLをロードできなかった\n",APP_NAME);
+		TRACE(_T("[%s]リソースDLLをロードできなかった\n"),APP_NAME);
 		return E_NOINTERFACE;
 	}
 
 	if(IsEqualIID(riid,IID_IShellExtInit) || IsEqualIID(riid,IID_IUnknown))
 	{
 		*ppv = (LPSHELLEXTINIT )this;
-		TRACE("[%s]   +============> IID_IShellExtInit or IID_IUnknown\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IShellExtInit or IID_IUnknown\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IContextMenu))
 	{
 		*ppv = (LPCONTEXTMENU )this;
-		TRACE("[%s]   +============> IID_IContextMenu\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IContextMenu\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IShellPropSheetExt))
 	{
 		*ppv = (LPSHELLPROPSHEETEXT )this;
-		TRACE("[%s]   +============> IID_IShellPropSheetExt\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IShellPropSheetExt\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IQueryInfo))
 	{
 		*ppv = (IQueryInfo *)this;
-		TRACE("[%s]   +============> IID_IQueryInfo\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IQueryInfo\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IPersist))
 	{
 		*ppv = (IPersist *)this;
-		TRACE("[%s]   +============> IID_IPersist\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IPersist\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IPersistFile))
 	{
 		*ppv = (IPersistFile *)this;
-		TRACE("[%s]   +============> IID_IPersistFile\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IPersistFile\n"),APP_NAME);
 	}
 	else if(IsEqualIID(riid,IID_IColumnProvider))
 	{
 		*ppv = (IColumnProvider *)this;
-		TRACE("[%s]   +============> IID_IColumnProvider\n",APP_NAME);
+		TRACE(_T("[%s]   +============> IID_IColumnProvider\n"),APP_NAME);
 	}
 	if(*ppv)
 	{
@@ -338,7 +338,7 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 STDMETHODIMP_(ULONG) CShellExt::AddRef()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::AddRef(%d->%d)\n",APP_NAME,m_cRef,m_cRef+1);
+	TRACE(_T("[%s]CShellExt::AddRef(%d->%d)\n"),APP_NAME,m_cRef,m_cRef+1);
 
 	return ++m_cRef;
 }
@@ -346,7 +346,7 @@ STDMETHODIMP_(ULONG) CShellExt::AddRef()
 STDMETHODIMP_(ULONG) CShellExt::Release()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::Release(%d->%d)\n",APP_NAME,m_cRef,m_cRef-1);
+	TRACE(_T("[%s]CShellExt::Release(%d->%d)\n"),APP_NAME,m_cRef,m_cRef-1);
 
 	if(--m_cRef)
 		return m_cRef;
@@ -356,12 +356,12 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 	return 0L;
 }
 
-CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
+CShellExt::EN_FILETYPE CShellExt::GetFileType(LPCTSTR szFileName)
 {
-	if((stricmp(getExtName(szFileName),".mp3") == 0) ||
-		(stricmp(getExtName(szFileName),".mp2") == 0) ||
-		(stricmp(getExtName(szFileName),".mp1") == 0) ||
-		(stricmp(getExtName(szFileName),".rmp") == 0) )
+	if((lstrcmpi(getExtName(szFileName),_T(".mp3")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".mp2")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".mp1")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".rmp")) == 0) )
 	{
 		DWORD dwRet;
 		HANDLE hFile = CreateFile(
@@ -392,54 +392,54 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
 		}
 		return MP3;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".tta") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".tta")) == 0)
 	{
 		return MP3;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".wav") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".wav")) == 0)
 	{
 		return WAVE;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".avi") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".avi")) == 0)
 	{
 		return AVI;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".vqf") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".vqf")) == 0)
 	{
 		return VQF;
 	}
-	/*else*/ if((stricmp(getExtName(szFileName),".wma") == 0) ||
-			(stricmp(getExtName(szFileName),".wmv") == 0) ||
-			(stricmp(getExtName(szFileName),".asf") == 0) )
+	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".wma")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".wmv")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".asf")) == 0) )
 	{
 		return WMA;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".m3u") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".m3u")) == 0)
 	{
 		return M3U;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".ogg") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".ogg")) == 0)
 	{
 		return OGG;
 	}
-	/*else*/ if(stricmp(getExtName(szFileName),".ape") == 0)
+	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".ape")) == 0)
 	{
 		return APE;
 	}
-	/*else*/ if((stricmp(getExtName(szFileName),".mp4") == 0) ||
-			(stricmp(getExtName(szFileName),".m4v") == 0) ||
-			(stricmp(getExtName(szFileName),".m4a") == 0) ||
-			(stricmp(getExtName(szFileName),".3gp") == 0) ||
-			(stricmp(getExtName(szFileName),".3g2") == 0) )
+	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".mp4")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".m4v")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".m4a")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".3gp")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".3g2")) == 0) )
 	{
 		return MP4;
 	}
 
 	DWORD dwUseExtra=0;
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"UseExperimentalSupport",&dwUseExtra,FALSE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("UseExperimentalSupport"),&dwUseExtra,FALSE);
 	if(dwUseExtra){
-		if(stricmp(getExtName(szFileName),".tta") == 0)return MP3;
-		if(stricmp(getExtName(szFileName),".tak") == 0)return APE;
+		if(lstrcmpi(getExtName(szFileName),_T(".tta")) == 0)return MP3;
+		if(lstrcmpi(getExtName(szFileName),_T(".tak")) == 0)return APE;
 	}
 
 	return UNKNOWN;
@@ -447,7 +447,7 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(char *szFileName)
 
 BOOL CShellExt::Load()
 {
-	TRACE("[%s]   Load(%s)\n",APP_NAME,m_strSelectFile);
+	TRACE(_T("[%s]   Load(%s)\n"),APP_NAME,m_strSelectFile);
 
 	m_fileType = UNKNOWN;
 	m_bMultiSelect = FALSE;
@@ -455,8 +455,8 @@ BOOL CShellExt::Load()
 	//mp3infpを使用しないドライブの種類を指定
 	if(m_bSelectDrive)
 	{
-		char szDrive[10];
-		strncpy(szDrive,m_strSelectFile,3);
+		TCHAR szDrive[10];
+		lstrcpyn(szDrive,m_strSelectFile,4);
 		szDrive[3] = '\0';
 		if(szDrive[0] == '\\')
 		{
@@ -467,7 +467,7 @@ BOOL CShellExt::Load()
 		int iFddType;
 		switch(GetDriveType(szDrive)){
 		case DRIVE_REMOVABLE:
-			iFddType = GetDriveFormFactor(toupper(szDrive[0])-'A'+1);
+			iFddType = GetDriveFormFactor(_totupper(szDrive[0])-'A'+1);
 			if((iFddType == 525) || (iFddType == 350))
 			{
 				if(m_bDisable_FDD)//フロッピーディスクドライブ
@@ -487,7 +487,7 @@ BOOL CShellExt::Load()
 		}
 	}
 
-	switch(GetFileType((char *)(LPCSTR )m_strSelectFile))
+	switch(GetFileType((LPCTSTR )m_strSelectFile))
 	{
 	case MP3:
 		if(!m_bMp3PropEnable && !m_bMp3InfotipEnable && !m_bMp3ColumnEnable)
@@ -530,7 +530,7 @@ BOOL CShellExt::Load()
 		{
 			m_fileType = AVI;
 		}
-		m_OpenDML.SetJunkHeader("This file was made by "SOFT_NAME);
+		m_OpenDML.SetJunkHeader(_T("This file was made by ") SOFT_NAME);
 		break;
 	case VQF:
 		if(!m_bVqfPropEnable &&	!m_bVqfInfotipEnable && !m_bVqfColumnEnable)
@@ -611,43 +611,43 @@ BOOL CShellExt::Load()
 	return TRUE;
 }
 
-void CShellExt::OpenHtmlHelp(HWND hWnd,char *szViewFile)
+void CShellExt::OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile)
 {
 	CString strHelpPath;
 	// mp3infpのインストールパス
-	char szMp3infpPath[MAX_PATH];
-	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path",szMp3infpPath,"");
+	TCHAR szMp3infpPath[MAX_PATH];
+	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szMp3infpPath,_T(""));
 	AddTAilYenSigne(szMp3infpPath);
 	// 選択言語
-	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Language",(char *)(LPCSTR )DEF_SETUP_MAIN_LANGUAGE);
+	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Language"),(LPCTSTR )DEF_SETUP_MAIN_LANGUAGE);
 	if(strLanguage.Compare(DEF_SETUP_MAIN_LANGUAGE) == 0)
 	{
 		// デフォルト選択
 		strHelpPath = szMp3infpPath;
-		strHelpPath += "\\mp3infp_eng.txt";
-		ShellExecute(NULL,"open",strHelpPath,NULL,NULL,SW_SHOW);
+		strHelpPath += _T("\\mp3infp_eng.txt");
+		ShellExecute(NULL,_T("open"),strHelpPath,NULL,NULL,SW_SHOW);
 		return;
 	}
 	else
 	{
 		strHelpPath = szMp3infpPath;
-		strHelpPath += "language\\";
+		strHelpPath += _T("language\\");
 		strHelpPath += strLanguage;
-		strHelpPath += ".chm";
+		strHelpPath += _T(".chm");
 
 		CFileStatus status;
 		if(CFile::GetStatus(strHelpPath,status) == FALSE)
 		{
 			// chmが無ければtxtを開く
 			strHelpPath = szMp3infpPath;
-			strHelpPath += "language\\";
+			strHelpPath += _T("language\\");
 			strHelpPath += strLanguage;
-			strHelpPath += ".txt";
-			ShellExecute(NULL,"open",strHelpPath,NULL,NULL,SW_SHOW);
+			strHelpPath += _T(".txt");
+			ShellExecute(NULL,_T("open"),strHelpPath,NULL,NULL,SW_SHOW);
 			return;
 		}
 	}
-TRACE("strHelPath=%s\n",strHelpPath);
+TRACE(_T("strHelPath=%s\n"),strHelpPath);
 //	DWORD dwCookie;
 //	HtmlHelp(
 //			NULL,
@@ -669,12 +669,12 @@ TRACE("strHelPath=%s\n",strHelpPath);
 	{
 //		strcpy(szHelpFile,szHelpPath);
 //		lstrcat(szHelpFile,README_FILE);
-//		ShellExecute(hWnd,"open",szHelpFile,NULL,NULL,SW_SHOWNORMAL);
+//		ShellExecute(hWnd,_T("open"),szHelpFile,NULL,NULL,SW_SHOWNORMAL);
 	}*/
 
 }
 
-BOOL CShellExt::PushTimeStamp(const char *szFile)
+BOOL CShellExt::PushTimeStamp(LPCTSTR szFile)
 {
 	//タイムスタンプを保存
 	HANDLE hFile = CreateFile(
@@ -694,7 +694,7 @@ BOOL CShellExt::PushTimeStamp(const char *szFile)
 	return FALSE;
 }
 
-BOOL CShellExt::PopTimeStamp(const char *szFile)
+BOOL CShellExt::PopTimeStamp(LPCTSTR szFile)
 {
 	//タイムスタンプを復元
 	HANDLE hFile = CreateFile(
@@ -716,86 +716,86 @@ BOOL CShellExt::PopTimeStamp(const char *szFile)
 
 void CShellExt::ConfigLoad()
 {
-	TRACE("ConfigLoad()\n");
+	TRACE(_T("ConfigLoad()\n"));
 	//オプションを取得
 	CString strDefault;
 	//(共通)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"SaveTimeStamp",(DWORD *)&m_bSaveTimeStamp,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ContextMenu",(DWORD *)&m_bContextMenu,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"SelectDrive",(DWORD *)&m_bSelectDrive,DEF_SETUP_MAIN_SELECT_DRIVE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_FDD",(DWORD *)&m_bDisable_FDD,DEF_SETUP_MAIN_DISABLE_FDD);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_RAMOVABLE",(DWORD *)&m_bDisable_RAMOVABLE,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_CDROM",(DWORD *)&m_bDisable_CDROM,DEF_SETUP_MAIN_DISABLE_CDROM);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_NETWORK",(DWORD *)&m_bDisable_NETWORK,DEF_SETUP_MAIN_DISABLE_NETWORK);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Column_8_3",(DWORD *)&m_bColumn_8_3,DEF_SETUP_MAIN_COLUMN_8_3);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD *)&m_bPropAOT,DEF_SETUP_PROP_AOT);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("SaveTimeStamp"),(DWORD *)&m_bSaveTimeStamp,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ContextMenu"),(DWORD *)&m_bContextMenu,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("SelectDrive"),(DWORD *)&m_bSelectDrive,DEF_SETUP_MAIN_SELECT_DRIVE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_FDD"),(DWORD *)&m_bDisable_FDD,DEF_SETUP_MAIN_DISABLE_FDD);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_RAMOVABLE"),(DWORD *)&m_bDisable_RAMOVABLE,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_CDROM"),(DWORD *)&m_bDisable_CDROM,DEF_SETUP_MAIN_DISABLE_CDROM);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_NETWORK"),(DWORD *)&m_bDisable_NETWORK,DEF_SETUP_MAIN_DISABLE_NETWORK);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Column_8_3"),(DWORD *)&m_bColumn_8_3,DEF_SETUP_MAIN_COLUMN_8_3);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD *)&m_bPropAOT,DEF_SETUP_PROP_AOT);
 	//(mp3)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_PropEnable",(DWORD *)&m_bMp3PropEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_Id3v1ScmpxGenre",(DWORD *)&m_bId3v1ScmpxGenre,FALSE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_RiffSifDisable",(DWORD *)&m_bRiffSifDisable,TRUE);
-	m_strRmpSoft = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_RmpSoft",SOFT_NAME);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_InfotipEnable",(DWORD *)&m_bMp3InfotipEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_PropEnable"),(DWORD *)&m_bMp3PropEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_Id3v1ScmpxGenre"),(DWORD *)&m_bId3v1ScmpxGenre,FALSE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_RiffSifDisable"),(DWORD *)&m_bRiffSifDisable,TRUE);
+	m_strRmpSoft = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_RmpSoft"),SOFT_NAME);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_InfotipEnable"),(DWORD *)&m_bMp3InfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP3_FORMAT);
-	m_strMp3InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_ColumnEnable",(DWORD *)&m_bMp3ColumnEnable,TRUE);
+	m_strMp3InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_ColumnEnable"),(DWORD *)&m_bMp3ColumnEnable,TRUE);
 	m_bMp3ApeTagDisable = FALSE;
 
 	//(wave)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_PropEnable",(DWORD *)&m_bWavePropEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_InfotipEnable",(DWORD *)&m_bWaveInfotipEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_PropEnable"),(DWORD *)&m_bWavePropEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_InfotipEnable"),(DWORD *)&m_bWaveInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_WAVE_FORMAT);
-	m_strWaveInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_ColumnEnable",(DWORD *)&m_bWaveColumnEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_CodecFind",(DWORD *)&m_iWaveCodecFind,0);
+	m_strWaveInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_ColumnEnable"),(DWORD *)&m_bWaveColumnEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_CodecFind"),(DWORD *)&m_iWaveCodecFind,0);
 	m_iWaveCodecFind = 2;	// 2004-01-21 コーデック取得方法は内蔵辞書固定
 
 	//(avi)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_PropEnable",(DWORD *)&m_bAviPropEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_InfotipEnable",(DWORD *)&m_bAviInfotipEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_PropEnable"),(DWORD *)&m_bAviPropEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_InfotipEnable"),(DWORD *)&m_bAviInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_AVI_FORMAT);
-	m_strAviInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_ColumnEnable",(DWORD *)&m_bAviColumnEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_CodecFind",(DWORD *)&m_iAviCodecFind,0);
+	m_strAviInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_ColumnEnable"),(DWORD *)&m_bAviColumnEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_CodecFind"),(DWORD *)&m_iAviCodecFind,0);
 	m_iAviCodecFind = 2;	// 2004-01-21 コーデック取得方法は内蔵辞書固定
 
 	//(vqf)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_PropEnable",(DWORD *)&m_bVqfPropEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_InfotipEnable",(DWORD *)&m_bVqfInfotipEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_PropEnable"),(DWORD *)&m_bVqfPropEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_InfotipEnable"),(DWORD *)&m_bVqfInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_VQF_FORMAT);
-	m_strVqfInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_ColumnEnable",(DWORD *)&m_bVqfColumnEnable,TRUE);
+	m_strVqfInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_ColumnEnable"),(DWORD *)&m_bVqfColumnEnable,TRUE);
 	
 	//(wma)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_PropEnable",(DWORD *)&m_bWmaPropEnable,TRUE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_InfotipEnable",(DWORD *)&m_bWmaInfotipEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_PropEnable"),(DWORD *)&m_bWmaPropEnable,TRUE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_InfotipEnable"),(DWORD *)&m_bWmaInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_WMA_FORMAT);
-	m_strWmaInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_ColumnEnable",(DWORD *)&m_bWmaColumnEnable,TRUE);
+	m_strWmaInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_ColumnEnable"),(DWORD *)&m_bWmaColumnEnable,TRUE);
 	
 	//(m3u)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"m3u_PropEnable",(DWORD *)&m_bM3uPropEnable,DEF_M3U_PROP_ENABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"m3u_InfotipEnable",(DWORD *)&m_bM3uInfotipEnable,DEF_M3U_INFOTIP_ENABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"m3u_Prop_Fullpath",(DWORD *)&m_bM3uProp_Fullpath,DEF_M3U_PROP_FULLPATH);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("m3u_PropEnable"),(DWORD *)&m_bM3uPropEnable,DEF_M3U_PROP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("m3u_InfotipEnable"),(DWORD *)&m_bM3uInfotipEnable,DEF_M3U_INFOTIP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("m3u_Prop_Fullpath"),(DWORD *)&m_bM3uProp_Fullpath,DEF_M3U_PROP_FULLPATH);
 
 	//(ogg)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_PropEnable",(DWORD *)&m_bOggPropEnable,DEF_OGG_PROP_ENABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_InfotipEnable",(DWORD *)&m_bOggInfotipEnable,DEF_OGG_INFOTIP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_PropEnable"),(DWORD *)&m_bOggPropEnable,DEF_OGG_PROP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_InfotipEnable"),(DWORD *)&m_bOggInfotipEnable,DEF_OGG_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_OGG_FORMAT);
-	m_strOggInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_ColumnEnable",(DWORD *)&m_bOggColumnEnable,DEF_OGG_COLUMN_ENABLE);
+	m_strOggInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_ColumnEnable"),(DWORD *)&m_bOggColumnEnable,DEF_OGG_COLUMN_ENABLE);
 
 	//(ape)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_PropEnable",(DWORD *)&m_bApePropEnable,DEF_APE_PROP_ENABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_InfotipEnable",(DWORD *)&m_bApeInfotipEnable,DEF_APE_INFOTIP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_PropEnable"),(DWORD *)&m_bApePropEnable,DEF_APE_PROP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_InfotipEnable"),(DWORD *)&m_bApeInfotipEnable,DEF_APE_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_APE_FORMAT);
-	m_strApeInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_ColumnEnable",(DWORD *)&m_bApeColumnEnable,DEF_APE_COLUMN_ENABLE);
+	m_strApeInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_ColumnEnable"),(DWORD *)&m_bApeColumnEnable,DEF_APE_COLUMN_ENABLE);
 	
 	//(mp4)
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_PropEnable",(DWORD *)&m_bMp4PropEnable,DEF_MP4_PROP_ENABLE);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_InfotipEnable",(DWORD *)&m_bMp4InfotipEnable,DEF_MP4_INFOTIP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_PropEnable"),(DWORD *)&m_bMp4PropEnable,DEF_MP4_PROP_ENABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_InfotipEnable"),(DWORD *)&m_bMp4InfotipEnable,DEF_MP4_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP4_FORMAT);
-	m_strMp4InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_InfotipFormat",(char *)(LPCSTR )strDefault);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_ColumnEnable",(DWORD *)&m_bMp4ColumnEnable,DEF_MP4_COLUMN_ENABLE);
+	m_strMp4InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_InfotipFormat"),(LPCTSTR )strDefault);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_ColumnEnable"),(DWORD *)&m_bMp4ColumnEnable,DEF_MP4_COLUMN_ENABLE);
 	
 }

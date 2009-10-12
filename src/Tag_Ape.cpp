@@ -17,52 +17,52 @@
 #define APE_FLAG_TEXTINFO_UTF8			0x00000000
 
 const int CTag_Ape::CURRENT_APE_TAG_VERSION		= 2000;
-const char *CTag_Ape::APE_TAG_FIELD_TITLE		= "Title";
-const char *CTag_Ape::APE_TAG_FIELD_ARTIST		= "Artist";
-const char *CTag_Ape::APE_TAG_FIELD_ALBUM		= "Album";
-const char *CTag_Ape::APE_TAG_FIELD_COMMENT		= "Comment";
-const char *CTag_Ape::APE_TAG_FIELD_YEAR		= "Year";
-const char *CTag_Ape::APE_TAG_FIELD_TRACK		= "Track";
-const char *CTag_Ape::APE_TAG_FIELD_GENRE		= "Genre";
+LPCTSTR CTag_Ape::APE_TAG_FIELD_TITLE		= _T("Title");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_ARTIST		= _T("Artist");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_ALBUM		= _T("Album");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_COMMENT		= _T("Comment");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_YEAR		= _T("Year");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_TRACK		= _T("Track");
+LPCTSTR CTag_Ape::APE_TAG_FIELD_GENRE		= _T("Genre");
 
 static const unsigned char SCMPX_GENRE_NULL = 247;
 static const unsigned char WINAMP_GENRE_NULL = 255;
-static const char	szId3gnr[256][30]={
-	"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge",
-	"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B","Rap",
-	"Reggae","Rock","Techno","Industrial","Alternative","Ska","Death Metal",
-	"Pranks","Soundtrack","Euro-Techno","Ambient","Trip-Hop","Vocal",
-	"Jazz+Funk","Fusion","Trance","Classical","Instrumental","Acid","House",
-	"Game","Sound Clip","Gospel","Noise","Alt. Rock","Bass","Soul","Punk",
-	"Space","Meditative","Instrumental Pop","Instrumental Rock","Ethnic",
-	"Gothic","Darkwave","Techno-Industrial","Electronic","Pop-Folk",
-	"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta Rap",
-	"Top 40","Christian Rap","Pop/Funk","Jungle","Native American","Cabaret",
-	"New Wave","Psychedelic","Rave","Showtunes","Trailer","Lo-Fi","Tribal",
-	"Acid Punk","Acid Jazz","Polka","Retro","Musical","Rock & Roll",
-	"Hard Rock","Folk","Folk/Rock","National Folk","Swing","Fast-Fusion",
-	"Bebob","Latin","Revival","Celtic","Bluegrass","Avantgarde","Gothic Rock",
-	"Progressive Rock","Psychedelic Rock","Symphonic Rock","Slow Rock",
-	"Big Band","Chorus","Easy Listening","Acoustic","Humour","Speech",
-	"Chanson","Opera","Chamber Music","Sonata","Symphony","Booty Bass",
-	"Primus","Porn Groove","Satire","Slow Jam","Club","Tango","Samba",
-	"Folklore","Ballad","Power Ballad","Rhythmic Soul","Freestyle","Duet",
-	"Punk Rock","Drum Solo","A Cappella","Euro-House","Dance Hall","Goa",
-	"Drum & Bass","Club-House","Hardcore","Terror","Indie","BritPop",
-	"Negerpunk","Polsk Punk","Beat","Christian Gangsta Rap","Heavy Metal",
-	"Black Metal","Crossover","Contemporary Christian","Christian Rock",
-	"Merengue","Salsa","Thrash Metal","Anime","JPop","Synthpop",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"","","","","","","","","","",
-	"Heavy Rock(J)","Doom Rock(J)","J-POP(J)","Seiyu(J)","Tecno Ambient(J)","Moemoe(J)","Tokusatsu(J)","Anime(J)"
+static const TCHAR	szId3gnr[256][30]={
+	_T("Blues"),_T("Classic Rock"),_T("Country"),_T("Dance"),_T("Disco"),_T("Funk"),_T("Grunge"),
+	_T("Hip-Hop"),_T("Jazz"),_T("Metal"),_T("New Age"),_T("Oldies"),_T("Other"),_T("Pop"),_T("R&B"),_T("Rap"),
+	_T("Reggae"),_T("Rock"),_T("Techno"),_T("Industrial"),_T("Alternative"),_T("Ska"),_T("Death Metal"),
+	_T("Pranks"),_T("Soundtrack"),_T("Euro-Techno"),_T("Ambient"),_T("Trip-Hop"),_T("Vocal"),
+	_T("Jazz+Funk"),_T("Fusion"),_T("Trance"),_T("Classical"),_T("Instrumental"),_T("Acid"),_T("House"),
+	_T("Game"),_T("Sound Clip"),_T("Gospel"),_T("Noise"),_T("Alt. Rock"),_T("Bass"),_T("Soul"),_T("Punk"),
+	_T("Space"),_T("Meditative"),_T("Instrumental Pop"),_T("Instrumental Rock"),_T("Ethnic"),
+	_T("Gothic"),_T("Darkwave"),_T("Techno-Industrial"),_T("Electronic"),_T("Pop-Folk"),
+	_T("Eurodance"),_T("Dream"),_T("Southern Rock"),_T("Comedy"),_T("Cult"),_T("Gangsta Rap"),
+	_T("Top 40"),_T("Christian Rap"),_T("Pop/Funk"),_T("Jungle"),_T("Native American"),_T("Cabaret"),
+	_T("New Wave"),_T("Psychedelic"),_T("Rave"),_T("Showtunes"),_T("Trailer"),_T("Lo-Fi"),_T("Tribal"),
+	_T("Acid Punk"),_T("Acid Jazz"),_T("Polka"),_T("Retro"),_T("Musical"),_T("Rock & Roll"),
+	_T("Hard Rock"),_T("Folk"),_T("Folk/Rock"),_T("National Folk"),_T("Swing"),_T("Fast-Fusion"),
+	_T("Bebob"),_T("Latin"),_T("Revival"),_T("Celtic"),_T("Bluegrass"),_T("Avantgarde"),_T("Gothic Rock"),
+	_T("Progressive Rock"),_T("Psychedelic Rock"),_T("Symphonic Rock"),_T("Slow Rock"),
+	_T("Big Band"),_T("Chorus"),_T("Easy Listening"),_T("Acoustic"),_T("Humour"),_T("Speech"),
+	_T("Chanson"),_T("Opera"),_T("Chamber Music"),_T("Sonata"),_T("Symphony"),_T("Booty Bass"),
+	_T("Primus"),_T("Porn Groove"),_T("Satire"),_T("Slow Jam"),_T("Club"),_T("Tango"),_T("Samba"),
+	_T("Folklore"),_T("Ballad"),_T("Power Ballad"),_T("Rhythmic Soul"),_T("Freestyle"),_T("Duet"),
+	_T("Punk Rock"),_T("Drum Solo"),_T("A Cappella"),_T("Euro-House"),_T("Dance Hall"),_T("Goa"),
+	_T("Drum & Bass"),_T("Club-House"),_T("Hardcore"),_T("Terror"),_T("Indie"),_T("BritPop"),
+	_T("Negerpunk"),_T("Polsk Punk"),_T("Beat"),_T("Christian Gangsta Rap"),_T("Heavy Metal"),
+	_T("Black Metal"),_T("Crossover"),_T("Contemporary Christian"),_T("Christian Rock"),
+	_T("Merengue"),_T("Salsa"),_T("Thrash Metal"),_T("Anime"),_T("JPop"),_T("Synthpop"),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),_T(""),
+	_T("Heavy Rock(J)"),_T("Doom Rock(J)"),_T("J-POP(J)"),_T("Seiyu(J)"),_T("Tecno Ambient(J)"),_T("Moemoe(J)"),_T("Tokusatsu(J)"),_T("Anime(J)")
 	};
 
 //////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ void CTag_Ape::Release()
 	m_comments.clear();
 }
 
-BOOL CTag_Ape::SetComment(const char *name,const char *value)
+BOOL CTag_Ape::SetComment(LPCTSTR name,LPCTSTR value)
 {
 	m_bHasApetag = TRUE;
 	
@@ -109,7 +109,7 @@ BOOL CTag_Ape::SetComment(const char *name,const char *value)
 		it++;
 	}
 
-	if(strlen(value) == 0)
+	if(lstrlen(value) == 0)
 	{
 		return TRUE;	// 空はセットしない
 	}
@@ -118,9 +118,9 @@ BOOL CTag_Ape::SetComment(const char *name,const char *value)
 	return TRUE;
 }
 
-BOOL CTag_Ape::GetComment(const char *name,CString &strValue)
+BOOL CTag_Ape::GetComment(LPCTSTR name,CString &strValue)
 {
-	strValue = "";
+	strValue = _T("");
 
 	map<CString,CString>::iterator it = m_comments.begin();
 	while(it != m_comments.end())
@@ -128,7 +128,7 @@ BOOL CTag_Ape::GetComment(const char *name,CString &strValue)
 		// 大文字小文字を区別せずに比較
 		if(it->first.CompareNoCase(name) == 0)
 		{
-			strValue = (LPCSTR )it->second;
+			strValue = it->second;
 			return TRUE;
 		}
 		it++;
@@ -149,7 +149,7 @@ BOOL CTag_Ape::GetComment(const char *name,CString &strValue)
 	}
 }*/
 
-DWORD CTag_Ape::_LoadId3Tag(const char *szFileName)
+DWORD CTag_Ape::_LoadId3Tag(LPCTSTR szFileName)
 {
 	DWORD dwRet;
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
@@ -268,8 +268,8 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 		pFieldBuffer[fieldValueSize] = '\0';
 		rawTagOffset += fieldValueSize;
 		// S-JISと仮定して処理する
-		SetComment(nameBuffer,pFieldBuffer);
-		TRACE("APE:%s:%s\n",nameBuffer,pFieldBuffer);
+		SetComment(CString(nameBuffer),CString(pFieldBuffer));
+		TRACE(_T("APE:%s:%s\n"),nameBuffer,pFieldBuffer);
 		free(pFieldBuffer);
 	}
 	free(pRawTag);
@@ -277,6 +277,7 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 	return ERROR_SUCCESS;
 }
 
+#if 0
 CString Utf8toSjis(char *utf8,int len)
 {
 	// UTF-8 -> Ansi
@@ -302,6 +303,7 @@ CString Utf8toSjis(char *utf8,int len)
 
 	return strRet;
 }
+#endif
 
 DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 {
@@ -382,11 +384,11 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 		char *pFieldBuffer = (char *)malloc(fieldValueSize+1);
 		memcpy(pFieldBuffer,&pRawTag[rawTagOffset],fieldValueSize);
 		pFieldBuffer[fieldValueSize] = '\0';
-		// UTF-8->SJIS
-		CString str = Utf8toSjis(pFieldBuffer,fieldValueSize);
+		// UTF-8->TCHAR
+		CString str = DataToCString(pFieldBuffer, fieldValueSize, DTC_CODE_UTF8);
 		rawTagOffset += fieldValueSize;
-		SetComment(nameBuffer,str);
-		TRACE("APE:%s:%s\n",nameBuffer,pFieldBuffer);
+		SetComment(CString(nameBuffer),str);
+		TRACE(_T("APE:%s:%s\n"),nameBuffer,pFieldBuffer);
 		free(pFieldBuffer);
 	}
 	free(pRawTag);
@@ -394,10 +396,10 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::Load(const char *szFileName)
+DWORD CTag_Ape::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
-	TRACE("CTag_Ape::Load(%s)\n",szFileName);
+	TRACE(_T("CTag_Ape::Load(%s)\n"),szFileName);
 	Release();
 
 	//ファイルをオープン
@@ -470,7 +472,7 @@ DWORD CTag_Ape::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::_SaveId3TagV1(const char *szFileName)
+DWORD CTag_Ape::_SaveId3TagV1(LPCTSTR szFileName)
 {
 	DWORD dwWritten;
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
@@ -508,7 +510,7 @@ DWORD CTag_Ape::_SaveId3TagV1(const char *szFileName)
 }
 
 // id3V1はあらかじめ除去しておくこと
-DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
+DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD dwRet;
@@ -554,29 +556,15 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 	it = m_comments.begin();
 	while(it != m_comments.end())
 	{
-		TRACE("APE(save):%s:%s\n",(it->first),it->second);
+		TRACE(_T("APE(save):%s:%s\n"),(it->first),it->second);
 		int utf8len = 0;
 		unsigned char *dataUtf8 = NULL;
 		{
-			//Ansi -> UNICODE
-			int utf16len = MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),0,0);
-			utf16len = utf16len*sizeof(WCHAR);
-			unsigned char *dataUtf16 = (unsigned char *)malloc(utf16len);
-			if(!dataUtf16)
-			{
-				continue;
-			}
-			MultiByteToWideChar(CP_ACP,0,it->second,strlen(it->second),(LPWSTR)dataUtf16,utf16len/sizeof(WCHAR));
-			// UNICODE -> UTF-8
-			utf8len = WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,utf16len/sizeof(WCHAR),NULL,0,NULL,NULL);
-			dataUtf8 = (unsigned char *)malloc(utf8len);
+			dataUtf8 = (unsigned char *)TstrToDataAlloc(it->second, lstrlen(it->second), &utf8len, DTC_CODE_UTF8);
 			if(!dataUtf8)
 			{
-				free(dataUtf16);
 				continue;
 			}
-			WideCharToMultiByte(CP_UTF8,0,(WCHAR *)dataUtf16,utf16len/sizeof(WCHAR),(char *)dataUtf8,utf8len,NULL,NULL);
-			free(dataUtf16);
 		}
 		DWORD size = utf8len;
 		DWORD flag = 0x00000000;
@@ -586,9 +574,12 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 		WriteFile(hFile,&flag,sizeof(flag),&dwRet,NULL);
 		header.size += 4;
 		footer.size += 4;
-		WriteFile(hFile,it->first,strlen(it->first) + 1,&dwRet,NULL);
-		header.size += strlen(it->first) + 1;
-		footer.size += strlen(it->first) + 1;
+		
+		char nameBuffer[256];
+		size = TstrToData(it->first, -1, nameBuffer, sizeof(nameBuffer), DTC_CODE_UTF8);
+		WriteFile(hFile,nameBuffer,size,&dwRet,NULL);
+		header.size += size;
+		footer.size += size;
 		WriteFile(hFile,dataUtf8,utf8len,&dwRet,NULL);
 		header.size += utf8len;
 		footer.size += utf8len;
@@ -615,7 +606,7 @@ DWORD CTag_Ape::_SaveApeTagV2(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::Save(const char *szFileName)
+DWORD CTag_Ape::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 
@@ -654,7 +645,7 @@ DWORD CTag_Ape::Save(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::DelTag(const char *szFileName)
+DWORD CTag_Ape::DelTag(LPCTSTR szFileName)
 {
 	// ID3v1をバックアップ
 	DWORD dwWin32errorCode = _LoadId3Tag(szFileName);
@@ -681,7 +672,7 @@ DWORD CTag_Ape::DelTag(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-DWORD CTag_Ape::_DelTag(const char *szFileName)
+DWORD CTag_Ape::_DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
@@ -757,7 +748,7 @@ DWORD CTag_Ape::_DelTag(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CTag_Ape::MakeTag(const char *szFileName)
+DWORD CTag_Ape::MakeTag(LPCTSTR szFileName)
 {
 	// ID3v1をバックアップ
 	DWORD dwWin32errorCode = _LoadId3Tag(szFileName);

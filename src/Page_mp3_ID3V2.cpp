@@ -134,9 +134,9 @@ static void SetEncodeCB(HWND hDlg)
 	if(cur >= 2)	// > v2.4
 	{
 #ifndef	ENABLE_UTF_16BE
-		char *encode[] = {"ISO-8859-1","UTF-16(Unicode)","UTF-8(Unicode)"};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)"),_T("UTF-8(Unicode)")};
 #else
-		char *encode[] = {"ISO-8859-1","UTF-16(Unicode)","UTF-8(Unicode)","UTF-16BE"};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)"),_T("UTF-8(Unicode)"),_T("UTF-16BE")};
 #endif
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
@@ -144,20 +144,20 @@ static void SetEncodeCB(HWND hDlg)
 					GetDlgItem(hDlg,IDC_EDIT_UNICODE),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )encode[i]
+					(LPARAM )(LPCTSTR )encode[i]
 					);
 		}
 	}
 	else
 	{
-		char *encode[] = {"ISO-8859-1","UTF-16(Unicode)"};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)")};
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
 			SendMessage(
 					GetDlgItem(hDlg,IDC_EDIT_UNICODE),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )encode[i]
+					(LPARAM )(LPCTSTR )encode[i]
 					);
 		}
 	}
@@ -178,50 +178,50 @@ static void EnableButton(HWND hDlg,CShellExt *lpcs)
 
 static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_NAM),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_NAM),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_TRACK),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TRACK),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_PRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_PRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GNR),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_GNR),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COMP),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COMP),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_COMP),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_COMP),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ORGART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ORGART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ORGART),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ORGART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COPYRIGHT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COPYRIGHT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_COPYRIGHT),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_COPYRIGHT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_URL),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_URL),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_URL),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_URL),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_URL_JUMP),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENC),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENC),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ENC),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ENC),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENC2),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENC2),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ENC2),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ENC2),bEnable);
-//	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ID3VER),"");
+//	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ID3VER),_T(""));
 //	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ID3VER),bEnable);
 //	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ID3VER),bEnable);
-//	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_UNICODE),"");
+//	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_UNICODE),_T(""));
 //	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_UNICODE),bEnable);
 //	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_UNICODE),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),bEnable);
@@ -239,7 +239,7 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
-		tcItem.pszText = "ID3v2";
+		tcItem.pszText = _T("ID3v2");
 		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),(LPARAM )&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
@@ -258,7 +258,7 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
-		tcItem.pszText = "ID3v2(*)";
+		tcItem.pszText = _T("ID3v2(*)");
 		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),(LPARAM )&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
@@ -393,7 +393,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					GetDlgItem(hDlg,IDC_EDIT_GNR),
 					CB_ADDSTRING,
 					0,
-					(LPARAM )(LPCSTR )""	//空白
+					(LPARAM )(LPCTSTR )_T("")	//空白
 				);
 			int i=0;
 			for(; i<256; i++)
@@ -403,17 +403,17 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 							GetDlgItem(hDlg,IDC_EDIT_GNR),
 							CB_ADDSTRING,
 							0,
-							(LPARAM )(LPCSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
+							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
 						);
 			}
-			char *id3tags[] = {"v2.2","v2.3","v2.4"};
+			LPCTSTR id3tags[] = {_T("v2.2"),_T("v2.3"),_T("v2.4")};
 			for(i=0; i<sizeof_array(id3tags); i++)
 			{
 				SendMessage(
 						GetDlgItem(hDlg,IDC_EDIT_ID3VER),
 						CB_ADDSTRING,
 						0,
-						(LPARAM )(LPCSTR )id3tags[i]
+						(LPARAM )(LPCTSTR )id3tags[i]
 						);
 			}
 			//オーナードローボタンの初期化
@@ -534,7 +534,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winampを再開
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(char *)(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();
@@ -651,7 +651,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					// Winampを再開
 /*					if(nowPlaying)
 					{
-						PlayWinamp(hDlg,(char *)(LPCTSTR )lpcs->m_strSelectFile);
+						PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 						if(nowPlaying == 3)
 						{
 							PauseWinamp();
@@ -739,7 +739,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winampを再開
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(char *)(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();
@@ -803,7 +803,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -836,7 +836,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				wnd.Detach();
 				if(strTmp.GetLength())
 				{
-					ShellExecute(hDlg,"open",strTmp,NULL,NULL,SW_SHOW);
+					ShellExecute(hDlg,_T("open"),strTmp,NULL,NULL,SW_SHOW);
 				}
 			}
 			break;
@@ -859,13 +859,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				PostMessage(lpcs->m_hwndRiffSIF,WM_USER+1,0,0);
 			if(lpcs->m_hwndMp3Ape)
 				PostMessage(lpcs->m_hwndMp3Ape,WM_USER+1,0,0);
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,2",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,2"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -878,11 +878,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 	//状況依存ヘルプ
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,SOFT_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,SOFT_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 
@@ -1044,7 +1044,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winampを再開
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(char *)(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();

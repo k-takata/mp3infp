@@ -32,23 +32,23 @@ void CRMP::Release()
 {
 	m_bEnable = FALSE;
 	m_bHasId3tag = FALSE;
-	m_strNAM = "";		//INAM songname
-	m_strART = "";		//IART アーティスト名
-	m_strPRD = "";		//IPRD アルバム名
-	m_strCMT = "";		//ICMT コメント
-	m_strCRD = "";		//ICRD 日付
-	m_strGNR = "";		//IGNR ジャンル
-	m_strCOP = "";		//ICOP 著作権
-	m_strENG = "";		//IENG エンジニア
-	m_strSRC = "";		//ISRC ソース
-	m_strSFT = "";		//ISFT ソフトウェア
-	m_strKEY = "";		//IKEY キーワード
-	m_strTCH = "";		//ITCH 技術者
-	m_strLYC = "";		//ILYC 歌詞
-	m_strCMS = "";		//ICMS コミッション
-	m_strMED = "";		//IMED 中間
-	m_strSBJ = "";		//ISBJ subject
-	m_strMP3 = "";		//IMP3 mp3 info
+	m_strNAM = _T("");		//INAM songname
+	m_strART = _T("");		//IART アーティスト名
+	m_strPRD = _T("");		//IPRD アルバム名
+	m_strCMT = _T("");		//ICMT コメント
+	m_strCRD = _T("");		//ICRD 日付
+	m_strGNR = _T("");		//IGNR ジャンル
+	m_strCOP = _T("");		//ICOP 著作権
+	m_strENG = _T("");		//IENG エンジニア
+	m_strSRC = _T("");		//ISRC ソース
+	m_strSFT = _T("");		//ISFT ソフトウェア
+	m_strKEY = _T("");		//IKEY キーワード
+	m_strTCH = _T("");		//ITCH 技術者
+	m_strLYC = _T("");		//ILYC 歌詞
+	m_strCMS = _T("");		//ICMS コミッション
+	m_strMED = _T("");		//IMED 中間
+	m_strSBJ = _T("");		//ISBJ subject
+	m_strMP3 = _T("");		//IMP3 mp3 info
 }
 
 void CRMP::SetScmpxGenre(BOOL bSwitch)
@@ -56,7 +56,7 @@ void CRMP::SetScmpxGenre(BOOL bSwitch)
 	m_bScmpxGenre = bSwitch;
 }
 
-void CRMP::SetSftDefault(const char *szDefaultSoft)
+void CRMP::SetSftDefault(LPCTSTR szDefaultSoft)
 {
 	m_strDefaultSft = szDefaultSoft;
 }
@@ -69,28 +69,30 @@ CString CRMP::ReadChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id)
 	mmckOutinfoSubchunk.ckid = id;
 	if(mmioDescend(hmmio,&mmckOutinfoSubchunk,&mmckinfo,MMIO_FINDCHUNK) == MMSYSERR_NOERROR)
 	{
-		mmioRead(hmmio,retString.GetBuffer(mmckOutinfoSubchunk.cksize),mmckOutinfoSubchunk.cksize);
-		//2001-05-12 ILYC対策
-		if( (mmckOutinfoSubchunk.cksize > 11) && 
-			(mmioFOURCC('I','L','Y','C') == id) &&
-			(strncmp((LPCSTR )retString+1,"LYRICSBEGIN",11) == 0) )
-		{
-			(char )(((LPCSTR )retString)[0]) = '_';	//とりあえず'_'を入れておく(後で\0に戻す)
+		char *buf = (char *)malloc(mmckOutinfoSubchunk.cksize);
+		if (buf != NULL) {
+			mmioRead(hmmio,buf,mmckOutinfoSubchunk.cksize);
+			//2001-05-12 ILYC対策
+			if( (mmckOutinfoSubchunk.cksize > 11) && 
+				(mmioFOURCC('I','L','Y','C') == id) &&
+				(strncmp(buf+1,"LYRICSBEGIN",11) == 0) )
+			{
+				buf[0] = '_';	//とりあえず'_'を入れておく(後で\0に戻す)
+			}
+			retString = buf;
 		}
-		//長さを修正
-		retString.GetBufferSetLength(strlen((LPCSTR )retString));
 		mmioAscend(hmmio,&mmckOutinfoSubchunk,0);
 	}
 	return retString;
 }
 
-DWORD CRMP::Load(const char *szFileName)
+DWORD CRMP::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((char *)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
 	if(!hmmio)
 	{
 		return -1;
@@ -211,7 +213,7 @@ DWORD CRMP::Load(const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::Save(HWND hWnd,const char *szFileName)
+DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD		mp3Size;
@@ -224,24 +226,24 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	DWORD		dwWritten;
 
 	//予想される増加サイズ
-	dwNewSize = lstrlen("LIST----INFO");
-	dwNewSize += m_strNAM.GetLength()+2+4+4;//+2はワードアラインメントを考慮しての数値
-	dwNewSize += m_strART.GetLength()+2+4+4;
-	dwNewSize += m_strPRD.GetLength()+2+4+4;
-	dwNewSize += m_strCMT.GetLength()+2+4+4;
-	dwNewSize += m_strCRD.GetLength()+2+4+4;
-	dwNewSize += m_strGNR.GetLength()+2+4+4;
-	dwNewSize += m_strCOP.GetLength()+2+4+4;
-	dwNewSize += m_strENG.GetLength()+2+4+4;
-	dwNewSize += m_strSRC.GetLength()+2+4+4;
-	dwNewSize += m_strSFT.GetLength()+2+4+4;
-	dwNewSize += m_strKEY.GetLength()+2+4+4;
-	dwNewSize += m_strTCH.GetLength()+2+4+4;
-	dwNewSize += m_strLYC.GetLength()+2+4+4;
-	dwNewSize += m_strCMS.GetLength()+2+4+4;
-	dwNewSize += m_strMED.GetLength()+2+4+4;
-	dwNewSize += m_strSBJ.GetLength()+2+4+4;
-	dwNewSize += m_strMP3.GetLength()+2+4+4;
+	dwNewSize = strlen("LIST----INFO");
+	dwNewSize += TstrToData(m_strNAM,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;//+1はワードアラインメントを考慮しての数値
+	dwNewSize += TstrToData(m_strART,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strPRD,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strCMT,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strCRD,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strGNR,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strCOP,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strENG,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strSRC,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strSFT,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strKEY,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strTCH,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strLYC,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strCMS,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strMED,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strSBJ,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToData(m_strMP3,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
 	dwNewSize += 128+2+4+4;	//szId3dummy
 
 	hFile = CreateFile(szFileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
@@ -264,7 +266,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	{
 		if(m_bHasId3tag)
 		{
-			char	szDefaultName[MAX_PATH];
+			TCHAR	szDefaultName[MAX_PATH];
 			memset(id3tag,0,sizeof(id3tag));
 
 			memcpy(id3tag,"TAG",3);
@@ -272,9 +274,14 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 				id3tag[127] = (char )SCMPX_GENRE_NULL;
 			else
 				id3tag[127] = (char )WINAMP_GENRE_NULL;
-			strcpy(szDefaultName,getFileName(szFileName));
+			lstrcpy(szDefaultName,getFileName(szFileName));
 			cutExtName(szDefaultName);
-			strncpy(id3tag+3,szDefaultName,30);
+			
+			char *buf = TstrToDataAlloc(szDefaultName, -1, NULL, DTC_CODE_ANSI);
+			if (buf) {
+				strncpy(id3tag+3,buf,30);
+				free(buf);
+			}
 		}
 	}
 	//試しにファイルを大きくしてみる
@@ -307,7 +314,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((LPSTR )szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen((LPTSTR )szFileName,NULL,MMIO_COMPAT);
 	if(!hmmio)
 	{
 		return -1;
@@ -353,7 +360,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	mmioClose(hmmio,0);
 
 	//後ろを切り取る
-	if((fp=fopen(szFileName,"r+b")) == NULL)
+	if((fp=_tfopen(szFileName,_T("r+b"))) == NULL)
 	{
 		dwWin32errorCode = GetLastError();
 		return dwWin32errorCode;
@@ -377,7 +384,7 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	fclose(fp);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	if((hmmio = mmioOpen((LPSTR )szFileName,NULL,MMIO_COMPAT | MMIO_READWRITE)) == NULL)
+	if((hmmio = mmioOpen((LPTSTR )szFileName,NULL,MMIO_COMPAT | MMIO_READWRITE)) == NULL)
 	{
 		return -1;
 	}
@@ -414,39 +421,39 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	}
 	mmckOutinfoSubchunk.dwFlags = MMIO_DIRTY;//サイズ変更可に設定
 	//INAM songname
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','N','A','M'),(LPCSTR )m_strNAM,m_strNAM.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','N','A','M'),m_strNAM,m_strNAM.GetLength()+1);
 	//IART アーティスト名
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','A','R','T'),(LPCSTR )m_strART,m_strART.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','A','R','T'),m_strART,m_strART.GetLength()+1);
 	//IPRD アルバム名
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','P','R','D'),(LPCSTR )m_strPRD,m_strPRD.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','P','R','D'),m_strPRD,m_strPRD.GetLength()+1);
 	//ICMT コメント
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','T'),(LPCSTR )m_strCMT,m_strCMT.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','T'),m_strCMT,m_strCMT.GetLength()+1);
 	//ICRD 日付
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','R','D'),(LPCSTR )m_strCRD,m_strCRD.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','R','D'),m_strCRD,m_strCRD.GetLength()+1);
 	//IGNR ジャンル
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','G','N','R'),(LPCSTR )m_strGNR,m_strGNR.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','G','N','R'),m_strGNR,m_strGNR.GetLength()+1);
 	//ICOP 著作権
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','O','P'),(LPCSTR )m_strCOP,m_strCOP.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','O','P'),m_strCOP,m_strCOP.GetLength()+1);
 	//IENG エンジニア
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','E','N','G'),(LPCSTR )m_strENG,m_strENG.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','E','N','G'),m_strENG,m_strENG.GetLength()+1);
 	//ISRC ソース
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','R','C'),(LPCSTR )m_strSRC,m_strSRC.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','R','C'),m_strSRC,m_strSRC.GetLength()+1);
 	//ISFT ソフトウェア
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','F','T'),(LPCSTR )m_strSFT,m_strSFT.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','F','T'),m_strSFT,m_strSFT.GetLength()+1);
 	//IKEY キーワード
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','K','E','Y'),(LPCSTR )m_strKEY,m_strKEY.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','K','E','Y'),m_strKEY,m_strKEY.GetLength()+1);
 	//ITCH 技術者
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','T','C','H'),(LPCSTR )m_strTCH,m_strTCH.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','T','C','H'),m_strTCH,m_strTCH.GetLength()+1);
 	//ILYC 歌詞
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','L','Y','C'),(LPCSTR )m_strLYC,m_strLYC.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','L','Y','C'),m_strLYC,m_strLYC.GetLength()+1);
 	//ICMS コミッション
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','S'),(LPCSTR )m_strCMS,m_strCMS.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','S'),m_strCMS,m_strCMS.GetLength()+1);
 	//IMED 中間
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','E','D'),(LPCSTR )m_strMED,m_strMED.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','E','D'),m_strMED,m_strMED.GetLength()+1);
 	//ISBJ subject
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','B','J'),(LPCSTR )m_strSBJ,m_strSBJ.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','B','J'),m_strSBJ,m_strSBJ.GetLength()+1);
 	//IMP3 mp3 info
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),(LPCSTR )m_strMP3,m_strMP3.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
 		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(LPCSTR )id3tag,sizeof(id3tag));
@@ -467,11 +474,11 @@ DWORD CRMP::Save(HWND hWnd,const char *szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
+DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((char *)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
 	if(hmmio == NULL)
 	{
 		return -1;
@@ -552,11 +559,11 @@ DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	lstrcpy(szTempPath,szFileName);
 	cutFileName(szTempPath);
-	char szTempFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	TCHAR szTempFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -610,8 +617,8 @@ DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
 	}
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);
@@ -640,6 +647,22 @@ DWORD CRMP::DelTag(HWND hWnd,const char *szFileName)
 	Release();
 
 	return dwWin32errorCode;
+}
+
+BOOL CRMP::WriteStringChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,LPCTSTR pStr,DWORD dwLen)
+{
+#ifdef UNICODE
+	int size;
+	char *buf = (char *)TstrToDataAlloc(pStr, dwLen, &size, DTC_CODE_ANSI);
+	if (buf == NULL) {
+		return FALSE;
+	}
+	BOOL ret = WriteChunk(hmmio, mmckinfo, id, buf, size);
+	free(buf);
+	return ret;
+#else
+	return WriteChunk(hmmio, mmckinfo, id, pStr, dwLen);
+#endif
 }
 
 BOOL CRMP::WriteChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,const char *pData,DWORD dwSize)
@@ -693,7 +716,7 @@ BOOL CRMP::WriteChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,const char *pData,
 	return TRUE;
 }
 
-DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
+DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
@@ -756,11 +779,11 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	CloseHandle(hFile);
 
 	//テンポラリ名を取得
-	char szTempPath[MAX_PATH];
-	strcpy(szTempPath,szFileName);
+	TCHAR szTempPath[MAX_PATH];
+	lstrcpy(szTempPath,szFileName);
 	cutFileName(szTempPath);
-	char szTempFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szTempFile))
+	TCHAR szTempFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szTempFile))
 	{
 		dwWin32errorCode = GetLastError();
 		free(pRawData);
@@ -854,44 +877,44 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	if(m_strNAM.GetLength() == 0)
 	{
 		//デフォルト曲名(ファイル名)
-		char szDefaultName[MAX_PATH];
-		strcpy(szDefaultName,getFileName(szFileName));
+		TCHAR szDefaultName[MAX_PATH];
+		lstrcpy(szDefaultName,getFileName(szFileName));
 		cutExtName(szDefaultName);
 		m_strNAM = szDefaultName;
 	}
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','N','A','M'),(LPCSTR )m_strNAM,m_strNAM.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','N','A','M'),m_strNAM,m_strNAM.GetLength()+1);
 	//IART アーティスト名
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','A','R','T'),(LPCSTR )m_strART,m_strART.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','A','R','T'),m_strART,m_strART.GetLength()+1);
 	//IPRD アルバム名
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','P','R','D'),(LPCSTR )m_strPRD,m_strPRD.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','P','R','D'),m_strPRD,m_strPRD.GetLength()+1);
 	//ICMT コメント
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','T'),(LPCSTR )m_strCMT,m_strCMT.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','T'),m_strCMT,m_strCMT.GetLength()+1);
 	//ICRD 日付
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','R','D'),(LPCSTR )m_strCRD,m_strCRD.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','R','D'),m_strCRD,m_strCRD.GetLength()+1);
 	//IGNR ジャンル
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','G','N','R'),(LPCSTR )m_strGNR,m_strGNR.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','G','N','R'),m_strGNR,m_strGNR.GetLength()+1);
 	//ICOP 著作権
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','O','P'),(LPCSTR )m_strCOP,m_strCOP.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','O','P'),m_strCOP,m_strCOP.GetLength()+1);
 	//IENG エンジニア
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','E','N','G'),(LPCSTR )m_strENG,m_strENG.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','E','N','G'),m_strENG,m_strENG.GetLength()+1);
 	//ISRC ソース
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','R','C'),(LPCSTR )m_strSRC,m_strSRC.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','R','C'),m_strSRC,m_strSRC.GetLength()+1);
 	//ISFT ソフトウェア
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','F','T'),(LPCSTR )m_strSFT,m_strSFT.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','F','T'),m_strSFT,m_strSFT.GetLength()+1);
 	//IKEY キーワード
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','K','E','Y'),(LPCSTR )m_strKEY,m_strKEY.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','K','E','Y'),m_strKEY,m_strKEY.GetLength()+1);
 	//ITCH 技術者
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','T','C','H'),(LPCSTR )m_strTCH,m_strTCH.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','T','C','H'),m_strTCH,m_strTCH.GetLength()+1);
 	//ILYC 歌詞
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','L','Y','C'),(LPCSTR )m_strLYC,m_strLYC.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','L','Y','C'),m_strLYC,m_strLYC.GetLength()+1);
 	//ICMS コミッション
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','S'),(LPCSTR )m_strCMS,m_strCMS.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','C','M','S'),m_strCMS,m_strCMS.GetLength()+1);
 	//IMED 中間
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','E','D'),(LPCSTR )m_strMED,m_strMED.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','E','D'),m_strMED,m_strMED.GetLength()+1);
 	//ISBJ subject
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','B','J'),(LPCSTR )m_strSBJ,m_strSBJ.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','S','B','J'),m_strSBJ,m_strSBJ.GetLength()+1);
 	//IMP3 mp3 info
-	WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),(LPCSTR )m_strMP3,m_strMP3.GetLength()+1);
+	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
 		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(LPCSTR )id3tag,sizeof(id3tag));
@@ -917,8 +940,8 @@ DWORD CRMP::MakeTag(HWND hWnd,const char *szFileName)
 	}
 
 	//オリジナルファイルを退避(リネーム)
-	char szPreFile[MAX_PATH];
-	if(!GetTempFileName(szTempPath,"tms",0,szPreFile))
+	TCHAR szPreFile[MAX_PATH];
+	if(!GetTempFileName(szTempPath,_T("tms"),0,szPreFile))
 	{
 		dwWin32errorCode = GetLastError();
 		DeleteFile(szTempFile);

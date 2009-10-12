@@ -18,33 +18,33 @@ public:
 	BOOL IsEnable(){return m_bEnable;};
 
 	CString GetTitle();
-	void SetTitle(const char *title);
+	void SetTitle(LPCTSTR title);
 	CString GetArtist();
-	void SetArtist(const char *artist);
+	void SetArtist(LPCTSTR artist);
 	CString GetAlbum();
-	void SetAlbum(const char *album);
+	void SetAlbum(LPCTSTR album);
 	CString GetYear();
-	void SetYear(const char *year);
+	void SetYear(LPCTSTR year);
 	unsigned char GetGenreNum();
 	CString GetGenre();
 	void SetGenre(unsigned char cGenre);
-	void SetGenre(const char *szGenre);
+	void SetGenre(LPCTSTR szGenre);
 	unsigned char GetTrackNoNum();
 	CString GetTrackNo();
 	void SetTrackNo(unsigned char cTrackNo);
-	void SetTrackNo(const char *szTrackNo);
+	void SetTrackNo(LPCTSTR szTrackNo);
 	CString GetComment();
-	void SetComment(const char *comment);
+	void SetComment(LPCTSTR comment);
 
 	CString GenreNum2String(unsigned char cGenre);
-	long GenreString2Num(const char *szGenre);
+	long GenreString2Num(LPCTSTR szGenre);
 
-	DWORD Load(const char *szFileName);
-	DWORD LoadMulti(const char *szFileName);
-	DWORD Save(HWND hWnd,const char *szFileName);
-	DWORD DelTag(HWND hWnd,const char *szFileName);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD LoadMulti(LPCTSTR szFileName);
+	DWORD Save(HWND hWnd,LPCTSTR szFileName);
+	DWORD DelTag(HWND hWnd,LPCTSTR szFileName);
 	void GetId3tagString(char *szTag);
-	DWORD MakeTag(HWND hWnd,const char *szFileName);
+	DWORD MakeTag(HWND hWnd,LPCTSTR szFileName);
 
 private:
 	void Release();

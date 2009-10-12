@@ -10,10 +10,10 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 {
 	CString ret;
 
-	if((stricmp(getExtName(szFileName),".mp3") == 0) ||
-		(stricmp(getExtName(szFileName),".mp2") == 0) ||
-		(stricmp(getExtName(szFileName),".mp1") == 0) ||
-		(stricmp(getExtName(szFileName),".rmp") == 0) )
+	if((lstrcmpi(getExtName(szFileName),_T(".mp3")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".mp2")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".mp1")) == 0) ||
+		(lstrcmpi(getExtName(szFileName),_T(".rmp")) == 0) )
 	{
 		BOOL bId3v1 = FALSE;
 		BOOL bId3v2 = FALSE;
@@ -31,7 +31,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 					NULL);
 		if(hFile == INVALID_HANDLE_VALUE)
 		{
-			return "";
+			return _T("");
 		}
 		while(1)	//ƒ_ƒ~[
 		{
@@ -40,7 +40,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			if(!ReadFile(hFile,&buf,16,&dwRet,NULL))
 			{
 				CloseHandle(hFile);
-				return "";
+				return _T("");
 			}
 			if((dwRet >= 10) && (memcmp(buf,"ID3",3) == 0))
 			{
@@ -62,7 +62,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			if(!ReadFile(hFile,&id3tag,sizeof(id3tag),&dwRet,NULL))
 			{
 				CloseHandle(hFile);
-				return "";
+				return _T("");
 			}
 			if((dwRet == sizeof(id3tag)) && (memcmp(id3tag,"TAG",3) == 0))
 			{
@@ -85,7 +85,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
 				CloseHandle(hFile);
-				return "";
+				return _T("");
 			}
 			if((strncmp(footer.id,"APETAGEX",8) == 0) &&
 				(footer.version <= 2000) &&
@@ -101,7 +101,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
 				CloseHandle(hFile);
-				return "";
+				return _T("");
 			}
 			if((strncmp(footer.id,"APETAGEX",8) == 0) &&
 				(footer.version <= 2000) &&
@@ -117,35 +117,35 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 
 		if(bId3v2)
 		{
-			ret= "ID3v2";
+			ret= _T("ID3v2");
 		}
 		else if(bApe)
 		{
-			ret= "APE";
+			ret= _T("APE");
 		}
 		else if(bRiffSIF)
 		{
-			ret= "Riff SIF";
+			ret= _T("Riff SIF");
 		}
 		else if(bId3v1)
 		{
-			ret= "ID3v1";
+			ret= _T("ID3v1");
 		}
 		else
 		{
 			switch(dwPage){
 			default:
 			case 0:
-				ret= "ID3v1(*)";
+				ret= _T("ID3v1(*)");
 				break;
 			case 1:
-				ret= "ID3v2(*)";
+				ret= _T("ID3v2(*)");
 				break;
 			case 2:
-				ret= "Riff SIF(*)";
+				ret= _T("Riff SIF(*)");
 				break;
 			case 3:
-				ret= "APE(*)";
+				ret= _T("APE(*)");
 				break;
 			}
 		}
@@ -154,7 +154,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 	return ret;
 }
 
-extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,const char *szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2)
+extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,LPCTSTR szFileName,DWORD dwPage,BOOL modeless,DWORD param1,DWORD param2)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
@@ -194,15 +194,15 @@ extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,const char *szFileName,DWO
 	return PropertySheet(&psh);
 }
 
-extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,const char *szFileName,DWORD dwPage)
+extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,LPCTSTR szFileName,DWORD dwPage)
 {
 	SHELLEXECUTEINFO execinfo;
 	memset(&execinfo,0,sizeof(SHELLEXECUTEINFO));
 	execinfo.cbSize		= sizeof(SHELLEXECUTEINFO);
 	execinfo.fMask		= SEE_MASK_INVOKEIDLIST;
-	execinfo.lpVerb		= "properties";
+	execinfo.lpVerb		= _T("properties");
 	execinfo.lpFile		= szFileName;
-	execinfo.lpParameters= "mp3infp";
+	execinfo.lpParameters= _T("mp3infp");
 	execinfo.nShow		= SW_SHOWNORMAL;
 	if(hWnd)
 	{
@@ -225,7 +225,7 @@ extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,const char *szFileName,DWOR
 	return ShellExecuteEx(&execinfo);
 }
 
-extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
@@ -233,12 +233,12 @@ extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName)
 	theApp.m_strSelectFile = szFileName;
 	theApp.m_fileType = CShellExt::UNKNOWN;
 
-	theApp.m_strAudioFormat = "";
-	theApp.m_strVideoFormat = "";
-	theApp.m_strStreamFormat = "";
-	theApp.m_strTime = "";
+	theApp.m_strAudioFormat = _T("");
+	theApp.m_strVideoFormat = _T("");
+	theApp.m_strStreamFormat = _T("");
+	theApp.m_strTime = _T("");
 
-	switch(CShellExt::GetFileType((char *)szFileName)){
+	switch(CShellExt::GetFileType(szFileName)){
 	case CShellExt::MP3:
 		theApp.m_Id3tagv1.Load(szFileName);
 		theApp.m_Id3tagv2.Load(szFileName);
@@ -256,7 +256,7 @@ extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName)
 		dwRet = theApp.m_RiffSIF.Load(szFileName,'W','A','V','E');
 		if(dwRet == ERROR_SUCCESS)
 		{
-			GetWaveAudioFormat((LPCSTR )theApp.m_strSelectFile,
+			GetWaveAudioFormat(theApp.m_strSelectFile,
 							theApp.m_RiffSIF.GetStreamSize(),
 							theApp.m_strAudioFormat,
 							theApp.m_strTime,
@@ -268,7 +268,7 @@ extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName)
 		dwRet = theApp.m_OpenDML.Load(szFileName,'A','V','I',' ');
 		if(dwRet == ERROR_SUCCESS)
 		{
-			GetAviFormat((LPCSTR )theApp.m_strSelectFile,
+			GetAviFormat(theApp.m_strSelectFile,
 							theApp.m_strAudioFormat,
 							theApp.m_strVideoFormat,
 							theApp.m_strStreamFormat,
@@ -277,7 +277,7 @@ extern "C" DWORD __stdcall mp3infp_Load(HWND hWnd,const char *szFileName)
 							theApp.m_iAviCodecFind);
 			theApp.m_fileType = CShellExt::AVI;
 		}
-		theApp.m_OpenDML.SetJunkHeader("This file was made by "SOFT_NAME);
+		theApp.m_OpenDML.SetJunkHeader(_T("This file was made by ") SOFT_NAME);
 		break;
 	case CShellExt::VQF:
 		dwRet = theApp.m_Vqf.Load(szFileName);
@@ -363,785 +363,785 @@ extern "C" DWORD __stdcall mp3infp_GetType()
 	return MP3INFP_FILE_UNKNOWN;
 }
 
-extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
+extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	static CString strRet;
 	DWORD 	dwSize;
 	*buf = NULL;
-	strRet = "";
+	strRet = _T("");
 	switch(theApp.m_fileType){
 	case CShellExt::MP3:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"AFMT") == 0)
+		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_Mp3info.GetFormatString();
 		}
-		else if(strcmp(szValueName,"TIME") == 0)
+		else if(lstrcmp(szValueName,_T("TIME")) == 0)
 		{
 			strRet = theApp.m_Mp3info.GetTimeString();
 		}
-		else if(strcmp(szValueName,"INAM_v1") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetTitle();
 		}
-		else if(strcmp(szValueName,"IART_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IART_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetArtist();
 		}
-		else if(strcmp(szValueName,"IPRD_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetAlbum();
 		}
-		else if(strcmp(szValueName,"ICMT_v1") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetComment();
 		}
-		else if(strcmp(szValueName,"ICRD_v1") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetYear();
 		}
-		else if(strcmp(szValueName,"IGNR_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetGenre();
 		}
-		else if(strcmp(szValueName,"TRACK_v1") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_v1")) == 0)
 		{
 			strRet = theApp.m_Id3tagv1.GetTrackNo();
 		}
-		else if(strcmp(szValueName,"INAM_v2") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetTitle();
 		}
-		else if(strcmp(szValueName,"IART_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IART_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetArtist();
 		}
-		else if(strcmp(szValueName,"IPRD_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetAlbum();
 		}
-		else if(strcmp(szValueName,"ICMT_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetComment();
 		}
-		else if(strcmp(szValueName,"ICRD_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetYear();
 		}
-		else if(strcmp(szValueName,"IGNR_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetGenre();
 		}
-		else if(strcmp(szValueName,"ICOP_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetCopyright();
 		}
-		else if(strcmp(szValueName,"ISFT_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetEncoder();
 		}
-		else if(strcmp(szValueName,"COMP_v2") == 0)
+		else if(lstrcmp(szValueName,_T("COMP_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetComposer();
 		}
-		else if(strcmp(szValueName,"OART_v2") == 0)
+		else if(lstrcmp(szValueName,_T("OART_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetOrigArtist();
 		}
-		else if(strcmp(szValueName,"URL_v2") == 0)
+		else if(lstrcmp(szValueName,_T("URL_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetUrl();
 		}
-		else if(strcmp(szValueName,"TRACK_v2") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetTrackNo();
 		}
-		else if(strcmp(szValueName,"ENC2_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetEncodest();
 		}
-		else if(strcmp(szValueName,"INAM_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetNAM();
 		}
-		else if(strcmp(szValueName,"IART_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IART_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetART();
 		}
-		else if(strcmp(szValueName,"IPRD_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetPRD();
 		}
-		else if(strcmp(szValueName,"ICMT_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetCMT();
 		}
-		else if(strcmp(szValueName,"ICRD_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetCRD();
 		}
-		else if(strcmp(szValueName,"IGNR_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetGNR();
 		}
-		else if(strcmp(szValueName,"ICOP_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetCOP();
 		}
-		else if(strcmp(szValueName,"ISFT_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetSFT();
 		}
-		else if(strcmp(szValueName,"ISRC_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ISRC_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetSRC();
 		}
-		else if(strcmp(szValueName,"IENG_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IENG_rmp")) == 0)
 		{
 			strRet = theApp.m_Rmp3.GetENG();
 		}
-		else if(strcmp(szValueName,"INAM_APE") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strRet);
 		}
-		else if(strcmp(szValueName,"TRACK_APE") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TRACK,strRet);
 		}
-		else if(strcmp(szValueName,"IART_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IART_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,strRet);
 		}
-		else if(strcmp(szValueName,"IPRD_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,strRet);
 		}
-		else if(strcmp(szValueName,"ICMT_APE") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,strRet);
 		}
-		else if(strcmp(szValueName,"ICRD_APE") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_YEAR,strRet);
 		}
-		else if(strcmp(szValueName,"IGNR_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_APE")) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_GENRE,strRet);
 		}
 		break;
 	case CShellExt::WAVE:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"AFMT") == 0)
+		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_strAudioFormat;
 		}
-		else if(strcmp(szValueName,"TIME") == 0)
+		else if(lstrcmp(szValueName,_T("TIME")) == 0)
 		{
 			strRet = theApp.m_strTime;
 		}
 		else if(theApp.m_RiffSIF.IsEnable())
 		{
-			if(strcmp(szValueName,"INAM") == 0)
+			if(lstrcmp(szValueName,_T("INAM")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','N','A','M');
 			}
-			else if(strcmp(szValueName,"ISBJ") == 0)
+			else if(lstrcmp(szValueName,_T("ISBJ")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','S','B','J');
 			}
-			else if(strcmp(szValueName,"IART") == 0)
+			else if(lstrcmp(szValueName,_T("IART")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','A','R','T');
 			}
-			else if(strcmp(szValueName,"IPRD") == 0)
+			else if(lstrcmp(szValueName,_T("IPRD")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','P','R','D');
 			}
-			else if(strcmp(szValueName,"ICMT") == 0)
+			else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','C','M','T');
 			}
-			else if(strcmp(szValueName,"ICRD") == 0)
+			else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','C','R','D');
 			}
-			else if(strcmp(szValueName,"IGNR") == 0)
+			else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','G','N','R');
 			}
-			else if(strcmp(szValueName,"ICOP") == 0)
+			else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','C','O','P');
 			}
-			else if(strcmp(szValueName,"ISFT") == 0)
+			else if(lstrcmp(szValueName,_T("ISFT")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','S','F','T');
 			}
-			else if(strcmp(szValueName,"ISRC") == 0)
+			else if(lstrcmp(szValueName,_T("ISRC")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','S','R','C');
 			}
-			else if(strcmp(szValueName,"IENG") == 0)
+			else if(lstrcmp(szValueName,_T("IENG")) == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','E','N','G');
 			}
 		}
 		break;
 	case CShellExt::AVI:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"AFMT") == 0)
+		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_strAudioFormat;
 		}
-		else if(strcmp(szValueName,"VFMT") == 0)
+		else if(lstrcmp(szValueName,_T("VFMT")) == 0)
 		{
 			strRet = theApp.m_strVideoFormat;
-			strRet += ", ";
+			strRet += _T(", ");
 			strRet += theApp.m_strStreamFormat;
 		}
-		else if(strcmp(szValueName,"TIME") == 0)
+		else if(lstrcmp(szValueName,_T("TIME")) == 0)
 		{
 			strRet = theApp.m_strTime;
 		}
 		else if(theApp.m_OpenDML.IsEnable())
 		{
-			if(strcmp(szValueName,"ISBJ") == 0)
+			if(lstrcmp(szValueName,_T("ISBJ")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','S','B','J');
 			}
-			else if(strcmp(szValueName,"INAM") == 0)
+			else if(lstrcmp(szValueName,_T("INAM")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','N','A','M');
 			}
-			else if(strcmp(szValueName,"IART") == 0)
+			else if(lstrcmp(szValueName,_T("IART")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','A','R','T');
 			}
-			else if(strcmp(szValueName,"ICMT") == 0)
+			else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','C','M','T');
 			}
-			else if(strcmp(szValueName,"ICRD") == 0)
+			else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','C','R','D');
 			}
-			else if(strcmp(szValueName,"IGNR") == 0)
+			else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','G','N','R');
 			}
-			else if(strcmp(szValueName,"ICOP") == 0)
+			else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','C','O','P');
 			}
-			else if(strcmp(szValueName,"ISFT") == 0)
+			else if(lstrcmp(szValueName,_T("ISFT")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','S','F','T');
 			}
-			else if(strcmp(szValueName,"ISRC") == 0)
+			else if(lstrcmp(szValueName,_T("ISRC")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','S','R','C');
 			}
-			else if(strcmp(szValueName,"IENG") == 0)
+			else if(lstrcmp(szValueName,_T("IENG")) == 0)
 			{
 				strRet = theApp.m_OpenDML.GetField('I','E','N','G');
 			}
-			else if(strcmp(szValueName,"AVIV") == 0)
+			else if(lstrcmp(szValueName,_T("AVIV")) == 0)
 			{
-				strRet = theApp.m_bAvi2?"AVI 2.0 (OpenDML)":"AVI 1.0 (VfW)";
+				strRet = theApp.m_bAvi2?_T("AVI 2.0 (OpenDML)"):_T("AVI 1.0 (VfW)");
 			}
 		}
 		break;
 	case CShellExt::VQF:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
 		else if(!theApp.m_Vqf.IsEnable())
 			break;
-		if(strcmp(szValueName,"AFMT") == 0)
+		if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetFormatString();
 		}
-		else if(strcmp(szValueName,"TIME") == 0)
+		else if(lstrcmp(szValueName,_T("TIME")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetTimeString();
 		}
-		else if(strcmp(szValueName,"INAM") == 0)
+		else if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetField('N','A','M','E',&dwSize);
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetField('A','U','T','H',&dwSize);
 		}
-		else if(strcmp(szValueName,"FILE") == 0)
+		else if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetField('F','I','L','E',&dwSize);
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetField('(','c',')',' ',&dwSize);
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
 			strRet = theApp.m_Vqf.GetField('C','O','M','T',&dwSize);
 		}
 		break;
 	case CShellExt::WMA:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
 		else if(!theApp.m_Wma.IsEnable())
 			break;
-		if(strcmp(szValueName,"AFMT") == 0)
+		if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_Wma.GetAudioFormatString();
 		}
-		else if(strcmp(szValueName,"VFMT") == 0)
+		else if(lstrcmp(szValueName,_T("VFMT")) == 0)
 		{
 			strRet = theApp.m_Wma.GetVideoFormatString();
 		}
-		else if(strcmp(szValueName,"TIME") == 0)
+		else if(lstrcmp(szValueName,_T("TIME")) == 0)
 		{
 			strRet = theApp.m_Wma.GetTimeString();
 		}
-		else if(strcmp(szValueName,"INAM") == 0)
+		else if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
 			strRet = theApp.m_Wma.GetNAM();
 		}
-		else if(strcmp(szValueName,"TRACK") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK")) == 0)
 		{
 			strRet = theApp.m_Wma.GetTRACK();
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
 			strRet = theApp.m_Wma.GetART();
 		}
-		else if(strcmp(szValueName,"IPRD") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD")) == 0)
 		{
 			strRet = theApp.m_Wma.GetPRD();
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
 			strRet = theApp.m_Wma.GetCMT();
 		}
-		else if(strcmp(szValueName,"ICRD") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 		{
 			strRet = theApp.m_Wma.GetCRD();
 		}
-		else if(strcmp(szValueName,"IGNR") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 		{
 			strRet = theApp.m_Wma.GetGNR();
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
 			strRet = theApp.m_Wma.GetCOPY();
 		}
-		else if(strcmp(szValueName,"URL1") == 0)
+		else if(lstrcmp(szValueName,_T("URL1")) == 0)
 		{
 			strRet = theApp.m_Wma.GetUrl1();
 		}
-		else if(strcmp(szValueName,"URL2") == 0)
+		else if(lstrcmp(szValueName,_T("URL2")) == 0)
 		{
 			strRet = theApp.m_Wma.GetUrl2();
 		}
 		break;
 	case CShellExt::OGG:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
 		else if(!theApp.m_Ogg.IsEnable())
 			break;
-		if(strncmp(szValueName,"AFMT",4) == 0)
+		if(_tcsncmp(szValueName,_T("AFMT"),4) == 0)
 		{
 			strRet = theApp.m_Ogg.GetAudioFormatString();
 		}
-		else if(strncmp(szValueName,"TIME",4) == 0)
+		else if(_tcsncmp(szValueName,_T("TIME"),4) == 0)
 		{
 			strRet = theApp.m_Ogg.GetTimeString();
 		}
-		else if(strncmp(szValueName,"INAM",4) == 0)
+		else if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("TITLE",0,strRet);
+			theApp.m_Ogg.GetComment(_T("TITLE"),0,strRet);
 		}
-		else if(strncmp(szValueName,"TRACK",5) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK"),5) == 0)
 		{
-			theApp.m_Ogg.GetComment("TRACKNUMBER",0,strRet);
+			theApp.m_Ogg.GetComment(_T("TRACKNUMBER"),0,strRet);
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("ARTIST",0,strRet);
+			theApp.m_Ogg.GetComment(_T("ARTIST"),0,strRet);
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("ALBUM",0,strRet);
+			theApp.m_Ogg.GetComment(_T("ALBUM"),0,strRet);
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("COMMENT",0,strRet);
+			theApp.m_Ogg.GetComment(_T("COMMENT"),0,strRet);
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("DATE",0,strRet);
+			theApp.m_Ogg.GetComment(_T("DATE"),0,strRet);
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
-			theApp.m_Ogg.GetComment("GENRE",0,strRet);
+			theApp.m_Ogg.GetComment(_T("GENRE"),0,strRet);
 		}
 		break;
 	case CShellExt::APE:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
 		else if(!theApp.m_Ape.IsEnable())
 			break;
-		if(strncmp(szValueName,"AFMT",4) == 0)
+		if(_tcsncmp(szValueName,_T("AFMT"),4) == 0)
 		{
 			strRet = theApp.m_Monkeys.GetAudioFormatString();
 		}
-		else if(strncmp(szValueName,"TIME",4) == 0)
+		else if(_tcsncmp(szValueName,_T("TIME"),4) == 0)
 		{
 			strRet = theApp.m_Monkeys.GetTimeString();
 		}
-		else if(strncmp(szValueName,"INAM",4) == 0)
+		else if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strRet);
 		}
-		else if(strncmp(szValueName,"TRACK",5) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK"),5) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_TRACK,strRet);
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,strRet);
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,strRet);
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,strRet);
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_YEAR,strRet);
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
 			theApp.m_Ape.GetComment(CTag_Ape::APE_TAG_FIELD_GENRE,strRet);
 		}
 		break;
 	case CShellExt::MP4:
-		if(strcmp(szValueName,"FILE") == 0)
+		if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
 			strRet = getFileName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"FEXT") == 0)
+		else if(lstrcmp(szValueName,_T("FEXT")) == 0)
 		{
 			strRet = getExtName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"PATH") == 0)
+		else if(lstrcmp(szValueName,_T("PATH")) == 0)
 		{
 			strRet = getPathName(theApp.m_strSelectFile);
 		}
-		else if(strcmp(szValueName,"SIZ1") == 0)
+		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
-			strSize.Format("%I64u",theApp.m_i64FileSize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZK") == 0)
+		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
-		else if(strcmp(szValueName,"SIZM") == 0)
+		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
 			CString strSize;
 			CString strSize2;
 			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
 			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format("%I64u",fsize);
-			strRet = divString((char *)(LPCSTR )strSize,',',3);
+			strSize.Format(_T("%I64u"),fsize);
+			strRet = divString((LPTSTR)(LPCTSTR )strSize,',',3);
 		}
 		else if(!theApp.m_Mp4.IsEnable())
 			break;
-		if(strcmp(szValueName,"AFMT") == 0)
+		if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
 			strRet = theApp.m_Mp4.GetAudioInfoString();
 		}
-		else if(strcmp(szValueName,"VFMT") == 0)
+		else if(lstrcmp(szValueName,_T("VFMT")) == 0)
 		{
 			strRet = theApp.m_Mp4.GetVideoInfoString();
 		}
-		else if(strncmp(szValueName,"INAM",4) == 0)
+		else if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Name();
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Artist();
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Album();
 		}
-		else if(strncmp(szValueName,"IGRP",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGRP"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Group();
 		}
-		else if(strncmp(szValueName,"COMPOSER",8) == 0)
+		else if(_tcsncmp(szValueName,_T("COMPOSER"),8) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Composer();
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Genre();
 		}
-		else if(strncmp(szValueName,"TRACK1",6) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK1"),6) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Track1();
 			if(val != -1)
@@ -1153,7 +1153,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"TRACK2",6) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK2"),6) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Track2();
 			if(val != -1)
@@ -1165,7 +1165,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"DISC1",5) == 0)
+		else if(_tcsncmp(szValueName,_T("DISC1"),5) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Disc1();
 			if(val != -1)
@@ -1177,7 +1177,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"DISC2",5) == 0)
+		else if(_tcsncmp(szValueName,_T("DISC2"),5) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Disc2();
 			if(val != -1)
@@ -1189,7 +1189,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"BPM",3) == 0)
+		else if(_tcsncmp(szValueName,_T("BPM"),3) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Tempo();
 			if(val != -1)
@@ -1201,11 +1201,11 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Year();
 		}
-		else if(strncmp(szValueName,"COMPILATION",11) == 0)
+		else if(_tcsncmp(szValueName,_T("COMPILATION"),11) == 0)
 		{
 			int val = theApp.m_Mp4.GetMetadata_Compilation();
 			if(val != -1)
@@ -1217,11 +1217,11 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 				strRet = _T("");
 			}
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Comment();
 		}
-		else if(strncmp(szValueName,"TOOL",4) == 0)
+		else if(_tcsncmp(szValueName,_T("TOOL"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Tool();
 		}
@@ -1231,7 +1231,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 		return FALSE;
 	}
 
-	*buf = (char *)(LPCSTR )strRet;
+	*buf = (LPTSTR)(LPCTSTR )strRet;
 
 	return TRUE;
 }
@@ -1283,29 +1283,29 @@ extern "C" DWORD __stdcall mp3infp_mp3_GetTagType()
 	return dwRet;
 }
 
-extern "C" BOOL __stdcall mp3infp_SetConf(char *tag,char *value)
+extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
 {
-	if(strcmp(tag,"wave_CodecFind") == 0)
+	if(lstrcmp(tag,_T("wave_CodecFind")) == 0)
 	{
-		int val = atoi(value);
+		int val = _ttoi(value);
 		if((theApp.m_iWaveCodecFind <= 3) && (0 <= theApp.m_iWaveCodecFind))
 		{
 			theApp.m_iWaveCodecFind = val;
 			return TRUE;
 		}
 	}
-	else if(strcmp(tag,"avi_CodecFind") == 0)
+	else if(lstrcmp(tag,_T("avi_CodecFind")) == 0)
 	{
-		int val = atoi(value);
+		int val = _ttoi(value);
 		if((theApp.m_iAviCodecFind <= 3) && (0 <= theApp.m_iAviCodecFind))
 		{
 			theApp.m_iAviCodecFind = val;
 			return TRUE;
 		}
 	}
-	else if(strcmp(tag,"mp3_UseExtGenre") == 0)
+	else if(lstrcmp(tag,_T("mp3_UseExtGenre")) == 0)
 	{
-		int val = atoi(value);
+		int val = _ttoi(value);
 		switch(val){
 		case 0:
 			theApp.m_Id3tagv1.SetScmpxGenre(FALSE);
@@ -1317,9 +1317,9 @@ extern "C" BOOL __stdcall mp3infp_SetConf(char *tag,char *value)
 		}
 		return TRUE;
 	}
-	else if(strcmp(tag,"mp3_ID3v2Unicode") == 0)
+	else if(lstrcmp(tag,_T("mp3_ID3v2Unicode")) == 0)
 	{
-		int val = atoi(value);
+		int val = _ttoi(value);
 		switch(val){
 		case 0:
 			theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
@@ -1331,9 +1331,9 @@ extern "C" BOOL __stdcall mp3infp_SetConf(char *tag,char *value)
 		}
 		return TRUE;
 	}
-	else if(strcmp(tag,"mp3_ID3v2Unsync") == 0)
+	else if(lstrcmp(tag,_T("mp3_ID3v2Unsync")) == 0)
 	{
-		int val = atoi(value);
+		int val = _ttoi(value);
 		switch(val){
 		case 0:
 			theApp.m_Id3tagv2.SetUnSynchronization(FALSE);
@@ -1345,17 +1345,17 @@ extern "C" BOOL __stdcall mp3infp_SetConf(char *tag,char *value)
 		}
 		return TRUE;
 	}
-	else if(strcmp(tag,"mp3_SaveID3v2Version") == 0)
+	else if(lstrcmp(tag,_T("mp3_SaveID3v2Version")) == 0)
 	{
-		if(strcmp(value,"2.2") == 0)
+		if(lstrcmp(value,_T("2.2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetVer(0x0200);
 		}
-		else if(strcmp(value,"2.3") == 0)
+		else if(lstrcmp(value,_T("2.3")) == 0)
 		{
 			theApp.m_Id3tagv2.SetVer(0x0300);
 		}
-		else if(strcmp(value,"2.4") == 0)
+		else if(lstrcmp(value,_T("2.4")) == 0)
 		{
 			theApp.m_Id3tagv2.SetVer(0x0400);
 		}
@@ -1369,406 +1369,406 @@ extern "C" BOOL __stdcall mp3infp_SetConf(char *tag,char *value)
 	return FALSE;
 }
 
-extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *buf)
+extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	switch(theApp.m_fileType){
 	case CShellExt::MP3:
-		if(strcmp(szValueName,"INAM_v1") == 0)
+		if(lstrcmp(szValueName,_T("INAM_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetTitle(buf);
 		}
-		else if(strcmp(szValueName,"IART_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IART_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetArtist(buf);
 		}
-		else if(strcmp(szValueName,"IPRD_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetAlbum(buf);
 		}
-		else if(strcmp(szValueName,"ICMT_v1") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetComment(buf);
 		}
-		else if(strcmp(szValueName,"ICRD_v1") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetYear(buf);
 		}
-		else if(strcmp(szValueName,"IGNR_v1") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetGenre(buf);
 		}
-		else if(strcmp(szValueName,"TRACK_v1") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_v1")) == 0)
 		{
 			theApp.m_Id3tagv1.SetTrackNo(buf);
 		}
-		else if(strcmp(szValueName,"INAM_v2") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetTitle(buf);
 		}
-		else if(strcmp(szValueName,"IART_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IART_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetArtist(buf);
 		}
-		else if(strcmp(szValueName,"IPRD_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetAlbum(buf);
 		}
-		else if(strcmp(szValueName,"ICMT_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetComment(buf);
 		}
-		else if(strcmp(szValueName,"ICRD_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetYear(buf);
 		}
-		else if(strcmp(szValueName,"IGNR_v2") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetGenre(buf);
 		}
-		else if(strcmp(szValueName,"ICOP_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetCopyright(buf);
 		}
-		else if(strcmp(szValueName,"ISFT_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetEncoder(buf);
 		}
-		else if(strcmp(szValueName,"COMP_v2") == 0)
+		else if(lstrcmp(szValueName,_T("COMP_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetComposer(buf);
 		}
-		else if(strcmp(szValueName,"OART_v2") == 0)
+		else if(lstrcmp(szValueName,_T("OART_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetOrigArtist(buf);
 		}
-		else if(strcmp(szValueName,"URL_v2") == 0)
+		else if(lstrcmp(szValueName,_T("URL_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetUrl(buf);
 		}
-		else if(strcmp(szValueName,"TRACK_v2") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetTrackNo(buf);
 		}
-		else if(strcmp(szValueName,"ENC2_v2") == 0)
+		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetEncodest(buf);
 		}
-		else if(strcmp(szValueName,"INAM_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetNAM(buf);
 		}
-		else if(strcmp(szValueName,"IART_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IART_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetART(buf);
 		}
-		else if(strcmp(szValueName,"IPRD_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetPRD(buf);
 		}
-		else if(strcmp(szValueName,"ICMT_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetCMT(buf);
 		}
-		else if(strcmp(szValueName,"ICRD_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetCRD(buf);
 		}
-		else if(strcmp(szValueName,"IGNR_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetGNR(buf);
 		}
-		else if(strcmp(szValueName,"ICOP_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetCOP(buf);
 		}
-		else if(strcmp(szValueName,"ISFT_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetSFT(buf);
 		}
-		else if(strcmp(szValueName,"ISRC_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("ISRC_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetSRC(buf);
 		}
-		else if(strcmp(szValueName,"IENG_rmp") == 0)
+		else if(lstrcmp(szValueName,_T("IENG_rmp")) == 0)
 		{
 			theApp.m_Rmp3.SetENG(buf);
 		}
-		else if(strcmp(szValueName,"INAM_APE") == 0)
+		else if(lstrcmp(szValueName,_T("INAM_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TITLE,buf);
 		}
-		else if(strcmp(szValueName,"TRACK_APE") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TRACK,buf);
 		}
-		else if(strcmp(szValueName,"IART_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IART_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,buf);
 		}
-		else if(strcmp(szValueName,"IPRD_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,buf);
 		}
-		else if(strcmp(szValueName,"ICMT_APE") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,buf);
 		}
-		else if(strcmp(szValueName,"ICRD_APE") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_YEAR,buf);
 		}
-		else if(strcmp(szValueName,"IGNR_APE") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR_APE")) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_GENRE,buf);
 		}
 		break;
 	case CShellExt::WAVE:
-		if(strcmp(szValueName,"INAM") == 0)
+		if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','N','A','M',buf);
 		}
-		else if(strcmp(szValueName,"ISBJ") == 0)
+		else if(lstrcmp(szValueName,_T("ISBJ")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','S','B','J',buf);
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','A','R','T',buf);
 		}
-		else if(strcmp(szValueName,"IPRD") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','P','R','D',buf);
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','C','M','T',buf);
 		}
-		else if(strcmp(szValueName,"ICRD") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','C','R','D',buf);
 		}
-		else if(strcmp(szValueName,"IGNR") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','G','N','R',buf);
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','C','O','P',buf);
 		}
-		else if(strcmp(szValueName,"ISFT") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','S','F','T',buf);
 		}
-		else if(strcmp(szValueName,"ISRC") == 0)
+		else if(lstrcmp(szValueName,_T("ISRC")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','S','R','C',buf);
 		}
-		else if(strcmp(szValueName,"IENG") == 0)
+		else if(lstrcmp(szValueName,_T("IENG")) == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','E','N','G',buf);
 		}
 		break;
 	case CShellExt::AVI:
-		if(strcmp(szValueName,"ISBJ") == 0)
+		if(lstrcmp(szValueName,_T("ISBJ")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','S','B','J',buf);
 		}
-		else if(strcmp(szValueName,"INAM") == 0)
+		else if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','N','A','M',buf);
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','A','R','T',buf);
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','C','M','T',buf);
 		}
-		else if(strcmp(szValueName,"ICRD") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','C','R','D',buf);
 		}
-		else if(strcmp(szValueName,"IGNR") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','G','N','R',buf);
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','C','O','P',buf);
 		}
-		else if(strcmp(szValueName,"ISFT") == 0)
+		else if(lstrcmp(szValueName,_T("ISFT")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','S','F','T',buf);
 		}
-		else if(strcmp(szValueName,"ISRC") == 0)
+		else if(lstrcmp(szValueName,_T("ISRC")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','S','R','C',buf);
 		}
-		else if(strcmp(szValueName,"IENG") == 0)
+		else if(lstrcmp(szValueName,_T("IENG")) == 0)
 		{
 			theApp.m_OpenDML.SetField('I','E','N','G',buf);
 		}
 		break;
 	case CShellExt::VQF:
-		if(strcmp(szValueName,"INAM") == 0)
+		if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
-			theApp.m_Vqf.SetField('N','A','M','E',(const unsigned char *)buf,strlen(buf));
+			theApp.m_Vqf.SetField('N','A','M','E',buf);
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
-			theApp.m_Vqf.SetField('A','U','T','H',(const unsigned char *)buf,strlen(buf));
+			theApp.m_Vqf.SetField('A','U','T','H',buf);
 		}
-		else if(strcmp(szValueName,"FILE") == 0)
+		else if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
-			theApp.m_Vqf.SetField('F','I','L','E',(const unsigned char *)buf,strlen(buf));
+			theApp.m_Vqf.SetField('F','I','L','E',buf);
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
-			theApp.m_Vqf.SetField('(','c',')',' ',(const unsigned char *)buf,strlen(buf));
+			theApp.m_Vqf.SetField('(','c',')',' ',buf);
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
-			theApp.m_Vqf.SetField('C','O','M','T',(const unsigned char *)buf,strlen(buf));
+			theApp.m_Vqf.SetField('C','O','M','T',buf);
 		}
 		break;
 	case CShellExt::WMA:
-		if(strcmp(szValueName,"INAM") == 0)
+		if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
 			theApp.m_Wma.SetNAM(buf);
 		}
-		else if(strcmp(szValueName,"TRACK") == 0)
+		else if(lstrcmp(szValueName,_T("TRACK")) == 0)
 		{
 			theApp.m_Wma.SetTRACK(buf);
 		}
-		else if(strcmp(szValueName,"IART") == 0)
+		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
 			theApp.m_Wma.SetART(buf);
 		}
-		else if(strcmp(szValueName,"IPRD") == 0)
+		else if(lstrcmp(szValueName,_T("IPRD")) == 0)
 		{
 			theApp.m_Wma.SetPRD(buf);
 		}
-		else if(strcmp(szValueName,"ICMT") == 0)
+		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
 			theApp.m_Wma.SetCMT(buf);
 		}
-		else if(strcmp(szValueName,"ICRD") == 0)
+		else if(lstrcmp(szValueName,_T("ICRD")) == 0)
 		{
 			theApp.m_Wma.SetCRD(buf);
 		}
-		else if(strcmp(szValueName,"IGNR") == 0)
+		else if(lstrcmp(szValueName,_T("IGNR")) == 0)
 		{
 			theApp.m_Wma.SetGNR(buf);
 		}
-		else if(strcmp(szValueName,"ICOP") == 0)
+		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
 			theApp.m_Wma.SetCOPY(buf);
 		}
-		else if(strcmp(szValueName,"URL1") == 0)
+		else if(lstrcmp(szValueName,_T("URL1")) == 0)
 		{
 			theApp.m_Wma.SetUrl1(buf);
 		}
-		else if(strcmp(szValueName,"URL2") == 0)
+		else if(lstrcmp(szValueName,_T("URL2")) == 0)
 		{
 			theApp.m_Wma.SetUrl2(buf);
 		}
 		break;
 	case CShellExt::OGG:
-		if(strncmp(szValueName,"INAM",4) == 0)
+		if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("TITLE",0);
-			theApp.m_Ogg.AddComment("TITLE",buf);
+			theApp.m_Ogg.DelComment(_T("TITLE"),0);
+			theApp.m_Ogg.AddComment(_T("TITLE"),buf);
 		}
-		else if(strncmp(szValueName,"TRACK",5) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK"),5) == 0)
 		{
-			theApp.m_Ogg.DelComment("TRACKNUMBER",0);
-			theApp.m_Ogg.AddComment("TRACKNUMBER",buf);
+			theApp.m_Ogg.DelComment(_T("TRACKNUMBER"),0);
+			theApp.m_Ogg.AddComment(_T("TRACKNUMBER"),buf);
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("ARTIST",0);
-			theApp.m_Ogg.AddComment("ARTIST",buf);
+			theApp.m_Ogg.DelComment(_T("ARTIST"),0);
+			theApp.m_Ogg.AddComment(_T("ARTIST"),buf);
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("ALBUM",0);
-			theApp.m_Ogg.AddComment("ALBUM",buf);
+			theApp.m_Ogg.DelComment(_T("ALBUM"),0);
+			theApp.m_Ogg.AddComment(_T("ALBUM"),buf);
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("COMMENT",0);
-			theApp.m_Ogg.AddComment("COMMENT",buf);
+			theApp.m_Ogg.DelComment(_T("COMMENT"),0);
+			theApp.m_Ogg.AddComment(_T("COMMENT"),buf);
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("DATE",0);
-			theApp.m_Ogg.AddComment("DATE",buf);
+			theApp.m_Ogg.DelComment(_T("DATE"),0);
+			theApp.m_Ogg.AddComment(_T("DATE"),buf);
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
-			theApp.m_Ogg.DelComment("GENRE",0);
-			theApp.m_Ogg.AddComment("GENRE",buf);
+			theApp.m_Ogg.DelComment(_T("GENRE"),0);
+			theApp.m_Ogg.AddComment(_T("GENRE"),buf);
 		}
 		break;
 	case CShellExt::APE:
-		if(strncmp(szValueName,"INAM",4) == 0)
+		if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TITLE,buf);
 		}
-		else if(strncmp(szValueName,"TRACK",5) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK"),5) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TRACK,buf);
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,buf);
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,buf);
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,buf);
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_YEAR,buf);
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
 			theApp.m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_GENRE,buf);
 		}
 		break;
 	case CShellExt::MP4:
-		if(strncmp(szValueName,"INAM",4) == 0)
+		if(_tcsncmp(szValueName,_T("INAM"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Name(buf);
 		}
-		else if(strncmp(szValueName,"IART",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Artist(buf);
 		}
-		else if(strncmp(szValueName,"IPRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Album(buf);
 		}
-		else if(strncmp(szValueName,"IGRP",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGRP"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Group(buf);
 		}
-		else if(strncmp(szValueName,"COMPOSER",8) == 0)
+		else if(_tcsncmp(szValueName,_T("COMPOSER"),8) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Composer(buf);
 		}
-		else if(strncmp(szValueName,"IGNR",4) == 0)
+		else if(_tcsncmp(szValueName,_T("IGNR"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Genre(buf);
 		}
-		else if(strncmp(szValueName,"TRACK1",6) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK1"),6) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1779,7 +1779,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Track1(-1);
 			}
 		}
-		else if(strncmp(szValueName,"TRACK2",6) == 0)
+		else if(_tcsncmp(szValueName,_T("TRACK2"),6) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1790,7 +1790,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Track2(-1);
 			}
 		}
-		else if(strncmp(szValueName,"DISC1",5) == 0)
+		else if(_tcsncmp(szValueName,_T("DISC1"),5) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1801,7 +1801,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Disc1(-1);
 			}
 		}
-		else if(strncmp(szValueName,"DISC2",5) == 0)
+		else if(_tcsncmp(szValueName,_T("DISC2"),5) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1812,7 +1812,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Disc2(-1);
 			}
 		}
-		else if(strncmp(szValueName,"BPM",3) == 0)
+		else if(_tcsncmp(szValueName,_T("BPM"),3) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1823,11 +1823,11 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Tempo(-1);
 			}
 		}
-		else if(strncmp(szValueName,"ICRD",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICRD"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Year(buf);
 		}
-		else if(strncmp(szValueName,"COMPILATION",11) == 0)
+		else if(_tcsncmp(szValueName,_T("COMPILATION"),11) == 0)
 		{
 			if(_tcslen(buf))
 			{
@@ -1838,11 +1838,11 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 				theApp.m_Mp4.SetMetadata_Compilation(-1);
 			}
 		}
-		else if(strncmp(szValueName,"ICMT",4) == 0)
+		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Comment(buf);
 		}
-		else if(strncmp(szValueName,"TOOL",4) == 0)
+		else if(_tcsncmp(szValueName,_T("TOOL"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Tool(buf);
 		}
@@ -1855,7 +1855,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_Save(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -1960,7 +1960,7 @@ extern "C" DWORD __stdcall mp3infp_Save(const char *szFileName)
 	return dwRet;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2028,7 +2028,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(const char *szFileName)
 	return dwRet;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2095,7 +2095,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2159,7 +2159,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2217,7 +2217,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2284,7 +2284,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2342,7 +2342,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
@@ -2406,7 +2406,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(const char *szFileName)
 	return ERROR_SUCCESS;
 }
 
-extern "C" DWORD __stdcall mp3infp_mp3_DelApeTag(const char *szFileName)
+extern "C" DWORD __stdcall mp3infp_mp3_DelApeTag(LPCTSTR szFileName)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;

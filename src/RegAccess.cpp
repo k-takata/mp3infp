@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 //ílÇÃçÌèú
-BOOL regDelVal(HKEY keyRoot,char* szSubkey,char* szEntry)
+BOOL regDelVal(HKEY keyRoot,LPTSTR szSubkey,LPTSTR szEntry)
 {
 	HKEY	hKey=NULL;
 	BOOL	bReturn=FALSE;
@@ -18,17 +18,17 @@ BOOL regDelVal(HKEY keyRoot,char* szSubkey,char* szEntry)
 }
 
 //ÉGÉìÉgÉäÇÃí«â¡
-BOOL regSetString(HKEY keyRoot,char *szExName,char *szEntry,const char *szData)
+BOOL regSetString(HKEY keyRoot,LPTSTR szExName,LPTSTR szEntry,LPCTSTR szData)
 {
 	HKEY		hKeyResult=0;
 	DWORD		dwDisposition=0;
 	LONG		lResult;
-//	char		szRetVal[255];
+//	TCHAR		szRetVal[255];
 
 	if(RegCreateKeyEx(keyRoot,
 		szExName,
 		0,
-		"",
+		_T(""),
 		REG_OPTION_NON_VOLATILE,
 		KEY_WRITE|KEY_READ,
 		NULL,
@@ -39,24 +39,24 @@ BOOL regSetString(HKEY keyRoot,char *szExName,char *szEntry,const char *szData)
 					szEntry,
 					0,
 					REG_SZ,
-					(const unsigned char *)szData,
-					lstrlen(szData)+1);
+					(CONST BYTE *)szData,
+					(lstrlen(szData)+1)*sizeof(TCHAR));
 		RegCloseKey(hKeyResult);
 		return TRUE;
 	}
 	return FALSE;
 }
 
-void regGetString(HKEY hRootKey, char *szKey,char *szVal, char *szRetVal,char *szDefault)
+void regGetString(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal, LPTSTR szRetVal,LPCTSTR szDefault)
 {
 	HKEY	hKey=NULL;
-	DWORD	dwSize=255;
+	DWORD	dwSize=255*sizeof(TCHAR);
 	DWORD	dwType;
 
-	strcpy(szRetVal,szDefault);
+	lstrcpy(szRetVal,szDefault);
 	if(RegOpenKeyEx(hRootKey,szKey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
 	{
-		dwSize = 255;
+		dwSize = 255*sizeof(TCHAR);
 		if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)szRetVal,&dwSize) == ERROR_SUCCESS)
 		{
 			if(dwSize == 0)
@@ -69,11 +69,11 @@ void regGetString(HKEY hRootKey, char *szKey,char *szVal, char *szRetVal,char *s
 }
 
 #ifdef __AFX_H__
-CString regGetStringEx(HKEY hRootKey, char *szKey,char *szVal,char *szDefault)
+CString regGetStringEx(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal,LPCTSTR szDefault)
 {
 	HKEY	hKey=NULL;
 	CString strRet = szDefault;
-	DWORD	dwSize=255;
+	DWORD	dwSize=255*sizeof(TCHAR);
 	DWORD	dwType;
 
 	if(RegOpenKeyEx(hRootKey,szKey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
@@ -83,11 +83,11 @@ CString regGetStringEx(HKEY hRootKey, char *szKey,char *szVal,char *szDefault)
 		if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)NULL,&dwSize) == ERROR_SUCCESS)
 		{
 			//é¿ç€Ç…ï∂éöóÒÇéÊìæ
-			if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)strRet.GetBuffer(dwSize-1),&dwSize) == ERROR_SUCCESS)
+			if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)strRet.GetBuffer(dwSize/sizeof(TCHAR)-1),&dwSize) == ERROR_SUCCESS)
 			{
 				if(dwSize == 0)
 				{
-					strRet = "";
+					strRet = _T("");
 				}
 			}
 			strRet.ReleaseBuffer();
@@ -98,7 +98,7 @@ CString regGetStringEx(HKEY hRootKey, char *szKey,char *szVal,char *szDefault)
 }
 #endif //__AFX_H__
 
-BOOL regSetDword(HKEY hRootKey,char *szSubkey,char *szEntry,DWORD dwVal)
+BOOL regSetDword(HKEY hRootKey,LPTSTR szSubkey,LPTSTR szEntry,DWORD dwVal)
 {
 	HKEY	hKey=NULL;
 	DWORD	dwDisposition=0;
@@ -107,14 +107,14 @@ BOOL regSetDword(HKEY hRootKey,char *szSubkey,char *szEntry,DWORD dwVal)
 	if(RegCreateKeyEx(hRootKey,
 			szSubkey,
 			0,
-			"",
+			_T(""),
 			REG_OPTION_NON_VOLATILE,
 			KEY_WRITE|KEY_READ,
 			NULL,
 			&hKey,
 			&dwDisposition) == ERROR_SUCCESS)
 	{
-		if(RegSetValueEx(hKey,szEntry,0,REG_DWORD,(CONST BYTE*)&dwVal,4) == 0)
+		if(RegSetValueEx(hKey,szEntry,0,REG_DWORD,(CONST BYTE*)&dwVal,sizeof(DWORD)) == 0)
 		{
 			bReturn=TRUE;
 		}
@@ -124,7 +124,7 @@ BOOL regSetDword(HKEY hRootKey,char *szSubkey,char *szEntry,DWORD dwVal)
 }
 
 
-void regGetDword(HKEY hRootKey,char* szSubkey,char* szEntry,DWORD* pdwVal,DWORD dwDefault)
+void regGetDword(HKEY hRootKey,LPTSTR szSubkey,LPTSTR szEntry,DWORD* pdwVal,DWORD dwDefault)
 {
 	HKEY	hKey=NULL;
 	DWORD	dwSize=0;
@@ -133,7 +133,7 @@ void regGetDword(HKEY hRootKey,char* szSubkey,char* szEntry,DWORD* pdwVal,DWORD 
 	
 	if(RegOpenKeyEx(hRootKey,szSubkey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
 	{
-		dwSize = 4;
+		dwSize = sizeof(DWORD);
 		if(RegQueryValueEx(hKey,szEntry,NULL,&dwType,(LPBYTE)pdwVal,&dwSize) == ERROR_SUCCESS)
 		{
 		}

@@ -2,25 +2,25 @@
 // {DDB066B3-8D19-11d2-8763-006052014B08}
 DEFINE_GUID(CLSID_ShellExt, 
 0xddb066b3, 0x8d19, 0x11d2, 0x87, 0x63, 0x0, 0x60, 0x52, 0x1, 0x4b, 0x8);
-#define CLSID_STR_ShellExt "{DDB066B3-8D19-11d2-8763-006052014B08}"
+#define CLSID_STR_ShellExt _T("{DDB066B3-8D19-11d2-8763-006052014B08}")
 
 #define LANG_VER 248
-#define SOFT_NAME "mp3infp Ver.2.54f5"
-#define APP_NAME "mp3infp"
-#define COPY_RIGHT "Copyright(c) 1998-2009 T-Matsuo\nmailto:tms2@win32lab.com\nhttp://win32lab.com/"
-#define HELP_FILE "mp3infp.chm"
-#define README_FILE "mp3infp.txt"
-#define MP3INFP_REG_ENTRY "Software\\win32lab.com\\mp3infp"
+#define SOFT_NAME _T("mp3infp Ver.2.54f5")
+#define APP_NAME _T("mp3infp")
+#define COPY_RIGHT _T("Copyright(c) 1998-2009 T-Matsuo\nmailto:tms2@win32lab.com\nhttp://win32lab.com/")
+#define HELP_FILE _T("mp3infp.chm")
+#define README_FILE _T("mp3infp.txt")
+#define MP3INFP_REG_ENTRY _T("Software\\win32lab.com\\mp3infp")
 #define M3U_INFOTIP_MAX_LINE 30
 
 //èâä˙íl
 #define DEF_SETUP_MAIN_SELECT_DRIVE			FALSE
 #define DEF_SETUP_MAIN_DISABLE_FDD			TRUE
-#define DEF_SETUP_MAIN_DISABLE_REMOVABLE	FALSE	
+#define DEF_SETUP_MAIN_DISABLE_REMOVABLE	FALSE
 #define DEF_SETUP_MAIN_DISABLE_CDROM		FALSE
 #define DEF_SETUP_MAIN_DISABLE_NETWORK		FALSE
 #define DEF_SETUP_MAIN_COLUMN_8_3			FALSE
-#define DEF_SETUP_MAIN_LANGUAGE				"default"
+#define DEF_SETUP_MAIN_LANGUAGE				_T("default")
 
 #define DEF_SETUP_PROP_AOT					FALSE
 

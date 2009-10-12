@@ -77,52 +77,52 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 {
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_A_),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_A),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT_A),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT_A),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_V_),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_FORMAT_V),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT_V),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_FORMAT_V),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME_),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TIME),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_TIME),_T(""));
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SBJ),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CMT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CMT),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_GNR),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_GNR),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GNR),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_COP),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_COP),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_COP),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ENG),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENG),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ENG),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ENG),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_SRC),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SRC),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SRC),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SRC),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_SFT),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SFT),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SFT),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SFT),bEnable);
 	
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_AVI_VER),bEnable);
-	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_AVI_VER),"");
+	SetWindowText(GetDlgItem(hDlg,IDC_STATIC_AVI_VER),_T(""));
 }
 
 static void DispInfo(HWND hDlg,CShellExt *lpcs)
@@ -138,20 +138,20 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		CString strTime;
 		BOOL bAvi2;
 
-		GetAviFormat((LPCSTR )lpcs->m_strSelectFile,
+		GetAviFormat((LPCTSTR )lpcs->m_strSelectFile,
 						strAudioFormat,
 						strVideoFormat,
 						strStreamFormat,
 						strTime,
 						bAvi2,
 						lpcs->m_iAviCodecFind);
-		strVideoFormat += "\r\n";
+		strVideoFormat += _T("\r\n");
 		strVideoFormat += strStreamFormat;
 		SetDlgItemText(hDlg,IDC_STATIC_FORMAT_A,strAudioFormat);
 		SetDlgItemText(hDlg,IDC_STATIC_FORMAT_V,strVideoFormat);
 		SetDlgItemText(hDlg,IDC_STATIC_TIME,strTime);
 
-		SetDlgItemText(hDlg,IDC_STATIC_AVI_VER,bAvi2?"AVI 2.0 (OpenDML)":"AVI 1.0 (VfW)");
+		SetDlgItemText(hDlg,IDC_STATIC_AVI_VER,bAvi2?_T("AVI 2.0 (OpenDML)"):_T("AVI 1.0 (VfW)"));
 		//ISBJ songname
 //2002-03-17
 //INAM‚ð—DæA–³‚¯‚ê‚ÎISBJ‚ð•\Ž¦
@@ -183,12 +183,12 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		SetDlgItemText(hDlg,IDC_EDIT_SFT,lpcs->m_OpenDML.GetField('I','S','F','T'));
 	
 		lpcs->m_bApply = FALSE;
-		OutputDebugString("ENABLE");
+		OutputDebugString(_T("ENABLE"));
 	}
 	else
 	{
 		EnableEdit(hDlg,lpcs,FALSE);
-		OutputDebugString("Disable");
+		OutputDebugString(_T("Disable"));
 	}
 	if(lpcs->m_bPropAOT)
 	{
@@ -290,7 +290,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(char *)(LPCSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -326,13 +326,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				SetWindowPos(GetParent(hDlg),HWND_NOTOPMOST,0,0,0,0,
 					SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOOWNERZORDER|SWP_NOSIZE);
 			}
-			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"PropAOT",(DWORD )lpcs->m_bPropAOT);
+			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,"open","rundll32.exe","shell32.dll,Control_RunDLL mp3infp.cpl,,4",NULL,SW_SHOW);
+			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,4"),NULL,SW_SHOW);
 			break;
 		case IDC_HELPVIEW:
-			lpcs->OpenHtmlHelp(hDlg,"extension.htm");
+			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
 		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
 		}
@@ -344,11 +344,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	//ó‹µˆË‘¶ƒwƒ‹ƒv
 	case WM_HELP:
 	{
-		char szTmp[256];
-		strcpy(szTmp,APP_NAME);
-		strcat(szTmp," ");
-		strcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,"About",MB_APPLMODAL);
+		TCHAR szTmp[256];
+		lstrcpy(szTmp,APP_NAME);
+		lstrcat(szTmp,_T(" "));
+		lstrcat(szTmp,COPY_RIGHT);
+		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
 		break;
 	}
 	case WM_NOTIFY:
@@ -377,7 +377,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				wnd.GetWindowText(strTmp);
 //2002-03-17
 //INAM‚ð—DæAISBJ‚Í“P‹Ž
-				lpcs->m_OpenDML.SetField('I','S','B','J',"");
+				lpcs->m_OpenDML.SetField('I','S','B','J',_T(""));
 				lpcs->m_OpenDML.SetField('I','N','A','M',strTmp);
 //				lpcs->m_OpenDML.SetField('I','S','B','J',strTmp);
 				wnd.Detach();

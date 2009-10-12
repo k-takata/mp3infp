@@ -5,13 +5,13 @@
 STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::AddPages()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::AddPages()\n"),APP_NAME);
 
 	DWORD dwMajor,dwMinor,dwBuildNumber1,dwBuildNumber2;
 
 	//comctl32.dllのバージョンチェック
 	if(
-		!GetDLLVersion("comctl32.dll",&dwMajor,&dwMinor,&dwBuildNumber1,&dwBuildNumber2) ||
+		!GetDLLVersion(_T("comctl32.dll"),&dwMajor,&dwMinor,&dwBuildNumber1,&dwBuildNumber2) ||
 		(dwMajor < 5) ||
 		((dwMajor == 5) && (dwMinor < 80))
 		)
@@ -24,7 +24,7 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 		CString tmp;
 		tmp.LoadString(IDS_COMCTL32_INFO);
 		CString ver;
-		ver.Format("\nfound comctl32 version -> %d.%d.%d.%d",dwMajor,dwMinor,dwBuildNumber1,dwBuildNumber2);
+		ver.Format(_T("\nfound comctl32 version -> %d.%d.%d.%d"),dwMajor,dwMinor,dwBuildNumber1,dwBuildNumber2);
 		tmp += ver;
 		AfxMessageBox(tmp);
 		return NOERROR;
@@ -107,9 +107,9 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
 	if(m_Id3tagv1.IsEnable())
-		psp.pszTitle	= "ID3v1";
+		psp.pszTitle	= _T("ID3v1");
 	else
-		psp.pszTitle	= "ID3v1(*)";
+		psp.pszTitle	= _T("ID3v1(*)");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_ID3V1);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_ID3V1;
 	psp.pfnCallback	= PageCallback_mp3_ID3V1;
@@ -134,9 +134,9 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.lParam		= (LPARAM )this;
 	
 	if(m_Id3tagv2.IsEnable())
-		psp.pszTitle	= "ID3v2";
+		psp.pszTitle	= _T("ID3v2");
 	else
-		psp.pszTitle	= "ID3v2(*)";
+		psp.pszTitle	= _T("ID3v2(*)");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_ID3V2);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_ID3V2;
 	psp.pfnCallback	= PageCallback_mp3_ID3V2;
@@ -162,9 +162,9 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 		psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 		psp.lParam		= (LPARAM )this;
 		if(m_Rmp3.IsEnable())
-			psp.pszTitle	= "Riff SIF";
+			psp.pszTitle	= _T("Riff SIF");
 		else
-			psp.pszTitle	= "Riff SIF(*)";
+			psp.pszTitle	= _T("Riff SIF(*)");
 		psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_RMP);
 		psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_RMP;
 		psp.pfnCallback	= PageCallback_mp3_RMP;
@@ -194,11 +194,11 @@ void CShellExt::AddPages_mp3(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 		psp.lParam		= (LPARAM )this;
 		if(m_Ape.IsEnable())
 		{
-			psp.pszTitle	= "APE";
+			psp.pszTitle	= _T("APE");
 		}
 		else
 		{
-			psp.pszTitle	= "APE(*)";
+			psp.pszTitle	= _T("APE(*)");
 		}
 		psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP3_APE);
 		psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp3_APE;
@@ -271,7 +271,7 @@ void CShellExt::AddPages_wave(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_WAVE);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_wave;
 	psp.pfnCallback	= PageCallback_wave;
@@ -303,7 +303,7 @@ void CShellExt::AddPages_avi(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_AVI);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_avi;
 	psp.pfnCallback	= PageCallback_avi;
@@ -335,7 +335,7 @@ void CShellExt::AddPages_vqf(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_VQF);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_vqf;
 	psp.pfnCallback	= PageCallback_vqf;
@@ -367,7 +367,7 @@ void CShellExt::AddPages_wma(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_WMA);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_wma;
 	psp.pfnCallback	= PageCallback_wma;
@@ -399,7 +399,7 @@ void CShellExt::AddPages_m3u(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_M3U);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_m3u;
 	psp.pfnCallback	= PageCallback_m3u;
@@ -431,7 +431,7 @@ void CShellExt::AddPages_ogg(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_OGG);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_ogg;
 	psp.pfnCallback	= PageCallback_ogg;
@@ -463,7 +463,7 @@ void CShellExt::AddPages_ape(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_APE);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_ape;
 	psp.pfnCallback	= PageCallback_ape;
@@ -495,7 +495,7 @@ void CShellExt::AddPages_mp4(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam)
 	psp.hInstance	= theApp.m_hResource;
 	psp.pcRefParent	= (unsigned int *)&g_cRefThisDll;
 	psp.lParam		= (LPARAM )this;
-	psp.pszTitle	= "mp3infp";
+	psp.pszTitle	= _T("mp3infp");
 	psp.pszTemplate	= MAKEINTRESOURCE(IDD_PAGE_MP4);
 	psp.pfnDlgProc	= (DLGPROC)PageDlgProc_mp4;
 	psp.pfnCallback	= PageCallback_mp4;
@@ -519,7 +519,7 @@ STDMETHODIMP CShellExt::ReplacePage(UINT uPageID,
 									LPARAM lParam)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	TRACE("[%s]CShellExt::ReplacePage()\n",APP_NAME);
+	TRACE(_T("[%s]CShellExt::ReplacePage()\n"),APP_NAME);
 
 	return NOERROR;
 }

@@ -48,40 +48,40 @@ public:
 	virtual ~CTag_Wma();
 	void Release();
 	BOOL IsEnable(){return m_bEnable;};
-	DWORD Load(const char *szFileName);
-	DWORD Save(const char *szFileName,LPTCPPROGRESS cbProgress = NULL);
+	DWORD Load(LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName,LPTCPPROGRESS cbProgress = NULL);
 	CString GetNAM();
-	void	SetNAM(const char *str);
+	void	SetNAM(LPCTSTR str);
 
 	CString GetTRACK();
-	void	SetTRACK(const char *str);
+	void	SetTRACK(LPCTSTR str);
 	
 	CString GetART();
-	void	SetART(const char *str);
+	void	SetART(LPCTSTR str);
 	
 	CString GetPRD();
-	void	SetPRD(const char *str);
+	void	SetPRD(LPCTSTR str);
 	
 	CString GetCMT();
-	void	SetCMT(const char *str);
+	void	SetCMT(LPCTSTR str);
 	
 	CString GetCRD();
-	void	SetCRD(const char *str);
+	void	SetCRD(LPCTSTR str);
 	
 	CString GetGNR();
-	void	SetGNR(const char *str);
+	void	SetGNR(LPCTSTR str);
 	
 	CString GetCOPY();
-	void	SetCOPY(const char *str);
+	void	SetCOPY(LPCTSTR str);
 	
 	CString GetUrl1();
-	void	SetUrl1(const char *str);
+	void	SetUrl1(LPCTSTR str);
 	
 	CString GetUrl2();
-	void	SetUrl2(const char *str);
+	void	SetUrl2(LPCTSTR str);
 	
 	CString GetRating();
-	void	SetRating(const char *str);
+	void	SetRating(LPCTSTR str);
 	
 	BOOL	GetSeekable(){return m_bIsSeekable;};
 	BOOL	GetBroadcast(){return m_bIsBroadcast;};
@@ -91,8 +91,8 @@ public:
 		return 0;
 	}
 	
-	CString GetAudioFormatString(){return m_strAudioCodec.GetLength()?(m_strAudioCodec):("N/A");};
-	CString GetVideoFormatString(){return m_strVideoCodec.GetLength()?(m_strVideoCodec):("N/A");};
+	CString GetAudioFormatString(){return m_strAudioCodec.GetLength()?(m_strAudioCodec):(_T("N/A"));};
+	CString GetVideoFormatString(){return m_strVideoCodec.GetLength()?(m_strVideoCodec):(_T("N/A"));};
 	CString GetTimeString()
 	{
 		CString strTime;
@@ -101,7 +101,7 @@ public:
 		{
 			sec += ((m_llPlayTime%10000000)?0:1);
 		}
-		strTime.Format("%02I64u:%02I64u:%02I64u (%I64usec)",
+		strTime.Format(_T("%02I64u:%02I64u:%02I64u (%I64usec)"),
 						sec/60/60,
 						sec/60%60,
 						sec%60,
@@ -110,7 +110,7 @@ public:
 	}
 
 protected:
-//	DWORD Save_(const char *szFileName,HANDLE *hEvent);
+//	DWORD Save_(LPCTSTR szFileName,HANDLE *hEvent);
 #pragma pack(1)
 	typedef struct _GUID_SIZE{
 		GUID guid;
@@ -143,13 +143,13 @@ protected:
 	DWORD	WriteWchar(HANDLE hFile,CString str);
 	DWORD	ReadDescString(HANDLE hFile);
 	DWORD	WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength);
-	BOOL	AddComment(const char *name,WORD type,char *buf,WORD len);
-	BOOL	DellComment(const char *name);
-	BOOL	AddCommentString(const char *name,CString str);
-	BOOL	AddCommentDword(const char *name,DWORD val);
-	BOOL	GetComment(const char *name,WORD *type,WORD *len,char **buf);
-	BOOL	GetCommentString(const char *name,CString &str);
-	BOOL	GetCommentDword(const char *name,DWORD &val);
+	BOOL	AddComment(LPCTSTR name,WORD type,char *buf,WORD len);
+	BOOL	DellComment(LPCTSTR name);
+	BOOL	AddCommentString(LPCTSTR name,CString str);
+	BOOL	AddCommentDword(LPCTSTR name,DWORD val);
+	BOOL	GetComment(LPCTSTR name,WORD *type,WORD *len,char **buf);
+	BOOL	GetCommentString(LPCTSTR name,CString &str);
+	BOOL	GetCommentDword(LPCTSTR name,DWORD &val);
 	BOOL	m_bEnable;
 	DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,ULONGLONG &writeSize);
 

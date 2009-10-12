@@ -5,17 +5,17 @@
 
 void mbsncpy2(unsigned char *dst,unsigned char *src,int c);
 //DLLのバージョン情報を取得
-BOOL GetDLLVersion(IN LPSTR szDLLFileName,
+BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
 				   IN DWORD *pdwMinor,
 				   IN DWORD *pdwBuildNumber1,
 				   IN DWORD *pdwBuildNumber2);
 
   //文末がYenのときTRUE
-BOOL IsTailYenSign(char *szStr);
+BOOL IsTailYenSign(LPCTSTR szStr);
 
 //文末に'\\'を追加(既に'\\'のときは何もしない)
-void AddTAilYenSigne(char *szStr);
+void AddTAilYenSigne(LPTSTR szStr);
 void AddTAilYenSigne(CString &Str);
 
 //LoadStringのバグ対策(MSKB Q140452)
@@ -42,7 +42,7 @@ CString getFileName(CString &path);
 　　　　　　　ファイル名を含まないときは""へのポインタ
 	[\],[/],[:]が見つからなかった場合、引数をファイル名とみなしてそのまま返す
 */
-const char *getFileName(const char *szPath);
+LPCTSTR getFileName(LPCTSTR szPath);
 
 //////////////////////////////////////////////////////////////////////////////
 //getExtName
@@ -54,14 +54,14 @@ const char *getFileName(const char *szPath);
 戻り値：char * 拡張子へのポインタ
 　　　　　　　拡張子を含まないときは""へのポインタ
 */
-const char *getExtName(const char *szPath);
+LPCTSTR getExtName(LPCTSTR szPath);
 
 //２バイト文字列の切りのいい文字数を取得
 long check2ByteLength(const char *szTag,long lLimit);
 
 //システムエラーメッセージボックスを表示
-void sysError(HWND hWnd,char *mes = "Error");
-void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes = "Error");
+void sysError(HWND hWnd,LPTSTR mes = _T("Error"));
+void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPTSTR mes = _T("Error"));
 
 //////////////////////////////////////////////////////////////////////////////
 //cutFileName
@@ -72,7 +72,7 @@ void errMessageBox(HWND hWnd,DWORD dwErrorCode,char *mes = "Error");
 			（実行後、パス名からファイル名が切り離される）
 戻り値：なし
 */
-void cutFileName(char *szPath);
+void cutFileName(LPTSTR szPath);
 
 //////////////////////////////////////////////////////////////////////////////
 //cutExtName
@@ -83,9 +83,23 @@ void cutFileName(char *szPath);
 			（実行後、ファイル名から拡張子が切り離される）
 戻り値：なし
 */
-void cutExtName(char *szFileName);
+void cutExtName(LPTSTR szFileName);
 
 //文字列srcを指定文字cでn文字ごとに区切る
-CString divString(char *src,char c,int n);
+CString divString(LPTSTR src,char c,int n);
+
+// バイト列をCStringに変換する
+CString DataToCString(const char *data, int size, int code);
+#define DTC_CODE_ANSI		0
+#define DTC_CODE_UTF16LE	1
+#define DTC_CODE_UTF16BE	2
+#define DTC_CODE_UTF8		3
+
+// TSTRを指定コードのバイト列に変換する
+int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code);
+
+// TSTRを指定コードのバイト列に変換する（メモリ自動割り当て）
+// 使用後はfree()で解放すること
+char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code);
 
 #endif //_GLOBALCOMMAND_H
