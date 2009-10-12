@@ -449,12 +449,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			//ID3TAG入力文字数ガイド
 			{
 				CString strFormatText;
-				CString strTmp;
-				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,LOWORD(wParam)));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
-				int len = lstrlen(strTmp);
+				char szTmp[MAX_PATH];
+				GetWindowTextA(GetDlgItem(hDlg,LOWORD(wParam)), szTmp, MAX_PATH);	// バイト数を取得
+				int len = lstrlenA(szTmp);
 				if(lpcs->m_Id3tagv1.GetTrackNo().IsEmpty())
 				{
 					if(id3maxline < len)
