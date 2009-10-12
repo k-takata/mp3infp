@@ -89,6 +89,9 @@ CString CVqf::GetField(char id1,char id2,char id3,char id4)
 {
 	DWORD dwSize;
 	unsigned char *data = GetField(id1, id2, id3, id4, &dwSize);
+	if (data == NULL) {
+		return _T("");
+	}
 	return CString((LPSTR)data, dwSize);
 }
 

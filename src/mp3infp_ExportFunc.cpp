@@ -368,7 +368,6 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	static CString strRet;
-	DWORD 	dwSize;
 	*buf = NULL;
 	strRet = _T("");
 	switch(theApp.m_fileType){
@@ -807,23 +806,23 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("INAM")) == 0)
 		{
-			strRet = theApp.m_Vqf.GetField('N','A','M','E',&dwSize);
+			strRet = theApp.m_Vqf.GetField('N','A','M','E');
 		}
 		else if(lstrcmp(szValueName,_T("IART")) == 0)
 		{
-			strRet = theApp.m_Vqf.GetField('A','U','T','H',&dwSize);
+			strRet = theApp.m_Vqf.GetField('A','U','T','H');
 		}
 		else if(lstrcmp(szValueName,_T("FILE")) == 0)
 		{
-			strRet = theApp.m_Vqf.GetField('F','I','L','E',&dwSize);
+			strRet = theApp.m_Vqf.GetField('F','I','L','E');
 		}
 		else if(lstrcmp(szValueName,_T("ICOP")) == 0)
 		{
-			strRet = theApp.m_Vqf.GetField('(','c',')',' ',&dwSize);
+			strRet = theApp.m_Vqf.GetField('(','c',')',' ');
 		}
 		else if(lstrcmp(szValueName,_T("ICMT")) == 0)
 		{
-			strRet = theApp.m_Vqf.GetField('C','O','M','T',&dwSize);
+			strRet = theApp.m_Vqf.GetField('C','O','M','T');
 		}
 		break;
 	case CShellExt::WMA:
