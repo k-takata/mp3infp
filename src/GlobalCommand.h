@@ -3,6 +3,18 @@
 
 #define sizeof_array(a) (sizeof(a)/sizeof(a[0]))
 
+#ifndef IS_HIGH_SURROGATE
+#define IS_HIGH_SURROGATE(wch)		(((wch) & 0xfc00) == 0xd800)
+#define IS_LOW_SURROGATE(wch)		(((wch) & 0xfc00) == 0xdc00)
+#define IS_SURROGATE_PAIR(hs, ls)	(IS_HIGH_SURROGATE(hs) && IS_LOW_SURROGATE(ls))
+#endif
+
+#ifdef UNICODE
+#define IS_LEAD_TBYTE(tb)	IS_HIGH_SURROGATE(tb)
+#else
+#define IS_LEAD_TBYTE(tb)	IsDBCSLeadByte(tb)
+#endif
+
 void mbsncpy2(unsigned char *dst,unsigned char *src,int c);
 //DLLÇÃÉoÅ[ÉWÉáÉìèÓïÒÇéÊìæ
 BOOL GetDLLVersion(IN LPTSTR szDLLFileName,

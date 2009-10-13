@@ -122,12 +122,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					int mp3Len = lstrlen(szFile);
 					for(int j=0; j<((m3uLen<mp3Len)?m3uLen:mp3Len); j++)
 					{
-						if(IsDBCSLeadByte(lpcs->m_strSelectFile[j]) && IsDBCSLeadByte(szFile[j]))
+						if(IS_LEAD_TBYTE(lpcs->m_strSelectFile[j]) && IS_LEAD_TBYTE(szFile[j]))
 						{
 							j++;
 							continue;
 						}
-						if(IsDBCSLeadByte(lpcs->m_strSelectFile[j]) || IsDBCSLeadByte(szFile[j]))
+						if(IS_LEAD_TBYTE(lpcs->m_strSelectFile[j]) || IS_LEAD_TBYTE(szFile[j]))
 						{
 							break;
 						}

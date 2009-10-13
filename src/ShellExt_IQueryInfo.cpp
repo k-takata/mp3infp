@@ -120,7 +120,7 @@ CString CShellExt::GetInfoTip_mp3()
 
 	for(int i=0; i<m_strMp3InfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -584,7 +584,7 @@ CString CShellExt::GetInfoTip_wave()
 
 	for(int i=0; i<m_strWaveInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -765,7 +765,7 @@ CString CShellExt::GetInfoTip_avi()
 
 	for(int i=0; i<m_strAviInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -972,7 +972,7 @@ CString CShellExt::GetInfoTip_vqf()
 
 	for(int i=0; i<m_strVqfInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -1092,7 +1092,7 @@ CString CShellExt::GetInfoTip_wma()
 
 	for(int i=0; i<m_strWmaInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -1276,7 +1276,7 @@ CString CShellExt::GetInfoTip_ogg()
 
 	for(int i=0; i<m_strOggInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -1414,7 +1414,7 @@ CString CShellExt::GetInfoTip_ape()
 
 	for(int i=0; i<m_strApeInfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;
@@ -1552,7 +1552,7 @@ CString CShellExt::GetInfoTip_mp4()
 
 	for(int i=0; i<m_strMp4InfoTipFormat.GetLength(); i++)
 	{
-		if(IsDBCSLeadByte(pFormatString[i]))
+		if(IS_LEAD_TBYTE(pFormatString[i]))
 		{
 			strInfoTip += pFormatString[i];
 			i++;

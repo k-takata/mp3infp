@@ -897,7 +897,6 @@ DWORD CTag_Wma::ReadDescString(HANDLE hFile)
 	CString ret;
 	WORD wNameLength;
 	WCHAR *tmp;
-	char *ctmp;
 	CString strName;
 	CString strVal;
 	int clength;
@@ -916,12 +915,8 @@ DWORD CTag_Wma::ReadDescString(HANDLE hFile)
 			free(tmp);
 			return dwWin32errorCode;
 		}
-		clength = WideCharToMultiByte(CP_ACP,0,(LPWSTR )tmp,-1,NULL,0,NULL,NULL);
-		ctmp = (char *)malloc(clength);
-		WideCharToMultiByte(CP_ACP,0,(LPWSTR )tmp,wNameLength/sizeof(WCHAR),ctmp,clength,NULL,NULL);
-		strName = ctmp;
+		strName = tmp;
 		free(tmp);
-		free(ctmp);
 
 		// Descriptor Val
 		WORD wDataType;
@@ -1097,12 +1092,7 @@ BOOL CTag_Wma::GetCommentString(LPCTSTR name,CString &str)
 	{
 		return FALSE;
 	}
-	int clength = WideCharToMultiByte(CP_ACP,0,(LPWSTR )buf,len/sizeof(WCHAR),NULL,0,NULL,NULL);
-	char *ctmp = (char *)malloc(clength+1);
-	WideCharToMultiByte(CP_ACP,0,(LPWSTR )buf,len/sizeof(WCHAR),ctmp,clength,NULL,NULL);
-	ctmp[clength] = '\0';
-	str = ctmp;
-	free(ctmp);
+	str = CString((LPWSTR)buf, len/sizeof(WCHAR));
 	
 	return TRUE;
 }

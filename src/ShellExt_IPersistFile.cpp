@@ -15,18 +15,7 @@ STDMETHODIMP CShellExt::Load(LPCOLESTR pszFileName, DWORD dwMode)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	TRACE(_T("[%s]CShellExt::Load(%s)\n"),APP_NAME,pszFileName);
 
-	char szFileUserClickedOn[MAX_PATH];
-
-	WideCharToMultiByte(CP_ACP,                // CodePage
-                        0,		              // dwFlags
-                        pszFileName,          // lpWideCharStr
-                        -1,                    // cchWideChar
-                        szFileUserClickedOn, // lpMultiByteStr
-                        sizeof(szFileUserClickedOn),  // cchMultiByte,
-                        NULL,                  // lpDefaultChar,
-                        NULL);                 // lpUsedDefaultChar
-
-	m_strSelectFile = szFileUserClickedOn;
+	m_strSelectFile = pszFileName;
 	TRACE(_T("    +--Load (%s)\n"),m_strSelectFile);
 
 	Load();	//èâä˙âª

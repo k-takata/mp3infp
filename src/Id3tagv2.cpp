@@ -859,11 +859,11 @@ CString CId3tagv2::GetGenre()
 	while(1)
 	{
 		if(strGenre.GetLength() &&
-			!IsDBCSLeadByte(strGenre[0]) &&
+			!IS_LEAD_TBYTE(strGenre[0]) &&
 			(strGenre[0] == '(') )	//頭にカッコを検出
 		{
 			if((strGenre.GetLength() > 1) &&
-				!IsDBCSLeadByte(strGenre[1]) &&
+				!IS_LEAD_TBYTE(strGenre[1]) &&
 				(strGenre[1] == '(') )
 			{
 				strGenre.Delete(0);	//先頭の'('を削除
@@ -897,7 +897,7 @@ void CId3tagv2::SetGenre(LPCTSTR szGenre)
 */
 	// 2004-05-16 "("で始まる場合は先頭に"("を追加
 	if(lstrlen(szGenre) &&
-		!IsDBCSLeadByte(szGenre[0]) &&
+		!IS_LEAD_TBYTE(szGenre[0]) &&
 		(szGenre[0] == '(') )	//頭にカッコを検出
 	{
 		strGenre += _T("(");

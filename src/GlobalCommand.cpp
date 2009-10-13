@@ -201,7 +201,7 @@ LPCTSTR getFileName(LPCTSTR szPath)
 	while(*szPtr != '\0')
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(*szPtr) == 0)
+		if(IS_LEAD_TBYTE(*szPtr) == 0)
 		{
 			//[\],[/],[:]を見つけたら現在地+1のポインタを保存
 			if((*szPtr == '\\') || (*szPtr == '/') || (*szPtr == ':'))
@@ -222,7 +222,7 @@ CString getFileNameExtName(CString &path)
 	while(path.GetLength() > i)
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(path[i]) == 0)
+		if(IS_LEAD_TBYTE(path[i]) == 0)
 		{
 			//[\],[/],[:]を見つけたら現在地+1のポインタを保存
 			if((path[i] == '\\') || (path[i] == '/') || (path[i] == ':'))
@@ -251,7 +251,7 @@ LPCTSTR getExtName(LPCTSTR szPath)
 	while(*szPtr != '\0')
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(*szPtr) == 0)
+		if(IS_LEAD_TBYTE(*szPtr) == 0)
 		{
 			//[.]を見つけたら現在地のポインタを保存
 			if(*szPtr == '.')
@@ -276,7 +276,7 @@ CString getExtName(CString &path)
 	while(fName.GetLength() > i)
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(fName[i]) == 0)
+		if(IS_LEAD_TBYTE(fName[i]) == 0)
 		{
 			//[.]を見つけたら現在地のポインタを保存
 			if(fName[i] == '.')
@@ -359,7 +359,7 @@ void cutFileName(LPTSTR szPath)
 	while(*szPath != '\0')
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(*szPath) == 0)
+		if(IS_LEAD_TBYTE(*szPath) == 0)
 		{
 			if((*szPath == '\\') || (*szPath == '/') || (*szPath == ':'))
 			{
@@ -385,7 +385,7 @@ CString getPathName(CString &path)
 	while(path.GetLength() > i)
 	{
 		//２バイト文字の先頭はスキップ
-		if(IsDBCSLeadByte(path[i]) == 0)
+		if(IS_LEAD_TBYTE(path[i]) == 0)
 		{
 			if((path[i] == '\\') || (path[i] == '/') || (path[i] == ':'))
 			{
@@ -409,7 +409,7 @@ void cutExtName(LPTSTR szFileName)
 	
 	while(*pEnd != '\0')
 	{
-		if(IsDBCSLeadByte(*pEnd) != 0)
+		if(IS_LEAD_TBYTE(*pEnd) != 0)
 		{
 			pEnd++;
 		}else
@@ -424,7 +424,7 @@ void cutExtName(LPTSTR szFileName)
 	pEnd=szFileName;
 	while(*pStart != '\0')
 	{
-		if(IsDBCSLeadByte(*pStart) != 0)
+		if(IS_LEAD_TBYTE(*pStart) != 0)
 		{
 			pStart++;
 		}else
@@ -453,7 +453,7 @@ CString getFileName(CString &path)
 	int pathOffset = 0;
 	while(fName.GetLength() > i)
 	{
-		if(IsDBCSLeadByte(fName[i]) == 0)
+		if(IS_LEAD_TBYTE(fName[i]) == 0)
 		{
 			if(fName[i] == '.')
 			{
