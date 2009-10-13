@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54g/u2 for Windows2000/XP/Vista
+Ver.2.54g/u3 for Windows2000/XP/Vista
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
@@ -80,6 +80,10 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54g/u3 (091014)
+・余分な文字コード変換処理を修正
+・IsDBCSLeadByte() の呼び出し部分を見直し
+
 2.54g/u2 (091013)
 ・ID3TAG入力文字数ガイドが Unicode 文字数単位になっていたのを、バイト数
   単位に修正
