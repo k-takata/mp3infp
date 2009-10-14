@@ -88,6 +88,7 @@ SOURCES=\
 	..\Tag_Wma.cpp \
 	..\Vqf.cpp \
 	..\w2kstub.cpp \
+	..\io_utf8.cpp \
 	..\mp3infp.rc
 
 #BUILD_ALLOW_COMPILER_WARNINGS=1

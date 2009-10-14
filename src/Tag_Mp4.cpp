@@ -138,11 +138,14 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
-	char bufFileName[MAX_PATH];
-	TstrToData(szFileName, -1, bufFileName, sizeof(bufFileName), DTC_CODE_ANSI);
-	char *info = MP4FileInfo(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
+	char *pFileName = TstrToDataAlloc(szFileName, -1, NULL, DTC_CODE_UTF8);
+	if (pFileName == NULL) {
+		return -1;
+	}
+	char *info = MP4FileInfo(pFileName);
 	if(!info)
 	{
+		free(pFileName);
 		Release();
 		return -1;
 	}
@@ -153,7 +156,8 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	// Audio/Video
 	_StripAudioInfo(m_strTrackInfo,m_strAudioInfo,m_strVideoInfo);
 
-	MP4FileHandle mp4file = MP4Read(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
+	MP4FileHandle mp4file = MP4Read(pFileName);
+	free(pFileName);
 	if(mp4file == MP4_INVALID_FILE_HANDLE)
 	{
 		Release();
@@ -245,9 +249,12 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		return -1;
 	}
 	
-	char bufFileName[MAX_PATH];
-	TstrToData(szFileName, -1, bufFileName, sizeof(bufFileName), DTC_CODE_ANSI);
-	MP4FileHandle mp4file = MP4Modify(bufFileName);	// QQQ ˆêŽž‚µ‚Ì‚¬
+	char *pFileName = TstrToDataAlloc(szFileName, -1, NULL, DTC_CODE_UTF8);
+	if (pFileName == NULL) {
+		return -1;
+	}
+	MP4FileHandle mp4file = MP4Modify(pFileName);
+	free(pFileName);
 	if(mp4file == MP4_INVALID_FILE_HANDLE)
 	{
 		return -1;

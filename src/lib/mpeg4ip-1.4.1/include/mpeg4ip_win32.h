@@ -120,7 +120,19 @@ int gettimeofday(struct timeval *t, void *);
 extern "C" {
 #endif
 char *strcasestr(const char *haystack, const char *needle);
-int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer);
+#ifdef __cplusplus
+}
+#endif
+
+// 2009-10-14 K.Takata
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define fopen fopen_utf8
+#define _open _open_utf8
+FILE *__cdecl fopen_utf8(const char *file, const char *mode);
+int __cdecl _open_utf8(const char *path, int oflag, ...);
+int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer);		// for WDK
 #ifdef __cplusplus
 }
 #endif

@@ -1,4 +1,4 @@
-// mfcstub.cpp
+// w2kstub.cpp
 //
 // WDK 6001.18002 で、Win2k 用にビルドするためのスタブ
 
