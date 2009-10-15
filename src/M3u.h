@@ -12,6 +12,10 @@
 class CM3u  
 {
 public:
+	enum EN_ENCODING {
+		ENC_ANSI, ENC_UTF8N, ENC_UTF8B
+	};
+
 	CM3u();
 	virtual ~CM3u();
 	void	Release();
@@ -22,9 +26,13 @@ public:
 	BOOL	Add(LPCTSTR szLine);
 	BOOL	GetLine(int iLine,CString &str);
 
+	void		SetEncoding(EN_ENCODING enc);
+	EN_ENCODING	GetEncoding();
+
 private:
 
 	CStringArray m_strLines;
+	EN_ENCODING m_encoding;
 
 };
 

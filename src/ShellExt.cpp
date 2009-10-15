@@ -410,7 +410,8 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(LPCTSTR szFileName)
 	{
 		return WMA;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".m3u")) == 0)
+	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".m3u")) == 0) ||
+			(lstrcmpi(getExtName(szFileName),_T(".m3u8")) == 0) )
 	{
 		return M3U;
 	}

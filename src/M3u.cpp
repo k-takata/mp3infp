@@ -13,6 +13,7 @@
 CM3u::CM3u()
 {
 	Release();
+	m_encoding = ENC_ANSI;
 
 }
 
@@ -31,55 +32,39 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
-	//ファイルをオープン
-	HANDLE hFile = CreateFile(
-				szFileName,
-				GENERIC_READ,
-				FILE_SHARE_READ,
-				NULL,
-				OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-				FILE_ATTRIBUTE_NORMAL,
-				NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		dwWin32errorCode = GetLastError();
-		return dwWin32errorCode;
-	}
-
-	char buf[1024*64];
-	DWORD ptr;
-	DWORD dwReadSize;
-	CString str = _T("");
-	while(ReadFile(hFile,buf,sizeof(buf),&dwReadSize,NULL) && (dwReadSize != 0))
-	{
-		ptr = 0;
-		while(ptr < dwReadSize)
-		{
-			if((buf[ptr] == '\r') || (buf[ptr] == '\n'))
-			{
-				if((ptr > 0) && (buf[ptr-1] == '\r') && (buf[ptr] == '\n'))
-				{
-				}
-				else
-				{
-					m_strLines.Add(str);	//1行追加
-					str = _T("");
-				}
-				ptr++;
-				continue;
-			}
-			else
-			{
-				str += buf[ptr];
-			}
-			ptr++;
+	if (lstrcmpi(getExtName(szFileName), _T(".m3u8")) == 0) {
+		if ((m_encoding != ENC_UTF8N) && (m_encoding != ENC_UTF8B)) {
+			m_encoding = ENC_UTF8N;
 		}
 	}
-	CloseHandle(hFile);
-	if(str.GetLength())
-	{
-		m_strLines.Add(str);
+
+	FILE *fp = _tfopen(szFileName, _T("r"));
+	if (fp == NULL) {
+		return ERROR_INVALID_FUNCTION;	// QQQ 何かエラーを返しておく
 	}
+	int input_code = DTC_CODE_ANSI;
+	BOOL firstline = TRUE;
+	char buf[1024*64];
+	char *ptr, *eptr;
+	while (fgets(buf, sizeof(buf), fp)) {
+		ptr = buf;
+		if (firstline) {
+			if (memcmp(buf, "\xEF\xBB\xBF", 3) == 0) {	// UTF-8 BOM
+				m_encoding = ENC_UTF8B;
+				ptr += 3;
+			}
+			if ((m_encoding == ENC_UTF8N) || (m_encoding == ENC_UTF8B)) {
+				input_code = DTC_CODE_UTF8;
+			}
+			firstline = FALSE;
+		}
+		eptr = ptr + strlen(ptr);
+		if ((eptr > ptr) && (eptr[-1] == '\n')) {
+			--eptr;
+		}
+		m_strLines.Add(DataToCString(ptr, eptr - ptr, input_code));	//1行追加
+	}
+	fclose(fp);
 
 	return dwWin32errorCode;
 }
@@ -87,6 +72,16 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 DWORD CM3u::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
+
+	if (lstrcmpi(getExtName(szFileName), _T(".m3u8")) == 0) {
+		if ((m_encoding != ENC_UTF8N) && (m_encoding != ENC_UTF8B)) {
+			m_encoding = ENC_UTF8N;
+		}
+	}
+	int output_code = DTC_CODE_ANSI;
+	if ((m_encoding == ENC_UTF8N) || (m_encoding == ENC_UTF8B)) {
+		output_code = DTC_CODE_UTF8;
+	}
 
 	//ファイルをオープン
 	HANDLE hFile = CreateFile(
@@ -103,6 +98,11 @@ DWORD CM3u::Save(LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 
+	DWORD dwWritten;
+	if (m_encoding == ENC_UTF8B) {
+		WriteFile(hFile, "\xEF\xBB\xBF", 3, &dwWritten, NULL);
+	}
+
 	//リストが空の時は0バイトのファイルを作る
 	if(m_strLines.GetUpperBound() == -1)
 	{
@@ -111,13 +111,12 @@ DWORD CM3u::Save(LPCTSTR szFileName)
 	}
 
 	CString str;
-	DWORD dwWritten;
 	for(int i=0; i<=m_strLines.GetUpperBound(); i++)
 	{
 		str = m_strLines.GetAt(i);
 		str += _T("\r\n");
 		int size;
-		char *buf = TstrToDataAlloc(str, str.GetLength(), &size, DTC_CODE_ANSI);
+		char *buf = TstrToDataAlloc(str, str.GetLength(), &size, output_code);
 		if (buf != NULL) {
 			int ret = WriteFile(hFile,buf,size,&dwWritten,NULL);
 			free(buf);
