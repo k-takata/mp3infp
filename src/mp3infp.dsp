@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "./id3lib/include/" /I "./id3lib/include/id3/" /I "lib/mpeg4ip-1.4.1/lib/mp4v2/" /I "lib/mpeg4ip-1.4.1/include" /I "lib/oggvorbis-win32sdk-1.0.1/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D SIDEBYSIDE_COMMONCONTROL=1 /D "_WINDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "./id3lib/include/" /I "./id3lib/include/id3/" /I "lib/mpeg4ip-1.4.1/lib/mp4v2/" /I "lib/mpeg4ip-1.4.1/include" /I "lib/oggvorbis-win32sdk-1.0.1/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D ISOLATION_AWARE_ENABLED=1 /D "_WINDLL" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x411 /d "NDEBUG"
@@ -79,7 +79,7 @@ SOURCE="$(InputPath)"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "lib/mpeg4ip-1.4.1/lib/mp4v2/" /I "lib/mpeg4ip-1.4.1/include" /I "lib/oggvorbis-win32sdk-1.0.1/include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D SIDEBYSIDE_COMMONCONTROL=1 /D "_WINDLL" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "lib/mpeg4ip-1.4.1/lib/mp4v2/" /I "lib/mpeg4ip-1.4.1/include" /I "lib/oggvorbis-win32sdk-1.0.1/include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D ISOLATION_AWARE_ENABLED=1 /D "_WINDLL" /Yu"stdafx.h" /FD /GZ /c
 # SUBTRACT CPP /Fr
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32

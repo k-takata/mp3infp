@@ -1654,7 +1654,7 @@ void PlayWinamp(HWND hWnd,LPCTSTR szPlayFile)
 		if(!SendMessageTimeout(hwndWinamp, WM_COPYDATA, NULL, (LPARAM)&cds,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet))
 			return;
-		if(!SendMessageTimeout(hwndWinamp, WM_COMMAND, 40045, 0,
+		if(!SendMessageTimeout(hwndWinamp, WM_COMMAND, WINAMP_BUTTON2, 0,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet)) // Play button
 			return;
 		return;

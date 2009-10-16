@@ -208,7 +208,7 @@ static BOOL regExSet(LPCTSTR szExName,LPCTSTR szData)
 				0,
 				REG_SZ,
 				(const unsigned char *)szData,
-				lstrlen(szData)+1);
+				(lstrlen(szData)+1)*sizeof(TCHAR));
 		RegCloseKey(hKeyResult);
 		return TRUE;		//ílÇ™Ç»Ç¢ÇÊÇ§Ç»ÇÃÇ≈ê›íËÇµÇΩ
 	}else
@@ -229,7 +229,7 @@ static BOOL regExSet(LPCTSTR szExName,LPCTSTR szData)
 						0,
 						REG_SZ,
 						(const unsigned char *)szData,
-						lstrlen(szData)+1);
+						(lstrlen(szData)+1)*sizeof(TCHAR));
 			RegCloseKey(hKeyResult);
 			return TRUE;
 		}
@@ -237,7 +237,7 @@ static BOOL regExSet(LPCTSTR szExName,LPCTSTR szData)
 	return FALSE;
 }
 
-static TCHAR	extlist[19][5]={_T(".mp3"),_T(".mp2"),_T(".mp1"),_T(".rmp"),_T(".wav"),_T(".avi"),_T(".vqf"),_T(".wma"),_T(".wmv"),_T(".asf"),_T(".m3u"),_T(".ogg"),_T(".ape"),_T(".mp4"),_T(".m4v"),_T(".m4a"),_T(".3gp"),_T(".3g2"),_T(".cda")};
+static const LPTSTR	extlist[]={_T(".mp3"),_T(".mp2"),_T(".mp1"),_T(".rmp"),_T(".wav"),_T(".avi"),_T(".vqf"),_T(".wma"),_T(".wmv"),_T(".asf"),_T(".m3u"),_T(".ogg"),_T(".ape"),_T(".mp4"),_T(".m4v"),_T(".m4a"),_T(".3gp"),_T(".3g2"),_T(".cda")};
 
 STDAPI DllRegisterServer()
 {
@@ -268,7 +268,7 @@ STDAPI DllRegisterServer()
 	regSetString(HKEY_CLASSES_ROOT,_T("*\\shellex\\ContextMenuHandlers\\mp3infp"),_T(""),CLSID_STR_ShellExt);
 	//(Property)
 	regSetString(HKEY_CLASSES_ROOT,_T("*\\shellex\\PropertySheetHandlers\\mp3infp"),_T(""),CLSID_STR_ShellExt);
-	for(int i=0; i<18; i++)
+	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		//(InfoTip)
 		wsprintf(szKey,_T("%s\\shellex\\{00021500-0000-0000-C000-000000000046}"),extlist[i]);
@@ -293,7 +293,7 @@ STDAPI DllUnregisterServer()
 	//(Property)
 	wsprintf(szKey,_T("*\\shellex\\PropertySheetHandlers\\mp3infp"));
 	RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
-	for(int i=0; i<19; i++)
+	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		regGetString(HKEY_CLASSES_ROOT,extlist[i],_T(""),szKey,_T(""));
 		if(lstrlen(szKey))
