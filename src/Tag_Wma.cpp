@@ -1054,7 +1054,9 @@ BOOL CTag_Wma::AddCommentString(const char *name,CString str)
 	WCHAR *buf = (WCHAR *)malloc(clength*sizeof(WCHAR));
 	MultiByteToWideChar(CP_ACP,0,(LPCTSTR )str,str.GetLength()+1,buf,clength);
 
-	return AddComment(name,0,(char *)buf,clength*sizeof(WCHAR));
+	BOOL ret = AddComment(name,0,(char *)buf,clength*sizeof(WCHAR));
+	free(buf);
+	return ret;
 }
 
 BOOL CTag_Wma::AddCommentDword(const char *name,DWORD val)
