@@ -8,12 +8,12 @@
 
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
-!define MUI_VERSION "2.54g" ;Define your own software version here
-OutFile mp3infp254g_u6_x64.exe
+;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
+;OutFile mp3infp254g_u7.exe
 
 ;Var PRGMMAN_HWND
 
-InstallDir "$PROGRAMFILES64\${MUI_PRODUCT}"
+InstallDir "$PROGRAMFILES\${MUI_PRODUCT}"
 SetCompressor /SOLID lzma
 XPStyle on
 
@@ -72,15 +72,12 @@ UninstPage instfiles
 ;--------------------------------
 ;Installer Sections
 Section "main files" SecCopyUI
-	${DisableX64FSRedirection}
-	SetRegView 64
 
 	SetOutPath "$INSTDIR"
-;	${If} ${RunningX64}
-		File "..\x64\mp3infp_regist.exe"
-;	${Else}
-;		File "..\x86\mp3infp_regist.exe"
-;	${EndIf}
+	${If} ${RunningX64}
+		File /oname=mp3infp_regist_x64.exe "..\x64\mp3infp_regist.exe"
+	${EndIf}
+	File "..\x86\mp3infp_regist.exe"
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
 	CreateDirectory "$INSTDIR\language"
@@ -108,11 +105,7 @@ Section "main files" SecCopyUI
 		StrCpy "$0" "Japanese.lng.$1"
 		IfFileExists "$0" jpnExists
 	jpnCpy:
-;	${If} ${RunningX64}
-		File /oname=$0 "..\x64\Japanese.lng"
-;	${Else}
-;		File /oname=$0 "..\x86\Japanese.lng"
-;	${EndIf}
+	File /oname=$0 "..\x86\Japanese.lng"
 	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Japanese.lng"
 	
 	; ChineseTraditional
@@ -167,7 +160,27 @@ Section "main files" SecCopyUI
 	
 	;----------------------------------------------------------------
 	SetOutPath "$SYSDIR"
+	
+	; x86 mp3infp.dll
+	StrCpy "$0" "mp3infp.dll"
+	Delete "$SYSDIR\$0"
+	IfFileExists "$SYSDIR\$0" 0 dllCpy
+	StrCpy "$1" "0"
+	dllExists:
+		IntOp "$1" "$1" + "1"
+		StrCpy "$0" "mp3infp.$1"
+		IfFileExists "$0" dllExists
+	dllCpy:
+	File /oname=$0 "..\x86\mp3infp.dll"
+	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
+	IfRebootFlag YesReboot 0
+		RegDLL "MP3INFP.DLL"
+	YesReboot:
 
+	${If} ${RunningX64}
+	${DisableX64FSRedirection}
+
+	; x64 mp3infp.dll
 	StrCpy "$0" "mp3infp.dll"
 	Delete "$SYSDIR\$0"
 	IfFileExists "$SYSDIR\$0" 0 dllCpy64
@@ -183,6 +196,7 @@ Section "main files" SecCopyUI
 		ExecWait '"$SYSDIR\regsvr32.exe" /s mp3infp.dll'
 	YesReboot64:
 	
+	; x64 mp3infp.cpl
 	StrCpy "$0" "mp3infp.cpl"
 	Delete "$SYSDIR\$0"
 	IfFileExists "$0" 0 cplCpy64
@@ -195,41 +209,81 @@ Section "main files" SecCopyUI
 	File /oname=$0 "..\x64\mp3infp.cpl"
 	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.cpl"
 
+	${EnableX64FSRedirection}
+	${Else}
+	; x86 mp3infp.cpl
+	StrCpy "$0" "mp3infp.cpl"
+	Delete "$SYSDIR\$0"
+	IfFileExists "$0" 0 cplCpy
+	StrCpy "$1" "0"
+	cplExists:
+		IntOp "$1" "$1" + "1"
+		StrCpy "$0" "mp3infc.$1"
+		IfFileExists "$0" cplExists
+	cplCpy:
+	File /oname=$0 "..\x86\mp3infp.cpl"
+	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.cpl"
+	${EndIf}
+
 	;Language set
 	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Language" "$(LangRegKey)"
 	
 	;[1] mp3infp_regist.exe
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp" "$\"$INSTDIR\mp3infp_regist.exe$\""
+	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
+	IfRebootFlag 0 +2
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "mp3infp" "$\"$INSTDIR\mp3infp_regist.exe$\""
+	
+	${If} ${RunningX64}
+		SetRegView 64
+		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
+		IfRebootFlag 0 +2
+			WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "mp3infp" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
+		SetRegView 32
+	${EndIf}
 	
 	;[2] Uninstall list
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION} (x64)"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
+	${If} ${RunningX64}
+		SetRegView 64
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
+		SetRegView 32
+	${Else}
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
+	${EndIf}
 	
 	;[3] Store install folder
 	WriteRegStr HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path" $INSTDIR
+	${If} ${RunningX64}
+		SetRegView 64
+		WriteRegStr HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path" $INSTDIR
+		SetRegView 32
+	${EndIf}
 	
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-	SetRegView 32
-	${EnableX64FSRedirection}
 SectionEnd
   
 ;--------------------------------
 
 Function .onInit
 
-	${Unless} ${RunningX64}
-		MessageBox MB_OK "Cannot install x64 on x86 machine"
-		Abort
+	${If} ${RunningX64}
+		SetRegView 64
+		ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
+		StrCmp $INSTDIR "" 0 regok64
+		StrCpy $INSTDIR "$PROGRAMFILES64\${MUI_PRODUCT}"
+		regok64:
+		SetRegView 32
+	${Else}
+		ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
+		StrCmp $INSTDIR "" 0 regok
+		StrCpy $INSTDIR "$PROGRAMFILES\${MUI_PRODUCT}"
+		regok:
 	${EndIf}
 
-	SetRegView 64
-	ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
-	StrCmp $INSTDIR "" 0 regok
-	StrCpy $INSTDIR "$PROGRAMFILES64\${MUI_PRODUCT}"
-	regok:
-  	SetRegView 32
 
 	;Language selection dialog
 
@@ -268,14 +322,21 @@ FunctionEnd
 ;Uninstaller Section
 
 Section "Uninstall"
-	${DisableX64FSRedirection}
-	SetRegView 64
 
-	;ADD YOUR OWN STUFF HERE!
+  ;ADD YOUR OWN STUFF HERE!
 
-	ExecWait '"$SYSDIR\regsvr32.exe" /s /u mp3infp.dll'
+	${If} ${RunningX64}
+		${DisableX64FSRedirection}
+		ExecWait '"$SYSDIR\regsvr32.exe" /s /u mp3infp.dll'
+		Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
+		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
+		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
+		${EnableX64FSRedirection}
+	${Else}
+		UnRegDLL "mp3infp.dll"
+		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
+	${EndIf}
 	Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
-	Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp.txt"
@@ -292,17 +353,32 @@ Section "Uninstall"
 	; [1]
 	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
 	; [2]
-	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp"
+	${If} ${RunningX64}
+		SetRegView 64
+		DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp"
+		SetRegView 32
+	${Else}
+		DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp"
+	${EndIf}
 	; [3]
 	DeleteRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
 	DeleteRegKey /ifempty HKLM "Software\${MUI_COMPANY}"
+	${If} ${RunningX64}
+		SetRegView 64
+		DeleteRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
+		DeleteRegKey /ifempty HKLM "Software\${MUI_COMPANY}"
+		SetRegView 32
+	${EndIf}
 	
 	DeleteRegKey HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
 	DeleteRegKey /ifempty HKCU "Software\${MUI_COMPANY}"
 	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\SharedDLLs" "$SYSDIR\mp3infp.dll"
-
-	SetRegView 32
-	${EnableX64FSRedirection}
+	${If} ${RunningX64}
+		SetRegView 64
+		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\SharedDLLs" "$SYSDIR\mp3infp.dll"
+		SetRegView 32
+	${EndIf}
+	
 SectionEnd
 
 Function un.onUninstSuccess
@@ -318,11 +394,9 @@ FunctionEnd
 ;Uninstaller Functions
 
 Function un.onInit
-	SetRegView 64
 	;Get language from registry
 	ReadRegStr $LANGUAGE HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
 	StrCmp $LANGUAGE "" 0 regok
 	StrCpy $LANGUAGE "English"
 	regok:
-  	SetRegView 32
 FunctionEnd

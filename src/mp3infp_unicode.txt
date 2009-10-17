@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54g/u6 for Windows2000/XP/Vista
+Ver.2.54g/u7 for Windows2000/XP/Vista
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
@@ -79,6 +79,17 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54g/u7 (091017)
+・x86 と x64 インストーラを再統合
+・mp3infp_regist.exe が Admin 権限で動作するようにマニフェストを設定
+・x64 用の mp3infp_regist を mp3infp_regist_x64.exe にリネーム
+・インストール時に再起動が必要な場合のみ、RunOnce を使って OS 起動時に
+  mp3infp_regist を実行し mp3infp.dll を登録するように変更
+  （UAC 有効時でも、RunOnce ならば Admin 権限が必要なプログラムが
+    実行可能なため）
+・インストールスクリプトにバージョン番号を埋め込むのをやめた
+  （make_installer.bat 実行時に手で入力するように変更）
+
 2.54g/u6 (091016)
 ・レジストリ書き込み処理を修正
 ・拡張子が .m3u8 の場合にツールチップが表示されなかったのを修正

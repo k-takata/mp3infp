@@ -1,6 +1,15 @@
 @echo off
+setlocal
 
 rem インストーラ作成
+
+rem バージョン入力
+set /p version=Input mp3infp version ^(e.g. 2.54g/u7^): 
+
+rem ファイル名用にバージョン文字列から記号を削除・置換
+set filever=%version:/=_%
+set filever=%filever:.=%
+
 
 rem WDKでビルドしたファイルをVC2008と同じディレクトリに配置
 
@@ -21,6 +30,5 @@ copy ..\mp3infp_regist\objfre_wnet_amd64\amd64\mp3infp_regist.exe ..\x64 /y
 
 
 rem インストーラ作成
-"%ProgramFiles%\NSIS\makensis.exe" mp3infp_x64.nsi
-"%ProgramFiles%\NSIS\makensis.exe" mp3infp_x86.nsi
+"%ProgramFiles%\NSIS\makensis.exe" "/DMUI_VERSION=%version%" "/XOutFile mp3infp%filever%.exe" mp3infp.nsi
 
