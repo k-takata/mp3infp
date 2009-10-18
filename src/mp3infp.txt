@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54g for Windows98/Me/2000/XP/2003
+Ver.2.54h for Windows98/Me/2000/XP/2003
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ※※※mp3infpはフリーソフトウェアです※※※
@@ -72,6 +72,21 @@ T-Matsuo氏によって決定されるものとします。
 http://win32lab.com/ で配布しています
 
 ■改変履歴
+2.54h (091018)
+1.libogg/libvorbisをソースの形で配布するようにした(ビルドすると2つが結合された.libを生成します)。COPYINGも同梱。
+2.Winampのヘッダを更新
+3.インストーラーの実行部分をupx --bestで、データをLZMA(solid)で圧縮するように
+4.mp3infp.rc、mp3infp_cpl.rc 内のスペルミスを修正
+5.ShellExt.cpp/DlgContextMenu()の座標の取得において、負の座標を32768以上の正の座標と解釈していたバグを修正
+6.Tag_Wma.cpp/CTag_Wma::AddCommentString()におけるメモリリークを修正
+7.MMCommand.cppのWinamp制御部のコードにおいて、数値を定義された定数に置き換えた
+8.ビジュアルスタイル対応
+9.mp3infp.dllのベースアドレスを変更(x86:0x5d5000000、x64:x6005d500000)
+10.アルバムアーティストの関数を追加
+11.mp3infp_regist.exeがAdmin権限で動作するようmanifestを設定
+12.x86とx64のインストーラーを統合(しましたがx64についてはUnicode版をお薦めします)
+※ファイルサイズが大きいのは、WDKでないのでmsvcrt.libが使えないためです
+
 2.54g (091010)
 1.ID3v2とRIFF SIFの相互変換時、タイムスタンプを変更しない設定にしていた場合でも、タイムスタンプ修正のタイミングを誤っていたため変更されてしまっていたバグを修正
 2.実験的サポートがttaについては常時有効になっていたバグを修正

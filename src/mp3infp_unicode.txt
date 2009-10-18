@@ -1,9 +1,9 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54g/u7 for Windows2000/XP/Vista
+Ver.2.54h/u1 for Windows2000/XP/Vista
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
-T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が改良した mp3infp 2.54g を
+T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が改良した mp3infp 2.54h を
 K.Takata が Unicode ビルドした改造版です。
 OS は、Win2k 以降の対応となっています。
 
@@ -79,6 +79,12 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54h/u1 (091019)
+・Rem 氏の 2.54h の変更を反映
+  - LoadLibraryEx()が正常に動作しない問題があったのでLoadLibrary()に戻した
+（なお、oggvorbis のフォルダ構成の変更と、インストールスクリプトの修正に
+  関しては、未マージ）
+
 2.54g/u7 (091017)
 ・x86 と x64 インストーラを再統合
 ・mp3infp_regist.exe が Admin 権限で動作するようにマニフェストを設定
