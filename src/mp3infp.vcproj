@@ -55,8 +55,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./id3lib/include/,./id3lib/include/id3/,./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include"
-				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SIDEBYSIDE_COMMONCONTROL=1"
+				AdditionalIncludeDirectories="./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include,lib/winamp/include"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;ISOLATION_AWARE_ENABLED=1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -83,6 +83,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib\oggvorbis\lib\$(PlatformName)\$(ConfigurationName)\libvorbis.lib"
 				OutputFile="c:\windows\system32\mp3infp.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -91,6 +92,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\$(PlatformName)\$(ConfigurationName)/mp3infp.pdb"
 				SubSystem="2"
+				BaseAddress="0x5d500000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary=".\$(PlatformName)\$(ConfigurationName)/mp3infp.lib"
@@ -156,8 +158,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./id3lib/include/,./id3lib/include/id3/,./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include"
-				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SIDEBYSIDE_COMMONCONTROL=1"
+				AdditionalIncludeDirectories="./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include,lib/winamp/include"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;ISOLATION_AWARE_ENABLED=1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -184,6 +186,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib\oggvorbis\lib\$(PlatformName)\$(ConfigurationName)\libvorbis.lib"
 				OutputFile="c:\windows\system32\mp3infp.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -192,6 +195,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\$(PlatformName)\$(ConfigurationName)/mp3infp.pdb"
 				SubSystem="2"
+				BaseAddress="0x6005d500000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary=".\$(PlatformName)\$(ConfigurationName)/mp3infp.lib"
@@ -258,8 +262,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="./id3lib/include/,./id3lib/include/id3/,./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include"
-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SIDEBYSIDE_COMMONCONTROL=1"
+				AdditionalIncludeDirectories="./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include,lib/winamp/include"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;ISOLATION_AWARE_ENABLED=1"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -285,6 +289,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib\oggvorbis\lib\$(PlatformName)\$(ConfigurationName)\libvorbis.lib"
 				OutputFile="./x86/mp3infp.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -294,6 +299,7 @@
 				GenerateMapFile="true"
 				MapFileName=".\$(PlatformName)\$(ConfigurationName)/mp3infp.map"
 				SubSystem="2"
+				BaseAddress="0x5d500000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary=".\$(PlatformName)\$(ConfigurationName)/mp3infp.lib"
@@ -360,8 +366,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="./id3lib/include/,./id3lib/include/id3/,./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include"
-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SIDEBYSIDE_COMMONCONTROL=1"
+				AdditionalIncludeDirectories="./lib/mpeg4ip-1.4.1/lib/mp4v2/,lib/mpeg4ip-1.4.1/include,lib/oggvorbis/include,lib/winamp/include"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;ISOLATION_AWARE_ENABLED=1"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -387,6 +393,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="lib\oggvorbis\lib\$(PlatformName)\$(ConfigurationName)\libvorbis.lib"
 				OutputFile="./x64/mp3infp.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -396,6 +403,7 @@
 				GenerateMapFile="true"
 				MapFileName=".\$(PlatformName)\$(ConfigurationName)/mp3infp.map"
 				SubSystem="2"
+				BaseAddress="0x6005d500000"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
 				ImportLibrary=".\$(PlatformName)\$(ConfigurationName)/mp3infp.lib"
@@ -2449,346 +2457,6 @@
 			<File
 				RelativePath="ver.h"
 				>
-			</File>
-		</Filter>
-		<Filter
-			Name="lib"
-			>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libogg_static.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libogg_static_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libogg_static_x64.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libogg_static_x64_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbis_static.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbis_static_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbis_static_x64.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbis_static_x64_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbisfile_static.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbisfile_static_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbisfile_static_x64.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\lib\oggvorbis\lib\libvorbisfile_static_x64_d.lib"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<File

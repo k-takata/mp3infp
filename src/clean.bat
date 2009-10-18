@@ -6,6 +6,8 @@ rmdir /S /Q lib\mpeg4ip-1.4.1\lib\gnu\Win32
 rmdir /S /Q lib\mpeg4ip-1.4.1\lib\gnu\x64
 rmdir /S /Q lib\mpeg4ip-1.4.1\lib\mp4v2\Win32
 rmdir /S /Q lib\mpeg4ip-1.4.1\lib\mp4v2\x64
+rmdir /S /Q lib\oggvorbis\lib\Win32
+rmdir /S /Q lib\oggvorbis\lib\x64
 
 rmdir /S /Q Win32
 rmdir /S /Q x64\Release

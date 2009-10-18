@@ -2,6 +2,7 @@
 
 #include "wa_ipc.h"
 #include "ipc_pe.h"
+#include "winampcmd.h"
 #include "resource.h"		// メイン シンボル
 
 #include <Mmsystem.h>
@@ -1653,16 +1654,16 @@ void PlayWinamp(HWND hWnd,char *szPlayFile)
 		//Winamp専用再生コマンド
 		COPYDATASTRUCT cds;
 
-		cds.dwData = 100; //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
+		cds.dwData = IPC_PLAYFILE; //Starts playback. A lot like hitting 'play' in Winamp, but not exactly the same
 		cds.lpData = (void*)szPlayFile;
 		cds.cbData = strlen(szPlayFile) + 1;
-		if(!SendMessageTimeout(hwndWinamp, WM_USER, 0, 101,
+		if(!SendMessageTimeout(hwndWinamp, WM_WA_IPC, 0, IPC_DELETE,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet)) // Clears Winamp's internal playlist. 
 			return;
 		if(!SendMessageTimeout(hwndWinamp, WM_COPYDATA, NULL, (LPARAM)&cds,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet))
 			return;
-		if(!SendMessageTimeout(hwndWinamp, WM_COMMAND, 40045, 0,
+		if(!SendMessageTimeout(hwndWinamp, WM_COMMAND, WINAMP_BUTTON2, 0,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet)) // Play button
 			return;
 		return;

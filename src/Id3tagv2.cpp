@@ -897,6 +897,10 @@ void CId3tagv2::v23IDtov22ID(char *v23ID,char *v22ID)
 	{
 		memcpy(v22ID,"TP1",sizeof(v22ID));
 	}
+	else if(memcmp(v23ID,"TPE2",sizeof(v23ID)) == 0)
+	{
+		memcpy(v22ID,"TP2",sizeof(v22ID));
+	}
 	else if(memcmp(v23ID,"TALB",sizeof(v23ID)) == 0)
 	{
 		memcpy(v22ID,"TAL",sizeof(v22ID));
@@ -995,6 +999,18 @@ void CId3tagv2::SetArtist(const char *artist)
 {
 	//アーティスト
 	SetId3String("TPE1",artist);
+}
+
+CString CId3tagv2::GetAlbumArtist()
+{
+	//アルバムアーティスト
+	return GetId3String("TPE2");
+}
+
+void CId3tagv2::SetAlbumArtist(LPCTSTR albumartist)
+{
+	//アルバムアーティスト
+	SetId3String("TPE2",albumartist);
 }
 
 CString CId3tagv2::GetAlbum()

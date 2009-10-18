@@ -162,6 +162,10 @@ public:
 		{
 			memcpy(&m_dwId,"TALB",sizeof(m_dwId));
 		}
+		else if(memcmp(id,"TP2",sizeof(id)) == 0)
+		{
+			memcpy(&m_dwId,"TPE2",sizeof(m_dwId));
+		}
 		else if(memcmp(id,"TYE",sizeof(id)) == 0)
 		{
 			memcpy(&m_dwId,"TYER",sizeof(m_dwId));
@@ -286,6 +290,8 @@ public:
 	void SetTrackNo(const char *szTrackNo);
 	CString GetArtist();
 	void SetArtist(const char *artist);
+	CString GetAlbumArtist();
+	void SetAlbumArtist(const char *albumartist);
 	CString GetAlbum();
 	void SetAlbum(const char *album);
 	CString GetYear();
