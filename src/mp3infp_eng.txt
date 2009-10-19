@@ -1,5 +1,5 @@
 mp3infp - Shell extension type tag editor -
-Ver.2.54e for Windows2000/XP
+Ver.2.54h for Windows2000/XP
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 **** mp3infp is freeware ****
@@ -11,8 +11,8 @@ the shell extension function of Windows.
 
 Support extension
 
-mpeg1.0/2.0/2.5 Layer1`3 (.mp3/.mp2/.mp1/.rmp)
-    -> ID3v1/v1.1/v2.2(read only)/v2.3
+mpeg1.0/2.0/2.5 Layer1-3 (.mp3/.mp2/.mp1/.rmp)
+    -> ID3v1/v1.1/v2.2/v2.3/v2.4
     -> RMP3 format RiffSIF (It is used in Japan)
 TwinVQ (.vqf) 
 WAV (.wav) 

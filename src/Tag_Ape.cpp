@@ -766,7 +766,8 @@ DWORD CTag_Ape::MakeTag(LPCTSTR szFileName)
 	}
 
 	// Apeƒ^ƒO‚ð•Û‘¶
-	CString strDefaultName = getFileName(CString(szFileName));
+	CString strFileName = szFileName;
+	CString strDefaultName = getFileName(strFileName);
 	
 	SetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strDefaultName);
 	

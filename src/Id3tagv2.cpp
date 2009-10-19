@@ -1702,7 +1702,8 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 
 	//デフォルト情報
 	TCHAR szDefaultName[MAX_PATH];
-	lstrcpy(szDefaultName,getFileName(CString(szFileName)));
+	CString strFileName = szFileName;
+	lstrcpy(szDefaultName,getFileName(strFileName));
 	SetId3String("TIT2",szDefaultName);
 	SetId3String("TSSE",m_strDefaultEnc);
 	

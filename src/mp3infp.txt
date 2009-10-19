@@ -21,7 +21,7 @@ Windowsのシェルエクステンション機能を利用して、エクスプローラにタグ参照・
 
 ■対応ファイル形式
 ・mpeg1.0/2.0/2.5 Layer1～3 (.mp3/.mp2/.mp1/.rmp)
-    -> ID3v1/v1.1/v2.2(読込)/v2.3
+    -> ID3v1/v1.1/v2.2/v2.3/v2.4
     -> RMP3形式のRiffSIF
 ・TwinVQ (.vqf) 
 ・WAV (.wav) 
@@ -81,7 +81,7 @@ http://win32lab.com/ で配布しています
 6.Tag_Wma.cpp/CTag_Wma::AddCommentString()におけるメモリリークを修正
 7.MMCommand.cppのWinamp制御部のコードにおいて、数値を定義された定数に置き換えた
 8.ビジュアルスタイル対応
-9.mp3infp.dllのベースアドレスを変更(x86:0x5d5000000、x64:x6005d500000)
+9.mp3infp.dllのベースアドレスを変更(x86:0x5d500000、x64:0x6005d500000)
 10.アルバムアーティストの関数を追加
 11.mp3infp_regist.exeがAdmin権限で動作するようmanifestを設定
 12.x86とx64のインストーラーを統合(しましたがx64についてはUnicode版をお薦めします)

@@ -16,6 +16,7 @@
 InstallDir "$PROGRAMFILES\${MUI_PRODUCT}"
 SetCompressor /SOLID lzma
 XPStyle on
+RequestExecutionLevel admin
 
 ;--------------------------------
 
@@ -227,6 +228,7 @@ Section "main files" SecCopyUI
 
 	;Language set
 	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Language" "$(LangRegKey)"
+	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language" "$LANGUAGE"
 	
 	;[1] mp3infp_regist.exe
 	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
@@ -395,8 +397,8 @@ FunctionEnd
 
 Function un.onInit
 	;Get language from registry
-	ReadRegStr $LANGUAGE HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
-	StrCmp $LANGUAGE "" 0 regok
-	StrCpy $LANGUAGE "English"
-	regok:
+	ReadRegStr $0 HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
+	StrCmp $0 "" regskip 0
+	StrCpy $LANGUAGE $0
+	regskip:
 FunctionEnd
