@@ -847,7 +847,7 @@ CString CTag_Wma::ReadWchar(HANDLE hFile,WORD len)
 	CString ret;
 	DWORD dwRet;
 	WCHAR *tmp;
-	tmp = (WCHAR *)malloc(len);
+	tmp = (WCHAR *)malloc(len+sizeof(WCHAR));	// +sizeof(WCHAR)‚ÍNUL•¶š(“ü—Í‚ÉNUL‚ª–³‚©‚Á‚½ê‡‚É”õ‚¦‚Ä)
 	if (tmp == NULL) {
 		return _T("");
 	}
@@ -856,7 +856,8 @@ CString CTag_Wma::ReadWchar(HANDLE hFile,WORD len)
 		free(tmp);
 		return _T("");
 	}
-	ret = CString(tmp, len/sizeof(WCHAR));
+	tmp[len/sizeof(WCHAR)] = L'\0';	// “ü—Í‚ÉNUL‚ª–³‚©‚Á‚½ê‡‚É”õ‚¦‚Ä
+	ret = CString(tmp);
 	free(tmp);
 	
 	return ret;
