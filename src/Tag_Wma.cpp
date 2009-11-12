@@ -857,7 +857,7 @@ CString CTag_Wma::ReadWchar(HANDLE hFile,WORD len)
 		return _T("");
 	}
 	tmp[len/sizeof(WCHAR)] = L'\0';	// “ü—Í‚ÉNUL‚ª–³‚©‚Á‚½ê‡‚É”õ‚¦‚Ä
-	ret = CString(tmp);
+	ret = tmp;
 	free(tmp);
 	
 	return ret;
@@ -1093,7 +1093,14 @@ BOOL CTag_Wma::GetCommentString(LPCTSTR name,CString &str)
 	{
 		return FALSE;
 	}
-	str = CString((LPWSTR)buf, len/sizeof(WCHAR));
+	LPWSTR wbuf = (LPWSTR)buf;
+	int i;
+	for (i = 0; i < len/sizeof(WCHAR); i++)
+	{
+		if (wbuf[i] == L'\0')
+			break;
+	}
+	str = CString(wbuf, i);
 	
 	return TRUE;
 }
