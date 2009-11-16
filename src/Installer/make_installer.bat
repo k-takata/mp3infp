@@ -3,8 +3,13 @@ setlocal
 
 rem インストーラ作成
 
+rem バージョンを ..\classID.h から取得 (e.g. 2.54h/u4)
+for /f tokens^=2^ delims^=^" %%i in ('find ^"SOFT_NAME^" ^< ..\classID.h') do set version=%%i
+set version=%version:mp3infp Ver.=%
+echo Version: %version%
+
 rem バージョン入力
-set /p version=Input mp3infp version ^(e.g. 2.54g/u7^): 
+rem set /p version=Input mp3infp version ^(e.g. 2.54g/u7^): 
 
 rem ファイル名用にバージョン文字列から記号を削除・置換
 set filever=%version:/=_%

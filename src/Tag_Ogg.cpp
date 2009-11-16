@@ -598,7 +598,7 @@ DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 			if(strValue.GetLength())
 			{
 				char bufName[256];
-				TstrToData(strValue, -1, bufName, sizeof(bufName), DTC_CODE_UTF8);
+				TstrToData(strName, -1, bufName, sizeof(bufName), DTC_CODE_UTF8);
 				char *bufVal = TstrToDataAlloc(strValue, -1, NULL, DTC_CODE_UTF8);
 				if (bufVal != NULL) {
 					vorbis_comment_add_tag(&_vc,bufName,bufVal);
