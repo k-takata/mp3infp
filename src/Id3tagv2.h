@@ -33,6 +33,12 @@ static DWORD ExtractI4(unsigned char buf[4])
 	return x;
 }
 
+struct id3_v23v22table_t {
+	char *v23;
+	char *v22;
+};
+extern id3_v23v22table_t id3_v23v22table[];
+
 class CId3Frame  
 {
 public:
@@ -146,69 +152,15 @@ public:
 		id[3] = '\0';
 		TRACE(_T("id=%s (size=%d)\n"),id,size);
 		//v2.2Ç©ÇÁv2.3Ç÷ÉtÉåÅ[ÉÄIDÇïœä∑
-		if(memcmp(id,"TT2",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TIT2",sizeof(m_dwId));
+		int i;
+		for (i = 0; id3_v23v22table[i].v23 != NULL; i++) {
+			if (memcmp(id, id3_v23v22table[i].v22, sizeof(id)) == 0) {
+				memcpy(&m_dwId, id3_v23v22table[i].v23, sizeof(m_dwId));
+				break;
+			}
 		}
-		else if(memcmp(id,"TRK",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TRCK",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TP1",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TPE1",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TP2",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TPE2",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TAL",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TALB",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TYE",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TYER",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCO",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCON",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"COM",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"COMM",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCM",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCOM",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TOA",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TOPE",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCR",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCOP",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"WXX",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"WXXX",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TSS",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TSSE",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TEN",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TENC",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"PIC",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"APIC",sizeof(m_dwId));
-		}
-		else
-		{
-			return 0;
+		if (id3_v23v22table[i].v23 == NULL) {
+			memcpy(&m_dwId, "XXXX", sizeof(m_dwId));	// ïsñæ
 		}
 
 		m_data = (unsigned char *)malloc(size);

@@ -677,77 +677,82 @@ void CId3tagv2::_SetStringEncode(int encode)
 	}
 }
 
+id3_v23v22table_t id3_v23v22table[] = {
+	{"AENC", "CRA"},
+	{"APIC", "PIC"},
+	{"COMM", "COM"},
+	{"EQUA", "EQU"},
+	{"ETCO", "ETC"},
+	{"GEOB", "GEO"},
+	{"IPLS", "IPL"},
+	{"MCDI", "MCI"},
+	{"MLLT", "MLL"},
+	{"PCNT", "CNT"},
+	{"POPM", "POP"},
+	{"RBUF", "BUF"},
+	{"RVAD", "RVA"},
+	{"RVRB", "REV"},
+	{"SYLT", "SLT"},
+	{"SYTC", "STC"},
+	{"TALB", "TAL"},
+	{"TBPM", "TBP"},
+	{"TCOM", "TCM"},
+	{"TCON", "TCO"},
+	{"TCOP", "TCR"},
+	{"TDAT", "TDA"},
+	{"TDLY", "TDY"},
+	{"TENC", "TEN"},
+	{"TFLT", "TFT"},
+	{"TIME", "TIM"},
+	{"TIT1", "TT1"},
+	{"TIT2", "TT2"},
+	{"TIT3", "TT3"},
+	{"TKEY", "TKE"},
+	{"TLAN", "TLA"},
+	{"TLEN", "TLE"},
+	{"TMED", "TMT"},
+	{"TOAL", "TOT"},
+	{"TOFN", "TOF"},
+	{"TOLY", "TOL"},
+	{"TOPE", "TOA"},
+	{"TORY", "TOR"},
+	{"TPE1", "TP1"},
+	{"TPE2", "TP2"},
+	{"TPE3", "TP3"},
+	{"TPE4", "TP4"},
+	{"TPOS", "TPA"},
+	{"TPUB", "TPB"},
+	{"TRCK", "TRK"},
+	{"TRDA", "TRD"},
+	{"TSIZ", "TSI"},
+	{"TSRC", "TRC"},
+	{"TSSE", "TSS"},
+	{"TYER", "TYE"},
+	{"TXXX", "TXX"},
+	{"UFID", "UFI"},
+	{"USLT", "ULT"},
+	{"WCOM", "WCM"},
+	{"WCOP", "WCP"},
+	{"WOAF", "WAF"},
+	{"WOAR", "WAR"},
+	{"WOAS", "WAS"},
+	{"WPUB", "WPB"},
+	{"WXXX", "WXX"},
+	{NULL, NULL}
+};
+
 void CId3tagv2::v23IDtov22ID(char *v23ID,char *v22ID)
 {
 	//v2.3からv2.2へフレームIDを変換
-	if(memcmp(v23ID,"TIT2",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TT2",sizeof(v22ID));
+	int i;
+	for (i = 0; id3_v23v22table[i].v23 != NULL; i++) {
+		if (memcmp(v23ID, id3_v23v22table[i].v23, 4) == 0) {
+			memcpy(v22ID, id3_v23v22table[i].v22, 3);
+			break;
+		}
 	}
-	else if(memcmp(v23ID,"TRCK",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TRK",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TPE1",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TP1",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TPE2",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TP2",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TALB",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TAL",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TDRC",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TYE",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TYER",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TYE",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TCON",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TCO",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"COMM",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"COM",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TCOM",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TCM",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TOPE",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TOA",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TCOP",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TCR",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"WXXX",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"WXX",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TSSE",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TSS",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"TENC",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"TEN",sizeof(v22ID));
-	}
-	else if(memcmp(v23ID,"APIC",sizeof(v23ID)) == 0)
-	{
-		memcpy(v22ID,"PIC",sizeof(v22ID));
-	}
-	else
-	{
-		// 不明
-		memcpy(v22ID,"XXX",sizeof(v22ID));
+	if (id3_v23v22table[i].v23 == NULL) {
+		memcpy(v22ID, "XXX", 3);	// 不明
 	}
 }
 
