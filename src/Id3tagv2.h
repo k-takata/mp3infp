@@ -281,6 +281,7 @@ private:
 	void _SetStringEncode(int encode);
 	void v23IDtov22ID(char *v23ID,char *v22ID);
 //	void UTF16toUTF16BE(WCHAR *str,int len);
+	CString ReadEncodedTextString(unsigned char encoding, unsigned char *data, int dataize, DWORD *pdwReadSize);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2Ç™ñ≥Ç¢èÍçáÇÕFALSE

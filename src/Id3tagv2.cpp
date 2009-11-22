@@ -52,11 +52,80 @@ void CId3tagv2::SetEncDefault(LPCTSTR szDefaultEnc)
 	m_strDefaultEnc = szDefaultEnc;
 }
 
+CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
+		unsigned char *data, int datasize, DWORD *pdwReadSize)
+{
+	DWORD len = 0;
+	DWORD readsize = 0;
+	DWORD dwDummy;
+	if (pdwReadSize == NULL) {
+		pdwReadSize = &dwDummy;
+	}
+	if ((data == NULL) || (datasize <= 0)) {
+		*pdwReadSize = readsize;
+		return _T("");
+	}
+	
+	int code;
+	unsigned char *start = data;
+	switch (encoding) {
+	case 0:
+		code = DTC_CODE_ANSI;
+		break;
+	case 1:
+		if (datasize < 2) {
+			*pdwReadSize = readsize;
+			return _T("");
+		}
+		readsize += 2;	// BOM
+		start += 2;
+		if (memcmp(data, "\xff\xfe", 2) == 0) {
+			code = DTC_CODE_UTF16LE;
+		} else if (memcmp(data, "\xfe\xff", 2) == 0) {
+			code = DTC_CODE_UTF16BE;
+		} else {
+			*pdwReadSize = readsize;
+			return _T("");
+		}
+		break;
+	case 2:
+		code = DTC_CODE_UTF16BE;
+		break;
+	case 3:
+		code = DTC_CODE_UTF8;
+		break;
+	}
+	if ((encoding == 1) || (encoding == 2)) {
+		for (; readsize < datasize; readsize += 2) {
+			if (*(WCHAR*)(data + readsize) == L'\0') {
+				break;
+			}
+		}
+		len = readsize - (start - data);
+		if ((readsize + 2 <= datasize) && (*(WCHAR*)(data + readsize) == L'\0')) {
+			readsize += 2;
+		}
+	} else {
+		for (; readsize < datasize; readsize++) {
+			if (data[readsize] == '\0') {
+				break;
+			}
+		}
+		len = readsize;
+		if ((readsize + 1 <= datasize) && (data[readsize] == '\0')) {
+			readsize++;
+		}
+	}
+	*pdwReadSize = readsize;
+	return DataToCString((const char *)start, len, code);
+}
+
 CString CId3tagv2::GetId3String(const char szId[])
 {
 	pair< multimap< DWORD , CId3Frame >::iterator, multimap< DWORD , CId3Frame >::iterator > pp;
 	multimap<DWORD,CId3Frame>::iterator p;
 	DWORD dwId;
+	DWORD dwReadSize;
 	unsigned char *data;
 	DWORD i;
 	switch(szId[0]){
@@ -73,42 +142,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		data = p->second.GetData();
-
-		if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xff\xfe",3) == 0) )
-		{
-			return DataToCString((const char *)&data[3], p->second.GetSize()-3, DTC_CODE_UTF16LE);
-		}
-		else if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xfe\xff",3) == 0) )
-		{
-			return DataToCString((const char *)&data[3], p->second.GetSize()-3, DTC_CODE_UTF16BE);
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x02) )
-		{
-			return DataToCString((const char *)&data[1], p->second.GetSize()-1, DTC_CODE_UTF16BE);
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x03) )
-		{
-			return DataToCString((const char *)&data[1], p->second.GetSize()-1, DTC_CODE_UTF8);
-		}
-		else if((p->second.GetSize() >= 1) && (data[0] == 0))
-		{
-			// 終端の\0を取り除く　2002-09-16
-			int len = (p->second.GetSize()-1);
-			if(len == 0)
-			{
-				return _T("");
-			}
-			while(len)
-			{
-				if(data[len] != '\0')
-				{
-					break;
-				}
-				len--;
-			}
-			return CString((LPCSTR )&data[1],len);
-		}
-		break;
+		return ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, NULL);
 	case 'W':	//URLリンクフレームx
 		memcpy(&dwId,szId,sizeof(dwId));
 		pp= m_frames.equal_range(dwId);
@@ -122,109 +156,11 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		data = p->second.GetData();
-		if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xff\xfe",3) == 0) )
-		{
-			//説明文を読み飛ばす(unicode)
-			for(i=3; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xff\xfe",2) == 0) )
-			{
-				i += 2;
-				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16LE);
-			}
-		}
-		else if( (p->second.GetSize() >= 4) && (memcmp(data,"\x01\xfe\xff",3) == 0) )
-		{
-			//説明文を読み飛ばす(unicode)
-			for(i=3; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
-			if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xfe\xff",2) == 0) )
-			{
-				i += 2;
-				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-			}
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x02) )
-		{
-			//説明文を読み飛ばす(unicode)
-			for(i=1; i<p->second.GetSize(); i+=2)
-			{
-				if((data[i] == '\0') && (data[i+1] == '\0'))
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			i += 2;
-			return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-		}
-		else if( (p->second.GetSize() >= 1) && (data[0] == 0x03) )
-		{
-			//説明文を読み飛ばす(UTF-8)
-			for(i=1; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					i++;
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF8);
-		}
-		else if((p->second.GetSize() >= 2) && (data[0] == 0))
-		{
-			//説明文を読み飛ばす
-			for(i=1; i<p->second.GetSize(); i++)
-			{
-				if(data[i] == '\0')
-				{
-					break;
-				}
-			}
-			if(i >= p->second.GetSize())
-			{
-				break;//本文がない場合
-			}
-			// 終端の\0を取り除く　2002-09-16
-			int len = (p->second.GetSize()-(i+1));
-			while(len)
-			{
-				if(data[len+i] != '\0')
-				{
-					break;
-				}
-				len--;
-			}
-			return CString((LPCSTR )&data[i+1],len);
-		}
-		break;
+		
+		//説明文を読み飛ばす
+		ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, &dwReadSize);
+		//本文
+		return ReadEncodedTextString(data[0], &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
 	case 'C':
 		if(strcmp(szId,"COMM") != 0)
 		{
@@ -240,87 +176,15 @@ CString CId3tagv2::GetId3String(const char szId[])
 			}
 			data = p->second.GetData();
 
-			// エンコード文字列,説明文読み飛ばし
-			for(i=4; i<p->second.GetSize(); i++)
-			{
-				if(!data[i])
-				{
-					break;
-				}
-			}
-			i++;
-			if((data[0] == 1) || (data[0] == 2))
-			{
-				i++; // NUL(Unicode)
-			}
-			if(i >= p->second.GetSize())
-			{
-				continue;//本文がない場合
-			}
-
-			// 説明文
-			CString desc;
-			switch(data[0]){
-			case 1:
-				if(memcmp(&data[4],"\xff\xfe",2) == 0)
-				{
-					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16LE);
-				}
-				else if(memcmp(&data[4],"\xfe\xff",2) == 0)
-				{
-					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16BE);
-				}
-				break;
-			case 2:
-				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF16BE);
-				break;
-			case 3:
-				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF8);
-				break;
-			case 0:
-				desc = (LPCSTR)&data[4];
-				break;
-			}
+			// エンコード文字列読み飛ばし、説明文取得
+			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
 			{
 				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
 				continue;
 			}
-
-			switch(data[0]){
-			case 1:
-				if(p->second.GetSize() >= (i+2))
-				{
-					if(memcmp(&data[i],"\xff\xfe",2) == 0)
-					{
-						i += 2;
-						return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16LE);
-					}
-					else if(memcmp(&data[i],"\xfe\xff",2) == 0)
-					{
-						i += 2;
-						return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-					}
-				}
-				break;
-			case 2:
-				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-			case 3:
-				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF8);
-			case 0:
-				// 終端の\0を取り除く　2002-09-16
-				int len = p->second.GetSize()-(i);
-				while(len)
-				{
-					if(data[len+i-1] != '\0')
-					{
-						break;
-					}
-					len--;
-				}
-				return CString((LPCSTR )&data[i],len);
-	//			return CString((LPCSTR )&data[1],p->second.GetSize()-1);
-			}
+			//本文
+			return ReadEncodedTextString(data[0], &data[4+dwReadSize], p->second.GetSize()-4-dwReadSize, NULL);
 		}
 		break;
 	}
@@ -534,47 +398,9 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 			unsigned char *data = p->second.GetData();
 
-			// エンコード文字列,説明文読み飛ばし
-			for(i=4; i<p->second.GetSize(); i++)
-			{
-				if(!data[i])
-				{
-					break;
-				}
-			}
-			i++;
-			if((data[0] == 1) || (data[0] == 2))
-			{
-				i++; // NUL(Unicode)
-			}
-		//	if(i >= p->second.GetSize())
-		//	{
-		//		continue;//本文がない場合
-		//	}
-
-			// 説明文
-			CString desc;
-			switch(data[0]){
-			case 1:
-				if(memcmp(&data[4],"\xff\xfe",2) == 0)
-				{
-					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16LE);
-				}
-				else if(memcmp(&data[4],"\xfe\xff",2) == 0)
-				{
-					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16BE);
-				}
-				break;
-			case 2:
-				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF16BE);
-				break;
-			case 3:
-				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF8);
-				break;
-			case 0:
-				desc = (LPCSTR)&data[4];
-				break;
-			}
+			// エンコード文字列読み飛ばし、説明文取得
+			DWORD dwReadSize;
+			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
 			{
 				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
