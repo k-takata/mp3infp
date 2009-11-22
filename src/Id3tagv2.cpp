@@ -231,73 +231,83 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		memcpy(&dwId,szId,sizeof(dwId));
-		pp= m_frames.equal_range(dwId);
-		if(pp.first == pp.second)
+		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
 		{
-			break;
-		}
-		p = pp.first;
-		if(p->second.GetSize() == 0)
-		{
-			break;
-		}
-		data = p->second.GetData();
-
-		// エンコード文字列,説明文読み飛ばし
-		for(i=4; i<p->second.GetSize(); i++)
-		{
-			if(!data[i])
+			p = pp.first;
+			if(p->second.GetSize() == 0)
 			{
+				continue;
+			}
+			data = p->second.GetData();
+
+			// エンコード文字列,説明文読み飛ばし
+			for(i=4; i<p->second.GetSize(); i++)
+			{
+				if(!data[i])
+				{
+					break;
+				}
+			}
+			i++;
+			if((data[0] == 1) || (data[0] == 2))
+			{
+				i++; // NUL(Unicode)
+			}
+			if(i >= p->second.GetSize())
+			{
+				continue;//本文がない場合
+			}
+
+			// 説明文
+			CString desc;
+			switch(data[0]){
+			case 1:
+				if(memcmp(&data[4],"\xff\xfe",2) == 0)
+				{
+					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16LE);
+				}
+				else if(memcmp(&data[4],"\xfe\xff",2) == 0)
+				{
+					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16BE);
+				}
+				break;
+			case 2:
+				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF16BE);
+				break;
+			case 3:
+				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF8);
+				break;
+			case 0:
+				desc = (LPCSTR)&data[4];
 				break;
 			}
-		}
-		i++;
-		if(i >= p->second.GetSize())
-		{
-			break;//本文がない場合
-		}
+			if(desc.Left(4) == _T("iTun"))
+			{
+				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
+				continue;
+			}
 
-		if(data[0] == 1)
-		{
-			i++; // NUL(Unicode)
-			if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
-				(memcmp(&data[i],"\xff\xfe",2) == 0) )
-			{
-				if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xff\xfe",2) == 0) )
+			switch(data[0]){
+			case 1:
+				if(p->second.GetSize() >= (i+2))
 				{
-					i += 2;
-					return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16LE);
+					if(memcmp(&data[i],"\xff\xfe",2) == 0)
+					{
+						i += 2;
+						return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16LE);
+					}
+					else if(memcmp(&data[i],"\xfe\xff",2) == 0)
+					{
+						i += 2;
+						return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
+					}
 				}
-			}
-			else if( (p->second.GetSize() >= (1+3/*Language*/+4/*BOM 0 0*/+2/*BOM*/)) &&
-				(memcmp(&data[i],"\xfe\xff",2) == 0) )
-			{
-				if( (p->second.GetSize() >= (i+2)) && (memcmp(&data[i],"\xfe\xff",2) == 0) )
-				{
-					i += 2;
-					return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-				}
-			}
-		}
-		else if(data[0] == 2)
-		{
-			i++; // NUL(Unicode)
-			if(p->second.GetSize() >= (1+3/*Language*/+1/*0*/))
-			{
+				break;
+			case 2:
 				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF16BE);
-			}
-		}
-		else if(data[0] == 3)
-		{
-			if(p->second.GetSize() >= (1+3/*Language*/+1/*0*/))
-			{
+			case 3:
 				return DataToCString((const char *)&data[i], p->second.GetSize()-i, DTC_CODE_UTF8);
-			}
-		}
-		else if(data[0] == 0)
-		{
-			if(p->second.GetSize() >= 2+3)
-			{
+			case 0:
 				// 終端の\0を取り除く　2002-09-16
 				int len = p->second.GetSize()-(i);
 				while(len)
@@ -326,7 +336,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	memcpy(&dwId,szId,sizeof(dwId));
 
 	//Loadしたファイルにフレームがなかった場合
-	if(lstrlen(szString) == 0)
+	if((lstrlen(szString) == 0) && (strcmp(szId,"COMM") != 0))
 	{
 		m_frames.erase(dwId);	//消す(あれば)
 		return;
@@ -513,6 +523,73 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		{
 			break;
 		}
+		// コメントフレームを検索
+		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
+		{
+			int i;
+			p = pp.first;
+			if(p->second.GetSize() == 0)
+			{
+				continue;
+			}
+			unsigned char *data = p->second.GetData();
+
+			// エンコード文字列,説明文読み飛ばし
+			for(i=4; i<p->second.GetSize(); i++)
+			{
+				if(!data[i])
+				{
+					break;
+				}
+			}
+			i++;
+			if((data[0] == 1) || (data[0] == 2))
+			{
+				i++; // NUL(Unicode)
+			}
+		//	if(i >= p->second.GetSize())
+		//	{
+		//		continue;//本文がない場合
+		//	}
+
+			// 説明文
+			CString desc;
+			switch(data[0]){
+			case 1:
+				if(memcmp(&data[4],"\xff\xfe",2) == 0)
+				{
+					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16LE);
+				}
+				else if(memcmp(&data[4],"\xfe\xff",2) == 0)
+				{
+					desc = DataToCString((const char *)&data[6], -1, DTC_CODE_UTF16BE);
+				}
+				break;
+			case 2:
+				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF16BE);
+				break;
+			case 3:
+				desc = DataToCString((const char *)&data[4], -1, DTC_CODE_UTF8);
+				break;
+			case 0:
+				desc = (LPCSTR)&data[4];
+				break;
+			}
+			if(desc.Left(4) == _T("iTun"))
+			{
+				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
+				continue;
+			}
+
+			// 書き換え対象のコメントフレームを発見
+
+			if(lstrlen(szString) == 0)
+			{
+				m_frames.erase(p);	//消す
+				return;
+			}
+			break;
+		}
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
@@ -601,7 +678,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				break;
 			}
 		}
-		pp= m_frames.equal_range(dwId);
+	//	pp= m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
 		{
 			CId3Frame frame;
