@@ -176,7 +176,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			}
 			data = p->second.GetData();
 
-			// エンコード文字列読み飛ばし、説明文取得
+			// 言語文字列読み飛ばし、説明文取得
 			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
 			{
@@ -390,7 +390,6 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		// コメントフレームを検索
 		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
 		{
-			int i;
 			p = pp.first;
 			if(p->second.GetSize() == 0)
 			{
@@ -398,7 +397,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 			unsigned char *data = p->second.GetData();
 
-			// エンコード文字列読み飛ばし、説明文取得
+			// 言語文字列読み飛ばし、説明文取得
 			DWORD dwReadSize;
 			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
