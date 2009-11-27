@@ -1146,6 +1146,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		return -1;
 	}
 
+/*
 	// エンコード指定$2/$3が使えるのはv2.4以降
 	if(m_wVer < 0x0400)
 	{
@@ -1159,6 +1160,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 
 	// 全フレームの文字列エンコードを設定
 	_SetStringEncode(m_encode);
+*/
 
 	DWORD dwTotalFrameSize = GetTotalFrameSize();
 	//フレーム情報を書き出す準備

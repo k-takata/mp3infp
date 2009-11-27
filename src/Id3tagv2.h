@@ -226,7 +226,20 @@ public:
 //	void SetDefaultId3v2Version(DWORD version){m_wDefaultId3TagVersion = (WORD )version;};/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/
 	void SetVer(WORD ver){m_wVer = ver;};
 	WORD GetVer(){return m_wVer;};
-	void SetCharEncode(int encode){m_encode = encode;};
+	void SetCharEncode(int encode)
+	{
+		// エンコード指定$2/$3が使えるのはv2.4以降
+		if(m_wVer < 0x0400)
+		{
+			if(	(encode != ID3V2CHARENCODE_ISO_8859_1) &&
+				(encode != ID3V2CHARENCODE_UTF_16) )
+			{
+				// ISO-8859-1に自動設定
+				encode = ID3V2CHARENCODE_ISO_8859_1;
+			}
+		}
+		m_encode = encode;
+	};
 	int GetCharEncode(){return m_encode;};
 	void SetUnSynchronization(BOOL bEnable){m_bUnSynchronization = bEnable;};
 	BOOL GetUnSynchronization(){return m_bUnSynchronization;};
