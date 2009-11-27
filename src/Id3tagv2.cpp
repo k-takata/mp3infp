@@ -144,6 +144,10 @@ CString CId3tagv2::GetId3String(const char szId[])
 		data = p->second.GetData();
 		return ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, NULL);
 	case 'W':	//URLリンクフレームx
+		if(strcmp(szId,"WXXX") != 0)
+		{
+			break;
+		}
 		memcpy(&dwId,szId,sizeof(dwId));
 		pp= m_frames.equal_range(dwId);
 		if(pp.first == pp.second)
@@ -159,8 +163,15 @@ CString CId3tagv2::GetId3String(const char szId[])
 		
 		//説明文を読み飛ばす
 		ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, &dwReadSize);
-		//本文
-		return ReadEncodedTextString(data[0], &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
+		//URL本体
+		//規格上は常に ISO-8859-1（互換性のため、BOMがあればそちらを優先）
+		if ((p->second.GetSize()-1-dwReadSize >= 2)
+				&& (data[0] == 1)
+				&& ((memcmp(&data[1+dwReadSize], "\xff\xfe", 2) == 0)
+					|| (memcmp(&data[1+dwReadSize], "\xfe\xff", 2) == 0))) {
+			return ReadEncodedTextString(1, &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
+		}
+		return ReadEncodedTextString(0, &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
 	case 'C':
 		if(strcmp(szId,"COMM") != 0)
 		{
@@ -291,6 +302,10 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		free(data);
 		break;
 	case 'W':	//URLリンクフレームx
+		if(strcmp(szId,"WXXX") != 0)
+		{
+			break;
+		}
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
@@ -302,11 +317,11 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 			data[0] = 0;	//encoding
 			data[1] = 0;	//説明文(省略)
-			TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_ANSI);
+			TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 		case ID3V2CHARENCODE_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16LE) + 7;
+			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16LE) + 5;
 			data = (unsigned char *)malloc(size);
 			if(!data)
 			{
@@ -317,12 +332,10 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xfe;
 			data[3] = 0;	//説明文(省略)
 			data[4] = 0;
-			data[5] = 0xff;	//BOM
-			data[6] = 0xfe;
-			TstrToData(szString, -1, (char *)&data[7], size-7, DTC_CODE_UTF16LE);
+			TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 #else	// ビックエンディアン
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 7;
+			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 5;
 			data = (unsigned char *)malloc(size);
 			if(!data)
 			{
@@ -333,9 +346,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xff;
 			data[3] = 0;	//説明文(省略)
 			data[4] = 0;
-			data[5] = 0xfe;	//BOM
-			data[6] = 0xff;
-			TstrToData(szString, -1, (char *)&data[7], size-7, DTC_CODE_UTF16BE);
+			TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
@@ -348,7 +359,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 2;	//encoding
 			data[1] = 0;	//説明文(省略)
 			data[2] = 0;
-			TstrToData(szString, -1, (char *)&data[3], size-3, DTC_CODE_UTF16BE);
+			TstrToData(szString, -1, (char *)&data[3], size-3, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
 			{
@@ -360,7 +371,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				}
 				data[0] = 3;	//encoding
 				data[1] = 0;	//説明文(省略)
-				TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_UTF8);
+				TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 				break;
 			}
 		}
