@@ -6,6 +6,7 @@ static int ids[] =
 	-1,
 	-1,
 	CLP_NAM,
+	CLP_TRACK,
 	CLP_ART,
 	CLP_PRD,
 	CLP_CRD,
@@ -23,6 +24,7 @@ static int staticWnd[] =
 	IDC_STATIC_FORMAT_,
 	IDC_STATIC_TIME_,
 	IDC_STATIC_NAM,
+	IDC_STATIC_TRACK,
 	IDC_STATIC_ART,
 	IDC_STATIC_PRD,
 	IDC_STATIC_CRD,
@@ -40,6 +42,7 @@ static int editWnd[] =
 	IDC_STATIC_FORMAT,
 	IDC_STATIC_TIME,
 	IDC_EDIT_SBJ,
+	IDC_EDIT_TRACK,
 	IDC_EDIT_ART,
 	IDC_EDIT_PRD,
 	IDC_EDIT_CRD,
@@ -82,6 +85,10 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_NAM),bEnable);
 	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_SBJ),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_SBJ),bEnable);
+
+	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_TRACK),bEnable);
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_TRACK),_T(""));
+	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_TRACK),bEnable);
 
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_ART),bEnable);
 	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),_T(""));
@@ -155,6 +162,8 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 			tmp = lpcs->m_RiffSIF.GetField('I','S','B','J');
 		}
 		SetDlgItemText(hDlg,IDC_EDIT_SBJ,tmp);
+		//ITRK トラック番号
+		SetDlgItemText(hDlg,IDC_EDIT_TRACK,lpcs->m_RiffSIF.GetField('I','T','R','K'));
 		//IART アーティスト名
 		SetDlgItemText(hDlg,IDC_EDIT_ART,lpcs->m_RiffSIF.GetField('I','A','R','T'));
 		//IPRD アルバム名
@@ -291,6 +300,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 		switch(LOWORD(wParam)){
 		case IDC_EDIT_CRD:
 		case IDC_EDIT_SBJ:
+		case IDC_EDIT_TRACK:
 		case IDC_EDIT_ART:
 		case IDC_EDIT_PRD:
 		case IDC_EDIT_CMT:
@@ -404,6 +414,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 //INAMを優先、ISBJは撤去
 				lpcs->m_RiffSIF.SetField('I','S','B','J',_T(""));
 				lpcs->m_RiffSIF.SetField('I','N','A','M',strTmp);
+				wnd.Detach();
+
+				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRACK));
+				wnd.GetWindowText(strTmp);
+				lpcs->m_RiffSIF.SetField('I','T','R','K',strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
