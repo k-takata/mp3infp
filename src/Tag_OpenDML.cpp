@@ -62,7 +62,7 @@ DWORD CTag_OpenDML::GetTotalFieldSize()
 	while(p != m_fields.end())
 	{
 		CString *pStr = &p->second;
-		DWORD len = pStr->GetLength() + 1;
+		DWORD len = TstrToData(*pStr, -1, NULL, 0, DTC_CODE_ANSI);
 		dwSize += len + (len&0x1)?1:0;	//WORD‹«ŠE‡‚í‚¹
 		p++;
 	}
@@ -293,7 +293,7 @@ DWORD CTag_OpenDML::GetInfoChunkSize()
 	{
 		FOURCC id = p->first;
 		CString *pStr = &p->second;
-		DWORD len = pStr->GetLength() + 1;
+		DWORD len = TstrToData(*pStr, -1, NULL, 0, DTC_CODE_ANSI);
 		dwSize += len + 8 + ((len%2)?1:0);
 		p++;
 	}
@@ -705,16 +705,21 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 	{
 		FOURCC id = p->first;
 		CString *pStr = &p->second;
-		DWORD len = pStr->GetLength() + 1;
-		if(len > 1)
+		DWORD len;
+		char *str = TstrToDataAlloc(*pStr, -1, (int*)&len, DTC_CODE_ANSI);
+		if(str)
 		{
-			WriteFile(hFile,&id,sizeof(id),&dwRet,NULL);
-			WriteFile(hFile,&len,sizeof(len),&dwRet,NULL);
-			WriteFile(hFile,*pStr,len,&dwRet,NULL);
-			if(len%2)
+			if(len > 1)
 			{
-				WriteFile(hFile,"\x00",1,&dwRet,NULL);
+				WriteFile(hFile,&id,sizeof(id),&dwRet,NULL);
+				WriteFile(hFile,&len,sizeof(len),&dwRet,NULL);
+				WriteFile(hFile,str,len,&dwRet,NULL);
+				if(len%2)
+				{
+					WriteFile(hFile,"\x00",1,&dwRet,NULL);
+				}
 			}
+			free(str);
 		}
 		p++;
 	}
