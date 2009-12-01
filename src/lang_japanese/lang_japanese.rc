@@ -1105,7 +1105,7 @@ BEGIN
     IDS_DEF_INFOTIP_INF_VQF_FORMAT 
                             "\\n   = 改行\r\n\\t   = タブ\r\n\\FILE\t= ファイル名\r\n\\FEXT\t= 拡張子\r\n\\PATH\t= パス\r\n\\SIZ1\t= ファイルサイズ(bytes)\r\n\\SIZK\t= ファイルサイズKB\r\n\\SIZM\t= ファイルサイズ(MB)\\AFMT\t= フォーマット\r\n\\TIME\t= 演奏時間\r\n\\\\  = \\\r\n\\INAM = タイトル\r\n\\IART = アーティスト\r\n\\ICMT = コメント\r\n\\ICOP = 著作権\r\n\\FILE = 保存名\r\n\r\n"
     IDS_DEF_INFOTIP_INF_WAVE_FORMAT 
-                            "\\n   = 改行\r\n\\t   = タブ\r\n\\FILE\t= ファイル名\r\n\\FEXT\t= 拡張子\r\n\\PATH\t= パス\r\n\\SIZ1\t= ファイルサイズ(bytes)\r\n\\SIZK\t= ファイルサイズKB\r\n\\SIZM\t= ファイルサイズ(MB)\\AFMT\t= フォーマット\r\n\\TIME\t= 演奏時間\r\n\\\\  = \\\r\n\\INAM = タイトル\r\n\\IART = アーティスト\r\n\\IPRD = アルバム\r\n\\ICMT = コメント\r\n\\ICRD = 作成日\r\n\\IGNR = ジャンル\r\n\\ICOP = 著作権\r\n\\ISFT = ソフトウェア\r\n\\ISRC = ソース\r\n\\IENG = エンジニア\r\n\r\n"
+                            "\\n   = 改行\r\n\\t   = タブ\r\n\\FILE\t= ファイル名\r\n\\FEXT\t= 拡張子\r\n\\PATH\t= パス\r\n\\SIZ1\t= ファイルサイズ(bytes)\r\n\\SIZK\t= ファイルサイズKB\r\n\\SIZM\t= ファイルサイズ(MB)\\AFMT\t= フォーマット\r\n\\TIME\t= 演奏時間\r\n\\\\  = \\\r\n\\INAM = タイトル\r\n\\IART = アーティスト\r\n\\IPRD = アルバム\r\n\\ICMT = コメント\r\n\\ICRD = 作成日\r\n\\IGNR = ジャンル\r\n\\ICOP = 著作権\r\n\\ISFT = ソフトウェア\r\n\\ISRC = ソース\r\n\\IENG = エンジニア\r\n\\TRACK = トラック番号\r\n\r\n"
     IDS_DEF_INFOTIP_INF_WMA_FORMAT 
                             "\\n   = 改行\r\n\\t   = タブ\r\n\\FILE\t= ファイル名\r\n\\FEXT\t= 拡張子\r\n\\PATH\t= パス\r\n\\SIZ1\t= ファイルサイズ(bytes)\r\n\\SIZK\t= ファイルサイズKB\r\n\\SIZM\t= ファイルサイズ(MB)\\AFMT\t= 音声フォーマット\r\n\\VFMT\t= 映像フォーマット\r\n\\TIME\t= 時間\r\n\\\\  = \\\r\n\\INAM = タイトル\r\n\\TRACK = トラック\r\n\\IART = アーティスト\r\n\\IPRD = アルバム\r\n\\ICMT = コメント\r\n\\ICRD = 作成日\r\n\\IGNR = ジャンル\r\n\\ICOP = 著作権\r\n\\URL1 = URL(Album)\r\n\\URL2 = URL(関連)"
     IDS_DEF_INFOTIP_INF_MP4_FORMAT 
