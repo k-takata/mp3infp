@@ -3,6 +3,10 @@
 
 /*
 ■改変履歴
+2009-12-01 Ver.2.54h/u8
+・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
+>WAVで"TRACK"に対応
+
 2009-10-12 Ver.2.54g/u1
 Unicode版APIを追加
 
@@ -35,7 +39,7 @@ mp3infp_GetType()/mp3infp_GetValue()/mp3infp_SetValue()でmp4に対応
 ・char *szFileName -> const char *szFileNameに変更
 ・char *szValueName -> const char *szValueNameに変更
 ・cahr *buf -> const char *bufに変更(mp3infp_SetValue()のみ)
-・mp3infp_SetConf()の戻り値を 0/-1 -> TRUE/FASLE に変更
+・mp3infp_SetConf()の戻り値を 0/-1 -> TRUE/FALSE に変更
 ・書込み系APIを追加
 
 ■mp3infp APIの利用・dllの再配布について　2002-09-16/2004-01-20(編集)
