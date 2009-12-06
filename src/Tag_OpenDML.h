@@ -39,8 +39,6 @@ private:
 	DWORD FindJUNK_LISTINFO(HANDLE hFile,__int64 llFileSize);
 	BOOL FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC type,DWORD *pdwSize);
 	DWORD GetTotalFieldSize();
-	__int64 GetFileSize64(HANDLE hFile);
-	__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);
 	DWORD Save_1(HANDLE hFile);
 	FOURCC m_type;
 	DWORD GetInfoChunkSize();

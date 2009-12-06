@@ -301,23 +301,6 @@ DWORD CTag_OpenDML::GetInfoChunkSize()
 	return dwSize;
 }
 
-__int64 CTag_OpenDML::GetFileSize64(HANDLE hFile)
-{
-	DWORD dwSizeHight;
-	DWORD dwSize = GetFileSize(hFile,&dwSizeHight);
-	
-	return dwSize | (__int64 )dwSizeHight<<32;
-}
-
-
-__int64 CTag_OpenDML::SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod)
-{
-	LONG lDistanceToMoveHight = llDistanceToMove >> 32;
-	__int64 llRet = SetFilePointer(hFile,llDistanceToMove&0x00000000ffffffff,&lDistanceToMoveHight,dwMoveMethod);
-	
-	return llRet | (__int64 )lDistanceToMoveHight<<32;
-}
-
 /*
 	ret:	-1 = ƒ[ƒhŽ¸”s
 */

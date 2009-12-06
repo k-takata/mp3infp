@@ -114,4 +114,8 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code);
 // Žg—pŒã‚Ífree()‚Å‰ð•ú‚·‚é‚±‚Æ
 char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code);
 
+
+__int64 GetFileSize64(HANDLE hFile);
+__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);
+
 #endif //_GLOBALCOMMAND_H

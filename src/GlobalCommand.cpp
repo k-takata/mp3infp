@@ -629,3 +629,27 @@ char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code)
 	TstrToData(tstr, tlen, buf, size, code);
 	return buf;
 }
+
+__int64 GetFileSize64(HANDLE hFile)
+{
+	LARGE_INTEGER liSize;
+	liSize.LowPart = GetFileSize(hFile,(LPDWORD)&liSize.HighPart);
+	if ((liSize.LowPart == (DWORD) -1) && (GetLastError() != NO_ERROR)) {
+		return -1;
+	}
+	return liSize.QuadPart;
+}
+
+
+__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod)
+{
+	LONG lDistanceToMoveHight = (LONG )(llDistanceToMove >> 32);
+	LARGE_INTEGER liDist;
+	liDist.QuadPart = llDistanceToMove;
+	
+	liDist.LowPart = SetFilePointer(hFile,liDist.LowPart,&liDist.HighPart,dwMoveMethod);
+	if ((liDist.LowPart == INVALID_SET_FILE_POINTER) && (GetLastError() != NO_ERROR)) {
+		return -1;
+	}
+	return liDist.QuadPart;
+}

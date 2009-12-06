@@ -279,31 +279,6 @@ void CTag_Wma::SetRating(LPCTSTR str)
 
 //////////////////////////////////////////////////////////////////////////
 
-__int64 CTag_Wma::GetFileSize64(HANDLE hFile)
-{
-	DWORD dwSizeHight;
-	DWORD dwSize = GetFileSize(hFile,&dwSizeHight);
-	
-	return dwSize | (__int64 )dwSizeHight<<32;
-}
-
-__int64 CTag_Wma::SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod)
-{
-	LONG lDistanceToMoveHight = (LONG )(llDistanceToMove >> 32);
-	DWORD dwPtrLow = SetFilePointer(hFile,(LONG )(llDistanceToMove&0x00000000ffffffff),&lDistanceToMoveHight,dwMoveMethod);
-
-	if(dwPtrLow == INVALID_SET_FILE_POINTER)
-	{
-		DWORD dwError = GetLastError();
-		if(dwError != NO_ERROR)
-		{
-			return -1;
-		}
-	}
-
-	return dwPtrLow | ((__int64 )lDistanceToMoveHight)<<32;
-}
-
 DWORD CTag_Wma::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
