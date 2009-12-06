@@ -643,7 +643,6 @@ __int64 GetFileSize64(HANDLE hFile)
 
 __int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod)
 {
-	LONG lDistanceToMoveHight = (LONG )(llDistanceToMove >> 32);
 	LARGE_INTEGER liDist;
 	liDist.QuadPart = llDistanceToMove;
 	
