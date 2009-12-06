@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54h/u8 for Windows2000/XP/Vista/7
+Ver.2.54h/u9 for Windows2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
@@ -83,6 +83,11 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54h/u9 (091206)
+・GetFileSize64(), SetFilePointer64() が複数のファイルで定義されていたのを、
+  GlobalCommand.cpp/.h に集約、エラー処理を強化。
+・WAV ファイルの 2GB 超過の判定が間違っていたのを修正。
+
 2.54h/u8 (091202) (差し替え版)
 ・mp3infp_ExportFunc.h の履歴記載漏れを修正、スペルミス修正。
 
