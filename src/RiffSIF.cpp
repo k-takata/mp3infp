@@ -200,8 +200,7 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 	HANDLE hFile;
 	DWORD dwRet;
 	DWORD dwTotalSize;
-	DWORD dwFileSize;
-	DWORD dwFileSizeHight;
+	__int64 llFileSize;
 	FOURCC id,type;
 
 	DWORD dwSize;
@@ -224,8 +223,8 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 		goto exit;
 	}
 	
-	dwFileSize = GetFileSize(hFile,&dwFileSizeHight);
-	if(dwFileSizeHight & 0x80000000)
+	llFileSize = GetFileSize64(hFile);
+	if(llFileSize >= 0x80000000)
 	{
 		// 2Gを超えるファイルは読み取れない
 		dwWin32errorCode = -2;
@@ -262,7 +261,7 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 	dwPtr = SetFilePointer(hFile,0,NULL,FILE_CURRENT);
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//dataチャンクを検索(見つからないときはRiff論理終端に移動)
-	if(FindChunk(hFile,dwFileSize,MMIO_FINDCHUNK,mmioFOURCC('d','a','t','a'),&dwSize,FALSE) && (dwSize > 8))
+	if(FindChunk(hFile,(DWORD)llFileSize,MMIO_FINDCHUNK,mmioFOURCC('d','a','t','a'),&dwSize,FALSE) && (dwSize > 8))
 	{
 		// (チャンクの先頭+8にいる)
 		m_dwStreamSize = dwSize;
@@ -270,7 +269,7 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 	SetFilePointer(hFile,dwPtr,NULL,FILE_BEGIN);
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//LIST-INFOを検索(見つからないときはRiff論理終端に移動・チャンクサイズ修正機能付き)
-	if(FindChunk(hFile,dwFileSize,MMIO_FINDLIST,mmioFOURCC('I','N','F','O'),&dwSize,FALSE) && (dwSize > 8))
+	if(FindChunk(hFile,(DWORD)llFileSize,MMIO_FINDLIST,mmioFOURCC('I','N','F','O'),&dwSize,FALSE) && (dwSize > 8))
 	{
 		// (チャンクの先頭+8にいる)
 		
@@ -351,8 +350,7 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 	DWORD dwRet;
 //	LONG lAddressHeight;
 	DWORD dwTotalSize;
-	DWORD dwFileSize;
-	DWORD dwFileSizeHight;
+	__int64 llFileSize;
 	DWORD dwInfoSize;
 	FOURCC id,type;
 
@@ -376,8 +374,8 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 		goto exit;
 	}
 	
-	dwFileSize = GetFileSize(hFile,&dwFileSizeHight);
-	if(dwFileSizeHight & 0x80000000)
+	llFileSize = GetFileSize64(hFile);
+	if(llFileSize >= 0x80000000)
 	{
 		// 2Gを超えるファイルは編集できない
 		dwWin32errorCode = -2;
@@ -413,12 +411,12 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 	{
 		//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 		//LIST-INFOを検索(見つからないときはRiff論理終端に移動・チャンクサイズ修正機能付き)
-		if(FindChunk(hFile,dwFileSize,MMIO_FINDLIST,mmioFOURCC('I','N','F','O'),&dwSize,TRUE))
+		if(FindChunk(hFile,(DWORD)llFileSize,MMIO_FINDLIST,mmioFOURCC('I','N','F','O'),&dwSize,TRUE))
 		{
 			// (チャンクの先頭+8にいる)
 
 			dwOffset = SetFilePointer(hFile,0,NULL,FILE_CURRENT);
-			if((dwOffset + dwSize) < dwFileSize)
+			if((dwOffset + dwSize) < llFileSize)
 			{
 				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 				//LIST-INFOが最後尾に付いていないときは、現存LIST-INFOをJUNKに置換する
