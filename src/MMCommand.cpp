@@ -3,6 +3,7 @@
 #include "wa_ipc.h"
 #include "ipc_pe.h"
 #include "winampcmd.h"
+#include "GlobalCommand.h"
 #include "resource.h"		// メイン シンボル
 
 #include <Mmsystem.h>
@@ -778,23 +779,6 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"ZYYY","?(ZYYY)"},
 //		{" ","無圧縮"}
 	};
-
-__int64 GetFileSize64(HANDLE hFile)
-{
-	DWORD dwSizeHight;
-	DWORD dwSize = GetFileSize(hFile,&dwSizeHight);
-	
-	return dwSize | (__int64 )dwSizeHight<<32;
-}
-
-
-__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod)
-{
-	LONG lDistanceToMoveHight = (LONG )(llDistanceToMove >> 32);
-	__int64 llRet = SetFilePointer(hFile,(LONG )llDistanceToMove,&lDistanceToMoveHight,dwMoveMethod);
-	
-	return llRet | (__int64 )lDistanceToMoveHight<<32;
-}
 
 //チャンクを検索します
 //return=TRUEのときは見つかったチャンクの先頭+8の位置にいます

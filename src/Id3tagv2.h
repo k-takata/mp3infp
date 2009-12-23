@@ -33,6 +33,12 @@ static DWORD ExtractI4(unsigned char buf[4])
 	return x;
 }
 
+struct id3_v23v22table_t {
+	char *v23;
+	char *v22;
+};
+extern id3_v23v22table_t id3_v23v22table[];
+
 class CId3Frame  
 {
 public:
@@ -146,69 +152,15 @@ public:
 		id[3] = '\0';
 		TRACE("id=%s (size=%d)\n",id,size);
 		//v2.2からv2.3へフレームIDを変換
-		if(memcmp(id,"TT2",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TIT2",sizeof(m_dwId));
+		int i;
+		for(i=0; id3_v23v22table[i].v23!=NULL; i++){
+			if(memcmp(id, id3_v23v22table[i].v22, sizeof(id)) == 0){
+				memcpy(&m_dwId, id3_v23v22table[i].v23, sizeof(m_dwId));
+				break;
+			}
 		}
-		else if(memcmp(id,"TRK",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TRCK",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TP1",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TPE1",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TAL",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TALB",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TP2",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TPE2",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TYE",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TYER",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCO",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCON",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"COM",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"COMM",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCM",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCOM",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TOA",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TOPE",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TCR",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TCOP",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"WXX",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"WXXX",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TSS",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TSSE",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"TEN",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"TENC",sizeof(m_dwId));
-		}
-		else if(memcmp(id,"PIC",sizeof(id)) == 0)
-		{
-			memcpy(&m_dwId,"APIC",sizeof(m_dwId));
-		}
-		else
-		{
-			return 0;
+		if(id3_v23v22table[i].v23 == NULL){	// 不明
+			memcpy(&m_dwId,"XXXX",sizeof(m_dwId));
 		}
 
 		m_data = (unsigned char *)malloc(size);
@@ -274,7 +226,13 @@ public:
 //	void SetDefaultId3v2Version(DWORD version){m_wDefaultId3TagVersion = (WORD )version;};/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/
 	void SetVer(WORD ver){m_wVer = ver;};
 	WORD GetVer(){return m_wVer;};
-	void SetCharEncode(int encode){m_encode = encode;};
+	void SetCharEncode(int encode){
+		// エンコード指定$2/$3が使えるのはv2.4以降
+		if(m_wVer < 0x0400)
+			if(	(encode != ID3V2CHARENCODE_ISO_8859_1) && (encode != ID3V2CHARENCODE_UTF_16) )
+				encode = ID3V2CHARENCODE_ISO_8859_1;
+		m_encode = encode;
+	}
 	int GetCharEncode(){return m_encode;};
 	void SetUnSynchronization(BOOL bEnable){m_bUnSynchronization = bEnable;};
 	BOOL GetUnSynchronization(){return m_bUnSynchronization;};

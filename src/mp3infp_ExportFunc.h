@@ -32,7 +32,7 @@ mp3infp_GetType()/mp3infp_GetValue()/mp3infp_SetValue()でmp4に対応
 ・char *szFileName -> const char *szFileNameに変更
 ・char *szValueName -> const char *szValueNameに変更
 ・cahr *buf -> const char *bufに変更(mp3infp_SetValue()のみ)
-・mp3infp_SetConf()の戻り値を 0/-1 -> TRUE/FASLE に変更
+・mp3infp_SetConf()の戻り値を 0/-1 -> TRUE/FALSE に変更
 ・書込み系APIを追加
 
 ■mp3infp APIの利用・dllの再配布について　2002-09-16/2004-01-20(編集)
@@ -159,6 +159,7 @@ typedef DWORD (WINAPI *LPMP3INFP_LOAD)(HWND hWnd,const char *szFileName);
 	演奏時間(※1)			"TIME"
 	タイトル(※2)			"INAM"
 	タイトル(※2)			"ISBJ"
+	トラック				"ITRK"	(v2.54i～)
 	アーティスト			"IART"
 	アルバム				"IPRD"
 	コメント				"ICMT"

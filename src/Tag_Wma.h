@@ -134,8 +134,6 @@ protected:
 		WORD wStreamNameCount;
 	}Extended_Stream_Properties_Object;
 #pragma pack()
-	__int64 GetFileSize64(HANDLE hFile);
-	__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);
 	DWORD	ReadGUID_Size(HANDLE hFile,GUID_SIZE *guidSize);
 	DWORD	Walk(HANDLE hFile,__int64 llSize);
 	DWORD	HeaderWalk(HANDLE hFile,__int64 llSize);

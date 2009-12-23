@@ -621,6 +621,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(const char *szValueName,char **buf)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','S','B','J');
 			}
+			else if(strcmp(szValueName,"ITRK") == 0)
+			{
+				strRet = theApp.m_RiffSIF.GetField('I','T','R','K');
+			}
 			else if(strcmp(szValueName,"IART") == 0)
 			{
 				strRet = theApp.m_RiffSIF.GetField('I','A','R','T');
@@ -1532,6 +1536,10 @@ extern "C" DWORD __stdcall mp3infp_SetValue(const char *szValueName,const char *
 		else if(strcmp(szValueName,"ISBJ") == 0)
 		{
 			theApp.m_RiffSIF.SetField('I','S','B','J',buf);
+		}
+		else if(strcmp(szValueName,"ITRK") == 0)
+		{
+			theApp.m_RiffSIF.SetField('I','T','R','K',buf);
 		}
 		else if(strcmp(szValueName,"IART") == 0)
 		{

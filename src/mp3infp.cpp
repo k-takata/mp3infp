@@ -235,7 +235,9 @@ static BOOL regExSet(char *szExName,char *szData)
 	return FALSE;
 }
 
-static char	extlist[19][5]={".mp3",".mp2",".mp1",".rmp",".wav",".avi",".vqf",".wma",".wmv",".asf",".m3u",".ogg",".ape",".mp4",".m4v",".m4a",".3gp",".3g2",".cda"};
+static const LPSTR extlist[]={
+	".mp3",".mp2",".mp1",".rmp",".wav",".avi",".vqf",".wma",".wmv",".asf",".m3u",".ogg",".ape",".mp4",".m4v",".m4a",".3gp",".3g2",".cda"
+};
 
 STDAPI DllRegisterServer()
 {
@@ -266,7 +268,7 @@ STDAPI DllRegisterServer()
 	regSetString(HKEY_CLASSES_ROOT,"*\\shellex\\ContextMenuHandlers\\mp3infp","",CLSID_STR_ShellExt);
 	//(Property)
 	regSetString(HKEY_CLASSES_ROOT,"*\\shellex\\PropertySheetHandlers\\mp3infp","",CLSID_STR_ShellExt);
-	for(int i=0; i<18; i++)
+	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		//(InfoTip)
 		wsprintf(szKey,"%s\\shellex\\{00021500-0000-0000-C000-000000000046}",extlist[i]);
@@ -291,7 +293,7 @@ STDAPI DllUnregisterServer()
 	//(Property)
 	wsprintf(szKey,"*\\shellex\\PropertySheetHandlers\\mp3infp");
 	RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
-	for(int i=0; i<19; i++)
+	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		regGetString(HKEY_CLASSES_ROOT,extlist[i],"",szKey,"");
 		if(strlen(szKey))

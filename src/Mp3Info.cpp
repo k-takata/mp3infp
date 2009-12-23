@@ -247,9 +247,9 @@ BOOL CMp3Info::Load(const char *szFileName,BOOL bVbrScan)
 				return FALSE;// 2004-02-19 0œZ–h~
 			}
 			pMpegHead->msec = pMpegHead->size * 8 / pMpegHead->bps;
-			if(pMpegHead->mpeg25) 
+			if(pMpegHead->lsf) 
 			{
-				//mpeg2
+				//mpeg2/2.5
 				if(pMpegHead->stereo == 2)
 				{
 					//+17+4

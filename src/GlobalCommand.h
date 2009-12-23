@@ -88,4 +88,7 @@ void cutExtName(char *szFileName);
 //•¶š—ñsrc‚ğw’è•¶šc‚Ån•¶š‚²‚Æ‚É‹æØ‚é
 CString divString(char *src,char c,int n);
 
+__int64 GetFileSize64(HANDLE hFile);
+__int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);
+
 #endif //_GLOBALCOMMAND_H
