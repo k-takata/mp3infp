@@ -274,8 +274,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 				id3tag[127] = (char )SCMPX_GENRE_NULL;
 			else
 				id3tag[127] = (char )WINAMP_GENRE_NULL;
-			lstrcpy(szDefaultName,getFileName(szFileName));
-			cutExtName(szDefaultName);
+			lstrcpy(szDefaultName,getFileName((CString)szFileName));
 			
 			char *buf = TstrToDataAlloc(szDefaultName, -1, NULL, DTC_CODE_ANSI);
 			if (buf) {
@@ -877,10 +876,7 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 	if(m_strNAM.GetLength() == 0)
 	{
 		//デフォルト曲名(ファイル名)
-		TCHAR szDefaultName[MAX_PATH];
-		lstrcpy(szDefaultName,getFileName(szFileName));
-		cutExtName(szDefaultName);
-		m_strNAM = szDefaultName;
+		m_strNAM = getFileName((CString)szFileName);
 	}
 	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','N','A','M'),m_strNAM,m_strNAM.GetLength()+1);
 	//IART アーティスト名

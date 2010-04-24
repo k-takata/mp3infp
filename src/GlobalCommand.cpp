@@ -194,7 +194,7 @@ WORD ExtractI2(unsigned char buf[2])
 	return x;
 }
 
-LPCTSTR getFileName(LPCTSTR szPath)
+LPCTSTR getFileNameExtName(LPCTSTR szPath)
 {
 	LPCTSTR szPtr = szPath;
 
@@ -245,7 +245,7 @@ LPCTSTR getExtName(LPCTSTR szPath)
 	LPCTSTR szPtr = szPath;
 
 	//ファイル名だけを分離
-	szPtr=getFileName(szPath);
+	szPtr=getFileNameExtName(szPath);
 	//拡張子を含まないときは""へのポインタ
 	szPath+=lstrlen(szPath);
 	while(*szPtr != '\0')
@@ -268,7 +268,7 @@ LPCTSTR getExtName(LPCTSTR szPath)
 CString getExtName(CString &path)
 {
 	//ファイル名だけを分離
-	CString fName = getFileName(path);
+	CString fName = getFileNameExtName(path);
 
 	//拡張子を含まないときは""へのポインタ
 	int i = 0;

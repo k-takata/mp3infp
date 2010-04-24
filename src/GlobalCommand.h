@@ -44,7 +44,7 @@ CString getPathName(CString &path);
 CString getFileName(CString &path);
 
 //////////////////////////////////////////////////////////////////////////////
-//getFileName
+//getFileNameExtName
 //フルパス名からファイル名を取得する
 //////////////////////////////////////////////////////////////////////////////
 /*
@@ -54,7 +54,7 @@ CString getFileName(CString &path);
 　　　　　　　ファイル名を含まないときは""へのポインタ
 	[\],[/],[:]が見つからなかった場合、引数をファイル名とみなしてそのまま返す
 */
-LPCTSTR getFileName(LPCTSTR szPath);
+LPCTSTR getFileNameExtName(LPCTSTR szPath);
 
 //////////////////////////////////////////////////////////////////////////////
 //getExtName

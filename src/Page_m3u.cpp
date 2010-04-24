@@ -165,7 +165,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				break;
 			case 2:	// ƒtƒ@ƒCƒ‹–¼‚Å’Ç‰Á
 			default:
-				strTmp += getFileName(szFile);
+				strTmp += getFileNameExtName(szFile);
 				break;
 			}
 			strTmp += _T("\r\n");

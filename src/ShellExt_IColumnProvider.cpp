@@ -207,7 +207,7 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 			TCHAR szBuff[MAX_PATH];
 			if(GetShortPathName(m_strSelectFile,szBuff,sizeof_array(szBuff)))
 			{
-				strVal = getFileName(szBuff);
+				strVal = getFileNameExtName(szBuff);
 			}
 		}
 		break;
