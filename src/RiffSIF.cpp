@@ -306,14 +306,17 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 			{
 				break;	//—pS
 			}
-			//map‚É’Ç‰Á
-			if(data[size-1] == '\0')
+			if(size>0)
 			{
-				m_fields.insert(pair<FOURCC,CString>(id,data));
-			}
-			else
-			{
-				m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+				//map‚É’Ç‰Á
+				if(data[size-1] == '\0')
+				{
+					m_fields.insert(pair<FOURCC,CString>(id,data));
+				}
+				else
+				{
+					m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+				}
 			}
 			if(dwRemainSize <= (size+8))
 			{

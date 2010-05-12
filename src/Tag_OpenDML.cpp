@@ -411,14 +411,17 @@ OutputDebugString(_T("CTag_OpenDML::Load m_bEnable = TRUE\n"));
 			{
 				break;	//—pS
 			}
-			//map‚É’Ç‰Á
-			if(data[size-1] == '\0')
+			if(size>0)
 			{
-				m_fields.insert(pair<FOURCC,CString>(id,data));
-			}
-			else
-			{
-				m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+				//map‚É’Ç‰Á
+				if(data[size-1] == '\0')
+				{
+					m_fields.insert(pair<FOURCC,CString>(id,data));
+				}
+				else
+				{
+					m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+				}
 			}
 			if(dwRemainSize <= (size+8))
 			{
