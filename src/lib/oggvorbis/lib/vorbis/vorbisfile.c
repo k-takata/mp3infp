@@ -11,7 +11,7 @@
  ********************************************************************
 
  function: stdio-based convenience library for opening/seeking/decoding
- last mod: $Id: vorbisfile.c 16246 2009-07-10 03:19:29Z xiphmont $
+ last mod: $Id: vorbisfile.c 17012 2010-03-24 07:37:36Z xiphmont $
 
  ********************************************************************/
 
@@ -61,14 +61,15 @@
 
 /* read a little more data from the file/pipe into the ogg_sync framer
 */
-#define CHUNKSIZE 65536
+#define CHUNKSIZE 65536 /* greater-than-page-size granularity seeking */
+#define READSIZE 2048 /* a smaller read size is needed for low-rate streaming. */
 
 static long _get_data(OggVorbis_File *vf){
   errno=0;
   if(!(vf->callbacks.read_func))return(-1);
   if(vf->datasource){
-    char *buffer=ogg_sync_buffer(&vf->oy,CHUNKSIZE);
-    long bytes=(vf->callbacks.read_func)(buffer,1,CHUNKSIZE,vf->datasource);
+    char *buffer=ogg_sync_buffer(&vf->oy,READSIZE);
+    long bytes=(vf->callbacks.read_func)(buffer,1,READSIZE,vf->datasource);
     if(bytes>0)ogg_sync_wrote(&vf->oy,bytes);
     if(bytes==0 && errno)return(-1);
     return(bytes);
