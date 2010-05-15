@@ -18,6 +18,12 @@ const int CId3tagv2::ID3V2CHARENCODE_UTF_16		= 1;
 const int CId3tagv2::ID3V2CHARENCODE_UTF_16BE	= 2;
 const int CId3tagv2::ID3V2CHARENCODE_UTF_8		= 3;
 
+const char *CId3tagv2::numeric_tags[] = {
+	"TBPM", "TDAT", "TDLY", "TIME", "TLEN", "TPOS", "TRCK", "TSIZ", "TYER",
+	"TDEN", "TDOR", "TDRC", "TDRL", "TDTG",
+	NULL
+};
+
 // 2004-09-24 UTF-16はリトルエンディアンで書き込む
 //#define UTF16_BIGENDIAN
 
@@ -219,9 +225,18 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	
 	unsigned char *data;
 	int size = 0;
+	int encode, i;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
-		switch(m_encode){
+		encode = m_encode;
+		//数字文字列はISO-8859-1
+		for (i = 0; numeric_tags[i] != NULL; i++) {
+			if (strcmp(szId, numeric_tags[i]) == 0) {
+				encode = ID3V2CHARENCODE_ISO_8859_1;
+				break;
+			}
+		}
+		switch(encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
 			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_ANSI) + 1;
