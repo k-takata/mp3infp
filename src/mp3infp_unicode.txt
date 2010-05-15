@@ -1,10 +1,10 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54h/u10 for Windows2000/XP/Vista/7
+Ver.2.54i/u1 for Windows2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
-T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が改良した mp3infp 2.54h を
-K.Takata が Unicode ビルドした改造版です。
+T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が改良した
+mp3infp 2.54i alpha1 を K.Takata が Unicode ビルドした改造版です。
 OS は、Win2k 以降の対応となっています。
 
   ※※ 注 意 ※※
@@ -19,13 +19,13 @@ OS は、Win2k 以降の対応となっています。
 
 ■制限事項
 現時点で判明している制限事項は以下の通りです。
-・Win2k で msvcp60.dll がインストールされない。
+1.Win2k で msvcp60.dll がインストールされない。
   Win2k で本 Unicode 版を使う際には、別途 msvcp60.dll のインストールが
   必要です。
 
-・mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
+2.mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
 
-※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
+ ※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
 
 
 ■公開関数
@@ -83,9 +83,14 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54i/u1 (100515)
+・拡張子を正しく認識できていない場合があったのを修正。
+・RIFF 形式で、フィールドの長さが 0 のものが正しく読めないのを修正。
+・libogg 1.2.0, libvorbis 1.3.1 に更新
+
 2.54h/u10 (091208)
 ・LAME でエンコードした 22.05kHz VBR の MP3 が CBR として認識されていたのを
-  修正。 
+  修正。
 
 2.54h/u9 (091206)
 ・GetFileSize64(), SetFilePointer64() が複数のファイルで定義されていたのを、
