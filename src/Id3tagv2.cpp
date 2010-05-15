@@ -6,7 +6,7 @@
 //#include "mp3infp_res/resource.h"		// メイン シンボル
 #include "GlobalCommand.h"
 //#include "ClassID.h"
-//#include "Id3tagv1.h"
+#include "Id3tagv1.h"
 
 #include "Id3tagv2.h"
 
@@ -787,6 +787,7 @@ CString CId3tagv2::GetGenre()
 {
 	//ジャンル
 	CString strGenre = GetId3String("TCON");
+	int genre = -1;
 //	unsigned char *data = (unsigned char *)(LPCSTR )strGenre;
 	//最初の()を読み飛ばす処理	Fix 2001-05-20
 	while(1)
@@ -805,11 +806,21 @@ CString CId3tagv2::GetGenre()
 			int index = strGenre.Find(')');	
 			if(0 <= index)
 			{
+				if (genre == -1) {
+					CString strGenreNum = strGenre.Mid(1, index);
+					genre = _ttoi(strGenreNum);
+				}
 				strGenre.Delete(0,index+1);	//)'以前を削除
 				continue;	//Fix 2001-10-24
 			}
 		}
 		break;
+	}
+	//ジャンルが番号のみで指定されている場合は、文字列に変換
+	if ((genre >= 0) && (strGenre == _T(""))) {
+		CId3tagv1 id3tagv1(FALSE);
+		id3tagv1.SetGenre(genre);
+		strGenre = id3tagv1.GetGenre();
 	}
 	return strGenre;
 }
