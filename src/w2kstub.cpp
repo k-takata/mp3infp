@@ -14,6 +14,7 @@ void __declspec(noreturn) AFXAPI AfxThrowInvalidArgException()
 }
 #endif
 
+#if 0
 extern "C"
 int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 {
@@ -53,6 +54,7 @@ int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 	return ret;
 #endif
 }
+#endif
 
 extern "C"
 int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)

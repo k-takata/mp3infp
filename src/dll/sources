@@ -25,14 +25,14 @@ TARGETLIBS=\
 	$(SDK_LIB_PATH)\uuid.lib \
 	$(SDK_LIB_PATH)\ws2_32.lib \
 	$(SDK_LIB_PATH)\oldnames.lib \
-	..\lib\mpeg4ip-1.4.1\lib\mp4v2\obj$(BUILD_ALT_DIR)\*\mpeg4ip.lib \
-	..\lib\mpeg4ip-1.4.1\lib\gnu\obj$(BUILD_ALT_DIR)\*\mpeg4ip-gnu.lib \
-	..\lib\oggvorbis\lib\ogg\obj$(BUILD_ALT_DIR)\*\ogg.lib \
-	..\lib\oggvorbis\lib\vorbis\obj$(BUILD_ALT_DIR)\*\vorbis.lib \
+	..\lib\mpeg4ip-1.6.1\lib\mp4v2\$(O)\mpeg4ip.lib \
+	..\lib\mpeg4ip-1.6.1\lib\gnu\$(O)\mpeg4ip-gnu.lib \
+	..\lib\oggvorbis\lib\ogg\$(O)\ogg.lib \
+	..\lib\oggvorbis\lib\vorbis\$(O)\vorbis.lib \
 
 INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH); \
-	..\lib\mpeg4ip-1.4.1\include; \
-	..\lib\mpeg4ip-1.4.1\lib\mp4v2; \
+	..\lib\mpeg4ip-1.6.1\include; \
+	..\lib\mpeg4ip-1.6.1\lib\mp4v2; \
 	..\lib\oggvorbis\include; \
 	..\lib\winamp\include
 
