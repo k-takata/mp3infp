@@ -1,5 +1,5 @@
 mp3infp - Shell extension type tag editor -
-Ver.2.54h for Windows2000/XP
+Ver.2.54i for Windows2000/XP
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 **** mp3infp is freeware ****
