@@ -23,16 +23,17 @@ TARGETLIBS=\
 	$(SDK_LIB_PATH)\vfw32.lib \
 	$(SDK_LIB_PATH)\htmlhelp.lib \
 	$(SDK_LIB_PATH)\uuid.lib \
-	$(SDK_LIB_PATH)\ws2_32.lib \
 	$(SDK_LIB_PATH)\oldnames.lib \
-	..\lib\mpeg4ip-1.6.1\lib\mp4v2\$(O)\mpeg4ip.lib \
-	..\lib\mpeg4ip-1.6.1\lib\gnu\$(O)\mpeg4ip-gnu.lib \
+	..\lib\mp4v2\src\build\$(O)\mp4v2.lib \
+	..\lib\mp4v2\src\bmff\$(O)\bmff.lib \
+	..\lib\mp4v2\src\itmf\$(O)\itmf.lib \
+	..\lib\mp4v2\src\qtff\$(O)\qtff.lib \
+	..\lib\mp4v2\libplatform\src\$(O)\libplatform.lib \
 	..\lib\oggvorbis\lib\ogg\$(O)\ogg.lib \
 	..\lib\oggvorbis\lib\vorbis\$(O)\vorbis.lib \
 
 INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH); \
-	..\lib\mpeg4ip-1.6.1\include; \
-	..\lib\mpeg4ip-1.6.1\lib\mp4v2; \
+	..\lib\mp4v2\include; \
 	..\lib\oggvorbis\include; \
 	..\lib\winamp\include
 
@@ -115,8 +116,12 @@ USE_RTTI=1
 #USE_ATL=1
 
 USE_STL=1
-#STL_VER=70
-STL_VER=60
+STL_VER=70
+
+!ifndef DEBUG_CRTS
+MSC_OPTIMIZATION=/Oxs /GL
+LINKER_FLAGS=/LTCG
+!endif
 
 #LINKER_FLAGS=/FORCE:MULTIPLE
 #LINKER_WX_SWITCH=

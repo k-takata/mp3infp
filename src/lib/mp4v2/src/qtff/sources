@@ -1,4 +1,4 @@
-TARGETNAME=ogg
+TARGETNAME=qtff
 
 TARGETPATH=obj
 
@@ -6,13 +6,14 @@ TARGETTYPE=LIBRARY
 
 TARGETLIBS=
 
-INCLUDES=$(DDK_INC_PATH);..\..\include
+INCLUDES=$(DDK_INC_PATH);..\..;..\..\include
 
 SOURCES=\
-	bitwise.c \
-	framing.c 
+	coding.cpp \
+	ColorParameterBox.cpp \
+	PictureAspectRatioBox.cpp \
 
-C_DEFINES=
+#C_DEFINES=/D_fstati64=_fstati64_w2k
 
 386_STDCALL=0
 
@@ -21,6 +22,9 @@ COMPILER_WX_SWITCH=
 #USE_MFC=1
 #USE_MFCUNICODE=1
 USE_MSVCRT=1
+
+USE_STL=1
+STL_VER=70
 
 !ifndef DEBUG_CRTS
 MSC_OPTIMIZATION=/Oxs /GL

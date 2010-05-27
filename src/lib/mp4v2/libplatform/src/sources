@@ -1,0 +1,38 @@
+TARGETNAME=libplatform
+
+TARGETPATH=obj
+
+TARGETTYPE=LIBRARY
+
+TARGETLIBS=
+
+INCLUDES=$(DDK_INC_PATH);..\..;..\..\include
+
+SOURCES=\
+	error.cpp \
+	File.cpp \
+	FileSystem.cpp \
+	FileSystem_win32.cpp \
+	File_win32.cpp \
+	option.cpp \
+	process_win32.cpp \
+	random_win32.cpp \
+	time.cpp \
+	time_win32.cpp \
+
+#C_DEFINES=/D_fstati64=_fstati64_w2k
+
+386_STDCALL=0
+
+COMPILER_WX_SWITCH=
+
+#USE_MFC=1
+USE_MFCUNICODE=1
+USE_MSVCRT=1
+
+USE_STL=1
+STL_VER=70
+
+!ifndef DEBUG_CRTS
+MSC_OPTIMIZATION=/Oxs /GL
+!endif

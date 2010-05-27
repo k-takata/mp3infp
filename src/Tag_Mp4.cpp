@@ -6,7 +6,7 @@
 #include "Tag_Mp4.h"
 #include "GlobalCommand.h"
 
-#include "mp4.h"
+#include "mp4v2/mp4v2.h"
 #pragma comment (lib,"Ws2_32.lib")
 
 #ifdef _DEBUG
@@ -167,7 +167,7 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	m_bEnable = TRUE;
 	char *value;
 	uint16_t numvalue, numvalue2;
-	u_int8_t int8value;
+	uint8_t int8value;
 	
 	if(MP4GetMetadataName(mp4file,&value) && (value != NULL))
 	{
