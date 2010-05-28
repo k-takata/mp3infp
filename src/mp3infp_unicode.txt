@@ -19,11 +19,7 @@ OS は、Win2k 以降の対応となっています。
 
 ■制限事項
 現時点で判明している制限事項は以下の通りです。
-1.Win2k で msvcp60.dll がインストールされない。
-  Win2k で本 Unicode 版を使う際には、別途 msvcp60.dll のインストールが
-  必要です。
-
-2.mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
+1. mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
 
  ※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
 
@@ -41,21 +37,22 @@ OS は、Win2k 以降の対応となっています。
 
 
 ■ビルド方法
-本バージョンは Windows Driver Kit (WDK) 6001.18002 を使ってビルドされています。
-現在は WDK 7.0.0 (7600.16385.0) が無料で入手できます。
+本バージョンは Windows Driver Kit (WDK) 6001.18002 および
+WDK 7.0.0 (7600.16385.0) を使ってビルドされています。
+現在は WDK 7.1.0 (7600.16385.1) が無料で入手できます。
 （WDK には MFC も含まれています。）
 
-http://www.microsoft.com/downloads/details.aspx?FamilyID=2105564e-1a9a-4bf4-8d74-ec5b52da3d00&displaylang=en
+http://www.microsoft.com/downloads/details.aspx?FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff&displaylang=en
 
-WDK 7.0.0 をインストールしている場合、スタートメニューから
+Win2k 以降で使える 32bit 実行ファイルをビルドする場合、スタートメニューから
 
   Windows Driver Kits
-    WDK 7600.16385.0
+    WDK 6001.18002
       Build Environments
-        Windows XP
-          x86 Free Build Environment
+        Windows 2000
+          Open a build window for Windows 2000 x86 Free Build Environment
 
-を選択すると、WinXP (32bit) のリリースビルド用の環境が開きます。
+を選択してください。Win2k のリリースビルド用の環境が開きますので、
 mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 実行するとビルドされます。mp3infp.dll は dll ディレクトリの下に
 ディレクトリが作成され、その下に出力されます。
@@ -68,13 +65,17 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
         Windows Server 2003
           x64 Free Build Environment
 
-を選択するとよいでしょう。
+などを選択するとよいでしょう。
 
-※ WDK 7.0.0 では、Win2k 用の実行ファイルはビルドできません。
+※ WDK 7.0.0 以降では、Win2k 用の実行ファイルはビルドできません。
    旧バージョンの WDK 6001.18002 が必要です。
    また、WDK 6001.18002 を使った場合でも、一部の関数を使用すると、
    Win2k では実行できないファイルができてしまいます。w2kstub.cpp は
    それを無理やり修正するためのソースです。
+
+※ WDK 6001.18002 は、現在でも Microsoft Connect の WDK プログラムから
+   入手可能です。（無料の登録が必要）
+   https://connect.microsoft.com/site148
 
 ※ WDK に含まれている MFC は 6.0 です。（Visual C++ 6.0 と同等）
    MFC 7.0 からは CString が拡張され、Unicode 化がやりやすくなっている
@@ -83,6 +84,12 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54i/u3 (1005xx)
+・mpeg4ip 1.6.1 を mp4v2 1.9.1 に更新。
+・STL を 6.0 から 7.0 に変更。
+  - これにより(?)、msvcp60.dll が不要になった。
+・最適化オプションを変更。（/GL を追加）
+
 2.54i/u2 (100523)
 ・mpeg4ip を 1.6.1 に更新。
   - これにより ffmpeg でエンコードした .mp4 のプロファイルが正しく表示
