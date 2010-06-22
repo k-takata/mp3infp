@@ -1,4 +1,6 @@
 #include "libplatform/impl.h"
+#include <tchar.h>
+// 2010-06-22 K.Takata
 
 namespace mp4v2 { namespace platform { namespace io {
 
@@ -16,89 +18,79 @@ public:
     bool close();
 
 private:
-    HANDLE _handle;
+    FILE *_handle;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 StandardFileProvider::StandardFileProvider()
-    : _handle( INVALID_HANDLE_VALUE )
+    : _handle( NULL )
 {
 }
 
 bool
 StandardFileProvider::open( std::string name, Mode mode )
 {
-    DWORD access = 0;
-    DWORD share  = 0;
-    DWORD crdisp = 0;
-    DWORD flags  = FILE_ATTRIBUTE_NORMAL;
+    TCHAR *modestr;
 
     switch( mode ) {
         case MODE_UNDEFINED:
         case MODE_READ:
         default:
-            access |= GENERIC_READ;
-            share  |= FILE_SHARE_READ;
-            crdisp |= OPEN_EXISTING;
+            modestr = _T("rb");
             break;
 
         case MODE_MODIFY:
-            access |= GENERIC_READ | GENERIC_WRITE;
-            share  |= FILE_SHARE_READ;
-            crdisp |= OPEN_EXISTING;
+            modestr = _T("r+b");
             break;
 
         case MODE_CREATE:
-            access |= GENERIC_READ | GENERIC_WRITE;
-            share  |= FILE_SHARE_READ;
-            crdisp |= CREATE_ALWAYS;
+            modestr = _T("w+b");
             break;
     }
 
-// 2010-05-28 K.Takata
 #ifdef UNICODE
     WCHAR namew[MP4V2_PATH_MAX];
     MultiByteToWideChar(CP_UTF8, 0, name.c_str(), -1, namew, MP4V2_PATH_MAX);
-    _handle = CreateFileW( namew, access, share, NULL, crdisp, flags, NULL );
+    _handle = _wfopen( namew, modestr );
 #else
-    _handle = CreateFileA( name.c_str(), access, share, NULL, crdisp, flags, NULL );
+    _handle = fopen( name.c_str(), modestr );
 #endif
-    return _handle == INVALID_HANDLE_VALUE;
+    return _handle == NULL;
 }
 
 bool
 StandardFileProvider::seek( Size pos )
 {
-    LARGE_INTEGER n;
-    n.QuadPart = pos;
-    return SetFilePointerEx( _handle, n, NULL, FILE_BEGIN ) == 0;
+    return _fseeki64( _handle, pos, SEEK_SET ) != 0;
 }
 
 bool
 StandardFileProvider::read( void* buffer, Size size, Size& nin, Size maxChunkSize )
 {
-    DWORD nread = 0;
-    if( ReadFile( _handle, buffer, (DWORD)size, &nread, NULL ) == 0 )
+    size_t count = fread( buffer, 1, size, _handle );
+    if ( count == 0 ) {
         return true;
-    nin = nread;
+    }
+    nin = count;
     return false;
 }
 
 bool
 StandardFileProvider::write( const void* buffer, Size size, Size& nout, Size maxChunkSize )
 {
-    DWORD nwrote = 0;
-    if( WriteFile( _handle, buffer, (DWORD)size, &nwrote, NULL ) == 0 )
+    size_t count = fwrite( buffer, 1, size, _handle );
+    if ( count == 0 ) {
         return true;
-    nout = nwrote;
+    }
+    nout = count;
     return false;
 }
 
 bool
 StandardFileProvider::close()
 {
-    return CloseHandle( _handle ) == 0;
+    return fclose( _handle ) != 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
