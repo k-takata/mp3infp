@@ -2,6 +2,9 @@
 #include <tchar.h>
 // 2010-06-22 K.Takata
 
+extern "C"
+int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence);
+
 namespace mp4v2 { namespace platform { namespace io {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +65,7 @@ StandardFileProvider::open( std::string name, Mode mode )
 bool
 StandardFileProvider::seek( Size pos )
 {
-    return _fseeki64( _handle, pos, SEEK_SET ) != 0;
+    return _fseeki64_w2k( _handle, pos, SEEK_SET ) != 0;
 }
 
 bool
