@@ -1,6 +1,6 @@
 // w2kstub.cpp
 //
-// WDK 6001.18002 で、Win2k 用にビルドするためのスタブ
+// WDK 6001.18002 で、Win2k/XP 用にビルドするためのスタブ
 
 
 #include "stdafx.h"
@@ -14,7 +14,7 @@ void __declspec(noreturn) AFXAPI AfxThrowInvalidArgException()
 }
 #endif
 
-#if 0
+#if 0	// _fstati64 can be used on Win2k
 extern "C"
 int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 {
@@ -62,23 +62,21 @@ int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 #ifdef _WIN64
 	return _fseeki64(stream, offset, whence);
 #else
-	HANDLE hFile;
-	LARGE_INTEGER li;
-	int ret;
+	__int64 pos;
+	int fd = _fileno(stream);
 	
-	ret = fseek(stream, 0, SEEK_CUR);
-	if (ret != 0) {
-		return ret;
-	}
-	hFile = (HANDLE) _get_osfhandle(_fileno(stream));
-	if (hFile == INVALID_HANDLE_VALUE) {
-		return -1;
-	}
-	li.QuadPart = offset;
-	li.LowPart = SetFilePointer(hFile, li.LowPart, &li.HighPart, whence);
-	if ((li.LowPart == INVALID_SET_FILE_POINTER) && (GetLastError() != NO_ERROR)) {
-		return -1;
-	}
-	return 0;
+	// TODO: stream should be locked
+	
+	// save file pointer
+	pos = _telli64(fd);
+	
+	// set some internal information
+	fseek(stream, 0, SEEK_CUR);
+	
+	// restore file pointer
+	_lseeki64(fd, pos, SEEK_SET);
+	
+	// do seek
+	return (_lseeki64(fd, offset, whence) == -1i64 ? -1 : 0);
 #endif
 }
