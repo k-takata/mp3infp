@@ -34,6 +34,10 @@
  #endif
 #endif
 
+extern "C"
+int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence);
+
+
 //////////////////////////////////////////////////////////////////////
 // ç\íz/è¡ñ≈
 //////////////////////////////////////////////////////////////////////
@@ -317,8 +321,14 @@ DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 	while(1)	//dummy
 	{
 		OggVorbis_File ov;
+		ov_callbacks callbacks = {
+			(size_t (*)(void *, size_t, size_t, void *))	fread,
+			(int (*)(void *, ogg_int64_t, int))				_fseeki64_w2k /* _fseeki64 */,
+			(int (*)(void *))								fclose,
+			(long (*)(void *))								ftell
+		};
 		/* open the file/pipe on stdin */
-		if(ov_open(fp,&ov,NULL,-1)<0)
+		if(ov_open_callbacks(fp,&ov,NULL,-1,callbacks)<0)
 		{
 //			printf("Could not open input as an OggVorbis file.\n\n");
 			break;
