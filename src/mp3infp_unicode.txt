@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54i/u5 for Windows2000/XP/Vista/7
+Ver.2.54i/u6 for Windows2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
@@ -84,6 +84,10 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
+2.54i/u5 (100807)
+・MP4 ファイルのシーク処理を変更。
+・2GB以上の Ogg ファイルに対応。
+
 2.54i/u5 (100804)
 ・2GB 以上の MP4 ファイルが扱えないのを修正。
 
