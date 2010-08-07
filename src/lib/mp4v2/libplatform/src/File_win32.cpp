@@ -65,7 +65,12 @@ StandardFileProvider::open( std::string name, Mode mode )
 bool
 StandardFileProvider::seek( Size pos )
 {
+#if 1
     return _fseeki64_w2k( _handle, pos, SEEK_SET ) != 0;
+#else
+    fpos_t fpos = pos;
+    return fsetpos( _handle, &fpos ) != 0;
+#endif
 }
 
 bool

@@ -62,19 +62,18 @@ int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 #ifdef _WIN64
 	return _fseeki64(stream, offset, whence);
 #else
-	__int64 pos;
 	int fd = _fileno(stream);
 	
 	// TODO: stream should be locked
 	
-	// save file pointer
-	pos = _telli64(fd);
+	if (whence == SEEK_CUR) {
+		// convert to offset from beginng of file
+		offset += _telli64(fd);
+		whence = SEEK_SET;
+	}
 	
-	// set some internal information
+	// update some internal information
 	fseek(stream, 0, SEEK_CUR);
-	
-	// restore file pointer
-	_lseeki64(fd, pos, SEEK_SET);
 	
 	// do seek
 	return (_lseeki64(fd, offset, whence) == -1i64 ? -1 : 0);
