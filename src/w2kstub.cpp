@@ -59,7 +59,7 @@ int __cdecl _fstati64_w2k(int fd, struct _stati64 *buffer)
 extern "C"
 int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 {
-#ifdef _WIN64
+#if 0	// #ifdef _WIN64
 	return _fseeki64(stream, offset, whence);
 #else
 	int fd = _fileno(stream);
@@ -67,7 +67,7 @@ int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence)
 	// TODO: stream should be locked
 	
 	if (whence == SEEK_CUR) {
-		// convert to offset from beginng of file
+		// convert to offset from beginning of file
 		offset += _telli64(fd);
 		whence = SEEK_SET;
 	}
