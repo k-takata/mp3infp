@@ -266,6 +266,7 @@ VIDEO_CODEC_TYPE divx_vers[] =
 		{"DivX503b1814",_T("DivX 6.1.0 Patch 2 Beta")},
 		{"DivX503b1828",_T("DivX 6.1.1")},	// 2006-03-12 BBS8433
 		{"DivX503b1838",_T("DivX 6 (TMPGEnc)")},	// 2007-07-17 BBS8655
+		{"DivX503b1856",_T("DivX 6.1.1")},
 		{"DivX503b1893",_T("DivX 6.2.0 Beta 1")},	// 2006-04-01 BBS8463
 		{"DivX503b1910",_T("DivX 6.2.0")},	// 2006-04-12
 		{"DivX503b1913",_T("DivX 6.2.1")},	// 2006-04-24 BBS8489
@@ -276,6 +277,7 @@ VIDEO_CODEC_TYPE divx_vers[] =
 		{"DivX503b1988",_T("DivX 6.2.5 (DivX Converter 6.2.1)")},	// 2007-08-27 BBS8715
 		{"DivX503b2081",_T("DivX 6.4 Beta 1")},	// 2007-10-03 BBS8757
 		{"DivX503b2086",_T("DivX 6.4")},		// 2007-10-03 BBS8781
+		{"DivX503b2121",_T("DivX 6.4 (TMPGEnc 4.0.3.169)")},
 		{"DivX503b2151",_T("DivX 6.4 (DivX Author)")},
 		{"DivX503b2201",_T("DivX 6.5.0")},		// 2007-08-26 BBS9011
 		{"DivX503b2207",_T("DivX6.5.1")},	// 2007-08-26 BBS9019
@@ -291,7 +293,8 @@ VIDEO_CODEC_TYPE divx_vers[] =
 		{"DivX503b2559",_T("DivX 6.8.2.6")},
 		{"DivX503b2676",_T("DivX 6.8.3.13")},
 		{"DivX503b2816",_T("DivX 6.8.5.5")},	//090626 BBS10017
-		{"DivX503b2991",_T("DivX 6.8.5(TMPGEnc 4.7.3.292)")},
+		{"DivX503b2991",_T("DivX 6.8.5 (TMPGEnc 4.7.3.292)")},
+		{"DivX503b3013",_T("DivX 6.8.5")},
 };
 
 VIDEO_CODEC_TYPE xvid_vers[] =
@@ -457,6 +460,7 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"ETVC",_T("eTreppid Video(ETVC)")},
 		{"FFV1",_T("FFMPEG")},
 		{"FLJP",_T("D-Vision Field Encoded Motion JPEG")},
+		{"FLV1",_T("FlashVideo VP6(ffdshow)")},
 		{"FMP4",_T("FFmpeg MPEG4")},
 		{"FPS1",_T("Fraps Movie Capture")},
 		{"FRWA",_T("SoftLab-Nsk Forward Motion JPEG with alpha channel")},
