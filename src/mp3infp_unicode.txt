@@ -1,5 +1,5 @@
 mp3infp シェル拡張型タグエディタ (mp3インフピー)
-Ver.2.54i/u6 for Windows2000/XP/Vista/7
+Ver.2.54i/u7 for Windows2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 
 ■概要
@@ -84,7 +84,17 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 
 ■改変履歴
-2.54i/u5 (100807)
+2.54i/u7 (110326)
+・libogg 1.2.2, libvorbis 1.3.2 に更新。
+・コーデック情報を更新。
+  - sinkuhadouken_110101.zip/codec.ini をマージ。
+  - http://www.fourcc.org/codecs.php の情報を反映。
+・WinXP x64 で動作しないのを修正。
+・.pdb のフルパスを実行ファイルに埋め込まないように修正。
+・mp3infp_regist.exe のファイルサイズ削減。
+・BMP を RLE 圧縮。
+
+2.54i/u6 (100807)
 ・MP4 ファイルのシーク処理を変更。
 ・2GB以上の Ogg ファイルに対応。
 
