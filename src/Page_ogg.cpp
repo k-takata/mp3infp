@@ -560,19 +560,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				}
 
 				//タイムスタンプを保存
-				hFile = CreateFile(
-							lpcs->m_strSelectFile,
-							GENERIC_READ,
-							FILE_SHARE_READ|FILE_SHARE_WRITE,
-							NULL,
-							OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-							FILE_ATTRIBUTE_NORMAL,
-							NULL);
-				if(hFile != INVALID_HANDLE_VALUE)
-				{
-					GetFileTime(hFile,&lpcs->m_createTime,NULL,&lpcs->m_fileTime);
-					CloseHandle(hFile);
-				}
+				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
 				DWORD dwRet = lpcs->m_Ogg.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
@@ -589,22 +577,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					break;
 				}
 
+				//タイムスタンプを復元
 				if(lpcs->m_bSaveTimeStamp)
 				{
-					//タイムスタンプを復元
-					hFile = CreateFile(
-								lpcs->m_strSelectFile,
-								GENERIC_READ|GENERIC_WRITE,
-								FILE_SHARE_READ|FILE_SHARE_WRITE,
-								NULL,
-								OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-								FILE_ATTRIBUTE_NORMAL,
-								NULL);
-					if(hFile != INVALID_HANDLE_VALUE)
-					{
-						SetFileTime(hFile,&lpcs->m_createTime,NULL,&lpcs->m_fileTime);
-						CloseHandle(hFile);
-					}
+					lpcs->PopTimeStamp(lpcs->m_strSelectFile);
 				}
 
 				//情報を表示
