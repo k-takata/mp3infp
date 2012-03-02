@@ -107,6 +107,7 @@ protected:
 	CString			m_strSelectFile;
 	FILETIME		m_fileTime;	//タイムスタンプ保存用
 	FILETIME		m_createTime;	//タイムスタンプ保存用
+	BOOL			m_bTimeStampPushed;	//タイムスタンプが保存されている
 
 	BOOL			m_bSaveTimeStamp;	//タイムスタンプを保存
 	BOOL			m_bContextMenu;		//コンテキストメニューに"mp3infp"を追加
