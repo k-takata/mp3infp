@@ -8,7 +8,7 @@
 #pragma comment(lib,"psapi.lib")
 #endif
 
-void DlgContextMenu(HWND hDlg,LONG lParam,BOOL isEnable)
+void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable)
 {
 	HMENU hMenu = LoadMenu(AfxGetResourceHandle(),MAKEINTRESOURCE(IDR_MENU_PROPERTY_CONTEXT));
 	HMENU hPopup = GetSubMenu(hMenu,0);

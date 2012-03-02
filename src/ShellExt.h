@@ -4,7 +4,7 @@
 
 #include <shlobj.h>
 
-void DlgContextMenu(HWND hDlg,LONG lParam,BOOL isEnable);
+void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable);
 void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CString strFileName);
