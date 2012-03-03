@@ -97,6 +97,9 @@ SOURCES=\
 
 COMPILER_WX_SWITCH=
 
+# disable warning C4819: The file contains a character that cannot be represented in the current code page.
+USER_C_FLAGS=/wd4819
+
 #USE_MFC=1
 #USE_MFCUNICODE=1
 USE_MSVCRT=1
