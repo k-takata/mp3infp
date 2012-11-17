@@ -82,6 +82,7 @@ namespace mp4v2 { namespace platform {
 ///////////////////////////////////////////////////////////////////////////////
 
 #define snprintf(s,n,...)  _snprintf(s,n,__VA_ARGS__)
+#define vsnprintf(s,n,f,a) _vsnprintf(s,n,f,a)		// 2010-05-28 K.Takata
 #define strcasecmp(s1,s2)  _stricmp(s1,s2)
 #define strdup(s)          _strdup(s)
 
