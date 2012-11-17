@@ -20,8 +20,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "libplatform/platform_base.h"
-#include <windows.h>
-
 #include <mp4v2/mp4v2.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,10 +37,6 @@ namespace mp4v2 { namespace platform {
     using ::uint32_t;
     using ::uint64_t;
 }} // namespace mp4v2::platform
-
-///////////////////////////////////////////////////////////////////////////////
-
-#define MP4V2_PATH_MAX (_MAX_PATH + 1)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +82,6 @@ namespace mp4v2 { namespace platform {
 ///////////////////////////////////////////////////////////////////////////////
 
 #define snprintf(s,n,...)  _snprintf(s,n,__VA_ARGS__)
-#define vsnprintf(s,n,f,a) _vsnprintf(s,n,f,a)		// 2010-05-28 K.Takata
 #define strcasecmp(s1,s2)  _stricmp(s1,s2)
 #define strdup(s)          _strdup(s)
 
@@ -96,7 +89,5 @@ namespace mp4v2 { namespace platform {
 
 // macro clashes with symbol
 #undef LC_NONE
-
-///////////////////////////////////////////////////////////////////////////////
 
 #endif // MP4V2_PLATFORM_WIN32_H
