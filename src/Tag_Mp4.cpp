@@ -6,6 +6,7 @@
 #include "Tag_Mp4.h"
 #include "GlobalCommand.h"
 
+#define MP4V2_USE_STATIC_LIB
 #include "mp4v2/mp4v2.h"
 #pragma comment (lib,"Ws2_32.lib")
 
@@ -58,7 +59,7 @@ void CTag_Mp4::ClearMetadata()
 	m_strMetadata_Tool = _T("");
 }
 
-static CString _CnvMetadata(char *utf8val)
+static CString _CnvMetadata(const char *utf8val)
 {
 	return DataToCString(utf8val, -1, DTC_CODE_UTF8);
 }
@@ -169,6 +170,7 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	uint16_t numvalue, numvalue2;
 	uint8_t int8value;
 	
+#ifdef USE_OLD_TAG_API
 	if(MP4GetMetadataName(mp4file,&value) && (value != NULL))
 	{
 		m_strMetadata_Name = _CnvMetadata(value);
@@ -235,6 +237,83 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	{
 		m_strMetadata_Tool = _CnvMetadata(value);
 	}
+#else
+	const MP4Tags* tags = MP4TagsAlloc();
+
+	if(tags)
+	{
+		MP4TagsFetch(tags, mp4file);
+
+		if(tags->name)
+		{
+			m_strMetadata_Name = _CnvMetadata(tags->name);
+		}
+
+		if(tags->artist)
+		{
+			m_strMetadata_Artist = _CnvMetadata(tags->artist);
+		}
+
+		if(tags->album)
+		{
+			m_strMetadata_Album = _CnvMetadata(tags->album);
+		}
+
+		if(tags->grouping)
+		{
+			m_strMetadata_Group = _CnvMetadata(tags->grouping);
+		}
+
+		if(tags->composer)
+		{
+			m_strMetadata_Composer = _CnvMetadata(tags->composer);
+		}
+
+		if(tags->genre)
+		{
+			m_strMetadata_Genre = _CnvMetadata(tags->genre);
+		}
+
+		if(tags->track)
+		{
+			m_iMetadata_Track1 = tags->track->index;
+			m_iMetadata_Track2 = tags->track->total;
+		}
+
+		if(tags->disk)
+		{
+			m_iMetadata_Disc1 = tags->disk->index;
+			m_iMetadata_Disc2 = tags->disk->total;
+		}
+
+		if(tags->tempo)
+		{
+			m_iMetadata_Tempo = *tags->tempo;
+		}
+
+		if(tags->releaseDate)
+		{
+			m_strMetadata_Year = _CnvMetadata(tags->releaseDate);
+		}
+
+		if(tags->compilation)
+		{
+			m_iMetadata_Compilation = *tags->compilation;
+		}
+
+		if(tags->comments)
+		{
+			m_strMetadata_Comment = _CnvMetadata(tags->comments);
+		}
+
+		if(tags->encodingTool)
+		{
+			m_strMetadata_Tool = _CnvMetadata(tags->encodingTool);
+		}
+
+		MP4TagsFree(tags);
+	}
+#endif
 
 	MP4Close(mp4file);
 
@@ -260,6 +339,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		return -1;
 	}
 
+#ifdef USE_OLD_TAG_API
 	if(m_strMetadata_Name.GetLength())
 	{
 		char *buf = TstrToDataAlloc(m_strMetadata_Name, -1, NULL, DTC_CODE_UTF8);
@@ -428,6 +508,178 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 	{
 		MP4DeleteMetadataTool(mp4file);
 	}
+#else
+	const MP4Tags* tags = MP4TagsAlloc();
+
+	if(tags)
+	{
+		MP4TagsFetch(tags, mp4file);
+
+		if(m_strMetadata_Name.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Name, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetName(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetName(tags, NULL);
+		}
+
+		if(m_strMetadata_Artist.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Artist, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetArtist(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetArtist(tags, NULL);
+		}
+
+		if(m_strMetadata_Album.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Album, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetAlbum(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetAlbum(tags, NULL);
+		}
+
+		if(m_strMetadata_Group.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Group, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetGrouping(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetGrouping(tags, NULL);
+		}
+
+		if(m_strMetadata_Composer.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Composer, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetComposer(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetComposer(tags, NULL);
+		}
+
+		if(m_strMetadata_Genre.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Genre, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetGenre(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetGenre(tags, NULL);
+		}
+
+		if((m_iMetadata_Track1 == -1) && (m_iMetadata_Track2 == -1))
+		{
+			MP4TagsSetTrack(tags, NULL);
+		}
+		else
+		{
+			MP4TagTrack track;
+			track.index = (m_iMetadata_Track1 == -1) ? 0 : m_iMetadata_Track1;
+			track.total = (m_iMetadata_Track2 == -1) ? 0 : m_iMetadata_Track2;
+			MP4TagsSetTrack(tags, &track);
+		}
+
+		if((m_iMetadata_Disc1 == -1) && (m_iMetadata_Disc2 == -1))
+		{
+			MP4TagsSetDisk(tags, NULL);
+		}
+		else
+		{
+			MP4TagDisk disk;
+			disk.index = (m_iMetadata_Disc1 == -1) ? 0 : m_iMetadata_Disc1;
+			disk.total = (m_iMetadata_Disc2 == -1) ? 0 : m_iMetadata_Disc2;
+			MP4TagsSetDisk(tags, &disk);
+		}
+
+		if(m_iMetadata_Tempo == -1)
+		{
+			MP4TagsSetTempo(tags, NULL);
+		}
+		else
+		{
+			uint16_t tempo = m_iMetadata_Tempo;
+			MP4TagsSetTempo(tags, &tempo);
+		}
+
+		if(m_strMetadata_Year.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Year, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetReleaseDate(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetReleaseDate(tags, NULL);
+		}
+
+		if(m_iMetadata_Compilation != -1)
+		{
+			uint8_t compilation = 1;
+			MP4TagsSetCompilation(tags, &compilation);
+		}
+		else
+		{
+			MP4TagsSetCompilation(tags, NULL);
+		}
+
+		if(m_strMetadata_Comment.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Comment, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetComments(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetComments(tags, NULL);
+		}
+
+		if(m_strMetadata_Tool.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_Tool, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetEncodingTool(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetEncodingTool(tags, NULL);
+		}
+
+		MP4TagsStore(tags, mp4file);
+		MP4TagsFree(tags);
+	}
+#endif
 	
 	MP4Close(mp4file);
 
