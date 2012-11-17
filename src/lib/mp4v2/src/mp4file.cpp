@@ -3486,6 +3486,25 @@ uint8_t MP4File::GetTrackAudioMpeg4Type(MP4TrackId trackId)
         mpeg4Type = 32 +
                     (((pEsConfig[0] & 0x7) << 3) | ((pEsConfig[1] >> 5) & 0x7));
     }
+    // 2009-06-16 Rem, 2010-05-27 K.Takata
+    //check sbr. irresponsibly adapted from gpac.tar.gz/gpac/src/lib/mp4v2/src/media_tools/av_parsers.c
+    else if (mpeg4Type == 2) {
+        if (esConfigSize > 1) {
+            if (pEsConfig[1] & 0x2) {
+                if ((esConfigSize > 5)
+                        && ((pEsConfig[3] & 0x3 << 9) + (pEsConfig[4] << 1) + (pEsConfig[5] >> 7) == 0x2b7)
+                        && (pEsConfig[5] & 0x2)) {
+                    mpeg4Type = 5;
+                }
+            } else {
+                if ((esConfigSize > 4)
+                        && ((pEsConfig[2] << 3) + (pEsConfig[3] >> 5) == 0x2b7)
+                        && (pEsConfig[4] & 0x80)) {
+                    mpeg4Type = 5;
+                }
+            }
+        }
+    }
 
     free(pEsConfig);
 
