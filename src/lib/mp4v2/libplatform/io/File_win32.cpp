@@ -1,6 +1,11 @@
 #include "src/impl.h"
 #include "libplatform/impl.h" /* for platform_win32_impl.h which declares Utf8ToFilename */
 #include <windows.h>
+#include <tchar.h>
+// 2010-06-22 K.Takata
+
+extern "C"
+int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence);
 
 namespace mp4v2 {
     using namespace impl;
@@ -39,7 +44,7 @@ public:
     bool close();
 
 private:
-    HANDLE _handle;
+    FILE *_handle;
 
     /**
      * The UTF-8 encoded file name
@@ -50,7 +55,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 StandardFileProvider::StandardFileProvider()
-    : _handle( INVALID_HANDLE_VALUE )
+    : _handle( NULL )
 {
 }
 
@@ -66,30 +71,21 @@ StandardFileProvider::StandardFileProvider()
 bool
 StandardFileProvider::open( std::string name, Mode mode )
 {
-    DWORD access = 0;
-    DWORD share  = 0;
-    DWORD crdisp = 0;
-    DWORD flags  = FILE_ATTRIBUTE_NORMAL;
+    TCHAR *modestr;
 
     switch( mode ) {
         case MODE_UNDEFINED:
         case MODE_READ:
         default:
-            access |= GENERIC_READ;
-            share  |= FILE_SHARE_READ;
-            crdisp |= OPEN_EXISTING;
+            modestr = _T("rb");
             break;
 
         case MODE_MODIFY:
-            access |= GENERIC_READ | GENERIC_WRITE;
-            share  |= FILE_SHARE_READ;
-            crdisp |= OPEN_EXISTING;
+            modestr = _T("r+b");
             break;
 
         case MODE_CREATE:
-            access |= GENERIC_READ | GENERIC_WRITE;
-            share  |= FILE_SHARE_READ;
-            crdisp |= CREATE_ALWAYS;
+            modestr = _T("w+b");
             break;
     }
 
@@ -102,17 +98,17 @@ StandardFileProvider::open( std::string name, Mode mode )
     }
 
     ASSERT(LPCWSTR(filename));
-    _handle = CreateFileW( filename, access, share, NULL, crdisp, flags, NULL );
-    if (_handle == INVALID_HANDLE_VALUE)
+    _handle = _wfopen( filename, modestr );
+    if (_handle == NULL)
     {
-        log.errorf("%s: CreateFileW(%s) failed (%d)",__FUNCTION__,filename.utf8.c_str(),GetLastError());
+        log.errorf("%s: _wfopen(%s) failed (%d)",__FUNCTION__,filename.utf8.c_str(),errno);
         return true;
     }
 
     /*
     ** Make a copy of the name for future log messages, etc.
     */
-    log.verbose2f("%s: CreateFileW(%s) succeeded",__FUNCTION__,filename.utf8.c_str());
+    log.verbose2f("%s: _wfopen(%s) succeeded",__FUNCTION__,filename.utf8.c_str());
 
     _name = filename.utf8;
     return false;
@@ -130,15 +126,15 @@ StandardFileProvider::open( std::string name, Mode mode )
 bool
 StandardFileProvider::seek( Size pos )
 {
-    LARGE_INTEGER n;
+    int ret;
 
-    ASSERT(_handle != INVALID_HANDLE_VALUE);
+    ASSERT(_handle != NULL);
 
-    n.QuadPart = pos;
-    if (!SetFilePointerEx( _handle, n, NULL, FILE_BEGIN ))
+    ret = _fseeki64_w2k( _handle, pos, SEEK_SET );
+    if ( ret )
     {
-        log.errorf("%s: SetFilePointerEx(%s,%" PRId64 ") failed (%d)",__FUNCTION__,_name.c_str(),
-                                pos,GetLastError());
+        log.errorf("%s: _fseeki64(%s,%" PRId64 ") failed (%d)",__FUNCTION__,_name.c_str(),
+                                pos,ret);
         return true;
     }
 
@@ -161,21 +157,22 @@ StandardFileProvider::seek( Size pos )
 bool
 StandardFileProvider::read( void* buffer, Size size, Size& nin, Size maxChunkSize )
 {
-    DWORD nread = 0;
+    size_t nread = 0;
 
-    ASSERT(_handle != INVALID_HANDLE_VALUE);
+    ASSERT(_handle != NULL);
 
     // ReadFile takes a DWORD for number of bytes to read so
     // make sure we're not asking for more than fits.
     // MAXDWORD from WinNT.h.
     ASSERT(size <= MAXDWORD);
-    if( ReadFile( _handle, buffer, (DWORD)(size & MAXDWORD), &nread, NULL ) == 0 )
+    nread = fread( buffer, 1, (DWORD)(size & MAXDWORD), _handle );
+    if( nread == 0 )
     {
-        log.errorf("%s: ReadFile(%s,%d) failed (%d)",__FUNCTION__,_name.c_str(),
-                   (DWORD)(size & MAXDWORD),GetLastError());
+        log.errorf("%s: fread(%s,%d) failed (%d)",__FUNCTION__,_name.c_str(),
+                   (DWORD)(size & MAXDWORD),errno);
         return true;
     }
-    LOG_PRINTF((MP4_LOG_VERBOSE3,"%s: ReadFile(%s,%d) succeeded: read %d byte(s)",__FUNCTION__,
+    LOG_PRINTF((MP4_LOG_VERBOSE3,"%s: fread(%s,%d) succeeded: read %d byte(s)",__FUNCTION__,
                _name.c_str(),(DWORD)(size & MAXDWORD),nread));
     nin = nread;
     return false;
@@ -197,21 +194,22 @@ StandardFileProvider::read( void* buffer, Size size, Size& nin, Size maxChunkSiz
 bool
 StandardFileProvider::write( const void* buffer, Size size, Size& nout, Size maxChunkSize )
 {
-    DWORD nwrote = 0;
+    size_t nwrote = 0;
 
-    ASSERT(_handle != INVALID_HANDLE_VALUE);
+    ASSERT(_handle != NULL);
 
     // ReadFile takes a DWORD for number of bytes to read so
     // make sure we're not asking for more than fits.
     // MAXDWORD from WinNT.h.
     ASSERT(size <= MAXDWORD);
-    if( WriteFile( _handle, buffer, (DWORD)(size & MAXDWORD), &nwrote, NULL ) == 0 )
+    nwrote = fwrite( buffer, 1, (DWORD)(size & MAXDWORD), _handle );
+    if( nwrote == 0 )
     {
-        log.errorf("%s: WriteFile(%s,%d) failed (%d)",__FUNCTION__,_name.c_str(),
-                   (DWORD)(size & MAXDWORD),GetLastError());
+        log.errorf("%s: fwrite(%s,%d) failed (%d)",__FUNCTION__,_name.c_str(),
+                   (DWORD)(size & MAXDWORD),errno);
         return true;
     }
-    log.verbose2f("%s: WriteFile(%s,%d) succeeded: wrote %d byte(s)",__FUNCTION__,
+    log.verbose2f("%s: fwrite(%s,%d) succeeded: wrote %d byte(s)",__FUNCTION__,
                   _name.c_str(),(DWORD)(size & MAXDWORD),nwrote);
     nout = nwrote;
     return false;
@@ -226,23 +224,21 @@ StandardFileProvider::write( const void* buffer, Size size, Size& nout, Size max
 bool
 StandardFileProvider::close()
 {
-    BOOL retval;
+    int retval;
 
-    retval = CloseHandle( _handle );
-    if (!retval)
+    retval = fclose( _handle );
+    if (retval)
     {
-        log.errorf("%s: CloseHandle(%s) failed (%d)",__FUNCTION__,
-                   _name.c_str(),GetLastError());
+        log.errorf("%s: fclose(%s) failed (%d)",__FUNCTION__,
+                   _name.c_str(),errno);
     }
 
     // Whether we succeeded or not, clear the handle and
     // forget the name
-    _handle = INVALID_HANDLE_VALUE;
+    _handle = NULL;
     _name.clear();
 
-    // CloseHandle return 0/false to indicate failure, but
-    // we return 0/false to indicate success, so negate.
-    return !retval;
+    return retval;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
