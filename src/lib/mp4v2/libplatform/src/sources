@@ -16,11 +16,13 @@ SOURCES=\
 	File_win32.cpp \
 	option.cpp \
 	process_win32.cpp \
+	platform_win32.cpp \
 	random_win32.cpp \
 	time.cpp \
 	time_win32.cpp \
 
 #C_DEFINES=/D_fstati64=_fstati64_w2k
+C_DEFINES=/DMP4V2_USE_STATIC_LIB
 
 386_STDCALL=0
 

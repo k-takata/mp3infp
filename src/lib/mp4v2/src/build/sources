@@ -81,10 +81,10 @@ SOURCES=\
 	..\mp4file.cpp \
 	..\mp4file_io.cpp \
 	..\mp4info.cpp \
-	..\mp4meta.cpp \
 	..\mp4property.cpp \
 	..\mp4track.cpp \
 	..\mp4util.cpp \
+	..\log.cpp \
 	..\ocidescriptors.cpp \
 	..\odcommands.cpp \
 	..\qosqualifiers.cpp \
@@ -92,6 +92,7 @@ SOURCES=\
 	..\text.cpp \
 
 #C_DEFINES=/D_fstati64=_fstati64_w2k
+C_DEFINES=/DMP4V2_USE_STATIC_LIB
 
 386_STDCALL=0
 
@@ -109,5 +110,8 @@ STL_VER=70
 USE_NATIVE_EH=1
 
 !ifndef DEBUG_CRTS
-MSC_OPTIMIZATION=/Oxs /GL
+# disable LTCG to prevent C1001 interal error
+FORCENATIVEOBJECT=1
+MSC_OPTIMIZATION=/Oxs
+#MSC_OPTIMIZATION=/Oxs /GL
 !endif

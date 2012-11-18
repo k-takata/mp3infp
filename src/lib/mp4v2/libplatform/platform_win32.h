@@ -7,6 +7,8 @@
 #ifdef __MINGW32__
 #   undef  __MSVCRT_VERSION__
 #   define __MSVCRT_VERSION__ 0x800
+// JAN: see http://code.google.com/p/mp4v2/issues/detail?id=132
+#   define _USE_32BIT_TIME_T
 #endif
 
 // set minimum win32 API requirement to Windows 2000 or higher
@@ -20,8 +22,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "libplatform/platform_base.h"
-#include <windows.h>
-
 #include <mp4v2/mp4v2.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,10 +39,6 @@ namespace mp4v2 { namespace platform {
     using ::uint32_t;
     using ::uint64_t;
 }} // namespace mp4v2::platform
-
-///////////////////////////////////////////////////////////////////////////////
-
-#define MP4V2_PATH_MAX (_MAX_PATH + 1)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -96,7 +92,5 @@ namespace mp4v2 { namespace platform {
 
 // macro clashes with symbol
 #undef LC_NONE
-
-///////////////////////////////////////////////////////////////////////////////
 
 #endif // MP4V2_PLATFORM_WIN32_H

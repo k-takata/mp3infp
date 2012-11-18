@@ -12,6 +12,7 @@ SOURCES=\
 	typebmff.cpp \
 
 #C_DEFINES=/D_fstati64=_fstati64_w2k
+C_DEFINES=/DMP4V2_USE_STATIC_LIB
 
 386_STDCALL=0
 
