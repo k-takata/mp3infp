@@ -315,7 +315,8 @@ static char* PrintVideoInfo(
 
     media_data_name = MP4GetTrackMediaDataName(mp4File, trackId);
     // encv 264b
-    if (strcasecmp(media_data_name, "encv") == 0) {
+    if ((media_data_name != NULL) &&
+        (strcasecmp(media_data_name, "encv") == 0)) {
         if (MP4GetTrackMediaDataOriginalFormat(mp4File,
                                                trackId,
                                                originalFormat,
