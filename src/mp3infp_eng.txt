@@ -1,8 +1,10 @@
-mp3infp - Shell extension type tag editor -
-Ver.2.54i for Windows2000/XP
+mp3infp/u - Shell extension type tag editor -
+Ver.2.54j2 for Windows2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
+Copyright(C) 2009 Rem
+Copyright(C) 2009-2012 K.Takata
 
-**** mp3infp is freeware ****
+**** mp3infp/u is freeware ****
 
 Overview
 
@@ -32,7 +34,7 @@ for ogg vorbis
 >by the XIPHOPHORUS Company http://www.xiph.org/
 
 for mp4
-http://mpeg4ip.sourceforge.net/index.php
+http://code.google.com/p/mp4v2/
 
 License
 

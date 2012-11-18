@@ -1,5 +1,5 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.54j for 2000/XP/2003/Vista/7
+Ver.2.54j2 for 2000/XP/Vista/7
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
 Copyright(C) 2009-2012 K.Takata
@@ -127,6 +127,9 @@ mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
 
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
+
+2012/11/19  Ver.2.54j2
+・MP4 ファイルの読み込みが遅いのを修正。(mp4v2 2.0.0 で再発していた。)
 
 2012/11/18  Ver.2.54j
 ・Unicode版の正式名称を mp3infp/u に変更。
@@ -641,6 +644,8 @@ Win9x用パッチを確実に当てるようバッチファイルとともに同梱
  ・OggVorbis形式のファイル読み書きには下記オープンソースライブラリを使用しています。
  >THE OggVorbis SOURCE CODE IS (C) COPYRIGHT 1994-2001
  >by the XIPHOPHORUS Company http://www.xiph.org/
+ ・MP4形式のファイル読み書きには下記オープンソースライブラリを使用しています。
+ http://code.google.com/p/mp4v2/
 
 ■サポート・公開Webサイト
 「Win32工作小屋」
