@@ -5,7 +5,7 @@ rem インストーラ作成
 
 rem バージョンを ..\classID.h から取得 (e.g. 2.54h/u4)
 for /f tokens^=2^ delims^=^" %%i in ('find ^"SOFT_NAME^" ^< ..\classID.h') do set version=%%i
-set version=%version:mp3infp Ver.=%
+set version=%version:mp3infp/u Ver.=%
 echo Version: %version%
 
 rem バージョン入力
@@ -35,5 +35,5 @@ copy ..\mp3infp_regist\objfre_wnet_amd64\amd64\mp3infp_regist.exe ..\x64 /y
 
 
 rem インストーラ作成
-"%ProgramFiles%\NSIS\makensis.exe" "/DMUI_VERSION=%version%" "/XOutFile mp3infp%filever%.exe" mp3infp.nsi
+"%ProgramFiles%\NSIS\makensis.exe" "/DMUI_VERSION=%version%" "/XOutFile mp3infpu%filever%.exe" mp3infp.nsi
 
