@@ -17,7 +17,7 @@ mklink FileSystem.cpp       ..\io\FileSystem.cpp
 mklink FileSystem_win32.cpp ..\io\FileSystem_win32.cpp
 mklink File_win32.cpp       ..\io\File_win32.cpp
 mklink option.cpp           ..\prog\option.cpp
-rem mklink platform_win32.cpp   ..\platform_win32.cpp
+mklink platform_win32.cpp   ..\platform_win32.cpp
 mklink process_win32.cpp    ..\process\process_win32.cpp
 mklink random_win32.cpp     ..\number\random_win32.cpp
 mklink time.cpp             ..\time\time.cpp
