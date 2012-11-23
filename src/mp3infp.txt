@@ -64,67 +64,6 @@ LGPLライセンスを採用しています (v2.54～)
 https://github.com/k-takata/mp3infp で配布しています
 (オリジナル版は http://win32lab.com/ で配布されています。)
 
-■Unicode版の制限事項
-現時点で判明している制限事項は以下の通りです。
-1. mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
-2. mp3infp_GetValueA() を複数回呼ぶと、前回のデータが上書きされる。
-
- ※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
-
-■Unicode版の公開関数
-今までの mp3infp_～ という関数に加え、mp3infp_～A、mp3infp_～W という
-関数をエクスポートしています。（mp3infp_unicode.def 参照）
-
-例)
-  mp3infp_Load      従来通りの ANSI 版関数
-  mp3infp_LoadA     mp3infp_Load と同一
-  mp3infp_LoadW     Unicode 版関数
-
-■ビルド方法
-本バージョンは Windows Driver Kit (WDK) 6001.18002 および
-WDK 7.1.0 (7600.16385.1) を使ってビルドされています。
-（WDK には MFC も含まれています。）
-
-http://www.microsoft.com/downloads/details.aspx?FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff&displaylang=en
-
-Win2k 以降で使える 32bit 実行ファイルをビルドする場合、スタートメニューから
-
-  Windows Driver Kits
-    WDK 6001.18002
-      Build Environments
-        Windows 2000
-          Open a build window for Windows 2000 x86 Free Build Environment
-
-を選択してください。Win2k のリリースビルド用の環境が開きますので、
-mp3infp の src ディレクトリに移動して、コマンドラインから build -g を
-実行するとビルドされます。mp3infp.dll は dll ディレクトリの下に
-ディレクトリが作成され、その下に出力されます。
-
-64bit 実行ファイルをビルドするときは、
-
-  Windows Driver Kits
-    WDK 7600.16385.1
-      Build Environments
-        Windows Server 2003
-          x64 Free Build Environment
-
-などを選択するとよいでしょう。
-
-※ WDK 7.0.0 以降では、Win2k 用の実行ファイルはビルドできません。
-   旧バージョンの WDK 6001.18002 が必要です。
-   また、WDK 6001.18002 を使った場合でも、一部の関数を使用すると、
-   Win2k では実行できないファイルができてしまいます。w2kstub.cpp は
-   それを無理やり修正するためのソースです。
-
-※ WDK 6001.18002 は、現在でも Microsoft Connect の WDK プログラムから
-   入手可能です。（無料の登録が必要）
-   https://connect.microsoft.com/site148
-
-※ WDK に含まれている MFC は 6.0 です。（Visual C++ 6.0 と同等）
-   MFC 7.0 からは CString が拡張され、Unicode 化がやりやすくなっている
-   のですが、今回はそれらの機能は使用できないため、ソースが分かりにくく
-   なっている部分があるかもしれません。
-
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
 
@@ -648,6 +587,9 @@ Win9x用パッチを確実に当てるようバッチファイルとともに同梱
  http://code.google.com/p/mp4v2/
 
 ■サポート・公開Webサイト
+mp3infp/u
+https://github.com/k-takata/mp3infp
+
 「Win32工作小屋」
 http://win32lab.com/
 -------------------------------------------------------------------------------
