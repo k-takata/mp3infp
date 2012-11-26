@@ -61,8 +61,13 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 LGPLライセンスを採用しています (v2.54～)
 
 ■ソースコード
-https://github.com/k-takata/mp3infp で配布しています
+https://github.com/k-takata/mp3infp で配布しています。
 (オリジナル版は http://win32lab.com/ で配布されています。)
+
+■制限事項
+現時点で判明している制限事項は以下の通りです。
+1. Vista以降で、エクスプローラのカラム（列）拡張が動作しません。
+2. コントロールパネルのmp3infpアイコンがカテゴリ表示に対応していません。
 
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
