@@ -22,3 +22,5 @@ mklink process_win32.cpp    ..\process\process_win32.cpp
 mklink random_win32.cpp     ..\number\random_win32.cpp
 mklink time.cpp             ..\time\time.cpp
 mklink time_win32.cpp       ..\time\time_win32.cpp
+
+call set_symlinkts.bat
