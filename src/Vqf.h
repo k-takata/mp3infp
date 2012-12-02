@@ -99,10 +99,10 @@ private:
 	}
 	void MakeBeSize(DWORD dwSize,char size[4])
 	{
-		size[3] = dwSize & 0xff;
-		size[2] = (dwSize>>8) & 0xff;
-		size[1] = (dwSize>>16) & 0xff;
-		size[0] = (dwSize>>24) & 0xff;
+		size[3] = char(dwSize & 0xff);
+		size[2] = char((dwSize>>8) & 0xff);
+		size[1] = char((dwSize>>16) & 0xff);
+		size[0] = char((dwSize>>24) & 0xff);
 	}
 	map<DWORD,CVqfTag>	m_fields;
 	DWORD				m_dwStreamSize;

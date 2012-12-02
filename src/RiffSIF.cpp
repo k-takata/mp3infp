@@ -473,7 +473,7 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//LIST-INFOÇèIí[Ç…í«â¡
-	SetFilePointer(hFile,-dwInfoSize,NULL,FILE_CURRENT);
+	SetFilePointer(hFile,-(LONG)dwInfoSize,NULL,FILE_CURRENT);
 	dwSize = dwInfoSize - 8;
 	id = FOURCC_LIST;
 	type = mmioFOURCC('I','N','F','O');

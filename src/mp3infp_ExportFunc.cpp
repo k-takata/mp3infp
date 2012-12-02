@@ -81,7 +81,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			}APE_TAG_FOOTER;
 			APE_TAG_FOOTER footer;
 			// apeフッタを探す1
-			SetFilePointer(hFile,-sizeof(APE_TAG_FOOTER)-(bId3v1?128:0),NULL,FILE_END);
+			SetFilePointer(hFile,-(LONG)sizeof(APE_TAG_FOOTER)-(bId3v1?128:0),NULL,FILE_END);
 			// APE_TAG_FOOTERを読みとる
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
@@ -97,7 +97,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 				bApe = TRUE;
 			}
 			// apeフッタを探す2
-			SetFilePointer(hFile,-sizeof(APE_TAG_FOOTER)-128,NULL,FILE_END);
+			SetFilePointer(hFile,-(LONG)sizeof(APE_TAG_FOOTER)-128,NULL,FILE_END);
 			// APE_TAG_FOOTERを読みとる
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
@@ -199,7 +199,7 @@ extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,LPCTSTR szFileName,DWORD d
 		psh.pStartPage = retTabName;
 	}
 
-	return PropertySheet(&psh);
+	return (int)PropertySheet(&psh);
 }
 
 #ifdef UNICODE
