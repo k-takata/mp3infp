@@ -26,6 +26,7 @@
 //#include <Ntquery.h>
 #include <htmlhelp.h>
 //#include <atlbase.h>
+#include <windowsx.h>
 
 #include "Resource.h"
 //#include "Frontend.h"

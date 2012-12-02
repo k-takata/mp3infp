@@ -403,7 +403,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 		HBRUSH brush =  (HBRUSH )DefWindowProc(hDlg,uMessage,wParam,lParam);
 		HDC  hdcStatic = (HDC )wParam;
 		HWND hwndStatic = (HWND )lParam;
-		int len = SendMessage(hwndStatic,EM_LINELENGTH,0,0);
+		int len = Edit_LineLength(hwndStatic,0);
 		BOOL bColor = FALSE;
 		switch(GetDlgCtrlID((HWND )lParam)){
 		case IDC_EDIT_CRD:
