@@ -322,18 +322,7 @@ long check2ByteLength(const char *szTag,long lLimit)
 
 void sysError(HWND hWnd,LPTSTR mes)
 {
-	LPTSTR lpBuffer;
-
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-			NULL,
-			GetLastError(),
-			0,
-			(LPTSTR )&lpBuffer,
-			0,
-			NULL );
-	MessageBox(hWnd,lpBuffer,mes,MB_APPLMODAL | MB_ICONSTOP);
-	LocalFree(lpBuffer);
-	return;
+	errMessageBox(hWnd, GetLastError(), mes);
 }
 
 void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPTSTR mes)
