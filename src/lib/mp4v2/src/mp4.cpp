@@ -2402,10 +2402,9 @@ MP4FileHandle MP4ReadProvider( const char* fileName, const MP4FileProvider* file
         if (MP4_IS_VALID_FILE_HANDLE(hFile)) {
             MP4File *pFile = (MP4File *)hFile;
             try {
-                // 2010-05-27 K.Takata
-                uint32_t bitrate = pFile->GetTrackIntegerProperty(trackId,
+                uint32_t bitrate =  pFile->GetTrackIntegerProperty(trackId,
                                                       "mdia.minf.stbl.stsd.*.esds.decConfigDescr.avgBitrate");
-                if (bitrate != 0) {
+                if( bitrate != 0 ) {
                     return bitrate;
                 }
             }
