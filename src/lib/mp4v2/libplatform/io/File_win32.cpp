@@ -130,7 +130,12 @@ StandardFileProvider::seek( Size pos )
 
     ASSERT(_handle != NULL);
 
+#if 1
     ret = _fseeki64_w2k( _handle, pos, SEEK_SET );
+#else
+    fpos_t fpos = pos;
+    ret = fsetpos( _handle, &fpos );
+#endif
     if ( ret )
     {
         log.errorf("%s: _fseeki64(%s,%" PRId64 ") failed (%d)",__FUNCTION__,_name.c_str(),
