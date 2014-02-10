@@ -83,7 +83,7 @@ CMp3infp_cplApp::~CMp3infp_cplApp()
 {
 }
 
-extern "C" LONG __stdcall CMp3infp_cplApp::CPlApplet(HWND hWnd,UINT uMsg,LONG lParam1,LONG lParam2)
+extern "C" LONG __stdcall CMp3infp_cplApp::CPlApplet(HWND hWnd, UINT uMsg, LPARAM lParam1,LPARAM lParam2)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
 
@@ -105,7 +105,7 @@ extern "C" LONG __stdcall CMp3infp_cplApp::CPlApplet(HWND hWnd,UINT uMsg,LONG lP
 
 	switch(uMsg){
 	case CPL_DBLCLK:
-		return OnDblclk(hWnd,lParam1,lParam2);
+		return OnDblclk(hWnd,(UINT)lParam1,(LONG_PTR)lParam2);
 
 	case CPL_EXIT:
 		return OnExit();
@@ -117,16 +117,16 @@ extern "C" LONG __stdcall CMp3infp_cplApp::CPlApplet(HWND hWnd,UINT uMsg,LONG lP
 		return OnInit();
 
 	case CPL_INQUIRE:
-		return OnInquire(lParam1,(CPLINFO *)lParam2);
+		return OnInquire((UINT)lParam1, (CPLINFO *)lParam2);
 
 	case CPL_NEWINQUIRE:
-		return OnNewInquire(lParam1,(NEWCPLINFO *)lParam2);
+		return OnNewInquire((UINT)lParam1, (NEWCPLINFO *)lParam2);
 
 	case CPL_STOP:
-		return OnStop(lParam1,lParam2);
+		return OnStop((UINT)lParam1, (LONG_PTR)lParam2);
 
 	case CPL_STARTWPARMS:
-		OnDblclk(hWnd, lParam1, lParam2);
+		OnDblclk(hWnd, (UINT)lParam1, (LONG_PTR)lParam2);
 		return TRUE;
 
 	default:
@@ -167,7 +167,7 @@ LONG CMp3infp_cplApp::OnInquire(UINT uAppNum,CPLINFO* pInfo)
 	return 0;
 }
 
-LONG CMp3infp_cplApp::OnDblclk(HWND hWnd,UINT uAppNum,LONG lData)
+LONG CMp3infp_cplApp::OnDblclk(HWND hWnd,UINT uAppNum,LONG_PTR lData)
 {
 #ifdef _DEBUG
 	OutputDebugString("CMp3infp_cplApp::OnDblclk()\n");
@@ -227,7 +227,7 @@ LONG CMp3infp_cplApp::OnInit()
 	return 1; // OK
 }
 
-LONG CMp3infp_cplApp::OnStop(UINT uAppNum,LONG lData) 
+LONG CMp3infp_cplApp::OnStop(UINT uAppNum,LONG_PTR lData) 
 {
 #ifdef _DEBUG
 	OutputDebugString("CMp3infp_cplApp::OnStop()\n");

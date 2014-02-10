@@ -26,15 +26,15 @@ class CMp3infp_cplApp : public CWinApp
 public:
 	CMp3infp_cplApp();
 	virtual ~CMp3infp_cplApp();
-	static	LONG __stdcall CPlApplet(HWND hWnd,UINT uMsg,LONG lParam1,LONG lParam2);
+	static	LONG __stdcall CPlApplet(HWND hWnd,UINT uMsg,LPARAM lParam1,LPARAM lParam2);
 
-	static	LONG	OnDblclk(HWND hWnd,UINT uAppNum,LONG lData);
+	static	LONG	OnDblclk(HWND hWnd,UINT uAppNum,LONG_PTR lData);
 	static	LONG	OnExit();
 	static	LONG	OnGetCount();
 	static	LONG	OnInit();
 	static	LONG	OnInquire(UINT uAppNum,CPLINFO* pInfo);
 	static	LONG	OnNewInquire(UINT uAppNum,NEWCPLINFO* pInfo);
-	static	LONG	OnStop(UINT uAppNum,LONG lData);
+	static	LONG	OnStop(UINT uAppNum,LONG_PTR lData);
 	static	LONG LoadLanguage();
 
 	static	CMp3infp_cplApp* m_pThis;
