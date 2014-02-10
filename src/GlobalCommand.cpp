@@ -110,7 +110,7 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 //•¶––‚ªYen‚Ì‚Æ‚«TRUE
 BOOL IsTailYenSign(LPCTSTR szStr)
 {
-	LPTSTR yen = _tcsrchr(szStr,_T('\\'));
+	LPCTSTR yen = _tcsrchr(szStr,_T('\\'));
 	if(yen && (&szStr[lstrlen(szStr)-1] == yen))
 	{
 		return TRUE;
