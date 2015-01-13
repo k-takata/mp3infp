@@ -42,6 +42,7 @@ public:
     bool read( void* buffer, Size size, Size& nin, Size maxChunkSize );
     bool write( const void* buffer, Size size, Size& nout, Size maxChunkSize );
     bool close();
+    bool getSize( Size& nout );
 
 private:
     FILE *_handle;
@@ -50,6 +51,11 @@ private:
      * The UTF-8 encoded file name
      */
     std::string _name;
+
+    /**
+     * Argument for FileSystem::getFileSize()
+     */
+    std::string _orig_name;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,6 +77,8 @@ StandardFileProvider::StandardFileProvider()
 bool
 StandardFileProvider::open( std::string name, Mode mode )
 {
+    _orig_name = name;
+
     TCHAR *modestr;
 
     switch( mode ) {
@@ -242,6 +250,27 @@ StandardFileProvider::close()
     // forget the name
     _handle = NULL;
     _name.clear();
+
+    return retval;
+}
+
+/**
+ * Get the size of a the file in bytes
+ *
+ * @param nout populated with the size of the file in
+ * bytes if the function succeeds
+ *
+ * @retval false successfully got the file size
+ * @retval true error getting the file size
+ */
+bool
+StandardFileProvider::getSize( Size& nout )
+{
+    BOOL retval;
+
+    // getFileSize will log if it fails
+    // (cannot use _name because it may have UNC prefix)
+    retval = FileSystem::getFileSize( _orig_name, nout );
 
     return retval;
 }
