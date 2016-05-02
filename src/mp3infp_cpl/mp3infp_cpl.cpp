@@ -224,6 +224,21 @@ LONG CMp3infp_cplApp::OnInit()
 	sprintf(tmp,"CMp3infp_cplApp::OnInit()> m_hResource=%08x AfxGetInstanceHandle()=%08x\n",m_pThis->m_hResource,AfxGetInstanceHandle());
 	OutputDebugString(tmp);
 #endif
+
+	HMODULE hShcore = ::GetModuleHandle(_T("SHCORE.DLL"));
+	if (hShcore)
+	{
+		typedef HRESULT (WINAPI* PFNSETPROCESSDPIAWARENESS)(int);
+
+		PFNSETPROCESSDPIAWARENESS pfnSetProcessDpiAwareness =
+			(PFNSETPROCESSDPIAWARENESS)
+				::GetProcAddress(hShcore, "SetProcessDpiAwareness");
+		if (pfnSetProcessDpiAwareness)
+		{
+			pfnSetProcessDpiAwareness(1); //Process_System_DPI_Aware
+		}
+	}
+
 	return 1; // OK
 }
 
