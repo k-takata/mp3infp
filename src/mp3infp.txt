@@ -1,8 +1,8 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.54j2 for 2000/XP/Vista/7
+Ver.2.54j3 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
-Copyright(C) 2009-2012 K.Takata
+Copyright(C) 2009-2016 K.Takata
 
 ※※※mp3infp/uはフリーソフトウェアです※※※
 このソフトウェアは「無料」で利用できますが「無保証」です。
@@ -15,7 +15,7 @@ Windowsのシェルエクステンション機能を利用して、エクスプローラにタグ参照・
 
 mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 改良した mp3infp 2.54i alpha1 を K.Takata が Unicode ビルドした
-改造版です。OS は、Windows 2000 以降の対応となっています。
+改造版です。OS は、Windows 7 以降の対応となっています。
 
 ■対応ファイル形式
 ・mpeg1.0/2.0/2.5 Layer1～3 (.mp3/.mp2/.mp1/.rmp)
@@ -33,7 +33,7 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 ・MP4 (.mp4/.m4a/.m4v/.3gp/.3g2)
 
 ■動作環境
-・英語版と日本語版の Windows2000/XP/Vista/7
+・英語版と日本語版の Windows 7/8/10
 
 ■設定
 [コントロールパネル]→[mp3infp設定]で設定を行えます。
@@ -72,13 +72,22 @@ https://github.com/k-takata/mp3infp で配布しています。
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
 
+2016/05/02  Ver.2.54j3
+・libogg 1.3.2, libvorbis 1.3.5 に更新。
+・mp4v2 2.0.0 (r507) に更新。
+・x64 で mp3infp.cpl がクラッシュするのを修正。(PR #7, Thanks unarist)
+・mp3infp.cpl を High DPI に対応。
+・コンパイラを WDK 7.1.0 に変更。
+・Windows Vista 以前をサポート対象から除外。
+
 2012/11/19  Ver.2.54j2
 ・MP4 ファイルの読み込みが遅いのを修正。(mp4v2 2.0.0 で再発していた。)
+・mp4v2 2.0.0 (r500) に更新。
 
 2012/11/18  Ver.2.54j
 ・Unicode版の正式名称を mp3infp/u に変更。
 ・libogg 1.3.0, libvorbis 1.3.3 に更新。
-・mp4v2 2.0.0 に更新。
+・mp4v2 2.0.0 (r497) に更新。
 ・multi-sample description を含む mp4 ファイルで落ちるのを修正。
 ・タグ更新時にタイムスタンプを更新しない設定の時に、タイムスタンプの
 　保存ができなかった場合、異常なタイムスタンプになるのを修正。

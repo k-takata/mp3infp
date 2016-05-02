@@ -1,8 +1,8 @@
 mp3infp/u - Shell extension type tag editor -
-Ver.2.54j2 for Windows2000/XP/Vista/7
+Ver.2.54j3 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
-Copyright(C) 2009-2012 K.Takata
+Copyright(C) 2009-2016 K.Takata
 
 **** mp3infp/u is freeware ****
 

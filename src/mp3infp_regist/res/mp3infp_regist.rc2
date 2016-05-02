@@ -40,7 +40,7 @@ BEGIN
             VALUE "FileDescription", "mp3infp_regist\0"
             VALUE "FileVersion", BUILD_STR
             VALUE "InternalName", "mp3infp\0"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2012 T-Matsuo, Rem, K.Takata\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2016 T-Matsuo, Rem, K.Takata\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "mp3infp_regist.exe\0"
             VALUE "PrivateBuild", "\0"

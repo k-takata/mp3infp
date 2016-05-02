@@ -40,11 +40,11 @@ BEGIN
             VALUE "FileDescription", "mp3infp_cpl DLL\0"
             VALUE "FileVersion", BUILD_STR
             VALUE "InternalName", "mp3infp_cpl\0"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2012 T-Matsuo, Rem, K.Takata\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2016 T-Matsuo, Rem, K.Takata\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "mp3infp.cpl\0"
             VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "mp3infp.cpl ÀÞ²ÅÐ¯¸ ØÝ¸ ×²ÌÞ×Ø\0"
+            VALUE "ProductName", "mp3infp.cpl Control Panel Item\0"
             VALUE "ProductVersion", PRODUCT_STR
             VALUE "SpecialBuild", "\0"
         END
