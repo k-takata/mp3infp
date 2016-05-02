@@ -17,6 +17,9 @@
 *.cpl
 *.lng
 
+*.7z
+*.zip
+
 *.err
 *.log
 *.wrn

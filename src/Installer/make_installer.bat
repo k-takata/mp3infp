@@ -41,3 +41,7 @@ copy ..\mp3infp_regist\objfre_%target_x64%_amd64\amd64\mp3infp_regist.exe ..\x64
 rem インストーラ作成
 "%ProgramFiles%\NSIS\makensis.exe" "/DMUI_VERSION=%version%" "/XOutFile mp3infpu%filever%.exe" mp3infp.nsi
 
+rem .7z 作成
+pushd ..
+7-zip32 a Installer\mp3infpu_dll_%filever%.7z x86\mp3infp.dll x64\mp3infp.dll
+popd
