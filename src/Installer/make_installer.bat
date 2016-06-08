@@ -43,5 +43,5 @@ rem インストーラ作成
 
 rem .7z 作成
 pushd ..
-7-zip32 a Installer\mp3infpu_dll_%filever%.7z x86\mp3infp.dll x64\mp3infp.dll
+7-zip32 a Installer\mp3infpu_dll_%filever%.7z x86\mp3infp.dll x64\mp3infp.dll ReadMe_dll.txt lgpl.txt
 popd
