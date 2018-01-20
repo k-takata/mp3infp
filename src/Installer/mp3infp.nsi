@@ -10,6 +10,7 @@
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
 ;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
+!define UNINST_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}"
 
 ;Var PRGMMAN_HWND
 
@@ -231,29 +232,29 @@ Section "main files" SecCopyUI
 	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language" "$LANGUAGE"
 	
 	;[1] mp3infp_regist.exe
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
+	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
 	IfRebootFlag 0 +2
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "mp3infp" "$\"$INSTDIR\mp3infp_regist.exe$\""
+		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist.exe$\""
 	
 	${If} ${RunningX64}
 		SetRegView 64
-		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
+		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
 		IfRebootFlag 0 +2
-			WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "mp3infp" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
+			WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
 		SetRegView 32
 	${EndIf}
 	
 	;[2] Uninstall list
 	${If} ${RunningX64}
 		SetRegView 64
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
 		SetRegView 32
 	${Else}
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp" "UninstallString" '"$INSTDIR\uninstall.exe"'
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+		WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	${EndIf}
 	
 	;[3] Store install folder
@@ -353,14 +354,14 @@ Section "Uninstall"
 	RMDir "$INSTDIR"
 
 	; [1]
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "mp3infp"
+	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
 	; [2]
 	${If} ${RunningX64}
 		SetRegView 64
-		DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp"
+		DeleteRegKey HKLM "${UNINST_REG_KEY}"
 		SetRegView 32
 	${Else}
-		DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\mp3infp"
+		DeleteRegKey HKLM "${UNINST_REG_KEY}"
 	${EndIf}
 	; [3]
 	DeleteRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
