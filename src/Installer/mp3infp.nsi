@@ -335,9 +335,9 @@ Section "Uninstall"
 		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
 		${EnableX64FSRedirection}
 	${Else}
-		UnRegDLL "mp3infp.dll"
 		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 	${EndIf}
+	UnRegDLL "mp3infp.dll"
 	Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
 
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
