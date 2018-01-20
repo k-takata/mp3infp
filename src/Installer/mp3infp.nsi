@@ -8,6 +8,7 @@
 
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
+!define PUBLISHER "T-Matsuo and K.Takata"
 ;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
 
@@ -253,14 +254,16 @@ Section "main files" SecCopyUI
 	;[2] Uninstall list
 	${If} ${RunningX64}
 		SetRegView 64
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+	${EndIf}
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${MUI_VERSION}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+	SectionGetSize ${SecCopyUI} $0
+	WriteRegDWORD HKLM "${UNINST_REG_KEY}" "EstimatedSize" $0
+	${If} ${RunningX64}
 		SetRegView 32
-	${Else}
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
-		WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	${EndIf}
 	
 	;[3] Store install folder
