@@ -10,7 +10,13 @@
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
 ;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
-!define UNINST_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}"
+
+!define UNINST_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}"
+!define RUN_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Run"
+!define RUNONCE_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\RunOnce"
+!define SHDLLS_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\SharedDLLs"
+!define COMPANY_REG_KEY	"Software\${MUI_COMPANY}"
+!define PRODUCT_REG_KEY	"Software\${MUI_COMPANY}\${MUI_PRODUCT}"
 
 ;Var PRGMMAN_HWND
 
@@ -228,19 +234,19 @@ Section "main files" SecCopyUI
 	${EndIf}
 
 	;Language set
-	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Language" "$(LangRegKey)"
-	WriteRegStr HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language" "$LANGUAGE"
+	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
+	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Installer Language" "$LANGUAGE"
 	
 	;[1] mp3infp_regist.exe
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
 	IfRebootFlag 0 +2
-		WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist.exe$\""
+		WriteRegStr HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist.exe$\""
 	
 	${If} ${RunningX64}
 		SetRegView 64
-		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
 		IfRebootFlag 0 +2
-			WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
+			WriteRegStr HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
 		SetRegView 32
 	${EndIf}
 	
@@ -258,10 +264,10 @@ Section "main files" SecCopyUI
 	${EndIf}
 	
 	;[3] Store install folder
-	WriteRegStr HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path" $INSTDIR
+	WriteRegStr HKLM "${PRODUCT_REG_KEY}" "path" $INSTDIR
 	${If} ${RunningX64}
 		SetRegView 64
-		WriteRegStr HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path" $INSTDIR
+		WriteRegStr HKLM "${PRODUCT_REG_KEY}" "path" $INSTDIR
 		SetRegView 32
 	${EndIf}
 	
@@ -275,13 +281,13 @@ Function .onInit
 
 	${If} ${RunningX64}
 		SetRegView 64
-		ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
+		ReadRegStr $INSTDIR HKLM "${PRODUCT_REG_KEY}" "path"
 		StrCmp $INSTDIR "" 0 regok64
 		StrCpy $INSTDIR "$PROGRAMFILES64\${MUI_PRODUCT}"
 		regok64:
 		SetRegView 32
 	${Else}
-		ReadRegStr $INSTDIR HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "path"
+		ReadRegStr $INSTDIR HKLM "${PRODUCT_REG_KEY}" "path"
 		StrCmp $INSTDIR "" 0 regok
 		StrCpy $INSTDIR "$PROGRAMFILES\${MUI_PRODUCT}"
 		regok:
@@ -354,11 +360,11 @@ Section "Uninstall"
 	RMDir "$INSTDIR"
 
 	; [1]
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
 	${If} ${RunningX64}
-		DeleteRegValue HKLM64 "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
-		DeleteRegValue HKLM64 "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
 	${EndIf}
 	; [2]
 	${If} ${RunningX64}
@@ -369,21 +375,21 @@ Section "Uninstall"
 		DeleteRegKey HKLM "${UNINST_REG_KEY}"
 	${EndIf}
 	; [3]
-	DeleteRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
-	DeleteRegKey /ifempty HKLM "Software\${MUI_COMPANY}"
+	DeleteRegKey HKLM "${PRODUCT_REG_KEY}"
+	DeleteRegKey /ifempty HKLM "${COMPANY_REG_KEY}"
 	${If} ${RunningX64}
 		SetRegView 64
-		DeleteRegKey HKLM "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
-		DeleteRegKey /ifempty HKLM "Software\${MUI_COMPANY}"
+		DeleteRegKey HKLM "${PRODUCT_REG_KEY}"
+		DeleteRegKey /ifempty HKLM "${COMPANY_REG_KEY}"
 		SetRegView 32
 	${EndIf}
 	
-	DeleteRegKey HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}"
-	DeleteRegKey /ifempty HKCU "Software\${MUI_COMPANY}"
-	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\SharedDLLs" "$SYSDIR\mp3infp.dll"
+	DeleteRegKey HKCU "${PRODUCT_REG_KEY}"
+	DeleteRegKey /ifempty HKCU "${COMPANY_REG_KEY}"
+	DeleteRegValue HKLM "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 	${If} ${RunningX64}
 		SetRegView 64
-		DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\SharedDLLs" "$SYSDIR\mp3infp.dll"
+		DeleteRegValue HKLM "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 		SetRegView 32
 	${EndIf}
 	
@@ -403,7 +409,7 @@ FunctionEnd
 
 Function un.onInit
 	;Get language from registry
-	ReadRegStr $0 HKCU "Software\${MUI_COMPANY}\${MUI_PRODUCT}" "Installer Language"
+	ReadRegStr $0 HKCU "${PRODUCT_REG_KEY}" "Installer Language"
 	StrCmp $0 "" regskip 0
 	StrCpy $LANGUAGE $0
 	regskip:
