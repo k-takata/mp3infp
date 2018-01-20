@@ -355,6 +355,11 @@ Section "Uninstall"
 
 	; [1]
 	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}"
+	${If} ${RunningX64}
+		DeleteRegValue HKLM64 "Software\Microsoft\Windows\CurrentVersion\Run" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "Software\Microsoft\Windows\CurrentVersion\RunOnce" "${MUI_PRODUCT}"
+	${EndIf}
 	; [2]
 	${If} ${RunningX64}
 		SetRegView 64
