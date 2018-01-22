@@ -86,7 +86,7 @@ BOOL CMp3infpApp::InitInstance()
 
 	CString strLangPath;
 	strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),_T("c:\\progra~1\\mp3infp"));
-	AddTAilYenSigne(strLangPath);
+	AddTailYenSign(strLangPath);
 	strLangPath += _T("language\\");
 	
 	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Language"),DEF_SETUP_MAIN_LANGUAGE);
@@ -259,7 +259,7 @@ STDAPI DllRegisterServer()
 	//2003-08-10 インストーラに移動
 //	char szRegExePath[MAX_PATH];
 //	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szRegExePath,_T(""));
-//	AddTAilYenSigne(szRegExePath);
+//	AddTailYenSign(szRegExePath);
 //	strcat(szRegExePath,_T("mp3infp_regist.exe"));
 //	regSetString(HKEY_LOCAL_MACHINE,_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"),APP_NAME,szRegExePath);
 

@@ -119,7 +119,7 @@ BOOL CPageMain::OnApply()
 
 	CString strLangPath;
 	strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","c:\\progra~1\\mp3infp");
-	AddTAilYenSigne(strLangPath);
+	AddTailYenSign(strLangPath);
 	strLangPath += "language\\";
 	strLangPath += strLanguage;
 	strLangPath += ".lng";
@@ -201,7 +201,7 @@ BOOL CPageMain::OnInitDialog()
 	//言語パックディレクトリを取得
 	CString strLangPath;
 	strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","c:\\progra~1\\mp3infp");
-	AddTAilYenSigne(strLangPath);
+	AddTailYenSign(strLangPath);
 	strLangPath += "language\\*.lng";
 	//コンボボックスの初期化
 	WIN32_FIND_DATA fd;
@@ -213,7 +213,7 @@ BOOL CPageMain::OnInitDialog()
 		do
 		{
 			strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","c:\\progra~1\\mp3infp");
-			AddTAilYenSigne(strLangPath);
+			AddTailYenSign(strLangPath);
 			strLangPath += "language\\";
 			strLangPath += fd.cFileName;
 			HMODULE hResource = LoadLibrary(strLangPath);

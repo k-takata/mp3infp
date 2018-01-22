@@ -119,7 +119,7 @@ BOOL IsTailYenSign(LPCTSTR szStr)
 }
 
 //•¶––‚É'\\'‚ð’Ç‰Á(Šù‚É'\\'‚Ì‚Æ‚«‚Í‰½‚à‚µ‚È‚¢)
-void AddTAilYenSigne(LPTSTR szStr)
+void AddTailYenSign(LPTSTR szStr)
 {
 	if(!IsTailYenSign(szStr))
 	{
@@ -127,7 +127,7 @@ void AddTAilYenSigne(LPTSTR szStr)
 	}
 }
 
-void AddTAilYenSigne(CString &str)
+void AddTailYenSign(CString &str)
 {
 	if(!IsTailYenSign((LPCTSTR )str))
 	{

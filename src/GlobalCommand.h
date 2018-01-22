@@ -27,8 +27,8 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 BOOL IsTailYenSign(LPCTSTR szStr);
 
 //•¶––‚É'\\'‚ğ’Ç‰Á(Šù‚É'\\'‚Ì‚Æ‚«‚Í‰½‚à‚µ‚È‚¢)
-void AddTAilYenSigne(LPTSTR szStr);
-void AddTAilYenSigne(CString &Str);
+void AddTailYenSign(LPTSTR szStr);
+void AddTailYenSign(CString &Str);
 
 //LoadString‚ÌƒoƒO‘Îô(MSKB Q140452)
 CString LoadResString(HINSTANCE hInstance,UINT uID);

@@ -615,7 +615,7 @@ void CShellExt::OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile)
 	// mp3infpのインストールパス
 	TCHAR szMp3infpPath[MAX_PATH];
 	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szMp3infpPath,_T(""));
-	AddTAilYenSigne(szMp3infpPath);
+	AddTailYenSign(szMp3infpPath);
 	// 選択言語
 	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Language"),(LPCTSTR )DEF_SETUP_MAIN_LANGUAGE);
 	if(strLanguage.Compare(DEF_SETUP_MAIN_LANGUAGE) == 0)

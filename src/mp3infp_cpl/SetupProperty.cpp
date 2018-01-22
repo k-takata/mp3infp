@@ -90,7 +90,7 @@ void CSetupProperty::OpenHtmlHelp(HWND hWnd,char *szViewFile)
 	// mp3infpのインストールパス
 	char szMp3infpPath[MAX_PATH];
 	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path",szMp3infpPath,"");
-	AddTAilYenSigne(szMp3infpPath);
+	AddTailYenSign(szMp3infpPath);
 	// 選択言語
 	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Language",(char *)(LPCSTR )DEF_SETUP_MAIN_LANGUAGE);
 	if(strLanguage.Compare(DEF_SETUP_MAIN_LANGUAGE) == 0)
