@@ -1,4 +1,4 @@
-// mp3infp_cpl.h : MP3INFP_CPL アプリケーションのメイン ヘッダー ファイルです。
+// mp3infp_setup.h : MP3INFP_SETUP アプリケーションのメイン ヘッダー ファイルです。
 //
 
 #if !defined(AFX_MP3INFP_CPL_H__BE5BCB1F_0339_4A80_AA8C_365A4C87F21F__INCLUDED_)
@@ -13,39 +13,31 @@
 #endif
 
 #include "resource.h"		// メイン シンボル
-#include <cpl.h>
 #include <htmlhelp.h>
 
 /////////////////////////////////////////////////////////////////////////////
-// CMp3infp_cplApp
+// CMp3infpSetupApp
 // このクラスの動作の定義に関しては mp3infp_cpl.cpp ファイルを参照してください。
 //
 
-class CMp3infp_cplApp : public CWinApp
+class CMp3infpSetupApp : public CWinApp
 {
 public:
-	CMp3infp_cplApp();
-	virtual ~CMp3infp_cplApp();
-	static	LONG __stdcall CPlApplet(HWND hWnd,UINT uMsg,LPARAM lParam1,LPARAM lParam2);
-
-	static	LONG	OnDblclk(HWND hWnd,UINT uAppNum,LONG_PTR lData);
-	static	LONG	OnExit();
-	static	LONG	OnGetCount();
-	static	LONG	OnInit();
-	static	LONG	OnInquire(UINT uAppNum,CPLINFO* pInfo);
-	static	LONG	OnNewInquire(UINT uAppNum,NEWCPLINFO* pInfo);
-	static	LONG	OnStop(UINT uAppNum,LONG_PTR lData);
+	CMp3infpSetupApp();
+	virtual ~CMp3infpSetupApp();
 	static	LONG LoadLanguage();
 
-	static	CMp3infp_cplApp* m_pThis;
+	static	CMp3infpSetupApp* m_pThis;
 	HINSTANCE m_hResource;
 
 // オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
-	//{{AFX_VIRTUAL(CMp3infp_cplApp)
+	//{{AFX_VIRTUAL(CMp3infpSetupApp)
+	public:
+	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CMp3infp_cplApp)
+	//{{AFX_MSG(CMp3infpSetupApp)
 		// メモ -  ClassWizard はこの位置にメンバ関数を追加または削除します。
 		//         この位置に生成されるコードを編集しないでください。
 	//}}AFX_MSG

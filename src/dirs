@@ -1,1 +1,1 @@
-DIRS=lang_japanese lib mp3infp_cpl mp3infp_regist dll
+DIRS=lang_japanese lib mp3infp_regist mp3infp_setup dll

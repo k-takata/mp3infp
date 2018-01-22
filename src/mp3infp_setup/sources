@@ -1,9 +1,8 @@
-TARGETNAME=mp3infp
-TARGETEXT=cpl
+TARGETNAME=mp3infp_setup
 
 TARGETPATH=obj
 
-TARGETTYPE=DYNLINK
+TARGETTYPE=PROGRAM
 
 TARGETLIBS=\
 	$(SDK_LIB_PATH)\kernel32.lib \
@@ -17,10 +16,8 @@ TARGETLIBS=\
 INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH)
 
 
-DLLDEF=mp3infp_cpl.def
-
 SOURCES=\
-	mp3infp_cpl.cpp \
+	mp3infp_setup.cpp \
 	PageApe.cpp \
 	PageAvi.cpp \
 	PageM3u.cpp \
@@ -34,7 +31,7 @@ SOURCES=\
 	SetupProperty.cpp \
 	..\GlobalCommand.cpp \
 	..\RegAccess.cpp \
-	mp3infp_cpl.rc
+	mp3infp_setup.rc
 #	StdAfx.cpp
 
 #BUILD_ALLOW_COMPILER_WARNINGS=1
