@@ -42,5 +42,8 @@ mp3infp is distributed based on LGPL
 
 
 ---------------------------------
+mp3infp/u
+https://github.com/k-takata/mp3infp
+
 http://win32lab.com/
 

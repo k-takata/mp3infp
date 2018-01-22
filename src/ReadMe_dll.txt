@@ -18,5 +18,8 @@ http://code.google.com/p/mp4v2/
 扱いに付いては添付のLGPL許諾契約書(lgpl.txt)を参照してください。
 
 ----------------------------------
+mp3infp/u
+https://github.com/k-takata/mp3infp
+
 Win32工作小屋
 http://win32lab.com/
