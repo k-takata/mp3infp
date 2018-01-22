@@ -597,6 +597,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 								CB_GETCURSEL,
 								0,
 								0);
+					BOOL bUnsync = TRUE;
 					switch(cur){
 					case 0:	// v2.2
 						lpcs->m_Id3tagv2.SetVer(0x0200);
@@ -607,6 +608,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						break;
 					case 2:	// v2.4
 						lpcs->m_Id3tagv2.SetVer(0x0400);
+						bUnsync = FALSE;
 						break;
 					}
 					// Unsync/UnicodeŽw’è
@@ -630,7 +632,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
 						break;
 					}
-					lpcs->m_Id3tagv2.SetUnSynchronization(TRUE);
+					lpcs->m_Id3tagv2.SetUnSynchronization(bUnsync);
 					// Winamp‚ðˆê’U’âŽ~
 /*					int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
 					int nowPlayPos = 0;
@@ -919,6 +921,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					break;
 				case 2:	// v2.4
 					lpcs->m_Id3tagv2.SetVer(0x0400);
+					CheckDlgButton(hDlg,IDC_CHECK_UNSYNC,BST_UNCHECKED);
 					break;
 				default:
 				case CB_ERR:
