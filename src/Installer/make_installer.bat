@@ -31,8 +31,8 @@ copy ..\dll\objfre_%target_x64%_amd64\amd64\mp3infp.dll ..\x64 /y
 copy ..\lang_japanese\objfre_%target_x86%_x86\i386\Japanese.lng    ..\x86 /y
 copy ..\lang_japanese\objfre_%target_x64%_amd64\amd64\Japanese.lng ..\x64 /y
 
-copy ..\mp3infp_cpl\objfre_%target_x86%_x86\i386\mp3infp.cpl    ..\x86 /y
-copy ..\mp3infp_cpl\objfre_%target_x64%_amd64\amd64\mp3infp.cpl ..\x64 /y
+copy ..\mp3infp_setup\objfre_%target_x86%_x86\i386\mp3infp_setup.exe    ..\x86 /y
+copy ..\mp3infp_setup\objfre_%target_x64%_amd64\amd64\mp3infp_setup.exe ..\x64 /y
 
 copy ..\mp3infp_regist\objfre_%target_x86%_x86\i386\mp3infp_regist.exe    ..\x86 /y
 copy ..\mp3infp_regist\objfre_%target_x64%_amd64\amd64\mp3infp_regist.exe ..\x64 /y

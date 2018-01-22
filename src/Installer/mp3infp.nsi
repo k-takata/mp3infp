@@ -87,12 +87,13 @@ Section "main files" SecCopyUI
 		File /oname=mp3infp_regist_x64.exe "..\x64\mp3infp_regist.exe"
 	${EndIf}
 	File "..\x86\mp3infp_regist.exe"
+	File "..\x86\mp3infp_setup.exe"
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
 	CreateDirectory "$INSTDIR\language"
 	SetOutPath "$INSTDIR\language"
 	
-	; japanese
+	; Japanese
 	StrCpy "$0" "Japanese.chm"
 	Delete "$INSTDIR\language\$0"
 	IfFileExists "$0" 0 jp_chmCpy
@@ -169,6 +170,15 @@ Section "main files" SecCopyUI
 	
 	;----------------------------------------------------------------
 	SetOutPath "$SYSDIR"
+
+	; Remove old file
+	${If} ${RunningX64}
+		${DisableX64FSRedirection}
+		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
+		${EnableX64FSRedirection}
+	${Else}
+		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
+	${EndIf}
 	
 	; x86 mp3infp.dll
 	StrCpy "$0" "mp3infp.dll"
@@ -205,35 +215,6 @@ Section "main files" SecCopyUI
 		ExecWait '"$SYSDIR\regsvr32.exe" /s mp3infp.dll'
 	YesReboot64:
 	
-	; x64 mp3infp.cpl
-	StrCpy "$0" "mp3infp.cpl"
-	Delete "$SYSDIR\$0"
-	IfFileExists "$0" 0 cplCpy64
-	StrCpy "$1" "0"
-	cplExists64:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "mp3infc.$1"
-		IfFileExists "$0" cplExists64
-	cplCpy64:
-	File /oname=$0 "..\x64\mp3infp.cpl"
-	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.cpl"
-
-	${EnableX64FSRedirection}
-	${Else}
-	; x86 mp3infp.cpl
-	StrCpy "$0" "mp3infp.cpl"
-	Delete "$SYSDIR\$0"
-	IfFileExists "$0" 0 cplCpy
-	StrCpy "$1" "0"
-	cplExists:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "mp3infc.$1"
-		IfFileExists "$0" cplExists
-	cplCpy:
-	File /oname=$0 "..\x86\mp3infp.cpl"
-	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.cpl"
-	${EndIf}
-
 	;Language set
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Installer Language" "$LANGUAGE"
@@ -255,7 +236,7 @@ Section "main files" SecCopyUI
 	${If} ${RunningX64}
 		SetRegView 64
 	${EndIf}
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_regist.exe$\",0"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_setup.exe$\",0"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${MUI_VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
@@ -341,16 +322,14 @@ Section "Uninstall"
 		${DisableX64FSRedirection}
 		ExecWait '"$SYSDIR\regsvr32.exe" /s /u mp3infp.dll'
 		Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
-		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
 		${EnableX64FSRedirection}
-	${Else}
-		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 	${EndIf}
 	UnRegDLL "mp3infp.dll"
 	Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
 
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
+	Delete /REBOOTOK "$INSTDIR\mp3infp_setup.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp.txt"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_eng.txt"
 	Delete /REBOOTOK "$INSTDIR\language\Japanese.chm"
