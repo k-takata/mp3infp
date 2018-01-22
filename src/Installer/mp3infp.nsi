@@ -43,6 +43,7 @@ LangString Name ${LANG_JAPANESE} "${MUI_PRODUCT} v${MUI_VERSION}"
 LangString MesReboot ${LANG_ENGLISH} "The reboot of PC is required to complete installation. Does it reboot immediately now?"
 LangString MesRebootU ${LANG_ENGLISH} "The reboot of PC is required to complete uninstallation. Does it reboot immediately now?"
 LangString LangRegKey ${LANG_ENGLISH} "default"
+LangString MP3INFP_SETUP_NAME ${LANG_ENGLISH} "mp3infp setup"
 
 ;LangString MesReboot ${LANG_SIMPCHINESE} "The reboot of PC is required to complete installation. Does it reboot immediately now?"
 ;LangString MesRebootU ${LANG_SIMPCHINESE} "The reboot of PC is required to complete uninstallation. Does it reboot immediately now?"
@@ -231,6 +232,10 @@ Section "main files" SecCopyUI
 			WriteRegStr HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
 		SetRegView 32
 	${EndIf}
+
+	;Start menu
+	CreateDirectory "$SMPROGRAMS\${MUI_PRODUCT}"
+	CreateShortcut "$SMPROGRAMS\${MUI_PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
 	
 	;[2] Uninstall list
 	${If} ${RunningX64}
@@ -340,6 +345,10 @@ Section "Uninstall"
 
 	RMDir "$INSTDIR\language"
 	RMDir "$INSTDIR"
+
+	;Start menu
+	Delete "$SMPROGRAMS\${MUI_PRODUCT}\$(MP3INFP_SETUP_NAME).lnk"
+	RMDir "$SMPROGRAMS\${MUI_PRODUCT}"
 
 	; [1]
 	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
