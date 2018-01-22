@@ -30,7 +30,6 @@ END_MESSAGE_MAP()
 
 CMp3infpSetupApp theApp;
 
-CMp3infpSetupApp* CMp3infpSetupApp::m_pThis = NULL;
 //DWORD g_dwCookie;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,13 +37,11 @@ CMp3infpSetupApp* CMp3infpSetupApp::m_pThis = NULL;
 
 CMp3infpSetupApp::CMp3infpSetupApp()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState()); 
 	//comctl32.dllのロードと初期化
 	InitCommonControls();
 #ifdef _DEBUG
 	OutputDebugString("CMp3infpSetupApp::CMp3infpSetupApp()\n");
 #endif
-	m_pThis = this;
 //	HtmlHelp(
 //			NULL,
 //			NULL,
@@ -74,7 +71,7 @@ BOOL CMp3infpSetupApp::InitInstance()
 
 	TCHAR tmp[100];
 	//「mp3infp設定」
-	::LoadString(m_pThis->m_hResource,IDS_CPL_NAME,tmp,sizeof_array(tmp));
+	::LoadString(m_hResource,IDS_CPL_NAME,tmp,sizeof_array(tmp));
 	CSetupProperty propDlg(tmp,NULL,0);
 	m_pMainWnd = &propDlg;
 	propDlg.DoModal();
@@ -100,22 +97,22 @@ LONG CMp3infpSetupApp::LoadLanguage()
 	OutputDebugString(strLangPath);
 	OutputDebugString("\n");
 #endif
-	//m_pThis->m_hResource = LoadLibraryEx(strLangPath,0,LOAD_LIBRARY_AS_DATAFILE);
-	m_pThis->m_hResource = LoadLibrary(strLangPath);
-	if(m_pThis->m_hResource)
+	//m_hResource = LoadLibraryEx(strLangPath,0,LOAD_LIBRARY_AS_DATAFILE);
+	m_hResource = LoadLibrary(strLangPath);
+	if(m_hResource)
 	{
 		AfxSetResourceHandle(theApp.m_hResource);
 		char tmp[20];
 		if((LoadString(AfxGetResourceHandle(),IDS_LANGUAGE_VER,tmp,sizeof(tmp)) == 0) ||
 			(atoi(tmp) < LANG_VER) )
 		{
-			FreeLibrary(m_pThis->m_hResource);
-			m_pThis->m_hResource = NULL;
+			FreeLibrary(m_hResource);
+			m_hResource = NULL;
 		}
 	}
-	if(!m_pThis->m_hResource)
+	if(!m_hResource)
 	{
-		m_pThis->m_hResource = AfxGetInstanceHandle();
+		m_hResource = AfxGetInstanceHandle();
 		AfxSetResourceHandle(theApp.m_hResource);
 	}
 	return 1; // OK

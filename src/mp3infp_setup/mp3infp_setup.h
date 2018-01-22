@@ -25,9 +25,8 @@ class CMp3infpSetupApp : public CWinApp
 public:
 	CMp3infpSetupApp();
 	virtual ~CMp3infpSetupApp();
-	static	LONG LoadLanguage();
+	LONG LoadLanguage();
 
-	static	CMp3infpSetupApp* m_pThis;
 	HINSTANCE m_hResource;
 
 // オーバーライド
