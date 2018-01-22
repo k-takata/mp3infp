@@ -198,23 +198,25 @@ Section "main files" SecCopyUI
 	YesReboot:
 
 	${If} ${RunningX64}
-	${DisableX64FSRedirection}
+		${DisableX64FSRedirection}
 
-	; x64 mp3infp.dll
-	StrCpy "$0" "mp3infp.dll"
-	Delete "$SYSDIR\$0"
-	IfFileExists "$SYSDIR\$0" 0 dllCpy64
-	StrCpy "$1" "0"
-	dllExists64:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "mp3infp.$1"
-		IfFileExists "$0" dllExists64
-	dllCpy64:
-	File /oname=$0 "..\x64\mp3infp.dll"
-	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
-	IfRebootFlag YesReboot64 0
-		ExecWait '"$SYSDIR\regsvr32.exe" /s mp3infp.dll'
-	YesReboot64:
+		; x64 mp3infp.dll
+		StrCpy "$0" "mp3infp.dll"
+		Delete "$SYSDIR\$0"
+		IfFileExists "$SYSDIR\$0" 0 dllCpy64
+		StrCpy "$1" "0"
+		dllExists64:
+			IntOp "$1" "$1" + "1"
+			StrCpy "$0" "mp3infp.$1"
+			IfFileExists "$0" dllExists64
+		dllCpy64:
+		File /oname=$0 "..\x64\mp3infp.dll"
+		Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
+		IfRebootFlag YesReboot64 0
+			ExecWait '"$SYSDIR\regsvr32.exe" /s mp3infp.dll'
+		YesReboot64:
+		${EnableX64FSRedirection}
+	${EndIf}
 	
 	;Language set
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
