@@ -192,7 +192,7 @@ Section "main files" SecCopyUI
 	${If} ${RunningX64}
 		SetRegView 64
 	${EndIf}
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_setup.exe$\",0"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" '"$INSTDIR\mp3infp_setup.exe",0'
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${PRODUCT} ${VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
