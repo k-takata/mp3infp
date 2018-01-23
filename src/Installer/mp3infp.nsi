@@ -8,7 +8,7 @@
 
 !define MUI_COMPANY "win32lab.com" ;Define your own software name here
 !define MUI_PRODUCT "mp3infp" ;Define your own software name here
-!define PUBLISHER "T-Matsuo and K.Takata"
+!define PUBLISHER "T-Matsuo, Rem and K.Takata"
 ;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
 
