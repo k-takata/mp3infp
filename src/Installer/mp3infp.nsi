@@ -112,7 +112,7 @@ Section "main files" SecCopyUI
 
 	CreateDirectory "$INSTDIR\language"
 	SetOutPath "$INSTDIR\language"
-	
+
 	; Language resources
 	; (Use InstallLib even if the files are not DLL.)
 	!define LIBRARY_IGNORE_VERSION
@@ -132,7 +132,7 @@ Section "main files" SecCopyUI
 ;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
 ;			"..\lang\Chinese_Traditional.lng" \
 ;			"$OUTDIR\Chinese_Traditional.lng" "$OUTDIR"
-	
+
 	; Chinese Simplified
 ;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
 ;			"..\lang\Chinese_Simplified.txt" \
@@ -140,7 +140,7 @@ Section "main files" SecCopyUI
 ;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
 ;			"..\lang\Chinese_Simplified.lng" \
 ;			"$OUTDIR\Chinese_Simplified.lng" "$OUTDIR"
-	
+
 	;----------------------------------------------------------------
 	SetOutPath "$SYSDIR"
 
@@ -152,7 +152,7 @@ Section "main files" SecCopyUI
 	${Else}
 		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 	${EndIf}
-	
+
 	; mp3infp.dll
 	; (Should we register the DLLs as shared DLLs?)
 	!undef LIBRARY_IGNORE_VERSION
@@ -170,15 +170,15 @@ Section "main files" SecCopyUI
 				"$SYSDIR\mp3infp.dll" "$SYSDIR"
 		!undef LIBRARY_X64
 	${EndIf}
-	
+
 	;Language set
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "${INSTLANG_REG_VALNAME}" "$LANGUAGE"
-	
+
 	;Start menu
 	CreateDirectory "$SMPROGRAMS\${PRODUCT}"
 	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
-	
+
 	;[1] mp3infp_regist.exe (Obsolete)
 	; Delete old registory values.
 	DeleteRegValue HKLM "${RUN_REG_KEY}" "${PRODUCT}"
@@ -202,17 +202,17 @@ Section "main files" SecCopyUI
 	${If} ${RunningX64}
 		SetRegView 32
 	${EndIf}
-	
+
 	;[3] Store install folder
 	WriteRegStr HKLM "${PRODUCT_REG_KEY}" "${INSTDIR_REG_VALNAME}" $INSTDIR
 	${If} ${RunningX64}
 		WriteRegStr HKLM64 "${PRODUCT_REG_KEY}" "${INSTDIR_REG_VALNAME}" $INSTDIR
 	${EndIf}
-	
+
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 SectionEnd
-  
+
 ;--------------------------------
 
 Function .onInit
@@ -291,14 +291,14 @@ Section "Uninstall"
 		DeleteRegKey HKLM64 "${PRODUCT_REG_KEY}"
 		DeleteRegKey /ifempty HKLM64 "${COMPANY_REG_KEY}"
 	${EndIf}
-	
+
 	DeleteRegKey HKCU "${PRODUCT_REG_KEY}"
 	DeleteRegKey /ifempty HKCU "${COMPANY_REG_KEY}"
 	DeleteRegValue HKLM "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 	${If} ${RunningX64}
 		DeleteRegValue HKLM64 "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 	${EndIf}
-	
+
 SectionEnd
 
 ;--------------------------------
