@@ -39,7 +39,7 @@ copy ..\mp3infp_regist\objfre_%target_x64%_amd64\amd64\mp3infp_regist.exe ..\x64
 
 
 rem インストーラ作成
-"%ProgramFiles%\NSIS\makensis.exe" "/DMUI_VERSION=%version%" "/XOutFile mp3infpu%filever%.exe" mp3infp.nsi
+"%ProgramFiles%\NSIS\makensis.exe" "/DVERSION=%version%" "/XOutFile mp3infpu%filever%.exe" mp3infp.nsi
 
 rem .7z 作成
 pushd ..

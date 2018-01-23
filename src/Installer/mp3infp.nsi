@@ -1,84 +1,98 @@
-; languages.nsi
+﻿; languages.nsi
 ;
 ; This is an example of a multilingual installer
 ; The user can select the language on startup
 
 ;--------------------------------
-!packhdr "$%TEMP%\exehead.tmp" '"upx.exe" -9 "$%TEMP%\exehead.tmp"'
-
-!define MUI_COMPANY "win32lab.com" ;Define your own software name here
-!define MUI_PRODUCT "mp3infp" ;Define your own software name here
+!define COMPANY "win32lab.com" ;Define your own software name here
+!define PRODUCT "mp3infp" ;Define your own software name here
 !define PUBLISHER "T-Matsuo, Rem and K.Takata"
-;!define MUI_VERSION "2.54g/u7" ;Define your own software version here
+;!define VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
 
-!define UNINST_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Uninstall\${MUI_PRODUCT}"
+!define UNINST_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
 !define RUN_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Run"
 !define RUNONCE_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\RunOnce"
 !define SHDLLS_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\SharedDLLs"
-!define COMPANY_REG_KEY	"Software\${MUI_COMPANY}"
-!define PRODUCT_REG_KEY	"Software\${MUI_COMPANY}\${MUI_PRODUCT}"
+!define COMPANY_REG_KEY	"Software\${COMPANY}"
+!define PRODUCT_REG_KEY	"Software\${COMPANY}\${PRODUCT}"
+!define INSTDIR_REG_VALNAME  "path"
+!define INSTLANG_REG_VALNAME "Installer Language"
 
-;Var PRGMMAN_HWND
-
-InstallDir "$PROGRAMFILES\${MUI_PRODUCT}"
+Unicode true
 SetCompressor /SOLID lzma
 XPStyle on
 RequestExecutionLevel admin
+ManifestDPIAware true
+
+!packhdr "$%TEMP%\exehead.tmp" '"upx.exe" -9 "$%TEMP%\exehead.tmp"'
 
 ;--------------------------------
 
-; First is default
-LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-LoadLanguageFile "${NSISDIR}\Contrib\Language files\Japanese.nlf"
-;LoadLanguageFile "${NSISDIR}\Contrib\Language files\TradChinese.nlf"
-;LoadLanguageFile "${NSISDIR}\Contrib\Language files\SimpChinese.nlf"
+!include "x64.nsh"
+!include "Library.nsh"
+!include "MUI2.nsh"
 
-; Set name using the normal interface (Name command)
-LangString Name ${LANG_ENGLISH} "${MUI_PRODUCT} v${MUI_VERSION}"
-LangString Name ${LANG_JAPANESE} "${MUI_PRODUCT} v${MUI_VERSION}"
-;LangString Name ${LANG_TRADCHINESE} "${MUI_PRODUCT} v${MUI_VERSION}"
-;LangString Name ${LANG_SIMPCHINESE} "${MUI_PRODUCT} v${MUI_VERSION}"
 
-LangString MesReboot ${LANG_ENGLISH} "The reboot of PC is required to complete installation. Does it reboot immediately now?"
-LangString MesRebootU ${LANG_ENGLISH} "The reboot of PC is required to complete uninstallation. Does it reboot immediately now?"
+;--------------------------------
+; Interface Settings
+
+!define MUI_ABORTWARNING
+!define MUI_UNABORTWARNING
+!define MUI_LANGDLL_ALLLANGUAGES
+
+; Uncomment the following lines for debugging.
+;!define MUI_FINISHPAGE_NOAUTOCLOSE
+;!define MUI_UNFINISHPAGE_NOAUTOCLOSE
+
+;--------------------------------
+; Language Selection Dialog Settings
+
+; Remember the installer language
+!define MUI_LANGDLL_REGISTRY_ROOT "HKCU"
+!define MUI_LANGDLL_REGISTRY_KEY "${PRODUCT_REG_KEY}"
+!define MUI_LANGDLL_REGISTRY_VALUENAME "${INSTLANG_REG_VALNAME}"
+
+;--------------------------------
+; Pages
+
+!insertmacro MUI_PAGE_LICENSE "$(SLICENSEFILE)"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_UNPAGE_FINISH
+
+;--------------------------------
+; Languages
+
+!insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "Japanese"
+
 LangString LangRegKey ${LANG_ENGLISH} "default"
 LangString MP3INFP_SETUP_NAME ${LANG_ENGLISH} "mp3infp setup"
 
-;LangString MesReboot ${LANG_SIMPCHINESE} "The reboot of PC is required to complete installation. Does it reboot immediately now?"
-;LangString MesRebootU ${LANG_SIMPCHINESE} "The reboot of PC is required to complete uninstallation. Does it reboot immediately now?"
-;LangString LangRegKey ${LANG_SIMPCHINESE} "default"
-
+!include "Japanese.nsh"
 ;!include "..\lang\Chinese_Traditional.nsh"
 ;!include "..\lang\Chinese_Simplified.nsh"
-!include "Japanese.nsh"
-!include "x64.nsh"
-!include "Library.nsh"
 
-
-Name $(Name)
-
-; Set one text for all languages (simply don't use a LangString)
-CompletedText "mp3infp install completed"
-
-;--------------------------------
-;LangString ^LICENSEDATA ${LANG_ENGLISH} "..\mp3infp_eng.txt"
-;LangString ^LICENSEDATA ${LANG_JAPANESE} "..\mp3infp.txt"
 LicenseLangString SLICENSEFILE  ${LANG_ENGLISH} "..\mp3infp_eng.txt"
 LicenseLangString SLICENSEFILE  ${LANG_JAPANESE} "..\mp3infp.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_TRADCHINESE} "..\lang\Chinese_Traditional.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_SIMPCHINESE} "..\lang\Chinese_Simplified.txt"
-LicenseData $(SLICENSEFILE)
+
+LangString Name ${LANG_ENGLISH} "${PRODUCT} v${VERSION}"
+LangString Name ${LANG_JAPANESE} "${PRODUCT} v${VERSION}"
+;LangString Name ${LANG_TRADCHINESE} "${PRODUCT} v${VERSION}"
+;LangString Name ${LANG_SIMPCHINESE} "${PRODUCT} v${VERSION}"
+Name "$(Name)"
 
 ;--------------------------------
+; Reserve Files
 
-Page license
-;Page components
-Page directory
-Page instfiles
-
-UninstPage uninstConfirm
-UninstPage instfiles
+!insertmacro MUI_RESERVEFILE_LANGDLL
 
 ;--------------------------------
 ;Installer Sections
@@ -159,19 +173,19 @@ Section "main files" SecCopyUI
 	
 	;Language set
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
-	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Installer Language" "$LANGUAGE"
+	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "${INSTLANG_REG_VALNAME}" "$LANGUAGE"
 	
 	;Start menu
-	CreateDirectory "$SMPROGRAMS\${MUI_PRODUCT}"
-	CreateShortcut "$SMPROGRAMS\${MUI_PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
+	CreateDirectory "$SMPROGRAMS\${PRODUCT}"
+	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
 	
 	;[1] mp3infp_regist.exe (Obsolete)
 	; Delete old registory values.
-	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUN_REG_KEY}" "${PRODUCT}"
+	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${PRODUCT}"
 	${If} ${RunningX64}
-		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${PRODUCT}"
+		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${PRODUCT}"
 	${EndIf}
 
 	;[2] Uninstall list
@@ -179,8 +193,8 @@ Section "main files" SecCopyUI
 		SetRegView 64
 	${EndIf}
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" "$\"$INSTDIR\mp3infp_setup.exe$\",0"
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${MUI_PRODUCT} ${MUI_VERSION}"
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${MUI_VERSION}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${PRODUCT} ${VERSION}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	SectionGetSize ${SecCopyUI} $0
@@ -190,9 +204,9 @@ Section "main files" SecCopyUI
 	${EndIf}
 	
 	;[3] Store install folder
-	WriteRegStr HKLM "${PRODUCT_REG_KEY}" "path" $INSTDIR
+	WriteRegStr HKLM "${PRODUCT_REG_KEY}" "${INSTDIR_REG_VALNAME}" $INSTDIR
 	${If} ${RunningX64}
-		WriteRegStr HKLM64 "${PRODUCT_REG_KEY}" "path" $INSTDIR
+		WriteRegStr HKLM64 "${PRODUCT_REG_KEY}" "${INSTDIR_REG_VALNAME}" $INSTDIR
 	${EndIf}
 	
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -203,51 +217,25 @@ SectionEnd
 
 Function .onInit
 
-	${If} ${RunningX64}
-		SetRegView 64
-		ReadRegStr $INSTDIR HKLM "${PRODUCT_REG_KEY}" "path"
-		StrCmp $INSTDIR "" 0 regok64
-		StrCpy $INSTDIR "$PROGRAMFILES64\${MUI_PRODUCT}"
-		regok64:
-		SetRegView 32
+	!insertmacro MUI_LANGDLL_DISPLAY
+
+	; Load install folder
+	ReadRegStr $0 HKLM "${PRODUCT_REG_KEY}" "${INSTDIR_REG_VALNAME}"
+	${If} "$0" == ""
+		; Not previously installed.
+		${If} "$INSTDIR" == ""
+			; Install folder is not specified by the command line. (/D=path)
+			${If} ${RunningX64}
+				StrCpy $INSTDIR "$PROGRAMFILES64\${PRODUCT}"
+			${Else}
+				StrCpy $INSTDIR "$PROGRAMFILES\${PRODUCT}"
+			${EndIf}
+		${EndIf}
 	${Else}
-		ReadRegStr $INSTDIR HKLM "${PRODUCT_REG_KEY}" "path"
-		StrCmp $INSTDIR "" 0 regok
-		StrCpy $INSTDIR "$PROGRAMFILES\${MUI_PRODUCT}"
-		regok:
+		; Old version might be already installed. Install there. (Ignore /D.)
+		StrCpy $INSTDIR $0
 	${EndIf}
 
-
-	;Language selection dialog
-
-	IfSilent Silent 0
-	Push ""
-	Push ${LANG_ENGLISH}
-	Push "English"
-	Push ${LANG_JAPANESE}
-	Push "Japanese"
-;	Push ${LANG_TRADCHINESE}
-;	Push "Chinese Traditional"
-;	Push ${LANG_SIMPCHINESE}
-;	Push "Chinese Simplified"
-	Push A ; A means auto count languages
-	       ; for the auto count to work the first empty push (Push "") must remain
-	LangDLL::LangDialog "Installer Language" "Please select the language of the installer"
-
-	Pop $LANGUAGE
-	
-	StrCmp $LANGUAGE "cancel" 0 +2
-		Abort
-	Silent:
-FunctionEnd
-
-Function .onInstSuccess
-	IfRebootFlag 0 NoReboot
-		MessageBox MB_YESNO|MB_ICONQUESTION \
-			$(MesReboot) \
-			IDNO NoReboot
-			Reboot
-	NoReboot:
 FunctionEnd
 
 
@@ -280,15 +268,15 @@ Section "Uninstall"
 	RMDir "$INSTDIR"
 
 	;Start menu
-	Delete "$SMPROGRAMS\${MUI_PRODUCT}\$(MP3INFP_SETUP_NAME).lnk"
-	RMDir "$SMPROGRAMS\${MUI_PRODUCT}"
+	Delete "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk"
+	RMDir "$SMPROGRAMS\${PRODUCT}"
 
 	; [1]
-	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUN_REG_KEY}" "${PRODUCT}"
+	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${PRODUCT}"
 	${If} ${RunningX64}
-		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${PRODUCT}"
+		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${PRODUCT}"
 	${EndIf}
 	; [2]
 	${If} ${RunningX64}
@@ -313,22 +301,10 @@ Section "Uninstall"
 	
 SectionEnd
 
-Function un.onUninstSuccess
-	IfRebootFlag 0 NoReboot
-		MessageBox MB_YESNO|MB_ICONQUESTION \
-			$(MesRebootU) \
-			IDNO NoReboot
-			Reboot
-	NoReboot:
-FunctionEnd
-
 ;--------------------------------
 ;Uninstaller Functions
 
 Function un.onInit
 	;Get language from registry
-	ReadRegStr $0 HKCU "${PRODUCT_REG_KEY}" "Installer Language"
-	StrCmp $0 "" regskip 0
-	StrCpy $LANGUAGE $0
-	regskip:
+	!insertmacro MUI_UNGETLANGUAGE
 FunctionEnd

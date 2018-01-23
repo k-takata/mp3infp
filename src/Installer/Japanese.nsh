@@ -1,4 +1,2 @@
-LangString MesReboot ${LANG_JAPANESE} "ƒCƒ“ƒXƒg[ƒ‹‚ðŠ®—¹‚·‚é‚É‚ÍPC‚ÌÄ‹N“®‚ª•K—v‚Å‚·B¡‚·‚®Ä‹N“®‚µ‚Ü‚·‚©H"
-LangString MesRebootU ${LANG_JAPANESE} "ƒAƒ“ƒCƒ“ƒXƒg[ƒ‹‚ðŠ®—¹‚·‚é‚É‚ÍPC‚ÌÄ‹N“®‚ª•K—v‚Å‚·B¡‚·‚®Ä‹N“®‚µ‚Ü‚·‚©H"
-LangString LangRegKey ${LANG_JAPANESE} "Japanese"
-LangString MP3INFP_SETUP_NAME ${LANG_JAPANESE} "mp3infpÝ’è"
+ï»¿LangString LangRegKey ${LANG_JAPANESE} "Japanese"
+LangString MP3INFP_SETUP_NAME ${LANG_JAPANESE} "mp3infpè¨­å®š"
