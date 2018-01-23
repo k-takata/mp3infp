@@ -53,6 +53,7 @@ LangString MP3INFP_SETUP_NAME ${LANG_ENGLISH} "mp3infp setup"
 ;!include "..\lang\Chinese_Simplified.nsh"
 !include "Japanese.nsh"
 !include "x64.nsh"
+!include "Library.nsh"
 
 
 Name $(Name)
@@ -84,95 +85,52 @@ UninstPage instfiles
 Section "main files" SecCopyUI
 
 	SetOutPath "$INSTDIR"
+
+	; Remove old files
 	${If} ${RunningX64}
-		File /oname=mp3infp_regist_x64.exe "..\x64\mp3infp_regist.exe"
+		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
 	${EndIf}
-	File "..\x86\mp3infp_regist.exe"
+	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
+
 	File "..\x86\mp3infp_setup.exe"
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
+
 	CreateDirectory "$INSTDIR\language"
 	SetOutPath "$INSTDIR\language"
 	
+	; Language resources
+	; (Use InstallLib even if the files are not DLL.)
+	!define LIBRARY_IGNORE_VERSION
+
 	; Japanese
-	StrCpy "$0" "Japanese.chm"
-	Delete "$INSTDIR\language\$0"
-	IfFileExists "$0" 0 jp_chmCpy
-	StrCpy "$1" "0"
-	jp_chmExists:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "Japanese.chm.$1"
-		IfFileExists "$0" jp_chmExists
-	jp_chmCpy:
-	File /oname=$0 "..\Installer\Japanese.chm"
-	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Japanese.chm"
+	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+			"..\Installer\Japanese.chm" \
+			"$OUTDIR\Japanese.chm" "$OUTDIR"
+	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+			"..\x86\Japanese.lng" \
+			"$OUTDIR\Japanese.lng" "$OUTDIR"
+
+	; Chinese Traditional
+;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+;			"..\lang\Chinese_Traditional.txt" \
+;			"$OUTDIR\Chinese_Traditional.txt" "$OUTDIR"
+;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+;			"..\lang\Chinese_Traditional.lng" \
+;			"$OUTDIR\Chinese_Traditional.lng" "$OUTDIR"
 	
-	StrCpy "$0" "Japanese.lng"
-	Delete "$INSTDIR\language\$0"
-	IfFileExists "$0" 0 jpnCpy
-	StrCpy "$1" "0"
-	jpnExists:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "Japanese.lng.$1"
-		IfFileExists "$0" jpnExists
-	jpnCpy:
-	File /oname=$0 "..\x86\Japanese.lng"
-	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Japanese.lng"
-	
-	; ChineseTraditional
-;	StrCpy "$0" "Chinese_Traditional.txt"
-;	Delete "$INSTDIR\language\$0"
-;	IfFileExists "$0" 0 cht_chmCpy
-;	StrCpy "$1" "0"
-;	cht_chmExists:
-;		IntOp "$1" "$1" + "1"
-;		StrCpy "$0" "Chinese_Traditional.txt.$1"
-;		IfFileExists "$0" cht_chmExists
-;	cht_chmCpy:
-;	File /oname=$0 "..\lang\Chinese_Traditional.txt"
-;	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Chinese_Traditional.txt"
-	
-;	StrCpy "$0" "Chinese_Traditional.lng"
-;	Delete "$INSTDIR\language\$0"
-;	IfFileExists "$0" 0 chtCpy
-;	StrCpy "$1" "0"
-;	chtExists:
-;		IntOp "$1" "$1" + "1"
-;		StrCpy "$0" "Chinese_Traditional.lng.$1"
-;		IfFileExists "$0" chtExists
-;	chtCpy:
-;	File /oname=$0 "..\lang\Chinese_Traditional.lng"
-;	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Chinese_Traditional.lng"
-	
-	; ChineseSimplified
-;	StrCpy "$0" "Chinese_Simplified.txt"
-;	Delete "$INSTDIR\language\$0"
-;	IfFileExists "$0" 0 cht_chmCpy
-;	StrCpy "$1" "0"
-;	cht_chmExists:
-;		IntOp "$1" "$1" + "1"
-;		StrCpy "$0" "Chinese_Simplified.txt.$1"
-;		IfFileExists "$0" cht_chmExists
-;	cht_chmCpy:
-;	File /oname=$0 "..\lang\Chinese_Simplified.txt"
-;	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Chinese_Simplified.txt"
-	
-;	StrCpy "$0" "Chinese_Simplified.lng"
-;	Delete "$INSTDIR\language\$0"
-;	IfFileExists "$0" 0 chtCpy
-;	StrCpy "$1" "0"
-;	chtExists:
-;		IntOp "$1" "$1" + "1"
-;		StrCpy "$0" "Chinese_Simplified.lng.$1"
-;		IfFileExists "$0" chtExists
-;	chtCpy:
-;	File /oname=$0 "..\lang\Chinese_Simplified.lng"
-;	Rename /REBOOTOK "$INSTDIR\language\$0" "$INSTDIR\language\Chinese_Simplified.lng"
+	; Chinese Simplified
+;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+;			"..\lang\Chinese_Simplified.txt" \
+;			"$OUTDIR\Chinese_Simplified.txt" "$OUTDIR"
+;	!insertmacro InstallLib DLL NOTSHARED REBOOT_NOTPROTECTED \
+;			"..\lang\Chinese_Simplified.lng" \
+;			"$OUTDIR\Chinese_Simplified.lng" "$OUTDIR"
 	
 	;----------------------------------------------------------------
 	SetOutPath "$SYSDIR"
 
-	; Remove old file
+	; Remove old files
 	${If} ${RunningX64}
 		${DisableX64FSRedirection}
 		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
@@ -181,64 +139,41 @@ Section "main files" SecCopyUI
 		Delete /REBOOTOK "$SYSDIR\mp3infp.cpl"
 	${EndIf}
 	
+	; mp3infp.dll
+	; (Should we register the DLLs as shared DLLs?)
+	!undef LIBRARY_IGNORE_VERSION
+
 	; x86 mp3infp.dll
-	StrCpy "$0" "mp3infp.dll"
-	Delete "$SYSDIR\$0"
-	IfFileExists "$SYSDIR\$0" 0 dllCpy
-	StrCpy "$1" "0"
-	dllExists:
-		IntOp "$1" "$1" + "1"
-		StrCpy "$0" "mp3infp.$1"
-		IfFileExists "$0" dllExists
-	dllCpy:
-	File /oname=$0 "..\x86\mp3infp.dll"
-	Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
-	IfRebootFlag YesReboot 0
-		RegDLL "MP3INFP.DLL"
-	YesReboot:
+	!insertmacro InstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
+			"..\x86\mp3infp.dll" \
+			"$SYSDIR\mp3infp.dll" "$SYSDIR"
 
 	${If} ${RunningX64}
-		${DisableX64FSRedirection}
-
 		; x64 mp3infp.dll
-		StrCpy "$0" "mp3infp.dll"
-		Delete "$SYSDIR\$0"
-		IfFileExists "$SYSDIR\$0" 0 dllCpy64
-		StrCpy "$1" "0"
-		dllExists64:
-			IntOp "$1" "$1" + "1"
-			StrCpy "$0" "mp3infp.$1"
-			IfFileExists "$0" dllExists64
-		dllCpy64:
-		File /oname=$0 "..\x64\mp3infp.dll"
-		Rename /REBOOTOK "$SYSDIR\$0" "$SYSDIR\mp3infp.dll"
-		IfRebootFlag YesReboot64 0
-			ExecWait '"$SYSDIR\regsvr32.exe" /s mp3infp.dll'
-		YesReboot64:
-		${EnableX64FSRedirection}
+		!define LIBRARY_X64
+		!insertmacro InstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
+				"..\x64\mp3infp.dll" \
+				"$SYSDIR\mp3infp.dll" "$SYSDIR"
+		!undef LIBRARY_X64
 	${EndIf}
 	
 	;Language set
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Language" "$(LangRegKey)"
 	WriteRegStr HKCU "${PRODUCT_REG_KEY}" "Installer Language" "$LANGUAGE"
 	
-	;[1] mp3infp_regist.exe
-	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-	IfRebootFlag 0 +2
-		WriteRegStr HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist.exe$\""
-	
-	${If} ${RunningX64}
-		SetRegView 64
-		DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
-		IfRebootFlag 0 +2
-			WriteRegStr HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}" "$\"$INSTDIR\mp3infp_regist_x64.exe$\""
-		SetRegView 32
-	${EndIf}
-
 	;Start menu
 	CreateDirectory "$SMPROGRAMS\${MUI_PRODUCT}"
 	CreateShortcut "$SMPROGRAMS\${MUI_PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
 	
+	;[1] mp3infp_regist.exe (Obsolete)
+	; Delete old registory values.
+	DeleteRegValue HKLM "${RUN_REG_KEY}" "${MUI_PRODUCT}"
+	DeleteRegValue HKLM "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+	${If} ${RunningX64}
+		DeleteRegValue HKLM64 "${RUN_REG_KEY}" "${MUI_PRODUCT}"
+		DeleteRegValue HKLM64 "${RUNONCE_REG_KEY}" "${MUI_PRODUCT}"
+	${EndIf}
+
 	;[2] Uninstall list
 	${If} ${RunningX64}
 		SetRegView 64
@@ -257,9 +192,7 @@ Section "main files" SecCopyUI
 	;[3] Store install folder
 	WriteRegStr HKLM "${PRODUCT_REG_KEY}" "path" $INSTDIR
 	${If} ${RunningX64}
-		SetRegView 64
-		WriteRegStr HKLM "${PRODUCT_REG_KEY}" "path" $INSTDIR
-		SetRegView 32
+		WriteRegStr HKLM64 "${PRODUCT_REG_KEY}" "path" $INSTDIR
 	${EndIf}
 	
 	WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -326,16 +259,14 @@ Section "Uninstall"
   ;ADD YOUR OWN STUFF HERE!
 
 	${If} ${RunningX64}
-		${DisableX64FSRedirection}
-		ExecWait '"$SYSDIR\regsvr32.exe" /s /u mp3infp.dll'
-		Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
-		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
-		${EnableX64FSRedirection}
+		!define LIBRARY_X64
+		!insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
+				"$SYSDIR\mp3infp.dll"
+		!undef LIBRARY_X64
 	${EndIf}
-	UnRegDLL "mp3infp.dll"
-	Delete /REBOOTOK "$SYSDIR\mp3infp.dll"
+	!insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
+			"$SYSDIR\mp3infp.dll"
 
-	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_setup.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp.txt"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_eng.txt"
@@ -361,9 +292,7 @@ Section "Uninstall"
 	${EndIf}
 	; [2]
 	${If} ${RunningX64}
-		SetRegView 64
-		DeleteRegKey HKLM "${UNINST_REG_KEY}"
-		SetRegView 32
+		DeleteRegKey HKLM64 "${UNINST_REG_KEY}"
 	${Else}
 		DeleteRegKey HKLM "${UNINST_REG_KEY}"
 	${EndIf}
@@ -371,19 +300,15 @@ Section "Uninstall"
 	DeleteRegKey HKLM "${PRODUCT_REG_KEY}"
 	DeleteRegKey /ifempty HKLM "${COMPANY_REG_KEY}"
 	${If} ${RunningX64}
-		SetRegView 64
-		DeleteRegKey HKLM "${PRODUCT_REG_KEY}"
-		DeleteRegKey /ifempty HKLM "${COMPANY_REG_KEY}"
-		SetRegView 32
+		DeleteRegKey HKLM64 "${PRODUCT_REG_KEY}"
+		DeleteRegKey /ifempty HKLM64 "${COMPANY_REG_KEY}"
 	${EndIf}
 	
 	DeleteRegKey HKCU "${PRODUCT_REG_KEY}"
 	DeleteRegKey /ifempty HKCU "${COMPANY_REG_KEY}"
 	DeleteRegValue HKLM "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 	${If} ${RunningX64}
-		SetRegView 64
-		DeleteRegValue HKLM "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
-		SetRegView 32
+		DeleteRegValue HKLM64 "${SHDLLS_REG_KEY}" "$SYSDIR\mp3infp.dll"
 	${EndIf}
 	
 SectionEnd
