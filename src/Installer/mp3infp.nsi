@@ -155,7 +155,7 @@ Section "main files" SecCopyUI
 
 	; mp3infp.dll
 	; (Should we register the DLLs as shared DLLs?)
-	!undef LIBRARY_IGNORE_VERSION
+;	!undef LIBRARY_IGNORE_VERSION
 
 	; x86 mp3infp.dll
 	!insertmacro InstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
