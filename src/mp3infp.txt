@@ -36,9 +36,13 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 ・英語版と日本語版の Windows 7/8/10
 
 ■設定
-[コントロールパネル]→[mp3infp設定]で設定を行えます。
+[スタートメニュー]→[mp3infp]→[mp3infp設定]で設定を行えます。
 
 ■アンインストール
+・Windows 10
+[設定]→[アプリ]から行ってください。
+
+・Windows 7/8
 [コントロールパネル]→[アプリケーションの追加と削除]から行ってください。
 
 ■配布ファイルの説明
@@ -46,15 +50,13 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 　Windowsのシェル拡張コンポーネント。mp3infpの本体です。
 2.mp3infp.txt
 　今見ているファイルです。
-3.mp3infp_regist.exe
-　Windowsの起動時に一度起動され、mp3infpの動作に必要なレジストリ設定を維持します(常駐はしません)
-4.mp3infp.cpl(\WINDOWS\System32フォルダにコピーされます)
-　コントロールパネルで使用するコンポーネント。mp3infpの設定を行います。
-5.Japanese.chm
+3.mp3infp_setup.exe
+　mp3infpの設定を行います。
+4.Japanese.chm
 　日本語ヘルプファイルです。(v2.54a 時点)
-6.Japanese.lng
+5.Japanese.lng
 　日本語言語パックです。
-7.mp3infp_eng.txt
+6.mp3infp_eng.txt
 　英語で書かれた簡単な解説書です。
 
 ■ライセンス
@@ -67,10 +69,20 @@ https://github.com/k-takata/mp3infp で配布しています。
 ■制限事項
 現時点で判明している制限事項は以下の通りです。
 1. Vista以降で、エクスプローラのカラム（列）拡張が動作しません。
-2. コントロールパネルのmp3infpアイコンがカテゴリ表示に対応していません。
 
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
+
+2018/01/xx  Ver.2.54k1
+・libogg 1.3.3 に更新。
+・[mp3infp設定] をコントロールパネル上のアプリから通常アプリに変更。
+  Windows 10 ではコントロールパネルが廃止方向のため。
+・ID3v2.4 を使ったときに、非同期化を行わないように変更。
+  非同期化の実装が間違っており、iTunes 等、他のアプリで問題が起きるため。
+・インストーラを大幅修正。
+  - Modern UI 2.0 を使ったモダンな UI に変更。
+  - High DPI に対応。
+  - mp3infp_regist.exe を廃止。
 
 2016/05/02  Ver.2.54j3
 ・libogg 1.3.2, libvorbis 1.3.5 に更新。
