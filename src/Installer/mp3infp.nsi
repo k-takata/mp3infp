@@ -79,11 +79,12 @@ LicenseLangString SLICENSEFILE  ${LANG_JAPANESE} "..\mp3infp.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_TRADCHINESE} "..\lang\Chinese_Traditional.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_SIMPCHINESE} "..\lang\Chinese_Simplified.txt"
 
-LangString Name ${LANG_ENGLISH} "${PRODUCT} v${VERSION}"
-LangString Name ${LANG_JAPANESE} "${PRODUCT} v${VERSION}"
+;LangString Name ${LANG_ENGLISH} "${PRODUCT} v${VERSION}"
+;LangString Name ${LANG_JAPANESE} "${PRODUCT} v${VERSION}"
 ;LangString Name ${LANG_TRADCHINESE} "${PRODUCT} v${VERSION}"
 ;LangString Name ${LANG_SIMPCHINESE} "${PRODUCT} v${VERSION}"
-Name "$(Name)"
+;Name "$(Name)"
+Name "${PRODUCT} v${VERSION}"
 
 ;--------------------------------
 ; Reserve Files
