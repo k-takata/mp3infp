@@ -1,7 +1,4 @@
-﻿; languages.nsi
-;
-; This is an example of a multilingual installer
-; The user can select the language on startup
+﻿; Installer for mp3infp/u
 
 ;--------------------------------
 !define COMPANY "win32lab.com" ;Define your own software name here
@@ -10,12 +7,12 @@
 ;!define VERSION "2.54g/u7" ;Define your own software version here
 ;OutFile mp3infp254g_u7.exe
 
-!define UNINST_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
-!define RUN_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\Run"
-!define RUNONCE_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\RunOnce"
-!define SHDLLS_REG_KEY	"Software\Microsoft\Windows\CurrentVersion\SharedDLLs"
-!define COMPANY_REG_KEY	"Software\${COMPANY}"
-!define PRODUCT_REG_KEY	"Software\${COMPANY}\${PRODUCT}"
+!define UNINST_REG_KEY  "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
+!define RUN_REG_KEY     "Software\Microsoft\Windows\CurrentVersion\Run"
+!define RUNONCE_REG_KEY "Software\Microsoft\Windows\CurrentVersion\RunOnce"
+!define SHDLLS_REG_KEY  "Software\Microsoft\Windows\CurrentVersion\SharedDLLs"
+!define COMPANY_REG_KEY "Software\${COMPANY}"
+!define PRODUCT_REG_KEY "Software\${COMPANY}\${PRODUCT}"
 !define INSTDIR_REG_VALNAME  "path"
 !define INSTLANG_REG_VALNAME "Installer Language"
 
@@ -32,7 +29,6 @@ ManifestDPIAware true
 !include "x64.nsh"
 !include "Library.nsh"
 !include "MUI2.nsh"
-
 
 ;--------------------------------
 ; Interface Settings
@@ -96,6 +92,7 @@ Name "$(Name)"
 
 ;--------------------------------
 ;Installer Sections
+
 Section "main files" SecCopyUI
 
 	SetOutPath "$INSTDIR"
@@ -106,15 +103,16 @@ Section "main files" SecCopyUI
 	${EndIf}
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
 
+	; (Should we install x64 version of mp3infp_setup.exe on 64-bit OS?)
 	File "..\x86\mp3infp_setup.exe"
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
 
-	CreateDirectory "$INSTDIR\language"
-	SetOutPath "$INSTDIR\language"
-
 	; Language resources
 	; (Use InstallLib even if the files are not DLL.)
+
+	CreateDirectory "$INSTDIR\language"
+	SetOutPath "$INSTDIR\language"
 	!define LIBRARY_IGNORE_VERSION
 
 	; Japanese
@@ -177,7 +175,8 @@ Section "main files" SecCopyUI
 
 	;Start menu
 	CreateDirectory "$SMPROGRAMS\${PRODUCT}"
-	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" "$INSTDIR\mp3infp_setup.exe"
+	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" \
+			"$INSTDIR\mp3infp_setup.exe"
 
 	;[1] mp3infp_regist.exe (Obsolete)
 	; Delete old registory values.
@@ -214,6 +213,7 @@ Section "main files" SecCopyUI
 SectionEnd
 
 ;--------------------------------
+;Installer Function
 
 Function .onInit
 
@@ -244,8 +244,6 @@ FunctionEnd
 
 Section "Uninstall"
 
-  ;ADD YOUR OWN STUFF HERE!
-
 	${If} ${RunningX64}
 		!define LIBRARY_X64
 		!insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
@@ -260,6 +258,8 @@ Section "Uninstall"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_eng.txt"
 	Delete /REBOOTOK "$INSTDIR\language\Japanese.chm"
 	Delete /REBOOTOK "$INSTDIR\language\Japanese.lng"
+;	Delete /REBOOTOK "$INSTDIR\language\Chinese_Traditional.txt"
+;	Delete /REBOOTOK "$INSTDIR\language\Chinese_Traditional.lng"
 ;	Delete /REBOOTOK "$INSTDIR\language\Chinese_Simplified.txt"
 ;	Delete /REBOOTOK "$INSTDIR\language\Chinese_Simplified.lng"
 	Delete /REBOOTOK "$INSTDIR\Uninstall.exe"
