@@ -82,9 +82,9 @@ DWORD GetDriveFormFactor(int iDrive)
 	 TCHAR tsz[8];
 	 DWORD dwRc;
 
+#if !defined(_WIN64) && !defined(UNICODE)
 	 if ((int)GetVersion() < 0)
 	 {	// Windows 95
-#if !defined(_WIN64) && !defined(UNICODE)
 		 /*
 			 On Windows 95, use the technique described in
 			 the Knowledge Base article Q125712 and in MSDN under
@@ -148,11 +148,9 @@ DWORD GetDriveFormFactor(int iDrive)
 		 }
 		 else
 			 dwRc = 0;
-#else
-		dwRc = 0;
-#endif
 	}
 	else
+#endif
 	{  // Windows NT
 
 		/*
