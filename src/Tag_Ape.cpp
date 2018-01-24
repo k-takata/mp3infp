@@ -171,7 +171,7 @@ DWORD CTag_Ape::_LoadId3Tag(LPCTSTR szFileName)
 	}
 	
 	// ID3TAGÇíTÇ∑
-	SetFilePointer(hFile,-sizeof(ID3_TAG),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(ID3_TAG),NULL,FILE_END);
 	if(!ReadFile(hFile,&m_id3tag,sizeof(m_id3tag),&dwRet,NULL) || (dwRet != sizeof(m_id3tag)))
 	{
 		dwWin32errorCode = GetLastError();
@@ -199,7 +199,7 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
 
 	// ID3TAGÇíTÇ∑
-	SetFilePointer(hFile,-sizeof(ID3_TAG),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(ID3_TAG),NULL,FILE_END);
 	if(!ReadFile(hFile,&m_id3tag,sizeof(m_id3tag),&dwRet,NULL) || (dwRet != sizeof(m_id3tag)))
 	{
 		dwWin32errorCode = GetLastError();
@@ -311,7 +311,7 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
 	
 	// ID3TAGÇíTÇ∑
-	SetFilePointer(hFile,-sizeof(ID3_TAG),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(ID3_TAG),NULL,FILE_END);
 	if(!ReadFile(hFile,&m_id3tag,sizeof(m_id3tag),&dwRet,NULL) || (dwRet != sizeof(m_id3tag)))
 	{
 		dwWin32errorCode = GetLastError();
@@ -419,7 +419,7 @@ DWORD CTag_Ape::Load(LPCTSTR szFileName)
 
 	DWORD dwRet;
 	// ID3TAGÇíTÇ∑
-	SetFilePointer(hFile,-sizeof(ID3_TAG),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(ID3_TAG),NULL,FILE_END);
 	if(!ReadFile(hFile,&m_id3tag,sizeof(m_id3tag),&dwRet,NULL) || (dwRet != sizeof(m_id3tag)))
 	{
 		dwWin32errorCode = GetLastError();
@@ -437,7 +437,7 @@ DWORD CTag_Ape::Load(LPCTSTR szFileName)
 	}
 	
 	// apeÉtÉbÉ^ÇíTÇ∑
-	SetFilePointer(hFile,-sizeof(APE_TAG_FOOTER)-(bId3v1?128:0),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(APE_TAG_FOOTER)-(bId3v1?128:0),NULL,FILE_END);
 
 	// APE_TAG_FOOTERÇì«Ç›Ç∆ÇÈ
 	if(!ReadFile(hFile,&m_footer,sizeof(m_footer),&dwRet,NULL) || (dwRet != sizeof(m_footer)))
@@ -694,7 +694,7 @@ DWORD CTag_Ape::_DelTag(LPCTSTR szFileName)
 	DWORD dwRet;
 	// ID3TAGÇíTÇ∑
 	ID3_TAG id3tag;
-	SetFilePointer(hFile,-sizeof(ID3_TAG),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(ID3_TAG),NULL,FILE_END);
 	if(ReadFile(hFile,&id3tag,sizeof(id3tag),&dwRet,NULL) && (dwRet == sizeof(id3tag)))
 	{
 		// ID3TAGÇÃê≥ìñê´ÇÉ`ÉFÉbÉN
@@ -716,7 +716,7 @@ DWORD CTag_Ape::_DelTag(LPCTSTR szFileName)
 
 	// ÉtÉbÉ^ÇíTÇ∑
 	APE_TAG_FOOTER footer;
-	SetFilePointer(hFile,-sizeof(APE_TAG_FOOTER),NULL,FILE_END);
+	SetFilePointer(hFile,-(int)sizeof(APE_TAG_FOOTER),NULL,FILE_END);
 
 	// APE_TAG_FOOTERÇì«Ç›Ç∆ÇÈ
 	if(ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) && (dwRet == sizeof(footer)))
