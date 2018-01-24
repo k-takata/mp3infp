@@ -495,6 +495,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		{
 			strRet = theApp.m_Id3tagv2.GetAlbum();
 		}
+		else if(lstrcmp(szValueName,_T("AART_v2")) == 0)
+		{
+			strRet = theApp.m_Id3tagv2.GetAlbumArtist();
+		}
 		else if(lstrcmp(szValueName,_T("ICMT_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetComment();
@@ -1470,6 +1474,10 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 		else if(lstrcmp(szValueName,_T("IPRD_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetAlbum(buf);
+		}
+		else if(lstrcmp(szValueName,_T("AART_v2")) == 0)
+		{
+			theApp.m_Id3tagv2.SetAlbumArtist(buf);
 		}
 		else if(lstrcmp(szValueName,_T("ICMT_v2")) == 0)
 		{

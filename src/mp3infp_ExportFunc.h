@@ -177,6 +177,7 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM_v1"	"INAM_v2"	"INAM_rmp"	"INAM_APE"
 	アーティスト			"IART_v1"	"IART_v2"	"IART_rmp"	"IART_APE"
 	アルバム				"IPRD_v1"	"IPRD_v2"	"IPRD_rmp"	"IPRD_APE"
+	アルバムアーティスト				"AART_v2" (v2.54k1～)
 	コメント				"ICMT_v1"	"ICMT_v2"	"ICMT_rmp"	"ICMT_APE"
 	作成日					"ICRD_v1"	"ICRD_v2"	"ICRD_rmp"	"ICRD_APE"
 	ジャンル				"IGNR_v1"	"IGNR_v2"	"IGNR_rmp"	"IGNR_APE"
