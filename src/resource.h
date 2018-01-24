@@ -176,6 +176,7 @@
 #define IDD_SETUP_WMA                   271
 #define IDD_WRITE_PROGRESS              272
 #define IDI_ICON1                       273
+#define IDD_SETUP_MP4                   273
 #define IDR_MENU_PROPERTY_CONTEXT       274
 #define IDS_AVI_UNCODE                  275
 #define IDS_CAN_NOT_CREATE_TEMP_FILE    276
