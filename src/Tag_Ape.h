@@ -57,7 +57,7 @@ public:
 	static LPCTSTR CTag_Ape::APE_TAG_FIELD_GENRE;
 
 private:
-	void _GetId3tagString(char *szTag);
+//	void _GetId3tagString(char *szTag);
 //	DWORD _MakeId3Tag(LPCTSTR szFileName);
 //	DWORD _MakeApeTag(LPCTSTR szFileName);
 	DWORD _LoadId3Tag(LPCTSTR szFileName);
