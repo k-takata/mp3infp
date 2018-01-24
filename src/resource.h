@@ -225,6 +225,8 @@
 #define IDS_TRANSLATOR                  321
 #define IDS_UNKNOWN                     322
 #define IDS_VIEW_PROP                   323
+#define IDC_EDIT_AART                   324
+#define IDC_STATIC_AART                 325
 #define IDS_COLUMN_8_3                  1000
 #define IDS_COLUMN_ALBUM                1001
 #define IDS_COLUMN_ARTIST               1002
