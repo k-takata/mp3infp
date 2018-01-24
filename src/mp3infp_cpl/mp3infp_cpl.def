@@ -1,8 +1,0 @@
-; mp3infp_cpl.def : DLL 用のモジュール パラメータ宣言
-
-LIBRARY      "mp3infp"
-;DESCRIPTION  'mp3infp Windows Dynamic Link Library'
-
-EXPORTS
-    ; 明示的なエクスポートはここへ記述できます
-    CPlApplet private
