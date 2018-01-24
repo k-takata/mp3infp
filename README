@@ -1,14 +1,14 @@
-This is a source code package of mp3infp/u.
+This is a source code repository of mp3infp/u.
 
 mp3infp/u is a modified version of mp3infp.
 
 New features:
  * Supports Unicode file names and tags.
- * Supports Windows Vista and 7 (x86/x64).
- * Merged modified versions by Rem.
+ * Supports Windows 7/8/10.
+ * Supports x64 Windows. (Main work is done by Rem.)
 
-The latest binary package may be available at the following BBS:
-  http://win32lab.com/bbs2/index.cgi
+Binary packages are available at the releases page:
+  https://github.com/k-takata/mp3infp/releases
 
 
 LICENSE:
@@ -20,4 +20,4 @@ References:
     http://win32lab.com/fsw/mp3infp/
 
   mp3infp 2.54i alpha1 (The lastest version by Rem):
-    http://win32lab.com/bbs2/index.cgi?no=10236&reno=10231&oya=10190&mode=msgview
+    http://win32lab.com/bbs2/index.cgi?no=10236&reno=10231&oya=10190&mode=msgview (404)
