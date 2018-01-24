@@ -175,9 +175,7 @@ unsigned char CId3tagv1::GetGenreNum()
 
 CString CId3tagv1::GetGenre()
 {
-	if(!m_bScmpxGenre && (m_cGenre >= SCMPX_GENRE_NULL))
-		return _T("");
-	return szId3gnr[m_cGenre];
+	return GenreNum2String(m_cGenre);
 }
 
 void CId3tagv1::SetGenre(unsigned char cGenre)
@@ -189,14 +187,7 @@ void CId3tagv1::SetGenre(unsigned char cGenre)
 void CId3tagv1::SetGenre(LPCTSTR szGenre)
 {
 	m_bEnable = TRUE;
-	for(int i=0; i<256; i++)
-	{
-		if(lstrcmp(szId3gnr[i],szGenre) == 0)
-		{
-			m_cGenre = i;
-			break;
-		}
-	}
+	m_cGenre = GenreString2Num(szGenre);
 }
 
 unsigned char CId3tagv1::GetTrackNoNum()

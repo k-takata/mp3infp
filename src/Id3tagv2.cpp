@@ -819,8 +819,7 @@ CString CId3tagv2::GetGenre()
 	//ƒWƒƒƒ“ƒ‹‚ª”Ô†‚Ì‚Ý‚ÅŽw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA•¶Žš—ñ‚É•ÏŠ·
 	if ((genre >= 0) && (strGenre == _T(""))) {
 		CId3tagv1 id3tagv1(FALSE);
-		id3tagv1.SetGenre(genre);
-		strGenre = id3tagv1.GetGenre();
+		strGenre = id3tagv1.GenreNum2String(genre);
 	}
 	return strGenre;
 }
