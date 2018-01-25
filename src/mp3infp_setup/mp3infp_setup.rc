@@ -397,7 +397,7 @@ BEGIN
     IDS_INFOTIP_NOTINFO     "(No tag information)"
     IDS_LANG_VER_ERROR      "Since the version is old, this language pack cannot be used.\n->%s"
     IDS_LANGUAGE_NAME       "English"
-    IDS_LANGUAGE_VER        "248"
+    IDS_LANGUAGE_VER        "255"
 END
 
 STRINGTABLE DISCARDABLE 

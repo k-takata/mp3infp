@@ -1073,7 +1073,7 @@ BEGIN
     IDS_INFOTIP_NOTINFO     "(タグ情報はありません)"
     IDS_LANG_VER_ERROR      "この言語パックはバージョンが古いために利用できません。\n→%s"
     IDS_LANGUAGE_NAME       "Japanese"
-    IDS_LANGUAGE_VER        "248"
+    IDS_LANGUAGE_VER        "255"
 END
 
 STRINGTABLE DISCARDABLE 
