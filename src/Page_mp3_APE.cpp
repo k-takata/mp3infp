@@ -474,7 +474,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,2"),_T(""),SW_SHOW);
+			OpenSetupPage(hDlg,2);
 			break;
 		case IDC_HELPVIEW:
 			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));

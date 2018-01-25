@@ -400,7 +400,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			ShellExecute(hDlg,_T("open"),_T("rundll32.exe"),_T("shell32.dll,Control_RunDLL mp3infp.cpl,,9"),NULL,SW_SHOW);
+			OpenSetupPage(hDlg,9);
 			break;
 		case IDC_HELPVIEW:
 			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));

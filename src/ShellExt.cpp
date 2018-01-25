@@ -242,6 +242,20 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 	return hg;
 }
 
+void OpenSetupPage(HWND hwnd, int pagenum)
+{
+	// install path of mp3infp
+	TCHAR szMp3infpPath[MAX_PATH];
+	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szMp3infpPath,_T(""));
+	AddTailYenSign(szMp3infpPath);
+	CString strSetupPath = szMp3infpPath;
+	strSetupPath += _T("mp3infp_setup.exe");
+	CString strParam;
+	strParam.Format(_T("%d"),pagenum);
+
+	ShellExecute(hwnd,_T("open"),(LPCTSTR)strSetupPath,(LPCTSTR)strParam,NULL,SW_SHOW);
+}
+
 CShellExt::CShellExt()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
