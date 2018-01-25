@@ -1175,6 +1175,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Album();
 		}
+		else if(_tcsncmp(szValueName,_T("AART"),4) == 0)
+		{
+			strRet = theApp.m_Mp4.GetMetadata_AlbumArtist();
+		}
 		else if(_tcsncmp(szValueName,_T("IGRP"),4) == 0)
 		{
 			strRet = theApp.m_Mp4.GetMetadata_Group();
@@ -1823,6 +1827,10 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			theApp.m_Mp4.SetMetadata_Album(buf);
+		}
+		else if(_tcsncmp(szValueName,_T("AART"),4) == 0)
+		{
+			theApp.m_Mp4.SetMetadata_AlbumArtist(buf);
 		}
 		else if(_tcsncmp(szValueName,_T("IGRP"),4) == 0)
 		{

@@ -3,6 +3,11 @@
 
 /*
 ■改変履歴
+2018-01-25 Ver.2.54k1
+・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
+>MP3で"AART_v2"に対応
+>MP4で"AART"に対応
+
 2009-12-01 Ver.2.54h/u8
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
 >WAVで"TRACK"に対応
@@ -279,6 +284,7 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM"
 	アーティスト			"IART"
 	アルバム				"IPRD"
+	アルバムアーティスト	"AART"	(v2.54k1～)
 	グループ				"IGRP"
 	作曲					"COMPOSER"
 	ジャンル				"IGNR"
