@@ -1,11 +1,6 @@
 #include "src/impl.h"
 #include "libplatform/impl.h" /* for platform_win32_impl.h which declares Utf8ToFilename */
 #include <windows.h>
-#include <tchar.h>
-// 2010-06-22 K.Takata
-
-extern "C"
-int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence);
 
 namespace mp4v2 {
     using namespace impl;
@@ -85,15 +80,15 @@ StandardFileProvider::open( std::string name, Mode mode )
         case MODE_UNDEFINED:
         case MODE_READ:
         default:
-            modestr = _T("rb");
+            modestr = L"rb";
             break;
 
         case MODE_MODIFY:
-            modestr = _T("r+b");
+            modestr = L"r+b";
             break;
 
         case MODE_CREATE:
-            modestr = _T("w+b");
+            modestr = L"w+b";
             break;
     }
 
@@ -138,12 +133,7 @@ StandardFileProvider::seek( Size pos )
 
     ASSERT(_handle != NULL);
 
-#if 1
-    ret = _fseeki64_w2k( _handle, pos, SEEK_SET );
-#else
-    fpos_t fpos = pos;
-    ret = fsetpos( _handle, &fpos );
-#endif
+    ret = _fseeki64( _handle, pos, SEEK_SET );
     if ( ret )
     {
         log.errorf("%s: _fseeki64(%s,%" PRId64 ") failed (%d)",__FUNCTION__,_name.c_str(),
