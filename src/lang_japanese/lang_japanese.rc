@@ -536,7 +536,7 @@ BEGIN
     LTEXT           "(ダブルクリックで編集できます)",IDC_STATIC,44,154,109,8
     PUSHBUTTON      "追加",IDC_BUTTON_ADD_VALUE,158,153,30,12
     PUSHBUTTON      "削除",IDC_BUTTON_DEL_VALUE,189,153,30,12
-    LTEXT           "Static\n２行目\n3行目\n4行目",IDC_STATIC_ETC_INFO,44,
+    LTEXT           "Static\n2行目\n3行目\n4行目",IDC_STATIC_ETC_INFO,44,
                     165,176,31
     GROUPBOX        "WINAMP control",IDC_STATIC_WINAMP,141,198,79,29
     CONTROL         "戻",IDC_BUTTON_REW,"Button",BS_OWNERDRAW | BS_FLAT | 
@@ -823,7 +823,7 @@ BEGIN
     EDITTEXT        IDC_STATIC_TIME,27,68,192,12,ES_AUTOHSCROLL | 
                     ES_READONLY | NOT WS_BORDER
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,81,212,1
-    LTEXT           "AVI Verion",IDC_STATIC_AVI_VER_,103,219,40,8,NOT 
+    LTEXT           "AVI Version",IDC_STATIC_AVI_VER_,103,219,40,8,NOT 
                     WS_VISIBLE
 END
 
@@ -982,15 +982,15 @@ BEGIN
     CONTROL         "コンピレーションの一部",IDC_COMPILATION,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,43,227,81,10
     GROUPBOX        "WINAMP control",IDC_STATIC_WINAMP,141,232,79,29
-    CONTROL         "?s",IDC_BUTTON_REW,"Button",BS_OWNERDRAW | BS_FLAT | 
+    CONTROL         "Rew",IDC_BUTTON_REW,"Button",BS_OWNERDRAW | BS_FLAT | 
                     WS_TABSTOP,144,242,14,15
-    CONTROL         "?n",IDC_BUTTON_PLAY,"Button",BS_OWNERDRAW | BS_FLAT | 
+    CONTROL         "Play",IDC_BUTTON_PLAY,"Button",BS_OWNERDRAW | BS_FLAT | 
                     WS_TABSTOP,159,242,14,15
-    CONTROL         "?e??",IDC_BUTTON_PAUSE,"Button",BS_OWNERDRAW | BS_FLAT | 
+    CONTROL         "Pause",IDC_BUTTON_PAUSE,"Button",BS_OWNERDRAW | BS_FLAT | 
                     WS_TABSTOP,174,242,14,15
-    CONTROL         "’a",IDC_BUTTON_STOP,"Button",BS_OWNERDRAW | BS_FLAT | 
+    CONTROL         "Stop",IDC_BUTTON_STOP,"Button",BS_OWNERDRAW | BS_FLAT | 
                     WS_TABSTOP,189,242,14,15
-    CONTROL         "?i",IDC_BUTTON_FFW,"Button",BS_OWNERDRAW | BS_FLAT | 
+    CONTROL         "FFW",IDC_BUTTON_FFW,"Button",BS_OWNERDRAW | BS_FLAT | 
                     WS_TABSTOP,204,242,14,15
     PUSHBUTTON      "設定",IDC_SETUP,7,236,24,12
     PUSHBUTTON      "Help",IDC_HELPVIEW,7,249,24,12
