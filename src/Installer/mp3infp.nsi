@@ -4,8 +4,9 @@
 !define COMPANY "win32lab.com" ;Define your own software name here
 !define PRODUCT "mp3infp" ;Define your own software name here
 !define PRODUCT_LONG "mp3infp/u"
-!define PUBLISHER "T-Matsuo, Rem and K.Takata"
 ;!define VERSION "2.54g/u7" ;Define your own software version here
+!define PRODUCT_FULL "${PRODUCT_LONG} v${VERSION}"
+!define PUBLISHER "T-Matsuo, Rem and K.Takata"
 ;OutFile mp3infp254g_u7.exe
 
 !define UNINST_REG_KEY  "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
@@ -80,12 +81,12 @@ LicenseLangString SLICENSEFILE  ${LANG_JAPANESE} "..\mp3infp.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_TRADCHINESE} "..\lang\Chinese_Traditional.txt"
 ;LicenseLangString SLICENSEFILE  ${LANG_SIMPCHINESE} "..\lang\Chinese_Simplified.txt"
 
-;LangString Name ${LANG_ENGLISH} "${PRODUCT_LONG} v${VERSION}"
-;LangString Name ${LANG_JAPANESE} "${PRODUCT_LONG} v${VERSION}"
-;LangString Name ${LANG_TRADCHINESE} "${PRODUCT_LONG} v${VERSION}"
-;LangString Name ${LANG_SIMPCHINESE} "${PRODUCT_LONG} v${VERSION}"
+;LangString Name ${LANG_ENGLISH} "${PRODUCT_FULL}"
+;LangString Name ${LANG_JAPANESE} "${PRODUCT_FULL}"
+;LangString Name ${LANG_TRADCHINESE} "${PRODUCT_FULL}"
+;LangString Name ${LANG_SIMPCHINESE} "${PRODUCT_FULL}"
 ;Name "$(Name)"
-Name "${PRODUCT_LONG} v${VERSION}"
+Name "${PRODUCT_FULL}"
 
 ;--------------------------------
 ; Reserve Files
@@ -194,7 +195,7 @@ Section "main files" SecCopyUI
 		SetRegView 64
 	${EndIf}
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" '"$INSTDIR\mp3infp_setup.exe",0'
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${PRODUCT_LONG} ${VERSION}"
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${PRODUCT_FULL}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
