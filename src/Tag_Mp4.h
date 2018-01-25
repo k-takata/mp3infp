@@ -27,6 +27,7 @@ public:
 	CString GetMetadata_Name(){return m_strMetadata_Name;};
 	CString GetMetadata_Artist(){return m_strMetadata_Artist;};
 	CString GetMetadata_Album(){return m_strMetadata_Album;};
+	CString GetMetadata_AlbumArtist(){return m_strMetadata_AlbumArtist;};
 	CString GetMetadata_Genre(){return m_strMetadata_Genre;};
 	CString GetMetadata_Group(){return m_strMetadata_Group;};
 	CString GetMetadata_Composer(){return m_strMetadata_Composer;};
@@ -45,6 +46,7 @@ public:
 	void SetMetadata_Name(LPCTSTR val){m_strMetadata_Name = val;};
 	void SetMetadata_Artist(LPCTSTR val){m_strMetadata_Artist = val;};
 	void SetMetadata_Album(LPCTSTR val){m_strMetadata_Album = val;};
+	void SetMetadata_AlbumArtist(LPCTSTR val){m_strMetadata_AlbumArtist = val;};
 	void SetMetadata_Group(LPCTSTR val){m_strMetadata_Group = val;};
 	void SetMetadata_Composer(LPCTSTR val){m_strMetadata_Composer = val;};
 	void SetMetadata_Genre(LPCTSTR val){m_strMetadata_Genre = val;};
@@ -67,6 +69,7 @@ private:
 	CString m_strMetadata_Name;
 	CString m_strMetadata_Artist;
 	CString m_strMetadata_Album;
+	CString m_strMetadata_AlbumArtist;
 	CString m_strMetadata_Group;
 	CString m_strMetadata_Composer;
 	CString m_strMetadata_Genre;

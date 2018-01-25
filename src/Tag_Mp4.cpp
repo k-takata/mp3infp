@@ -45,6 +45,7 @@ void CTag_Mp4::ClearMetadata()
 	m_strMetadata_Name = _T("");
 	m_strMetadata_Artist = _T("");
 	m_strMetadata_Album = _T("");
+	m_strMetadata_AlbumArtist = _T("");
 	m_strMetadata_Group = _T("");
 	m_strMetadata_Composer = _T("");
 	m_strMetadata_Genre = _T("");
@@ -257,6 +258,11 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 		if(tags->album)
 		{
 			m_strMetadata_Album = _CnvMetadata(tags->album);
+		}
+
+		if(tags->albumArtist)
+		{
+			m_strMetadata_AlbumArtist = _CnvMetadata(tags->albumArtist);
 		}
 
 		if(tags->grouping)
@@ -552,6 +558,19 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		else
 		{
 			MP4TagsSetAlbum(tags, NULL);
+		}
+
+		if(m_strMetadata_AlbumArtist.GetLength())
+		{
+			char *buf = TstrToDataAlloc(m_strMetadata_AlbumArtist, -1, NULL, DTC_CODE_UTF8);
+			if (buf != NULL) {
+				MP4TagsSetAlbumArtist(tags, buf);
+				free(buf);
+			}
+		}
+		else
+		{
+			MP4TagsSetAlbumArtist(tags, NULL);
 		}
 
 		if(m_strMetadata_Group.GetLength())

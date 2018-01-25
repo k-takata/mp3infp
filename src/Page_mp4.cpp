@@ -8,6 +8,7 @@ static int ids[] =
 	CLP_NAM,
 	CLP_ART,
 	CLP_PRD,
+	CLP_AART,
 	CLP_GROUP,
 	CLP_COMPOSE,
 	CLP_GNR,
@@ -29,6 +30,7 @@ static int staticWnd[] =
 	IDC_STATIC_NAM,
 	IDC_STATIC_ART,
 	IDC_STATIC_PRD,
+	IDC_STATIC_AART,
 	IDC_STATIC_GRP,
 	IDC_STATIC_COMPOSE,
 	IDC_STATIC_GNR,
@@ -50,6 +52,7 @@ static int editWnd[] =
 	IDC_EDIT_SBJ,
 	IDC_EDIT_ART,
 	IDC_EDIT_PRD,
+	IDC_EDIT_AART,
 	IDC_EDIT_GRP,
 	IDC_EDIT_COMPOSE,
 	IDC_EDIT_GNR,
@@ -93,6 +96,8 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_ART),bEnable);
 	SetDlgItemText(hDlg,IDC_EDIT_PRD,_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_PRD),bEnable);
+	SetDlgItemText(hDlg,IDC_EDIT_AART,_T(""));
+	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_AART),bEnable);
 	SetDlgItemText(hDlg,IDC_EDIT_GNR,_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_GRP),bEnable);
 	SetDlgItemText(hDlg,IDC_EDIT_GRP,_T(""));
@@ -130,6 +135,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	SetDlgItemText(hDlg,IDC_EDIT_SBJ,lpcs->m_Mp4.GetMetadata_Name());
 	SetDlgItemText(hDlg,IDC_EDIT_ART,lpcs->m_Mp4.GetMetadata_Artist());
 	SetDlgItemText(hDlg,IDC_EDIT_PRD,lpcs->m_Mp4.GetMetadata_Album());
+	SetDlgItemText(hDlg,IDC_EDIT_AART,lpcs->m_Mp4.GetMetadata_AlbumArtist());
 	SetDlgItemText(hDlg,IDC_EDIT_GRP,lpcs->m_Mp4.GetMetadata_Group());
 	SetDlgItemText(hDlg,IDC_EDIT_COMPOSE,lpcs->m_Mp4.GetMetadata_Composer());
 	SetDlgItemText(hDlg,IDC_EDIT_GNR,lpcs->m_Mp4.GetMetadata_Genre());
@@ -292,6 +298,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		case IDC_EDIT_SBJ:
 		case IDC_EDIT_ART:
 		case IDC_EDIT_PRD:
+		case IDC_EDIT_AART:
 		case IDC_EDIT_GRP:
 		case IDC_EDIT_COMPOSE:
 		case IDC_EDIT_TRK:
@@ -414,6 +421,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
 				lpcs->m_Mp4.SetMetadata_Album(strTmp);
+
+				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_AART));
+				wnd.GetWindowText(strTmp);
+				wnd.Detach();
+				lpcs->m_Mp4.SetMetadata_AlbumArtist(strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GRP));
 				wnd.GetWindowText(strTmp);

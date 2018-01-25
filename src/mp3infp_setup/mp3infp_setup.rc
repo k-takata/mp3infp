@@ -379,7 +379,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which pushes in LIST-INFO)."
     IDS_CAN_NOT_CREATE_TEMP_FILE 
-                            "Do not make Temp file.The availability of a disk may be insufficient."
+                            "Do not make Temp file. The availability of a disk may be insufficient."
     IDS_CAN_NOT_HTMLHELP_OPEN 
                             "In order to peruse a help, it is necessary to install 5 or more Microsoft Internet Explorer 5."
     IDS_COMCTL32_INFO       "It needs to be installed for execution of mp3infp beyond Comctl32.dll Ver.5.80.\n\nhttp://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp"
@@ -390,7 +390,7 @@ BEGIN
     IDS_INFOTIP_NOTINFO     "(No tag information)"
     IDS_LANG_VER_ERROR      "Since the version is old, this language pack cannot be used.\n->%s"
     IDS_LANGUAGE_NAME       "English"
-    IDS_LANGUAGE_VER        "248"
+    IDS_LANGUAGE_VER        "255"
 END
 
 STRINGTABLE DISCARDABLE 
@@ -438,7 +438,7 @@ BEGIN
     IDS_MEMERROR            "Memory allocation error "
     IDS_NO_AUDIO_STREAM     "None"
     IDS_NO_VIDEO_STREAM     "None"
-    IDS_OGG_BAD_CHAR        "The prohibition character is contained in the field name. The character sequence which can be used for \n field name is as follows.\n\n[Space]\n!""#$%&'()*+,-.\n0123456789:;<>?\naÅ`z\nAÅ`Z"
+    IDS_OGG_BAD_CHAR        "The prohibition character is contained in the field name. The character sequence which can be used for \n field name is as follows.\n\n[Space]\n!""#$%&'()*+,-.\n0123456789:;<>?\na~z\nA~Z"
     IDS_OVER_2G             "The file exceeding 2 G bytes cannot be treated."
     IDS_PAGE_BROKEN         "A file has not been updated correctly.\n"
     IDS_PAGE_CAN_NOT_OPEN   "File not open."

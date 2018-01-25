@@ -35,6 +35,7 @@ void OpenSetupPage(HWND hwnd, int pagenum);
 #define CLP_BPM		24	// テンポ
 #define CLP_COMPILATION	25
 #define CLP_GROUP	26
+#define CLP_AART	27	// アルバムアーティスト
 
 #ifdef UNICODE
 #define CF_TTEXT	CF_UNICODETEXT
