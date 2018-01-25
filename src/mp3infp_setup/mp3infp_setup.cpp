@@ -69,10 +69,26 @@ BOOL CMp3infpSetupApp::InitInstance()
 
 	LoadLanguage();
 
+	// Parse command line
+	int argc;
+	LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+	int page = 0;
+	if(argc > 1)
+	{
+		if((argv[1][0] == L'-' || argv[1][0] == L'/')
+			&& (argv[1][1] == L'h' || argv[1][1] == L'H' || argv[1][1] == L'?'))
+		{
+			// TODO: Translate this message.
+			AfxMessageBox(_T("Usage: mp3infp_setup [page_num]\n\n  page_num: 1...10"));
+			return FALSE;
+		}
+		page = _wtoi(argv[1]) - 1;
+	}
+
 	TCHAR tmp[100];
 	//Åump3infpê›íËÅv
 	::LoadString(m_hResource,IDS_CPL_NAME,tmp,sizeof_array(tmp));
-	CSetupProperty propDlg(tmp,NULL,0);
+	CSetupProperty propDlg(tmp,NULL,page);
 	m_pMainWnd = &propDlg;
 	propDlg.DoModal();
 
