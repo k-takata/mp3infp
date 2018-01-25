@@ -34,9 +34,6 @@
  #endif
 #endif
 
-extern "C"
-int __cdecl _fseeki64_w2k(FILE *stream, __int64 offset, int whence);
-
 
 //////////////////////////////////////////////////////////////////////
 // ç\íz/è¡ñ≈
@@ -323,7 +320,7 @@ DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 		OggVorbis_File ov;
 		ov_callbacks callbacks = {
 			(size_t (*)(void *, size_t, size_t, void *))	fread,
-			(int (*)(void *, ogg_int64_t, int))				_fseeki64_w2k /* _fseeki64 */,
+			(int (*)(void *, ogg_int64_t, int))				_fseeki64,
 			(int (*)(void *))								fclose,
 			(long (*)(void *))								ftell
 		};
