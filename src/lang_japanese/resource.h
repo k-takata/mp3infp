@@ -61,7 +61,6 @@
 #define IDS_COLUMN_TITLE                156
 #define IDS_COLUMN_TRACK                157
 #define IDS_COLUMN_VIDEO_FORMAT         158
-#define IDS_COMCTL32_INFO               159
 #define IDS_CPL_CAPTION                 160
 #define IDS_CPL_INFO                    161
 #define IDS_CPL_NAME                    162

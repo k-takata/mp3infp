@@ -7,29 +7,6 @@ STDMETHODIMP CShellExt::AddPages(LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	TRACE(_T("[%s]CShellExt::AddPages()\n"),APP_NAME);
 
-	DWORD dwMajor,dwMinor,dwBuildNumber1,dwBuildNumber2;
-
-	//comctl32.dllのバージョンチェック
-	if(
-		!GetDLLVersion(_T("comctl32.dll"),&dwMajor,&dwMinor,&dwBuildNumber1,&dwBuildNumber2) ||
-		(dwMajor < 5) ||
-		((dwMajor == 5) && (dwMinor < 80))
-		)
-	{
-		//「mp3infpの実行にはComctl32.dll Ver.5.80以上のインストールが必要です。」
-		//「http://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp」
-
-		// 2009-09-02 update.
-		// http://www.microsoft.com/downloads/details.aspx?familyid=cb2cf3a2-8025-4e8f-8511-9b476a8d35d2&displaylang=ja
-		CString tmp;
-		tmp.LoadString(IDS_COMCTL32_INFO);
-		CString ver;
-		ver.Format(_T("\nfound comctl32 version -> %d.%d.%d.%d"),dwMajor,dwMinor,dwBuildNumber1,dwBuildNumber2);
-		tmp += ver;
-		AfxMessageBox(tmp);
-		return NOERROR;
-	}
-	
 	m_bApply = FALSE;
 	switch(m_fileType){
 	case MP3:

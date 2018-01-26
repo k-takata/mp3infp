@@ -1058,7 +1058,6 @@ BEGIN
                             "テンポラリファイルを作成できませんでした。ディスクの空き容量が不足しているかもしれません。"
     IDS_CAN_NOT_HTMLHELP_OPEN 
                             "ヘルプを閲覧するには、Microsoft Internet Explorer 5以上をインストールする必要があります。"
-    IDS_COMCTL32_INFO       "mp3infpの実行にはComctl32.dll Ver.5.80以上のインストールが必要です。\nhttp://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp"
     IDS_CPL_CAPTION         "mp3infp設定"
     IDS_CPL_INFO            "mp3infpの動作設定を行います。"
     IDS_CPL_NAME            "mp3infp"

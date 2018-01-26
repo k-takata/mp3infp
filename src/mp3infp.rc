@@ -877,7 +877,6 @@ BEGIN
                             "Do not make Temp file. The availability of a disk may be insufficient."
     IDS_CAN_NOT_HTMLHELP_OPEN 
                             "In order to peruse a help, it is necessary to install 5 or more Microsoft Internet Explorer 5."
-    IDS_COMCTL32_INFO       "It needs to be installed for execution of mp3infp beyond Comctl32.dll Ver.5.80.\n\nhttp://www.microsoft.com/msdownload/ieplatform/ie/comctrlx86.asp"
     IDS_CPL_CAPTION         "mp3infp setup"
     IDS_CPL_INFO            "A setup of mp3infp of operation is performed."
     IDS_CPL_NAME            "mp3infp"
