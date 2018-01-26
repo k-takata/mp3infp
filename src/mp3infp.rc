@@ -58,21 +58,6 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Menu
-//
-
-IDR_MENU_PROPERTY_CONTEXT MENU DISCARDABLE 
-BEGIN
-    POPUP "(Property Context)"
-    BEGIN
-        MENUITEM "All &copy",                   ID_MENU_COPY
-        MENUITEM "All &paste",                  ID_MENU_PASTE
-    END
-END
-
 #endif    // “ú–{Œê resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -85,6 +70,7 @@ END
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -857,6 +843,20 @@ IDB_PAUSE               BITMAP  DISCARDABLE     "res\\pause.bmp"
 IDB_PLAY                BITMAP  DISCARDABLE     "res\\play.bmp"
 IDB_REW                 BITMAP  DISCARDABLE     "res\\rew.bmp"
 IDB_STOP                BITMAP  DISCARDABLE     "res\\stop.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_PROPERTY_CONTEXT MENU DISCARDABLE 
+BEGIN
+    POPUP "(Property Context)"
+    BEGIN
+        MENUITEM "All &copy",                   ID_MENU_COPY
+        MENUITEM "All &paste",                  ID_MENU_PASTE
+    END
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
