@@ -449,7 +449,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				lpcs->m_bId3v2Apply = TRUE;
 				long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				SetEncodeCB(hDlg);	// ID3バージョンによって選択可能なエンコードが変わる
-				SelectEncodeCB(hDlg,cur);
+				long cnt = ComboBox_GetCount(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
+				if(cur >= cnt)
+				{
+					cur = cnt - 1;
+				}
+				ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),cur);
 			}
 			break;
 		case IDC_EDIT_UNICODE:
