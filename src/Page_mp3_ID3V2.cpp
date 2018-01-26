@@ -207,6 +207,11 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),bEnable);
 	if(bEnable)
 	{
+		if(ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER)) >= 2)	// v2.4
+		{
+			EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),FALSE);
+		}
+
 		if(lpcs->m_Id3tagv2.IsEnable())
 		{
 			EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),TRUE);	//Del Id3Tag
@@ -455,6 +460,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					cur = cnt - 1;
 				}
 				ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),cur);
+
+				if(ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER)) >= 2)	// v2.4
+				{
+					CheckDlgButton(hDlg,IDC_CHECK_UNSYNC,BST_UNCHECKED);
+					EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),FALSE);
+				}
+				else
+				{
+					EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),TRUE);
+				}
 			}
 			break;
 		case IDC_EDIT_UNICODE:
