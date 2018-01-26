@@ -873,12 +873,7 @@ END
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which pushes in LIST-INFO)."
-    IDS_CAN_NOT_CREATE_TEMP_FILE 
-                            "Do not make Temp file. The availability of a disk may be insufficient."
-    IDS_CAN_NOT_HTMLHELP_OPEN 
-                            "In order to peruse a help, it is necessary to install 5 or more Microsoft Internet Explorer 5."
     IDS_CPL_CAPTION         "mp3infp setup"
-    IDS_CPL_INFO            "A setup of mp3infp of operation is performed."
     IDS_CPL_NAME            "mp3infp"
     IDS_INFOTIP_MAXLINE_OVER "(It omits after 30 line)"
     IDS_INFOTIP_NOTINFO     "(No tag information)"
@@ -1009,7 +1004,6 @@ BEGIN
                             "ID3v2 TAG is deleted. Is it all right? \n (this change is reflected immediately)"
     IDS_PAGE_MP3ID3V2_MAKE_ID3TAG 
                             "ID3v2 TAG is created. Is it all right? \n (this change is reflected immediately)"
-    IDS_PAGE_MP3RIFF_BROKEN_RIFF "Do not read RIFF."
     IDS_PAGE_MP3RIFF_CAN_NOT_MAKE 
                             "Since there is ID3v2 TAG, it is not convertible for RMP form."
     IDS_PAGE_MP3RIFF_CAN_NOT_MAKE_APE 
@@ -1021,7 +1015,6 @@ BEGIN
     IDS_PAGE_MP3RIFF_CONV_RMP 
                             "It changes into RMP form. Is it all right? \n (this change is reflected immediately)"
     IDS_PAGE_THIS_READONLY  "This file is Read Only."
-    IDS_PAGE_VQF_BROKEN     "A file was not able to be read correctly."
     IDS_PLEASE_TAG_NAME     "Please input a field name."
 END
 

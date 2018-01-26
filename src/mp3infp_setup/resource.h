@@ -29,8 +29,6 @@
 #define IDD_WRITE_PROGRESS              124
 #define IDR_MENU_PROPERTY_CONTEXT       125
 #define IDS_AVI_UNCODE                  126
-#define IDS_CAN_NOT_CREATE_TEMP_FILE    127
-#define IDS_CAN_NOT_HTMLHELP_OPEN       128
 #define IDS_COLUMN_8_3                  129
 #define IDS_COLUMN_ALBUM                130
 #define IDS_COLUMN_ARTIST               131
@@ -62,7 +60,6 @@
 #define IDS_COLUMN_TRACK                157
 #define IDS_COLUMN_VIDEO_FORMAT         158
 #define IDS_CPL_CAPTION                 160
-#define IDS_CPL_INFO                    161
 #define IDS_CPL_NAME                    162
 #define IDS_DEF_INFOTIP_APE_FORMAT      163
 #define IDS_DEF_INFOTIP_AVI_FORMAT      164
@@ -108,14 +105,12 @@
 #define IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE_APE 204
 #define IDS_PAGE_MP3ID3V2_DEL_ID3TAG    205
 #define IDS_PAGE_MP3ID3V2_MAKE_ID3TAG   206
-#define IDS_PAGE_MP3RIFF_BROKEN_RIFF    207
 #define IDS_PAGE_MP3RIFF_CAN_NOT_MAKE   208
 #define IDS_PAGE_MP3RIFF_CAN_NOT_MAKE2  209
 #define IDS_PAGE_MP3RIFF_CAN_NOT_MAKE_APE 210
 #define IDS_PAGE_MP3RIFF_CONV_MP3       211
 #define IDS_PAGE_MP3RIFF_CONV_RMP       212
 #define IDS_PAGE_THIS_READONLY          213
-#define IDS_PAGE_VQF_BROKEN             214
 #define IDS_PLEASE_TAG_NAME             215
 #define IDS_RELOAD_CPL                  216
 #define IDS_TRANSLATOR                  217
