@@ -109,22 +109,22 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	{
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),TRUE);	//Make Id3Tag
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),FALSE);	//Make Id3Tag
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("ID3v1");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 	else
 	{
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),FALSE);	//Del Id3Tag
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),TRUE);	//Make Id3Tag
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("ID3v1(*)");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v1),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 
@@ -154,12 +154,8 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		//コメント
 		SetDlgItemText(hDlg,IDC_EDIT_CMT,lpcs->m_Id3tagv1.GetComment());
 		//ジャンル
-		SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_SELECTSTRING,
-					0,
-					(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GetGenre()
-				);
+		ComboBox_SelectString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+					0, lpcs->m_Id3tagv1.GetGenre());
 		lpcs->m_bId3v1Apply = FALSE;
 	}
 	else
@@ -337,27 +333,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//コンボボックスの初期化
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )_T("")	//空白
-				);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
-					SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_GNR),
-							CB_ADDSTRING,
-							0,
-							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
-						);
+					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+							lpcs->m_Id3tagv1.GenreNum2String(i));
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect,rect2;
@@ -654,12 +639,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),lpcs->m_Id3tagv2.GetArtist());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),lpcs->m_Id3tagv2.GetAlbum());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),lpcs->m_Id3tagv2.GetYear());
-			SendMessage(
-						GetDlgItem(hDlg,IDC_EDIT_GNR),
-						CB_SELECTSTRING,
-						0,
-						(LPARAM )(LPCTSTR )lpcs->m_Id3tagv2.GetGenre()
-					);	//Fix 2001-05-18
+			ComboBox_SelectString(GetDlgItem(hDlg,IDC_EDIT_GNR), 0, lpcs->m_Id3tagv2.GetGenre());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),lpcs->m_Id3tagv2.GetComment());
 			break;
 		case IDC_COPY_FROM_RIFF:
@@ -668,12 +648,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_ART),lpcs->m_Rmp3.GetART());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_PRD),lpcs->m_Rmp3.GetPRD());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),lpcs->m_Rmp3.GetCRD());
-			SendMessage(
-						GetDlgItem(hDlg,IDC_EDIT_GNR),
-						CB_SELECTSTRING,
-						0,
-						(LPARAM )(LPCTSTR )lpcs->m_Rmp3.GetGNR()
-					);	//Fix 2001-05-18
+			ComboBox_SelectString(GetDlgItem(hDlg,IDC_EDIT_GNR), 0, lpcs->m_Rmp3.GetGNR());
 			SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CMT),lpcs->m_Rmp3.GetCMT());
 			break;
 		case IDC_BUTTON_PLAY:

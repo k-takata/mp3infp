@@ -15,6 +15,9 @@
 #define IS_LEAD_TBYTE(tb)	IsDBCSLeadByte(tb)
 #endif
 
+#define Static_SetImage_Icon(hwndCtl, hIcon)	\
+	((HICON)(UINT_PTR)SNDMSG((hwndCtl), STM_SETIMAGE, IMAGE_ICON, (LPARAM)(HICON)(hIcon)))
+
 void mbsncpy2(unsigned char *dst,unsigned char *src,int c);
 //DLL‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğæ“¾
 BOOL GetDLLVersion(IN LPTSTR szDLLFileName,

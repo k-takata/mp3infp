@@ -69,7 +69,7 @@ void CDlg_ogg_exttag::OnOK()
 	{
 		AfxMessageBox(IDS_PLEASE_TAG_NAME);
 		::SetFocus(::GetDlgItem(m_hWnd,IDC_EDIT_NAME));
-		::SendMessage(::GetDlgItem(m_hWnd,IDC_EDIT_NAME),EM_SETSEL,0,-1);
+		Edit_SetSel(::GetDlgItem(m_hWnd,IDC_EDIT_NAME),0,-1);
 		return;
 	}
 	//フィールド名チェック
@@ -85,7 +85,7 @@ void CDlg_ogg_exttag::OnOK()
 			//禁止文字を発見
 			AfxMessageBox(IDS_OGG_BAD_CHAR);
 			::SetFocus(::GetDlgItem(m_hWnd,IDC_EDIT_NAME));
-			::SendMessage(::GetDlgItem(m_hWnd,IDC_EDIT_NAME),EM_SETSEL,0,-1);
+			Edit_SetSel(::GetDlgItem(m_hWnd,IDC_EDIT_NAME),0,-1);
 			return;
 		}
 

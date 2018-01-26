@@ -14,6 +14,7 @@
 
 #include "resource.h"		// ƒƒCƒ“ ƒVƒ“ƒ{ƒ‹
 #include <htmlhelp.h>
+#include <windowsx.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CMp3infpSetupApp

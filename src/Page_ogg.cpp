@@ -177,17 +177,17 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 static void DispInfoExt(HWND hDlg,CShellExt *lpcs)
 {
 	//クリア
-	long items = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCOUNT,0,0);
+	long items = ListBox_GetCount(GetDlgItem(hDlg,IDC_LIST_VALUE));
 	if(items != LB_ERR)
 	{
 		for(int i=0; i<items; i++)
 		{
-			COggExt *oggExt = (COggExt *)SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETITEMDATA,0,0);
+			COggExt *oggExt = (COggExt *)ListBox_GetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),0);
 			if(oggExt)
 			{
 				delete oggExt;
 			}
-			SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_DELETESTRING,0,0);
+			ListBox_DeleteString(GetDlgItem(hDlg,IDC_LIST_VALUE),0);
 		}
 	}
 
@@ -224,8 +224,8 @@ static void DispInfoExt(HWND hDlg,CShellExt *lpcs)
 			}
 //			TRACE(_T("OGG %s %s\n"),strName,strValue);
 			COggExt *oggExt = new COggExt((LPCTSTR )strName,(LPCTSTR )strValue);
-			SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,0,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
-			SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_SETITEMDATA,items,(LPARAM )oggExt);
+			ListBox_AddString(GetDlgItem(hDlg,IDC_LIST_VALUE),oggExt->Get1LineDisp());
+			ListBox_SetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),items,oggExt);
 			items++;
 		}
 	}
@@ -255,27 +255,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//コンボボックスの初期化
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )_T("")	//空白
-				);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
-					SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_GNR),
-							CB_ADDSTRING,
-							0,
-							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
-						);
+					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+							lpcs->m_Id3tagv1.GenreNum2String(i));
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect;
@@ -322,14 +311,14 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				if(dlg.DoModal() == IDOK)
 				{
 					COggExt *oggExt = new COggExt((LPCTSTR )dlg.m_strName,(LPCTSTR )dlg.m_strValue);
-					long index = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,0,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
+					long index = ListBox_AddString(GetDlgItem(hDlg,IDC_LIST_VALUE),oggExt->Get1LineDisp());
 					if(index == LB_ERR)
 					{
 						delete oggExt;
 					}
 					else
 					{
-						SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_SETITEMDATA,index,(LPARAM )oggExt);
+						ListBox_SetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),index,oggExt);
 					}
 				
 					PropSheet_Changed(GetParent(hDlg),hDlg);
@@ -340,16 +329,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		case IDC_BUTTON_DEL_VALUE:
 			//値削除
 			{
-				long item = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCURSEL,0,0);
+				long item = ListBox_GetCurSel(GetDlgItem(hDlg,IDC_LIST_VALUE));
 				if(item == LB_ERR)
 					break;
 				
-				COggExt *oggExt = (COggExt *)SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETITEMDATA,item,0);
+				COggExt *oggExt = (COggExt *)ListBox_GetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),item);
 				if(oggExt)
 				{
 					delete oggExt;
 				}
-				SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_DELETESTRING,item,0);
+				ListBox_DeleteString(GetDlgItem(hDlg,IDC_LIST_VALUE),item);
 				
 				PropSheet_Changed(GetParent(hDlg),hDlg);
 				lpcs->m_bApply = TRUE;
@@ -359,11 +348,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			if(HIWORD(wParam) == LBN_DBLCLK)
 			{
 				//ダブルクリック - 編集
-				long item = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCURSEL,0,0);
+				long item = ListBox_GetCurSel(GetDlgItem(hDlg,IDC_LIST_VALUE));
 				if(item == LB_ERR)
 					break;
 				
-				COggExt *oggExt = (COggExt *)SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETITEMDATA,item,0);
+				COggExt *oggExt = (COggExt *)ListBox_GetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),item);
 				if(oggExt == NULL)
 					break;
 				
@@ -375,9 +364,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				{
 					oggExt->SetName((LPCTSTR )dlg.m_strName);
 					oggExt->SetValue((LPCTSTR )dlg.m_strValue);
-					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_DELETESTRING,item,0);
-					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_ADDSTRING,item,(LPARAM )(LPCTSTR )oggExt->Get1LineDisp());
-					SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_SETITEMDATA,item,(LPARAM )oggExt);
+					ListBox_DeleteString(GetDlgItem(hDlg,IDC_LIST_VALUE),item);
+					ListBox_InsertString(GetDlgItem(hDlg,IDC_LIST_VALUE),item,oggExt->Get1LineDisp());
+					ListBox_SetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),item,oggExt);
 					
 					PropSheet_Changed(GetParent(hDlg),hDlg);
 					lpcs->m_bApply = TRUE;
@@ -457,12 +446,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	case WM_DESTROY:
 		{
 			//後始末
-			long items = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCOUNT,0,0);
+			long items = ListBox_GetCount(GetDlgItem(hDlg,IDC_LIST_VALUE));
 			if(items != LB_ERR)
 			{
 				for(int i=0; i<items; i++)
 				{
-					COggExt *oggExt = (COggExt *)SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETITEMDATA,i,0);
+					COggExt *oggExt = (COggExt *)ListBox_GetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),i);
 					if(oggExt)
 					{
 						delete oggExt;
@@ -546,12 +535,12 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				lpcs->m_Ogg.AddComment(_T("COMMENT"),strTmp);
 
 				//その他分を保存
-				long items = SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETCOUNT,0,0);
+				long items = ListBox_GetCount(GetDlgItem(hDlg,IDC_LIST_VALUE));
 				if(items != LB_ERR)
 				{
 					for(int i=0; i<items; i++)
 					{
-						COggExt *oggExt = (COggExt *)SendMessage(GetDlgItem(hDlg,IDC_LIST_VALUE),LB_GETITEMDATA,i,0);
+						COggExt *oggExt = (COggExt *)ListBox_GetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),i);
 						if(oggExt)
 						{
 							lpcs->m_Ogg.AddComment(oggExt->GetName(),oggExt->GetValue());

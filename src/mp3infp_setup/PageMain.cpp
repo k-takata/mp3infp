@@ -95,18 +95,12 @@ END_MESSAGE_MAP()
 BOOL CPageMain::OnApply() 
 {
 	CString strLanguage;
-	LRESULT cur = ::SendMessage(
-				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-				CB_GETCURSEL,
-				0,
-				0);
+	LRESULT cur = ComboBox_GetCurSel(
+				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd());
 	if(cur != CB_ERR)
 	{
-		CString *str = (CString *)::SendMessage(
-							GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-							CB_GETITEMDATA,
-							cur,
-							0);
+		CString *str = (CString *)ComboBox_GetItemData(
+							GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(), cur);
 		if(str)
 		{
 			strLanguage = *str;
@@ -228,44 +222,33 @@ BOOL CPageMain::OnInitDialog()
 				continue;
 			}
 			strLangDisp.Format("%s - (%s)",tmp,fd.cFileName);
-			::SendMessage(
+			ComboBox_InsertString(
 					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-					CB_INSERTSTRING,
-					0,
-					(LPARAM )(LPCSTR )strLangDisp);
+					0, strLangDisp);
 			char tmp[MAX_PATH];
 			strcpy(tmp,fd.cFileName);
 			cutExtName(tmp);
 			CString *str = new CString(tmp);
-			::SendMessage(
+			ComboBox_SetItemData(
 					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-					CB_SETITEMDATA,
-					0,
-					(LPARAM )str);
+					0, str);
 		}while(FindNextFile(hFind,&fd));
 		FindClose(hFind);
 	}
-	::SendMessage(
+	ComboBox_InsertString(
 			GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-			CB_INSERTSTRING,
-			0,
-			(LPARAM )(LPCSTR )"English - (default)"
+			0, "English - (default)"
 		);
-	::SendMessage(
+	ComboBox_SetItemData(
 			GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-			CB_SETITEMDATA,
-			0,
-			NULL);
+			0, NULL);
 	// 言語パックの選択
 	SelectLang(m_strLanguage);
 	// 翻訳者の表示
 	CString str;
 	str.LoadString(IDS_TRANSLATOR);
-	LRESULT sel = ::SendMessage(
-					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-					CB_GETCURSEL,
-					0,
-					0);
+	LRESULT sel = ComboBox_GetCurSel(
+					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd());
 	if(sel != 0)
 	{
 		SetDlgItemText(IDC_STATIC_TRANSLATOR,str);
@@ -284,45 +267,34 @@ BOOL CPageMain::OnInitDialog()
 void CPageMain::SelectLang(const char *langfile)
 {
 	// 指定ファイル名の言語をコンボボックスで選択
-	LRESULT cnt = ::SendMessage(
-				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-				CB_GETCOUNT,
-				0,
-				0);
+	LRESULT cnt = ComboBox_GetCount(
+				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd());
 	if(cnt == CB_ERR)
 	{
 		return;
 	}
 	for(long i=0; i<cnt; i++)
 	{
-		CString *str = (CString *)::SendMessage(
+		CString *str = (CString *)ComboBox_GetItemData(
 							GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-							CB_GETITEMDATA,
-							i,
-							0);
+							i);
 		if(str)
 		{
 			if(str->CompareNoCase(langfile) == 0)
 			{
 				// 選択
-				::SendMessage(
+				ComboBox_SetCurSel(
 						GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-						CB_SETCURSEL,
-						i,
-						0
-					);
+						i);
 				break;
 			}
 		}
 		else
 		{
 			// null(default)を選択
-			::SendMessage(
+			ComboBox_SetCurSel(
 					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-					CB_SETCURSEL,
-					i,
-					0
-				);
+					i);
 		}
 	}
 }
@@ -355,20 +327,15 @@ void CPageMain::OnDestroy()
 	CPropertyPage::OnDestroy();
 	
 	// TODO: この位置にメッセージ ハンドラ用のコードを追加してください
-	LRESULT cnt = ::SendMessage(
-				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-				CB_GETCOUNT,
-				0,
-				0);
+	LRESULT cnt = ComboBox_GetCount(
+				GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd());
 	if(cnt != CB_ERR)
 	{
 		for(long i=0; i<cnt; i++)
 		{
-			CString *str = (CString *)::SendMessage(
+			CString *str = (CString *)ComboBox_GetItemData(
 								GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
-								CB_GETITEMDATA,
-								i,
-								0);
+								i);
 			if(str)
 			{
 				delete str;

@@ -187,27 +187,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//コンボボックスの初期化
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )_T("")	//空白
-				);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
-					SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_GNR),
-							CB_ADDSTRING,
-							0,
-							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
-						);
+					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+							lpcs->m_Id3tagv1.GenreNum2String(i));
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect;

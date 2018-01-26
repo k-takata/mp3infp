@@ -227,9 +227,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wma(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//オーナードローボタンの初期化

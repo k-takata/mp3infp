@@ -109,22 +109,22 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	{
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),TRUE);	//Make Id3Tag
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),FALSE);	//Make Id3Tag
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("APE");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageMp3Ape),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageMp3Ape),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 	else
 	{
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),FALSE);	//Del Id3Tag
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),TRUE);	//Make Id3Tag
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("APE(*)");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageMp3Ape),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageMp3Ape),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 
@@ -211,27 +211,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//コンボボックスの初期化
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )_T("")	//空白
-				);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
-					SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_GNR),
-							CB_ADDSTRING,
-							0,
-							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
-						);
+					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+							lpcs->m_Id3tagv1.GenreNum2String(i));
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect,rect2;

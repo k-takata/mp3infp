@@ -97,16 +97,16 @@ static void SelectEncodeCB(HWND hDlg,int encode)
 	switch(encode){
 	default:
 	case 0:	// ID3V2CHARENCODE_ISO_8859_1
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_SETCURSEL,0,0);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),0);
 		break;
 	case 1:	// ID3V2CHARENCODE_UTF_16
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_SETCURSEL,1,0);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),1);
 		break;
 	case 2:	// ID3V2CHARENCODE_UTF_16BE
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_SETCURSEL,3,0);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),3);
 		break;
 	case 3:	// ID3V2CHARENCODE_UTF_8
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_SETCURSEL,2,0);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),2);
 		break;
 	}
 }
@@ -114,26 +114,10 @@ static void SelectEncodeCB(HWND hDlg,int encode)
 static void SetEncodeCB(HWND hDlg)
 {
 	// コンボボックスをクリア
-	while(1)
-	{
-		SendMessage(
-				GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-				CB_DELETESTRING,
-				0,
-				0
-				);
-		LRESULT ret = SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_GETCOUNT,0,0);
-		if((ret == CB_ERR) || (ret == 0))
-		{
-			break;
-		}
-	}
+	ComboBox_ResetContent(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
+
 	// ID3v2のバージョンによってコンボボックスの内容が決まる
-	long cur = ::SendMessage(
-				GetDlgItem(hDlg,IDC_EDIT_ID3VER),
-				CB_GETCURSEL,
-				0,
-				0);
+	long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER));
 	if(cur >= 2)	// > v2.4
 	{
 #ifndef	ENABLE_UTF_16BE
@@ -143,12 +127,7 @@ static void SetEncodeCB(HWND hDlg)
 #endif
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )encode[i]
-					);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encode[i]);
 		}
 	}
 	else
@@ -156,12 +135,7 @@ static void SetEncodeCB(HWND hDlg)
 		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)")};
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )encode[i]
-					);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encode[i]);
 		}
 	}
 }
@@ -242,11 +216,11 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 			EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),FALSE);	//Del Id3Tag
 		}
 		EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),FALSE);	//Make Id3Tag
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("ID3v2");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 	else
@@ -261,11 +235,11 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 		{
 			EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_MAKE_TAG),TRUE);	//Make Id3Tag
 		}
-		HWND hWndTab = (HWND )::SendMessage(GetParent(hDlg),PSM_GETTABCONTROL,0,0);
+		HWND hWndTab = PropSheet_GetTabControl(GetParent(hDlg));
 		TC_ITEM tcItem;
 		tcItem.mask = TCIF_TEXT;
 		tcItem.pszText = _T("ID3v2(*)");
-		::SendMessage(hWndTab,TCM_SETITEM,(WPARAM )PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),(LPARAM )&tcItem);
+		TabCtrl_SetItem(hWndTab,PropSheet_PageToIndex(GetParent(hDlg),lpcs->m_hpageId3v2),&tcItem);
 		PropSheet_RecalcPageSizes(GetParent(hDlg));
 	}
 
@@ -282,13 +256,13 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	{
 		switch(lpcs->m_Id3tagv2.GetVer()){
 		case 0x0200:
-			SendMessage(GetDlgItem(hDlg,IDC_EDIT_ID3VER),CB_SETCURSEL,0,0);
+			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),0);
 			break;
 		case 0x0300:
-			SendMessage(GetDlgItem(hDlg,IDC_EDIT_ID3VER),CB_SETCURSEL,1,0);
+			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),1);
 			break;
 		case 0x0400:
-			SendMessage(GetDlgItem(hDlg,IDC_EDIT_ID3VER),CB_SETCURSEL,2,0);
+			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),2);
 			break;
 		}
 //		if(lpcs->m_Id3tagv2.GetUniocdeEncode())
@@ -346,8 +320,8 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	}
 	else
 	{
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_UNICODE),CB_SETCURSEL,-1,0);
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_ID3VER),CB_SETCURSEL,-1,0);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),-1);
+		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),-1);
 		EnableEdit(hDlg,lpcs,FALSE);
 	}
 	if(lpcs->m_bPropAOT)
@@ -392,37 +366,20 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 			//コンボボックスの初期化
-			SendMessage(
-					GetDlgItem(hDlg,IDC_EDIT_GNR),
-					CB_ADDSTRING,
-					0,
-					(LPARAM )(LPCTSTR )_T("")	//空白
-				);
-			int i=0;
-			for(; i<256; i++)
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
+			for(int i=0; i<256; i++)
 			{
 				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
-					SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_GNR),
-							CB_ADDSTRING,
-							0,
-							(LPARAM )(LPCTSTR )lpcs->m_Id3tagv1.GenreNum2String(i)
-						);
+					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
+							lpcs->m_Id3tagv1.GenreNum2String(i));
 			}
 			LPCTSTR id3tags[] = {_T("v2.2"),_T("v2.3"),_T("v2.4")};
-			for(i=0; i<sizeof_array(id3tags); i++)
+			for(int i=0; i<sizeof_array(id3tags); i++)
 			{
-				SendMessage(
-						GetDlgItem(hDlg,IDC_EDIT_ID3VER),
-						CB_ADDSTRING,
-						0,
-						(LPARAM )(LPCTSTR )id3tags[i]
-						);
+				ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_ID3VER),id3tags[i]);
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect;
@@ -490,11 +447,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 			{
 				PropSheet_Changed(GetParent(hDlg),hDlg);
 				lpcs->m_bId3v2Apply = TRUE;
-				long cur = ::SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-							CB_GETCURSEL,
-							0,
-							0);
+				long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				SetEncodeCB(hDlg);	// ID3バージョンによって選択可能なエンコードが変わる
 				SelectEncodeCB(hDlg,cur);
 			}
@@ -601,11 +554,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					//タイムスタンプを保存
 					lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 					// 作成するID3バージョンを決定
-					long cur = ::SendMessage(
-								GetDlgItem(hDlg,IDC_EDIT_ID3VER),
-								CB_GETCURSEL,
-								0,
-								0);
+					long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER));
 					BOOL bUnsync = TRUE;
 					switch(cur){
 					case 0:	// v2.2
@@ -621,11 +570,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						break;
 					}
 					// Unsync/Unicode指定
-					cur = ::SendMessage(
-								GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-								CB_GETCURSEL,
-								0,
-								0);
+					cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 					switch(cur){
 					default:
 					case 0:
@@ -916,11 +861,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				}
 				lpcs->m_bId3v2Apply = FALSE;
 
-				LRESULT cur = ::SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_ID3VER),
-							CB_GETCURSEL,
-							0,
-							0);
+				long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER));
 				switch(cur){
 				case 0:	// v2.2
 					lpcs->m_Id3tagv2.SetVer(0x0200);
@@ -937,11 +878,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					break;
 				}
 				// Unsync/Unicode指定
-				cur = ::SendMessage(
-							GetDlgItem(hDlg,IDC_EDIT_UNICODE),
-							CB_GETCURSEL,
-							0,
-							0);
+				cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				switch(cur){
 				default:
 				case 0:

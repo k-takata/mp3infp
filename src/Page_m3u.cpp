@@ -71,9 +71,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			SHFILEINFO sfi;
 			if(SHGetFileInfo(lpcs->m_strSelectFile,0,&sfi,sizeof(sfi),SHGFI_ICON))
 			{
-				SendMessage(GetDlgItem(hDlg,IDC_ICON1),
-					STM_SETIMAGE,IMAGE_ICON,
-					(LPARAM )sfi.hIcon);
+				Static_SetImage_Icon(GetDlgItem(hDlg,IDC_ICON1),sfi.hIcon);
 			}
 
 			//情報を表示
@@ -176,9 +174,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		SetWindowText(GetDlgItem(hDlg,IDC_EDIT_LIST),strTmp);
 		PropSheet_Changed(GetParent(hDlg),hDlg);
 		
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_LIST),EM_SETMODIFY,TRUE,0);
+		Edit_SetModify(GetDlgItem(hDlg,IDC_EDIT_LIST),TRUE);
 		// カーソル位置を終端にセット
-		SendMessage(GetDlgItem(hDlg,IDC_EDIT_LIST),EM_SETSEL,strTmp.GetLength(),strTmp.GetLength());
+		Edit_SetSel(GetDlgItem(hDlg,IDC_EDIT_LIST),strTmp.GetLength(),strTmp.GetLength());
 		break;
 	}
 
@@ -248,7 +246,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		case PSN_APPLY:
 			//保存
 			TRACE(_T("WM_NOTIFY(PSN_APPLY)\n"));
-			if(SendMessage(GetDlgItem(hDlg,IDC_EDIT_LIST),EM_GETMODIFY,0,0))
+			if(Edit_GetModify(GetDlgItem(hDlg,IDC_EDIT_LIST)))
 			{
 				TRACE(_T("WM_NOTIFY(PSN_APPLY) - 保存\n"));
 				//ファイルが書き込み可能か調べる
@@ -318,7 +316,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				lpcs->m_bApply = FALSE;
 
 				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
-				SendMessage(GetDlgItem(hDlg,IDC_EDIT_LIST),EM_SETMODIFY,FALSE,0);
+				Edit_SetModify(GetDlgItem(hDlg,IDC_EDIT_LIST),FALSE);
 
 				//シェルに変更を通知
 				SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_PATH,lpcs->m_strSelectFile,NULL);
