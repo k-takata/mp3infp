@@ -930,7 +930,6 @@ BEGIN
     IDS_OGG_BAD_CHAR        "The prohibition character is contained in the field name. The character sequence which can be used for \n field name is as follows.\n\n[Space]\n!""#$%&'()*+,-.\n0123456789:;<>?\na~z\nA~Z"
     IDS_OVER_2G             "The file exceeding 2 G bytes cannot be treated."
     IDS_PAGE_BROKEN         "A file has not been updated correctly.\n"
-    IDS_PAGE_CAN_NOT_OPEN   "File not open."
     IDS_PAGE_MP3APE_DEL_APE "APE Tag is deleted. Is it all right? \n (this change is reflected immediately)"
     IDS_PAGE_MP3APE_MAKE_APE 
                             "APE Tag is created. Is it all right? \n (this change is reflected immediately)"

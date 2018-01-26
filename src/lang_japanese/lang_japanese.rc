@@ -1104,7 +1104,6 @@ BEGIN
     IDS_OGG_BAD_CHAR        "フィールド名に禁止文字が含まれています。\nフィールド名に使用できる文字列は以下のとおりです。\n[スペース]\n!""#$%&'()*+,-.\n0123456789:;<>?\na～z\nA～Z"
     IDS_OVER_2G             "2Gバイトを超えるファイルを扱うことはできません。"
     IDS_PAGE_BROKEN         "ファイルを正しく更新できませんでした。"
-    IDS_PAGE_CAN_NOT_OPEN   "ファイルをオープンできませんでした。"
     IDS_PAGE_MP3APE_DEL_APE "APE Tagを削除します。よろしいですか？\n(この変更はすぐに反映されます)"
     IDS_PAGE_MP3APE_MAKE_APE 
                             "APE Tagを作成します。よろしいですか？\n(この変更はすぐに反映されます)"
