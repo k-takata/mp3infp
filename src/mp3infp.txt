@@ -1,8 +1,8 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.54j3 for Windows 7/8/10
+Ver.2.55 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
-Copyright(C) 2009-2016 K.Takata
+Copyright(C) 2009-2018 K.Takata
 
 ※※※mp3infp/uはフリーソフトウェアです※※※
 このソフトウェアは「無料」で利用できますが「無保証」です。
@@ -73,7 +73,7 @@ https://github.com/k-takata/mp3infp で配布しています。
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
 
-2018/01/xx  Ver.2.54k1
+2018/01/xx  Ver.2.55
 ・libogg 1.3.3 に更新。
 ・[mp3infp設定] をコントロールパネル上のアプリから通常アプリに変更。
   Windows 10 ではコントロールパネルが廃止方向のため。
@@ -83,6 +83,7 @@ https://github.com/k-takata/mp3infp で配布しています。
   - Modern UI 2.0 を使ったモダンな UI に変更。
   - High DPI に対応。
   - mp3infp_regist.exe を廃止。
+・MP3 (ID3v2) と MP4 でアルバムアーティストに対応。
 
 2016/05/02  Ver.2.54j3
 ・libogg 1.3.2, libvorbis 1.3.5 に更新。

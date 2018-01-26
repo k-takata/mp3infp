@@ -1,8 +1,8 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.54j3 Dll for Windows 7/8/10
+Ver.2.55 Dll for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
-Copyright(C) 2009-2016 K.Takata
+Copyright(C) 2009-2018 K.Takata
 
 ■使用ライブラリ
 OggVorbis形式のファイル読み書きには下記オープンソースライブラリを使用します。

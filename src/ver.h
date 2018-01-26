@@ -3,8 +3,8 @@
 // (VerUpdate.exeÇ…Çƒé©ìÆçXêVÇ≥ÇÍÇÈ)
 //
 #define MAJOR_REL	2
-#define MINOR_REL	54
-#define BUILD_NUM	93
-#define BUILD_STR	"2.54.93.0\0"
-#define PRODUCT_STR	"2.54.93.0\0"
+#define MINOR_REL	55
+#define BUILD_NUM	94
+#define BUILD_STR	"2.55.94.0\0"
+#define PRODUCT_STR	"2.55.94.0\0"
 

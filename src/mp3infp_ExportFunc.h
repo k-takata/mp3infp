@@ -3,7 +3,7 @@
 
 /*
 ■改変履歴
-2018-01-25 Ver.2.54k1
+2018-01-25 Ver.2.55
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
 >MP3で"AART_v2"に対応
 >MP4で"AART"に対応
@@ -182,7 +182,7 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM_v1"	"INAM_v2"	"INAM_rmp"	"INAM_APE"
 	アーティスト			"IART_v1"	"IART_v2"	"IART_rmp"	"IART_APE"
 	アルバム				"IPRD_v1"	"IPRD_v2"	"IPRD_rmp"	"IPRD_APE"
-	アルバムアーティスト				"AART_v2" (v2.54k1～)
+	アルバムアーティスト				"AART_v2" (v2.55～)
 	コメント				"ICMT_v1"	"ICMT_v2"	"ICMT_rmp"	"ICMT_APE"
 	作成日					"ICRD_v1"	"ICRD_v2"	"ICRD_rmp"	"ICRD_APE"
 	ジャンル				"IGNR_v1"	"IGNR_v2"	"IGNR_rmp"	"IGNR_APE"
@@ -284,7 +284,7 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM"
 	アーティスト			"IART"
 	アルバム				"IPRD"
-	アルバムアーティスト	"AART"	(v2.54k1～)
+	アルバムアーティスト	"AART"	(v2.55～)
 	グループ				"IGRP"
 	作曲					"COMPOSER"
 	ジャンル				"IGNR"
