@@ -168,7 +168,7 @@ CString LoadResString(HINSTANCE hInstance,UINT uID)
 
 //---------------------------------------------------------------------
 //★ビッグエンディアン->リトルエンディアンの変換
-DWORD ExtractI4(unsigned char buf[4])
+DWORD ExtractI4(const unsigned char buf[4])
 {
 	DWORD x;
 	// big endian extract
@@ -184,7 +184,7 @@ DWORD ExtractI4(unsigned char buf[4])
 
 //---------------------------------------------------------------------
 //★ビッグエンディアン->リトルエンディアンの変換
-WORD ExtractI2(unsigned char buf[2])
+WORD ExtractI2(const unsigned char buf[2])
 {
 	WORD x;
 	// big endian extract
@@ -215,7 +215,7 @@ LPCTSTR getFileNameExtName(LPCTSTR szPath)
 	return szPath;
 }
 
-CString getFileNameExtName(CString &path)
+CString getFileNameExtName(const CString &path)
 {
 	int i = 0;
 	int pathOffset = 0;
@@ -265,7 +265,7 @@ LPCTSTR getExtName(LPCTSTR szPath)
 	return szPath;
 }
 
-CString getExtName(CString &path)
+CString getExtName(const CString &path)
 {
 	//ファイル名だけを分離
 	CString fName = getFileNameExtName(path);
@@ -367,7 +367,7 @@ void cutFileName(LPTSTR szPath)
 	return;
 }
 
-CString getPathName(CString &path)
+CString getPathName(const CString &path)
 {
 	int i = 0;
 	int pathOffset = 0;
@@ -434,7 +434,7 @@ void cutExtName(LPTSTR szFileName)
 	*pEnd='\0';
 }
 
-CString getFileName(CString &path)
+CString getFileName(const CString &path)
 {
 	CString fName = getFileNameExtName(path);
 	
@@ -459,7 +459,7 @@ CString getFileName(CString &path)
 	return fName.Left(pathOffset);
 }
 
-CString divString(LPTSTR src,char c,int n)
+CString divString(LPCTSTR src,char c,int n)
 {
 	CString ret;
 	int cnt = (int )((n - lstrlen(src)%n)%n);

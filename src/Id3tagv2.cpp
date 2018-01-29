@@ -55,7 +55,7 @@ void CId3tagv2::SetEncDefault(LPCTSTR szDefaultEnc)
 }
 
 CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
-		unsigned char *data, int datasize, DWORD *pdwReadSize)
+		const unsigned char *data, int datasize, DWORD *pdwReadSize)
 {
 	DWORD len = 0;
 	DWORD readsize = 0;
@@ -69,7 +69,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 	}
 	
 	int code;
-	unsigned char *start = data;
+	const unsigned char *start = data;
 	switch (encoding) {
 	case ID3V2CHARENCODE_ISO_8859_1:
 		code = DTC_CODE_ANSI;
@@ -604,7 +604,7 @@ void CId3tagv2::_SetStringEncode(int encode)
 }
 #endif
 
-id3_v23v22table_t id3_v23v22table[] = {
+const id3_v23v22table_t id3_v23v22table[] = {
 	{"AENC", "CRA"},
 	{"APIC", "PIC"},
 	{"COMM", "COM"},
@@ -668,7 +668,7 @@ id3_v23v22table_t id3_v23v22table[] = {
 	{NULL, NULL}
 };
 
-void CId3tagv2::v23IDtov22ID(char *v23ID,char *v22ID)
+void CId3tagv2::v23IDtov22ID(const char *v23ID,char *v22ID)
 {
 	//v2.3Ç©ÇÁv2.2Ç÷ÉtÉåÅ[ÉÄIDÇïœä∑
 	int i;
@@ -960,7 +960,7 @@ DWORD CId3tagv2::DecodeUnSynchronization(unsigned char *data,DWORD dwSize)
 	return dwDecodeSize;
 }
 
-DWORD CId3tagv2::EncodeUnSynchronization(unsigned char *srcData,DWORD dwSize,unsigned char *dstData)
+DWORD CId3tagv2::EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData)
 {
 	DWORD dwDecodeSize = 0;
 	unsigned char *writePtr = dstData;

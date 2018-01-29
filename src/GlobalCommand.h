@@ -38,13 +38,13 @@ CString LoadResString(HINSTANCE hInstance,UINT uID);
 
 //---------------------------------------------------------------------
 //★ビッグエンディアン->リトルエンディアンの変換
-DWORD ExtractI4(unsigned char buf[4]);
-WORD ExtractI2(unsigned char buf[2]);
+DWORD ExtractI4(const unsigned char buf[4]);
+WORD ExtractI2(const unsigned char buf[2]);
 
-CString getFileNameExtName(CString &path);
-CString getExtName(CString &path);
-CString getPathName(CString &path);
-CString getFileName(CString &path);
+CString getFileNameExtName(const CString &path);
+CString getExtName(const CString &path);
+CString getPathName(const CString &path);
+CString getFileName(const CString &path);
 
 //////////////////////////////////////////////////////////////////////////////
 //getFileNameExtName
@@ -101,7 +101,7 @@ void cutFileName(LPTSTR szPath);
 void cutExtName(LPTSTR szFileName);
 
 //文字列srcを指定文字cでn文字ごとに区切る
-CString divString(LPTSTR src,char c,int n);
+CString divString(LPCTSTR src,char c,int n);
 
 // バイト列をCStringに変換する
 CString DataToCString(const char *data, int size, int code);

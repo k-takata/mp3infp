@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-static WORD ExtractI2(unsigned char buf[2])
+static WORD ExtractI2(const unsigned char buf[2])
 {
 	WORD x;
 	// big endian extract
@@ -19,7 +19,7 @@ static WORD ExtractI2(unsigned char buf[2])
 	return x;
 }
 
-static DWORD ExtractI4(unsigned char buf[4])
+static DWORD ExtractI4(const unsigned char buf[4])
 {
 	DWORD x;
 	// big endian extract
@@ -37,7 +37,7 @@ struct id3_v23v22table_t {
 	char *v23;
 	char *v22;
 };
-extern id3_v23v22table_t id3_v23v22table[];
+extern const id3_v23v22table_t id3_v23v22table[];
 
 class CId3Frame  
 {
@@ -288,16 +288,16 @@ public:
 
 private:
 	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
-	DWORD EncodeUnSynchronization(unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
+	DWORD EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
 	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
 	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
 	DWORD GetTotalFrameSize();
 //	void _SetStringEncode(int encode);
-	void v23IDtov22ID(char *v23ID,char *v22ID);
+	void v23IDtov22ID(const char *v23ID,char *v22ID);
 //	void UTF16toUTF16BE(WCHAR *str,int len);
-	CString ReadEncodedTextString(unsigned char encoding, unsigned char *data, int dataize, DWORD *pdwReadSize);
+	CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2Ç™ñ≥Ç¢èÍçáÇÕFALSE
