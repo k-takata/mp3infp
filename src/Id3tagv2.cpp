@@ -987,11 +987,6 @@ DWORD CId3tagv2::EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSi
 	return dwEncodeSize;
 }
 
-DWORD CId3tagv2::ExtractV2Size(const unsigned char size[4])
-{
-	return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
-}
-
 void CId3tagv2::MakeV2Size(DWORD dwSize,unsigned char size[4])
 {
 	size[3] = dwSize & 0x7f;

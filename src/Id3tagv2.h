@@ -15,6 +15,11 @@ struct id3_v23v22table_t {
 };
 extern const id3_v23v22table_t id3_v23v22table[];
 
+static inline DWORD ExtractV2Size(const unsigned char size[4])
+{
+	return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
+}
+
 class CId3Frame  
 {
 public:
@@ -55,7 +60,7 @@ public:
 		{
 			return 0;	//フレームヘッダがない場合は終了
 		}
-		DWORD size = (((DWORD )(pData[4]&0x7f)<<21) | ((DWORD )(pData[5]&0x7f)<<14) | ((DWORD )(pData[6]&0x7f)<<7) | ((DWORD )(pData[7]&0x7f)));
+		DWORD size = ExtractV2Size(&pData[4]);
 		if((size+10) > dwSize)
 		{
 			return 0;	//ヘッダサイズが入力データを超過している
@@ -265,7 +270,6 @@ public:
 private:
 	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
 	DWORD EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
-	DWORD ExtractV2Size(const unsigned char size[4]);
 	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
 	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
