@@ -14,7 +14,7 @@ static const unsigned long ID3V2_PADDING_SIZE = 0x0800;
 //static const unsigned char SCMPX_GENRE_NULL = 247;
 //static const unsigned char WINAMP_GENRE_NULL = 255;
 
-const char *CId3tagv2::numeric_tags[] = {
+const char *CId3tagv2::numeric_frames[] = {
 	"TBPM", "TDAT", "TDLY", "TIME", "TLEN", "TPOS", "TRCK", "TSIZ", "TYER",
 	"TDEN", "TDOR", "TDRC", "TDRL", "TDTG",
 	NULL
@@ -227,8 +227,8 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	case 'T':	//テキスト情報フレーム
 		encode = m_encode;
 		//数字文字列はISO-8859-1
-		for (i = 0; numeric_tags[i] != NULL; i++) {
-			if (strcmp(szId, numeric_tags[i]) == 0) {
+		for (i = 0; numeric_frames[i] != NULL; i++) {
+			if (strcmp(szId, numeric_frames[i]) == 0) {
 				encode = ID3V2CHARENCODE_ISO_8859_1;
 				break;
 			}
@@ -962,7 +962,7 @@ DWORD CId3tagv2::DecodeUnSynchronization(unsigned char *data,DWORD dwSize)
 
 DWORD CId3tagv2::EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData)
 {
-	DWORD dwDecodeSize = 0;
+	DWORD dwEncodeSize = 0;
 	unsigned char *writePtr = dstData;
 	BOOL bHitFF = FALSE;
 
@@ -970,8 +970,8 @@ DWORD CId3tagv2::EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSi
 	{
 		if(bHitFF && (((srcData[i]&0xe0) == 0xe0) || (srcData[i] == 0x00)) )
 		{
-			writePtr[dwDecodeSize] = 0x00;
-			dwDecodeSize++;
+			writePtr[dwEncodeSize] = 0x00;
+			dwEncodeSize++;
 		}
 		if(srcData[i] == 0xff)
 		{
@@ -981,10 +981,10 @@ DWORD CId3tagv2::EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSi
 		{
 			bHitFF = FALSE;
 		}
-		writePtr[dwDecodeSize] = srcData[i];
-		dwDecodeSize++;
+		writePtr[dwEncodeSize] = srcData[i];
+		dwEncodeSize++;
 	}
-	return dwDecodeSize;
+	return dwEncodeSize;
 }
 
 DWORD CId3tagv2::ExtractV2Size(const unsigned char size[4])

@@ -310,7 +310,7 @@ private:
 	CString m_strDefaultEnc;		//TENCのデフォルト値
 //	WORD m_wDefaultId3TagVersion;	// ID3V2の初期値(新規作成時にこのバージョンとなる)
 
-	static const char *numeric_tags[];
+	static const char *numeric_frames[];
 };
 
 #endif // !defined(AFX_ID3TAGV2_H__92584511_76E1_4EE6_90A7_E196C9C0EF88__INCLUDED_)
