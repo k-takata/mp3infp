@@ -291,7 +291,7 @@ private:
 	CString GetId3String(const char szId[]);
 	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
 	DWORD GetTotalFrameSize();
-	void _SetStringEncode(int encode);
+//	void _SetStringEncode(int encode);
 	void v23IDtov22ID(char *v23ID,char *v22ID);
 //	void UTF16toUTF16BE(WCHAR *str,int len);
 	CString ReadEncodedTextString(unsigned char encoding, unsigned char *data, int dataize, DWORD *pdwReadSize);

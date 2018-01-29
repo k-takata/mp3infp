@@ -573,6 +573,7 @@ DWORD CId3tagv2::GetTotalFrameSize()
 	return dwSize;
 }
 
+#if 0
 // 全てのフレームの文字列エンコードを指定する
 void CId3tagv2::_SetStringEncode(int encode)
 {
@@ -604,6 +605,7 @@ void CId3tagv2::_SetStringEncode(int encode)
 		p++;
 	}
 }
+#endif
 
 id3_v23v22table_t id3_v23v22table[] = {
 	{"AENC", "CRA"},
