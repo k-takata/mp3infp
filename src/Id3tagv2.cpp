@@ -124,7 +124,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 
 CString CId3tagv2::GetId3String(const char szId[])
 {
-	pair< multimap< DWORD , CId3Frame >::iterator, multimap< DWORD , CId3Frame >::iterator > pp;
+	pair<multimap<DWORD, CId3Frame>::iterator, multimap<DWORD, CId3Frame>::iterator> pp;
 	multimap<DWORD,CId3Frame>::iterator p;
 	DWORD dwId;
 	DWORD dwReadSize;
@@ -133,7 +133,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
 		memcpy(&dwId,szId,sizeof(dwId));
-		pp= m_frames.equal_range(dwId);
+		pp = m_frames.equal_range(dwId);
 		if(pp.first == pp.second)
 		{
 			break;
@@ -151,7 +151,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		memcpy(&dwId,szId,sizeof(dwId));
-		pp= m_frames.equal_range(dwId);
+		pp = m_frames.equal_range(dwId);
 		if(pp.first == pp.second)
 		{
 			break;
@@ -206,7 +206,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 
 void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription)
 {
-	pair< multimap< DWORD , CId3Frame >::iterator, multimap< DWORD , CId3Frame >::iterator > pp;
+	pair<multimap<DWORD, CId3Frame>::iterator, multimap<DWORD, CId3Frame>::iterator> pp;
 	multimap<DWORD,CId3Frame>::iterator p;
 	CId3Frame *pFrame;
 	DWORD dwId;
@@ -295,7 +295,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 		}
 //		p = m_frames.find(dwId);
-		pp= m_frames.equal_range(dwId);
+		pp = m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
 		{
 			//Loadしたファイルにフレームがなかった場合
@@ -387,7 +387,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				break;
 			}
 		}
-		pp= m_frames.equal_range(dwId);
+		pp = m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
 		{
 			//Loadしたファイルにフレームがなかった場合
@@ -526,7 +526,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				break;
 			}
 		}
-	//	pp= m_frames.equal_range(dwId);
+	//	pp = m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
 		{
 			CId3Frame frame;
