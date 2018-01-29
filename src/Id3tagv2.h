@@ -241,8 +241,8 @@ public:
 			if(	(encode != ID3V2CHARENCODE_ISO_8859_1) &&
 				(encode != ID3V2CHARENCODE_UTF_16) )
 			{
-				// ISO-8859-1Ç…é©ìÆê›íË
-				encode = ID3V2CHARENCODE_ISO_8859_1;
+				// UTF-16Ç…é©ìÆê›íË
+				encode = ID3V2CHARENCODE_UTF_16;
 			}
 		}
 		m_encode = encode;

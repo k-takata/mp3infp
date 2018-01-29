@@ -29,7 +29,7 @@ const char *CId3tagv2::numeric_frames[] = {
 
 CId3tagv2::CId3tagv2()
 {
-	m_encode = ID3V2CHARENCODE_ISO_8859_1;
+	m_encode = ID3V2CHARENCODE_UTF_16;
 	m_bUnSynchronization = TRUE;
 //	m_wDefaultId3TagVersion = 0x0300;
 	Release();
@@ -1090,7 +1090,7 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 	}
 	head.flag &= ~0x40;	//âèú
 
-	m_encode = ID3V2CHARENCODE_ISO_8859_1;
+	m_encode = ID3V2CHARENCODE_UTF_16;
 	while(dwRemainSize)
 	{
 		CId3Frame frame;

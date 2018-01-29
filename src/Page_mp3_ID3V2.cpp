@@ -95,10 +95,10 @@ UINT CALLBACK CShellExt::PageCallback_mp3_ID3V2(HWND hWnd, UINT uMessage, LPPROP
 static void SelectEncodeCB(HWND hDlg,CId3tagv2::CharEncoding encode)
 {
 	switch(encode){
-	default:
 	case CId3tagv2::ID3V2CHARENCODE_ISO_8859_1: // 0
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),0);
 		break;
+	default:
 	case CId3tagv2::ID3V2CHARENCODE_UTF_16: // 1
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),1);
 		break;
@@ -592,10 +592,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					// Unsync/UnicodeŽw’è
 					cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 					switch(cur){
-					default:
 					case 0:
 						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
 						break;
+					default:
 					case 1:
 						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
 						break;
@@ -900,10 +900,10 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Unsync/UnicodeŽw’è
 				cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				switch(cur){
-				default:
 				case 0:
 					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
 					break;
+				default:
 				case 1:
 					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
 					break;
