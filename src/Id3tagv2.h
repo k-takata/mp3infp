@@ -84,7 +84,7 @@ public:
 		{
 			return 0;	//フレームヘッダがない場合は終了
 		}
-		DWORD size = (((DWORD )pData[4]<<24) | ((DWORD )pData[5]<<16) | ((DWORD )pData[6]<<8) | (DWORD )pData[7]);
+		DWORD size = ExtractI4(&pData[4]);
 		if((size+10) > dwSize)
 		{
 			return 0;	//ヘッダサイズが入力データを超過している
