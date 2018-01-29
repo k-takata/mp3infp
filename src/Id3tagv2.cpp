@@ -13,10 +13,6 @@
 static const unsigned long ID3V2_PADDING_SIZE = 0x0800;
 //static const unsigned char SCMPX_GENRE_NULL = 247;
 //static const unsigned char WINAMP_GENRE_NULL = 255;
-const int CId3tagv2::ID3V2CHARENCODE_ISO_8859_1	= 0;
-const int CId3tagv2::ID3V2CHARENCODE_UTF_16		= 1;
-const int CId3tagv2::ID3V2CHARENCODE_UTF_16BE	= 2;
-const int CId3tagv2::ID3V2CHARENCODE_UTF_8		= 3;
 
 const char *CId3tagv2::numeric_tags[] = {
 	"TBPM", "TDAT", "TDLY", "TIME", "TLEN", "TPOS", "TRCK", "TSIZ", "TYER",
@@ -75,10 +71,10 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 	int code;
 	unsigned char *start = data;
 	switch (encoding) {
-	case 0:
+	case ID3V2CHARENCODE_ISO_8859_1:
 		code = DTC_CODE_ANSI;
 		break;
-	case 1:
+	case ID3V2CHARENCODE_UTF_16:
 		if (datasize < 2) {
 			*pdwReadSize = readsize;
 			return _T("");
@@ -94,14 +90,14 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 			return _T("");
 		}
 		break;
-	case 2:
+	case ID3V2CHARENCODE_UTF_16BE:
 		code = DTC_CODE_UTF16BE;
 		break;
-	case 3:
+	case ID3V2CHARENCODE_UTF_8:
 		code = DTC_CODE_UTF8;
 		break;
 	}
-	if ((encoding == 1) || (encoding == 2)) {
+	if ((encoding == ID3V2CHARENCODE_UTF_16) || (encoding == ID3V2CHARENCODE_UTF_16BE)) {
 		for (; readsize < datasize; readsize += 2) {
 			if (*(WCHAR*)(data + readsize) == L'\0') {
 				break;
@@ -172,7 +168,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 		//URL本体
 		//規格上は常に ISO-8859-1（互換性のため、BOMがあればそちらを優先）
 		if ((p->second.GetSize()-1-dwReadSize >= 2)
-				&& (data[0] == 1)
+				&& (data[0] == ID3V2CHARENCODE_UTF_16)
 				&& ((memcmp(&data[1+dwReadSize], "\xff\xfe", 2) == 0)
 					|| (memcmp(&data[1+dwReadSize], "\xfe\xff", 2) == 0))) {
 			return ReadEncodedTextString(1, &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
@@ -225,7 +221,8 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	
 	unsigned char *data;
 	int size = 0;
-	int encode, i;
+	int i;
+	CharEncoding encode;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
 		encode = m_encode;

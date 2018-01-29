@@ -92,20 +92,20 @@ UINT CALLBACK CShellExt::PageCallback_mp3_ID3V2(HWND hWnd, UINT uMessage, LPPROP
 	return TRUE;
 }
 
-static void SelectEncodeCB(HWND hDlg,int encode)
+static void SelectEncodeCB(HWND hDlg,CId3tagv2::CharEncoding encode)
 {
 	switch(encode){
 	default:
-	case 0:	// ID3V2CHARENCODE_ISO_8859_1
+	case CId3tagv2::ID3V2CHARENCODE_ISO_8859_1: // 0
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),0);
 		break;
-	case 1:	// ID3V2CHARENCODE_UTF_16
+	case CId3tagv2::ID3V2CHARENCODE_UTF_16: // 1
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),1);
 		break;
-	case 2:	// ID3V2CHARENCODE_UTF_16BE
+	case CId3tagv2::ID3V2CHARENCODE_UTF_16BE: // 2
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),3);
 		break;
-	case 3:	// ID3V2CHARENCODE_UTF_8
+	case CId3tagv2::ID3V2CHARENCODE_UTF_8: // 3
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),2);
 		break;
 	}

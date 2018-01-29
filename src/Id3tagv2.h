@@ -226,7 +226,14 @@ public:
 //	void SetDefaultId3v2Version(DWORD version){m_wDefaultId3TagVersion = (WORD )version;};/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/
 	void SetVer(WORD ver){m_wVer = ver;};
 	WORD GetVer(){return m_wVer;};
-	void SetCharEncode(int encode)
+
+	enum CharEncoding {
+		ID3V2CHARENCODE_ISO_8859_1 = 0,
+		ID3V2CHARENCODE_UTF_16 = 1,
+		ID3V2CHARENCODE_UTF_16BE = 2,
+		ID3V2CHARENCODE_UTF_8 = 3
+	};
+	void SetCharEncode(CharEncoding encode)
 	{
 		// エンコード指定$2/$3が使えるのはv2.4以降
 		if(m_wVer < 0x0400)
@@ -240,14 +247,10 @@ public:
 		}
 		m_encode = encode;
 	};
-	int GetCharEncode(){return m_encode;};
+	CharEncoding GetCharEncode(){return m_encode;};
+
 	void SetUnSynchronization(BOOL bEnable){m_bUnSynchronization = bEnable;};
 	BOOL GetUnSynchronization(){return m_bUnSynchronization;};
-	
-	static const int	ID3V2CHARENCODE_ISO_8859_1;
-	static const int	ID3V2CHARENCODE_UTF_16;
-	static const int	ID3V2CHARENCODE_UTF_16BE;
-	static const int	ID3V2CHARENCODE_UTF_8;
 	
 	CString GetTitle();	//TIT2
 	void SetTitle(LPCTSTR title);
@@ -298,7 +301,7 @@ private:
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2が無い場合はFALSE
-	int	m_encode;					// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
+	CharEncoding m_encode;			// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
 //	BOOL m_bUnicodeEncode;			//文字コードエンコードにUnicodeを使用する
 	BOOL m_bUnSynchronization;		//非同期化する
 	ID3HEAD m_head;
