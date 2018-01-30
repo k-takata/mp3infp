@@ -166,9 +166,9 @@ public:
 	static inline DWORD ExtractV2Size(const unsigned char size[4]) {
 		return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
 	};
+	static DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
 
 private:
-	static DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
 	static DWORD EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
 	static void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);

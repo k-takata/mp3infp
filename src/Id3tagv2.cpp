@@ -114,6 +114,8 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	}
 	m_dwId = dwId;
 	m_wFlags = ExtractI2(&pData[8]);
+	// TODO: Handle flags properly.
+	// Note that the flags are incompatible between v2.3 and v2.4.
 	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
 	{
 		return LoadApicFrame(pData, size, 0x0400);
@@ -128,7 +130,7 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	memcpy(m_data,&pData[10],size);
 	if(m_wFlags & 0x02)
 	{
-		// TODO: Unsynchronize the frame data.
+		m_dwSize = CId3tagv2::DecodeUnSynchronization(m_data, size);
 	}
 	return (size + 10);
 }
@@ -157,6 +159,8 @@ DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
 	}
 	m_dwId = dwId;
 	m_wFlags = ExtractI2(&pData[8]);
+	// TODO: Handle flags properly.
+	// Note that the flags are incompatible between v2.3 and v2.4.
 	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
 	{
 		return LoadApicFrame(pData, size, 0x0300);
@@ -257,11 +261,11 @@ DWORD CId3Frame::LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wV
 		memcpy(m_data, pData, dwSize);
 	}
 
+	m_dwSize = dwSize + dwAddSize;
 	if((wVer == 0x0400) && (m_wFlags & 0x02))
 	{
-		// TODO: Unsynchronize the frame data.
+		m_dwSize = CId3tagv2::DecodeUnSynchronization(m_data, m_dwSize);
 	}
-	m_dwSize = dwSize + dwAddSize;
 	return dwSize + hdrsize;
 }
 
@@ -1205,6 +1209,8 @@ CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
 
 DWORD CId3tagv2::Load(LPCTSTR szFileName)
 {
+	bool unsyncTag = true;	// Decode unsynchronization for whole tag.
+retry:
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 	HANDLE hFile = CreateFile(
@@ -1275,9 +1281,9 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 	}
 
 	//îÒìØä˙âªÇÃâèú
-	if(head.flag & 0x80)
+	if(unsyncTag && (head.flag & 0x80))
 	{
-		// TODO: Fix this for v2.4.
+		// v2.3 or earlier, or v2.4 with incorrect unsynchronization
 		dwId3Size = DecodeUnSynchronization(buf,dwId3Size);
 		m_bUnSynchronization = TRUE;
 	}
@@ -1310,6 +1316,20 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 		else
 		{
 			dwReadSize = frame.LoadFrame2_4(buf+(dwId3Size-dwRemainSize),dwRemainSize);
+			if(frame.GetFlags() & 0x02)
+			{
+				// v2.4 with correct (per-frame) unsynchronization is found.
+				if(unsyncTag)
+				{
+					// Retry with the correct method.
+					unsyncTag = false;
+					free(buf);
+					CloseHandle(hFile);
+					goto retry;
+				}
+				m_bUnSynchronization = TRUE;
+				frame.SetFlags(frame.GetFlags() & ~0x02);	// Drop unsync flag.
+			}
 		}
 		if(!dwReadSize)
 			break;
