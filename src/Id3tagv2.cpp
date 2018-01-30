@@ -14,7 +14,7 @@ static const unsigned long ID3V2_PADDING_SIZE = 0x0800;
 //static const unsigned char SCMPX_GENRE_NULL = 247;
 //static const unsigned char WINAMP_GENRE_NULL = 255;
 
-const char *CId3tagv2::numeric_frames[] = {
+static const char *numeric_frames[] = {
 	"TBPM", "TDAT", "TDLY", "TIME", "TLEN", "TPOS", "TRCK", "TSIZ", "TYER",
 	"TDEN", "TDOR", "TDRC", "TDRL", "TDTG",
 	NULL
@@ -196,6 +196,21 @@ DWORD CId3Frame::LoadFrame2_2(const unsigned char *pData,DWORD dwSize)
 	m_wFlags = 0;	//v2.2
 	memcpy(m_data,&pData[6],size);
 	return (size + 6);
+}
+
+bool CId3Frame::IsTextFrame() const
+{
+	return (m_dwId & 0xff) == 'T';
+}
+
+bool CId3Frame::IsNumericFrame() const
+{
+	for (int i = 0; numeric_frames[i] != NULL; i++) {
+		if (memcmp(&m_dwId, numeric_frames[i], sizeof(m_dwId)) == 0) {
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -1107,6 +1122,20 @@ void CId3tagv2::MakeV2Size(DWORD dwSize,unsigned char size[4])
 	size[0] = (dwSize>>21) & 0x7f;
 }
 
+CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
+{
+	const unsigned char *data = frame.GetData();
+	if (!data || frame.GetSize() == 0)
+	{
+		return ID3V2CHARENCODE_UNSPECIFIED;
+	}
+	if (!frame.IsTextFrame() || frame.IsNumericFrame())
+	{
+		return ID3V2CHARENCODE_UNSPECIFIED;
+	}
+	return (CharEncoding)data[0];
+}
+
 DWORD CId3tagv2::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
@@ -1216,31 +1245,17 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 		}
 		if(!dwReadSize)
 			break;
-		unsigned char *data = frame.GetData();
-		if(frame.GetSize() && data)
+		CharEncoding enc = GetFrameEncoding(frame);
+		if(enc != ID3V2CHARENCODE_UNSPECIFIED)
 		{
-			switch(data[0]){
-			case 0:
-			default:	// ISO-8859-1
-				break;
-			case 1:		// UTF-16
-				if(data[0] > ID3V2CHARENCODE_ISO_8859_1)
-				{
-					m_encode = ID3V2CHARENCODE_UTF_16;
-				}
-				break;
-			case 2:		// UTF-16BE
-				if(data[0] > ID3V2CHARENCODE_UTF_16)
-				{
-					m_encode = ID3V2CHARENCODE_UTF_16BE;
-				}
-				break;
-			case 3:		// UTF-8
-				if(data[0] > ID3V2CHARENCODE_UTF_16BE)
-				{
-					m_encode = ID3V2CHARENCODE_UTF_8;
-				}
-				break;
+			if((m_wVer < 0x0400) && (enc > ID3V2CHARENCODE_UTF_16))
+			{
+				// v2.3 or eariler doesn't support UTF-8 or UTF-16BE.
+				m_encode = ID3V2CHARENCODE_UTF_16;
+			}
+			else
+			{
+				m_encode = enc;
 			}
 		}
 		m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));

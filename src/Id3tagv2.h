@@ -45,13 +45,14 @@ public:
 	DWORD LoadFrame2_4(const unsigned char *pData,DWORD dwSize);
 	DWORD LoadFrame2_3(const unsigned char *pData,DWORD dwSize);
 	DWORD LoadFrame2_2(const unsigned char *pData,DWORD dwSize);
-	DWORD GetId(){return m_dwId;};
+	DWORD GetId() const {return m_dwId;};
 	void SetId(DWORD id){m_dwId = id;};
-	DWORD GetSize(){return m_dwSize;};
+	DWORD GetSize() const {return m_dwSize;};
 	void SetSize(DWORD size){m_dwSize = size;};
-	WORD GetFlags(){return m_wFlags;};
+	WORD GetFlags() const {return m_wFlags;};
 	void SetFlags(WORD flags){m_wFlags = flags;};
 	unsigned char *GetData(){return m_data;};
+	const unsigned char *GetData() const {return m_data;};
 	void SetData(const unsigned char *data,DWORD size)
 	{
 		if(m_data)
@@ -66,6 +67,8 @@ public:
 		memcpy(m_data,data,size);
 		m_dwSize = size;
 	};
+	bool IsTextFrame() const;
+	bool IsNumericFrame() const;
 
 private:
 	unsigned char	*m_data;
@@ -173,6 +176,7 @@ private:
 	static void v23IDtov22ID(const char *v23ID,char *v22ID);
 //	void UTF16toUTF16BE(WCHAR *str,int len);
 	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
+	static CharEncoding GetFrameEncoding(const CId3Frame &frame);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2が無い場合はFALSE
@@ -185,8 +189,6 @@ private:
 	FrameMap m_frames;
 	CString m_strDefaultEnc;		//TENCのデフォルト値
 //	WORD m_wDefaultId3TagVersion;	// ID3V2の初期値(新規作成時にこのバージョンとなる)
-
-	static const char *numeric_frames[];
 };
 
 #endif // !defined(AFX_ID3TAGV2_H__92584511_76E1_4EE6_90A7_E196C9C0EF88__INCLUDED_)
