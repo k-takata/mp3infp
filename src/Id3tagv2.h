@@ -268,16 +268,16 @@ public:
 	DWORD MakeTag(LPCTSTR szFileName);
 
 private:
-	DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
-	DWORD EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
-	void MakeV2Size(DWORD dwSize,unsigned char size[4]);
+	static DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
+	static DWORD EncodeUnSynchronization(const unsigned char *srcData,DWORD dwSize,unsigned char *dstData);
+	static void MakeV2Size(DWORD dwSize,unsigned char size[4]);
 	CString GetId3String(const char szId[]);
 	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
 	DWORD GetTotalFrameSize();
 //	void _SetStringEncode(int encode);
-	void v23IDtov22ID(const char *v23ID,char *v22ID);
+	static void v23IDtov22ID(const char *v23ID,char *v22ID);
 //	void UTF16toUTF16BE(WCHAR *str,int len);
-	CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
+	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2Ç™ñ≥Ç¢èÍçáÇÕFALSE
