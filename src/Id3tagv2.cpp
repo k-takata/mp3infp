@@ -121,6 +121,10 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	m_dwId = dwId;
 	m_wFlags = ExtractI2(&pData[8]);
 	memcpy(m_data,&pData[10],size);
+	if(m_wFlags & 0x02)
+	{
+		// TODO: Unsynchronize the frame data.
+	}
 	return (size + 10);
 }
 
@@ -1210,6 +1214,7 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 	//îÒìØä˙âªÇÃâèú
 	if(head.flag & 0x80)
 	{
+		// TODO: Fix this for v2.4.
 		dwId3Size = DecodeUnSynchronization(buf,dwId3Size);
 		m_bUnSynchronization = TRUE;
 	}
