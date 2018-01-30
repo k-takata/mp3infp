@@ -112,14 +112,19 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	{
 		return 0;	//無効なフレームID
 	}
+	m_dwId = dwId;
+	m_wFlags = ExtractI2(&pData[8]);
+	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
+	{
+		return LoadApicFrame(pData, size, 0x0400);
+	}
+
 	m_data = (unsigned char *)malloc(size);
 	if(!m_data)
 	{
 		return 0;	//メモリを確保できなかった
 	}
 	m_dwSize = size;
-	m_dwId = dwId;
-	m_wFlags = ExtractI2(&pData[8]);
 	memcpy(m_data,&pData[10],size);
 	if(m_wFlags & 0x02)
 	{
@@ -150,6 +155,13 @@ DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
 	{
 		return 0;	//無効なフレームID
 	}
+	m_dwId = dwId;
+	m_wFlags = ExtractI2(&pData[8]);
+	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
+	{
+		return LoadApicFrame(pData, size, 0x0300);
+	}
+
 	m_data = (unsigned char *)malloc(size);
 	if(!m_data)
 	{
@@ -157,8 +169,6 @@ DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
 	}
 	//		memcpy(&m_dwId,pData,sizeof(m_dwId));
 	m_dwSize = size;
-	m_dwId = dwId;
-	m_wFlags = ExtractI2(&pData[8]);
 	memcpy(m_data,&pData[10],size);
 	return (size + 10);
 }
@@ -188,7 +198,13 @@ DWORD CId3Frame::LoadFrame2_2(const unsigned char *pData,DWORD dwSize)
 		}
 	}
 	if (id3_v23v22table[i].v23 == NULL) {
-		memcpy(&m_dwId, "XXXX", sizeof(m_dwId));	// 不明
+	//	memcpy(&m_dwId, "XXXX", sizeof(m_dwId));	// 不明
+		return 0;	//無効なフレームID
+	}
+	m_wFlags = 0;	//v2.2
+	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
+	{
+		return LoadApicFrame(pData, size, 0x0200);
 	}
 
 	m_data = (unsigned char *)malloc(size);
@@ -197,9 +213,56 @@ DWORD CId3Frame::LoadFrame2_2(const unsigned char *pData,DWORD dwSize)
 		return 0;	//メモリを確保できなかった
 	}
 	m_dwSize = size;
-	m_wFlags = 0;	//v2.2
 	memcpy(m_data,&pData[6],size);
 	return (size + 6);
+}
+
+DWORD CId3Frame::LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wVer)
+{
+	DWORD dwAddSize = 0;
+	int hdrsize = (wVer >= 0x0300) ? 10 : 6;
+	pData += hdrsize;
+
+	if(memcmp(&pData[1], "JPG", 3) == 0 || memcmp(&pData[1], "PNG", 3) == 0)
+	{
+		// v2.2 format
+		const char *mime;
+		if(memcmp(&pData[1], "JPG", 3) == 0)
+		{
+			mime = "image/jpeg";
+		}
+		else
+		{
+			mime = "image/png";
+		}
+		int len = strlen(mime) + 1;
+		dwAddSize = len - 3;
+		m_data = (unsigned char *)malloc(dwSize + dwAddSize);
+		if(!m_data)
+		{
+			return 0;	//メモリを確保できなかった
+		}
+		m_data[0] = pData[0];	// text encoding
+		memcpy(&m_data[1], mime, len);
+		memcpy(&m_data[1+len], &pData[1+3], dwSize-4);
+	}
+	else
+	{
+		// v2.3 (v2.4) format
+		m_data = (unsigned char *)malloc(dwSize);
+		if(!m_data)
+		{
+			return 0;	//メモリを確保できなかった
+		}
+		memcpy(m_data, pData, dwSize);
+	}
+
+	if((wVer == 0x0400) && (m_wFlags & 0x02))
+	{
+		// TODO: Unsynchronize the frame data.
+	}
+	m_dwSize = dwSize + dwAddSize;
+	return dwSize + hdrsize;
 }
 
 bool CId3Frame::IsTextFrame() const
@@ -1283,6 +1346,46 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
+// Convert an APIC frame in v2.3 format without header to a PIC frame v2.2
+// format with header.  Return output size.
+DWORD CId3tagv2::ConvertApicToV22(const unsigned char *v23, DWORD dwSize, unsigned char *v22)
+{
+	DWORD dwDiff;
+	const char *format;
+	if (strcmp((char*)&v23[1], "image/jpeg") == 0)
+	{
+		format = "JPG";
+		dwDiff = 11 - 3;
+	}
+	else if (strcmp((char*)&v23[1], "image/png") == 0)
+	{
+		format = "PNG";
+		dwDiff = 10 - 3;
+	}
+	else
+	{
+		return 0;
+	}
+
+	DWORD offset = 0;
+	DWORD dwNewSize = dwSize - dwDiff;
+	unsigned char size[3];
+	size[2] = dwNewSize & 0xff;
+	size[1] = (dwNewSize>>8) & 0xff;
+	size[0] = (dwNewSize>>16) & 0xff;
+	memcpy(&v22[offset], "PIC", 3);
+	offset += 3;
+	memcpy(&v22[offset], size, sizeof(size));
+	offset += sizeof(size);
+	v22[offset] = v23[0];	// text encoding
+	offset += 1;
+	memcpy(&v22[offset], format, 3);
+	offset += 3;
+	memcpy(&v22[offset], &v23[1 + dwDiff + 3], dwNewSize - 1 - 3);
+
+	return dwNewSize + 6;
+}
+
 DWORD CId3tagv2::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
@@ -1340,20 +1443,27 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		unsigned char *data = pFrame->GetData();
 		if(m_wVer == 0x0200)
 		{
-			unsigned char size[3];
-			size[2] = dwSize & 0xff;
-			size[1] = (dwSize>>8) & 0xff;
-			size[0] = (dwSize>>16) & 0xff;
-			// id3v2.2
-			char v22id[3];
-			//v2.3からv2.2へフレームIDを変換
-			v23IDtov22ID((char *)&id,v22id);
-			memcpy(&framedata[dwFrameDataPtr],&v22id,sizeof(v22id));
-			dwFrameDataPtr += sizeof(v22id);
-			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
-			dwFrameDataPtr += sizeof(size);
-			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
-			dwFrameDataPtr += dwSize;
+			if(memcmp(&id, "APIC", 4) == 0)
+			{
+				dwFrameDataPtr += ConvertApicToV22(data, dwSize, &framedata[dwFrameDataPtr]);
+			}
+			else
+			{
+				unsigned char size[3];
+				size[2] = dwSize & 0xff;
+				size[1] = (dwSize>>8) & 0xff;
+				size[0] = (dwSize>>16) & 0xff;
+				// id3v2.2
+				char v22id[3];
+				//v2.3からv2.2へフレームIDを変換
+				v23IDtov22ID((char *)&id,v22id);
+				memcpy(&framedata[dwFrameDataPtr],&v22id,sizeof(v22id));
+				dwFrameDataPtr += sizeof(v22id);
+				memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
+				dwFrameDataPtr += sizeof(size);
+				memcpy(&framedata[dwFrameDataPtr],data,dwSize);
+				dwFrameDataPtr += dwSize;
+			}
 		}
 		else if(m_wVer == 0x0300)
 		{
@@ -1390,6 +1500,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		}
 		p++;
 	}
+	dwTotalFrameSize = dwFrameDataPtr;
 //	ASSERT(dwFrameDataPtr == dwTotalFrameSize);
 	//非同期化
 	if(m_bUnSynchronization)
@@ -1802,20 +1913,29 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 		unsigned char *data = pFrame->GetData();
 		if(m_wVer == 0x0200)
 		{
-			unsigned char size[3];
-			size[2] = dwSize & 0xff;
-			size[1] = (dwSize>>8) & 0xff;
-			size[0] = (dwSize>>16) & 0xff;
-			// id3v2.2
-			char v22id[3];
-			//v2.3からv2.2へフレームIDを変換
-			v23IDtov22ID((char *)&id,v22id);
-			memcpy(&framedata[dwFrameDataPtr],&v22id,sizeof(v22id));
-			dwFrameDataPtr += sizeof(v22id);
-			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
-			dwFrameDataPtr += sizeof(size);
-			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
-			dwFrameDataPtr += dwSize;
+#if 0
+			if(memcmp(&id, "APIC", 4) == 0)
+			{
+				dwFrameDataPtr += ConvertApicToV22(data, dwSize, &framedata[dwFrameDataPtr]);
+			}
+			else
+#endif
+			{
+				unsigned char size[3];
+				size[2] = dwSize & 0xff;
+				size[1] = (dwSize>>8) & 0xff;
+				size[0] = (dwSize>>16) & 0xff;
+				// id3v2.2
+				char v22id[3];
+				//v2.3からv2.2へフレームIDを変換
+				v23IDtov22ID((char *)&id,v22id);
+				memcpy(&framedata[dwFrameDataPtr],&v22id,sizeof(v22id));
+				dwFrameDataPtr += sizeof(v22id);
+				memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
+				dwFrameDataPtr += sizeof(size);
+				memcpy(&framedata[dwFrameDataPtr],data,dwSize);
+				dwFrameDataPtr += dwSize;
+			}
 		}
 		else
 		{
@@ -1836,6 +1956,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 		}
 		p++;
 	}
+//	dwTotalFrameSize = dwFrameDataPtr;
 	ASSERT(dwFrameDataPtr == dwTotalFrameSize);
 	//非同期化
 	if(m_bUnSynchronization)

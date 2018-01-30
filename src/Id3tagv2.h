@@ -71,6 +71,8 @@ public:
 	bool IsNumericFrame() const;
 
 private:
+	DWORD LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wVer);
+
 	unsigned char	*m_data;
 	DWORD	m_dwId;
 	DWORD	m_dwSize;
@@ -177,6 +179,7 @@ private:
 //	void UTF16toUTF16BE(WCHAR *str,int len);
 	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
 	static CharEncoding GetFrameEncoding(const CId3Frame &frame);
+	static DWORD ConvertApicToV22(const unsigned char *v23, DWORD dwSize, unsigned char *v22);
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2Ç™ñ≥Ç¢èÍçáÇÕFALSE
