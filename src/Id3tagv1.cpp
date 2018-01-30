@@ -9,7 +9,7 @@
 
 static const unsigned char SCMPX_GENRE_NULL = 247;
 static const unsigned char WINAMP_GENRE_NULL = 255;
-static const TCHAR	szId3gnr[256][30]={
+static const LPCTSTR szId3gnr[256]={
 	_T("Blues"),_T("Classic Rock"),_T("Country"),_T("Dance"),_T("Disco"),_T("Funk"),_T("Grunge"),
 	_T("Hip-Hop"),_T("Jazz"),_T("Metal"),_T("New Age"),_T("Oldies"),_T("Other"),_T("Pop"),_T("R&B"),_T("Rap"),
 	_T("Reggae"),_T("Rock"),_T("Techno"),_T("Industrial"),_T("Alternative"),_T("Ska"),_T("Death Metal"),
