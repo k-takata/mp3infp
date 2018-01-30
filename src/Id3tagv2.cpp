@@ -20,8 +20,184 @@ const char *CId3tagv2::numeric_frames[] = {
 	NULL
 };
 
+struct id3_v23v22table_t {
+	char *v23;
+	char *v22;
+};
+static const id3_v23v22table_t id3_v23v22table[] = {
+	{"AENC", "CRA"},
+	{"APIC", "PIC"},
+	{"COMM", "COM"},
+	{"EQUA", "EQU"},
+	{"ETCO", "ETC"},
+	{"GEOB", "GEO"},
+	{"IPLS", "IPL"},
+	{"MCDI", "MCI"},
+	{"MLLT", "MLL"},
+	{"PCNT", "CNT"},
+	{"POPM", "POP"},
+	{"RBUF", "BUF"},
+	{"RVAD", "RVA"},
+	{"RVRB", "REV"},
+	{"SYLT", "SLT"},
+	{"SYTC", "STC"},
+	{"TALB", "TAL"},
+	{"TBPM", "TBP"},
+	{"TCOM", "TCM"},
+	{"TCON", "TCO"},
+	{"TCOP", "TCR"},
+	{"TDAT", "TDA"},
+	{"TDLY", "TDY"},
+	{"TENC", "TEN"},
+	{"TFLT", "TFT"},
+	{"TIME", "TIM"},
+	{"TIT1", "TT1"},
+	{"TIT2", "TT2"},
+	{"TIT3", "TT3"},
+	{"TKEY", "TKE"},
+	{"TLAN", "TLA"},
+	{"TLEN", "TLE"},
+	{"TMED", "TMT"},
+	{"TOAL", "TOT"},
+	{"TOFN", "TOF"},
+	{"TOLY", "TOL"},
+	{"TOPE", "TOA"},
+	{"TORY", "TOR"},
+	{"TPE1", "TP1"},
+	{"TPE2", "TP2"},
+	{"TPE3", "TP3"},
+	{"TPE4", "TP4"},
+	{"TPOS", "TPA"},
+	{"TPUB", "TPB"},
+	{"TRCK", "TRK"},
+	{"TRDA", "TRD"},
+	{"TSIZ", "TSI"},
+	{"TSRC", "TRC"},
+	{"TSSE", "TSS"},
+	{"TYER", "TYE"},
+	{"TXXX", "TXX"},
+	{"UFID", "UFI"},
+	{"USLT", "ULT"},
+	{"WCOM", "WCM"},
+	{"WCOP", "WCP"},
+	{"WOAF", "WAF"},
+	{"WOAR", "WAR"},
+	{"WOAS", "WAS"},
+	{"WPUB", "WPB"},
+	{"WXXX", "WXX"},
+	{NULL, NULL}
+};
+
+
 // 2004-09-24 UTF-16はリトルエンディアンで書き込む
 //#define UTF16_BIGENDIAN
+
+//////////////////////////////////////////////////////////////////////
+
+DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
+{
+	Release();
+	if(dwSize < 10)
+	{
+		return 0;	//フレームヘッダがない場合は終了
+	}
+	DWORD size = CId3tagv2::ExtractV2Size(&pData[4]);
+	if((size+10) > dwSize)
+	{
+		return 0;	//ヘッダサイズが入力データを超過している
+	}
+	DWORD dwId;
+	memcpy(&dwId,pData,sizeof(dwId));
+	if(!dwId)
+	{
+		return 0;	//無効なフレームID
+	}
+	m_data = (unsigned char *)malloc(size);
+	if(!m_data)
+	{
+		return 0;	//メモリを確保できなかった
+	}
+	m_dwSize = size;
+	m_dwId = dwId;
+	m_wFlags = ExtractI2(&pData[8]);
+	memcpy(m_data,&pData[10],size);
+	return (size + 10);
+}
+
+DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
+{
+	Release();
+	if(dwSize < 10)
+	{
+		return 0;	//フレームヘッダがない場合は終了
+	}
+	DWORD size = ExtractI4(&pData[4]);
+	if((size+10) > dwSize)
+	{
+		return 0;	//ヘッダサイズが入力データを超過している
+	}
+	DWORD dwId;
+	memcpy(&dwId,pData,sizeof(dwId));
+	//	BYTE id[5];
+	//	memcpy(id,pData,sizeof(dwId));
+	//	id[4] = '\0';
+	//	TRACE(_T("id=%s (size=%d)\n"),id,size);
+	if(!dwId)
+	{
+		return 0;	//無効なフレームID
+	}
+	m_data = (unsigned char *)malloc(size);
+	if(!m_data)
+	{
+		return 0;	//メモリを確保できなかった
+	}
+	//		memcpy(&m_dwId,pData,sizeof(m_dwId));
+	m_dwSize = size;
+	m_dwId = dwId;
+	m_wFlags = ExtractI2(&pData[8]);
+	memcpy(m_data,&pData[10],size);
+	return (size + 10);
+}
+
+DWORD CId3Frame::LoadFrame2_2(const unsigned char *pData,DWORD dwSize)
+{
+	Release();
+	if(dwSize < 6)
+	{
+		return 0;	//フレームヘッダがない場合は終了
+	}
+	DWORD size = (((DWORD )pData[3]<<16) | ((DWORD )pData[4]<<8) | (DWORD )pData[5]);
+	if((size+6) > dwSize)
+	{
+		return 0;	//ヘッダサイズが入力データを超過している
+	}
+	BYTE id[3+1];
+	memcpy(&id,pData,sizeof(id));
+	id[3] = '\0';
+	TRACE(_T("id=%s (size=%d)\n"),id,size);
+	//v2.2からv2.3へフレームIDを変換
+	int i;
+	for (i = 0; id3_v23v22table[i].v23 != NULL; i++) {
+		if (memcmp(id, id3_v23v22table[i].v22, sizeof(id)) == 0) {
+			memcpy(&m_dwId, id3_v23v22table[i].v23, sizeof(m_dwId));
+			break;
+		}
+	}
+	if (id3_v23v22table[i].v23 == NULL) {
+		memcpy(&m_dwId, "XXXX", sizeof(m_dwId));	// 不明
+	}
+
+	m_data = (unsigned char *)malloc(size);
+	if(!m_data)
+	{
+		return 0;	//メモリを確保できなかった
+	}
+	m_dwSize = size;
+	m_wFlags = 0;	//v2.2
+	memcpy(m_data,&pData[6],size);
+	return (size + 6);
+}
+
 
 //////////////////////////////////////////////////////////////////////
 // 構築/消滅
@@ -603,70 +779,6 @@ void CId3tagv2::_SetStringEncode(int encode)
 	}
 }
 #endif
-
-const id3_v23v22table_t id3_v23v22table[] = {
-	{"AENC", "CRA"},
-	{"APIC", "PIC"},
-	{"COMM", "COM"},
-	{"EQUA", "EQU"},
-	{"ETCO", "ETC"},
-	{"GEOB", "GEO"},
-	{"IPLS", "IPL"},
-	{"MCDI", "MCI"},
-	{"MLLT", "MLL"},
-	{"PCNT", "CNT"},
-	{"POPM", "POP"},
-	{"RBUF", "BUF"},
-	{"RVAD", "RVA"},
-	{"RVRB", "REV"},
-	{"SYLT", "SLT"},
-	{"SYTC", "STC"},
-	{"TALB", "TAL"},
-	{"TBPM", "TBP"},
-	{"TCOM", "TCM"},
-	{"TCON", "TCO"},
-	{"TCOP", "TCR"},
-	{"TDAT", "TDA"},
-	{"TDLY", "TDY"},
-	{"TENC", "TEN"},
-	{"TFLT", "TFT"},
-	{"TIME", "TIM"},
-	{"TIT1", "TT1"},
-	{"TIT2", "TT2"},
-	{"TIT3", "TT3"},
-	{"TKEY", "TKE"},
-	{"TLAN", "TLA"},
-	{"TLEN", "TLE"},
-	{"TMED", "TMT"},
-	{"TOAL", "TOT"},
-	{"TOFN", "TOF"},
-	{"TOLY", "TOL"},
-	{"TOPE", "TOA"},
-	{"TORY", "TOR"},
-	{"TPE1", "TP1"},
-	{"TPE2", "TP2"},
-	{"TPE3", "TP3"},
-	{"TPE4", "TP4"},
-	{"TPOS", "TPA"},
-	{"TPUB", "TPB"},
-	{"TRCK", "TRK"},
-	{"TRDA", "TRD"},
-	{"TSIZ", "TSI"},
-	{"TSRC", "TRC"},
-	{"TSSE", "TSS"},
-	{"TYER", "TYE"},
-	{"TXXX", "TXX"},
-	{"UFID", "UFI"},
-	{"USLT", "ULT"},
-	{"WCOM", "WCM"},
-	{"WCOP", "WCP"},
-	{"WOAF", "WAF"},
-	{"WOAR", "WAR"},
-	{"WOAS", "WAS"},
-	{"WPUB", "WPB"},
-	{"WXXX", "WXX"},
-	{NULL, NULL}
-};
 
 void CId3tagv2::v23IDtov22ID(const char *v23ID,char *v22ID)
 {

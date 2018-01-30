@@ -9,17 +9,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-struct id3_v23v22table_t {
-	char *v23;
-	char *v22;
-};
-extern const id3_v23v22table_t id3_v23v22table[];
-
-static inline DWORD ExtractV2Size(const unsigned char size[4])
-{
-	return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
-}
-
 class CId3Frame  
 {
 public:
@@ -53,107 +42,9 @@ public:
 		m_dwSize = obj.m_dwSize;
 		m_wFlags = obj.m_wFlags;
 	};
-	DWORD LoadFrame2_4(unsigned char *pData,DWORD dwSize)
-	{
-		Release();
-		if(dwSize < 10)
-		{
-			return 0;	//フレームヘッダがない場合は終了
-		}
-		DWORD size = ExtractV2Size(&pData[4]);
-		if((size+10) > dwSize)
-		{
-			return 0;	//ヘッダサイズが入力データを超過している
-		}
-		DWORD dwId;
-		memcpy(&dwId,pData,sizeof(dwId));
-		if(!dwId)
-		{
-			return 0;	//無効なフレームID
-		}
-		m_data = (unsigned char *)malloc(size);
-		if(!m_data)
-		{
-			return 0;	//メモリを確保できなかった
-		}
-		m_dwSize = size;
-		m_dwId = dwId;
-		m_wFlags = ExtractI2(&pData[8]);
-		memcpy(m_data,&pData[10],size);
-		return (size + 10);
-	};
-	DWORD LoadFrame2_3(unsigned char *pData,DWORD dwSize)
-	{
-		Release();
-		if(dwSize < 10)
-		{
-			return 0;	//フレームヘッダがない場合は終了
-		}
-		DWORD size = ExtractI4(&pData[4]);
-		if((size+10) > dwSize)
-		{
-			return 0;	//ヘッダサイズが入力データを超過している
-		}
-		DWORD dwId;
-		memcpy(&dwId,pData,sizeof(dwId));
-//	BYTE id[5];
-//	memcpy(id,pData,sizeof(dwId));
-//	id[4] = '\0';
-//	TRACE(_T("id=%s (size=%d)\n"),id,size);
-		if(!dwId)
-		{
-			return 0;	//無効なフレームID
-		}
-		m_data = (unsigned char *)malloc(size);
-		if(!m_data)
-		{
-			return 0;	//メモリを確保できなかった
-		}
-//		memcpy(&m_dwId,pData,sizeof(m_dwId));
-		m_dwSize = size;
-		m_dwId = dwId;
-		m_wFlags = ExtractI2(&pData[8]);
-		memcpy(m_data,&pData[10],size);
-		return (size + 10);
-	};
-	DWORD LoadFrame2_2(unsigned char *pData,DWORD dwSize)
-	{
-		Release();
-		if(dwSize < 6)
-		{
-			return 0;	//フレームヘッダがない場合は終了
-		}
-		DWORD size = (((DWORD )pData[3]<<16) | ((DWORD )pData[4]<<8) | (DWORD )pData[5]);
-		if((size+6) > dwSize)
-		{
-			return 0;	//ヘッダサイズが入力データを超過している
-		}
-		BYTE id[3+1];
-		memcpy(&id,pData,sizeof(id));
-		id[3] = '\0';
-		TRACE(_T("id=%s (size=%d)\n"),id,size);
-		//v2.2からv2.3へフレームIDを変換
-		int i;
-		for (i = 0; id3_v23v22table[i].v23 != NULL; i++) {
-			if (memcmp(id, id3_v23v22table[i].v22, sizeof(id)) == 0) {
-				memcpy(&m_dwId, id3_v23v22table[i].v23, sizeof(m_dwId));
-				break;
-			}
-		}
-		if (id3_v23v22table[i].v23 == NULL) {
-			memcpy(&m_dwId, "XXXX", sizeof(m_dwId));	// 不明
-		}
-
-		m_data = (unsigned char *)malloc(size);
-		if(!m_data)
-		{
-			return 0;	//メモリを確保できなかった
-		}
-		m_dwSize = size;
-		m_wFlags = 0;	//v2.2
-		memcpy(m_data,&pData[6],size);
-		return (size + 6);
-	};
+	DWORD LoadFrame2_4(const unsigned char *pData,DWORD dwSize);
+	DWORD LoadFrame2_3(const unsigned char *pData,DWORD dwSize);
+	DWORD LoadFrame2_2(const unsigned char *pData,DWORD dwSize);
 	DWORD GetId(){return m_dwId;};
 	void SetId(DWORD id){m_dwId = id;};
 	DWORD GetSize(){return m_dwSize;};
@@ -161,7 +52,7 @@ public:
 	WORD GetFlags(){return m_wFlags;};
 	void SetFlags(WORD flags){m_wFlags = flags;};
 	unsigned char *GetData(){return m_data;};
-	void SetData(unsigned char *data,DWORD size)
+	void SetData(const unsigned char *data,DWORD size)
 	{
 		if(m_data)
 		{
@@ -266,6 +157,10 @@ public:
 	DWORD Save(LPCTSTR szFileName);
 	DWORD DelTag(LPCTSTR szFileName);
 	DWORD MakeTag(LPCTSTR szFileName);
+
+	static inline DWORD ExtractV2Size(const unsigned char size[4]) {
+		return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
+	};
 
 private:
 	static DWORD DecodeUnSynchronization(unsigned char *data,DWORD dwSize);
