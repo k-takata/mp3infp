@@ -12,7 +12,6 @@
 #pragma warning(disable:4786)
 #include <map>
 #include <list>
-using namespace std;
 
 /*
 Memo:
@@ -79,7 +78,8 @@ private:
 	//DESCRIPTION
 	//LOCATION
 	//COPYRIGHT
-	multimap<CString,CString> m_comments;
+	typedef std::multimap<CString,CString> CommentMap;
+	CommentMap m_comments;
 
 /*
 	CString Acp2Utf8(const char *str);

@@ -11,7 +11,6 @@
 
 #pragma warning(disable:4786)
 #include <map>
-using namespace std;
 
 class CVqfTag
 {
@@ -104,7 +103,8 @@ private:
 		size[1] = char((dwSize>>16) & 0xff);
 		size[0] = char((dwSize>>24) & 0xff);
 	}
-	map<DWORD,CVqfTag>	m_fields;
+	typedef std::map<DWORD,CVqfTag>	FieldMap;
+	FieldMap	m_fields;
 	DWORD				m_dwStreamSize;
 	DWORD				m_dwStereo;
 	DWORD				m_dwCompRate;

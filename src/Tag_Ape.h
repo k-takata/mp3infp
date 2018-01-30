@@ -12,7 +12,6 @@
 #pragma warning(disable:4786)
 #include <map>
 #include <list>
-using namespace std;
 
 /*
 Memo:
@@ -98,7 +97,8 @@ private:
 	int m_apeVersion;
 	BOOL m_bDoNotSaveId3v1;	// ID3v1‚ð•Û‘¶‚µ‚È‚¢
 
-	map<CString,CString> m_comments;
+	typedef std::map<CString,CString> CommentMap;
+	CommentMap m_comments;
 
 };
 

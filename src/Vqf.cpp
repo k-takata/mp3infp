@@ -43,8 +43,8 @@ BOOL CVqf::SetField(char id1,char id2,char id3,char id4,const unsigned char *szD
 	}
 
 	//mapに追加
-	m_fields.insert(pair<DWORD,CVqfTag>(id,CVqfTag()));
-	map<DWORD,CVqfTag>::iterator p = m_fields.find(id);
+	m_fields.insert(std::pair<DWORD,CVqfTag>(id,CVqfTag()));
+	FieldMap::iterator p = m_fields.find(id);
 	if(p != m_fields.end())
 	{
 		p->second.SetData(szData,dwSize);
@@ -76,7 +76,7 @@ BOOL CVqf::SetField(char id1,char id2,char id3,char id4,LPCTSTR szStr)
 
 unsigned char *CVqf::GetField(char id1,char id2,char id3,char id4,DWORD *pdwSize)
 {
-	map<DWORD,CVqfTag>::iterator p = m_fields.find(MakeKey(id1,id2,id3,id4));
+	FieldMap::iterator p = m_fields.find(MakeKey(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
 		return NULL;
@@ -98,7 +98,7 @@ CString CVqf::GetField(char id1,char id2,char id3,char id4)
 DWORD CVqf::GetTotalFieldSize()
 {
 	DWORD dwSize = 0;
-	map<DWORD,CVqfTag>::iterator p;
+	FieldMap::iterator p;
 
 	p = m_fields.begin();
 	while(p != m_fields.end())
@@ -219,7 +219,7 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 	free(HeadBuf);
 
 	//サンプリングレートなどの情報を取得する
-	map<DWORD,CVqfTag>::iterator p = m_fields.find(MakeKey('C','O','M','M'));
+	FieldMap::iterator p = m_fields.find(MakeKey('C','O','M','M'));
 	if(p != m_fields.end())
 	{
 		unsigned char *data = p->second.GetData();
@@ -410,7 +410,7 @@ DWORD CVqf::Save(HWND hWnd,LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	//(タグ情報を書き込む)
-	map<DWORD,CVqfTag>::iterator p;
+	FieldMap::iterator p;
 	p = m_fields.begin();
 	while(p != m_fields.end())
 	{

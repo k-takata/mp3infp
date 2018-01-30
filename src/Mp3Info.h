@@ -11,7 +11,6 @@
 
 #pragma warning(disable:4786)
 #include <list>
-using namespace std;
 
 class CMp3Info  
 {
@@ -72,7 +71,7 @@ public:
 	CString GetTimeString(){return m_strTime;};
 
 private:
-	list<FRAMEINFO> m_listFrame;
+	std::list<FRAMEINFO> m_listFrame;
 	MPEGINFO m_mpegInfo;
 
 	const BOOL IsVbr();

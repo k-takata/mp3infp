@@ -33,14 +33,14 @@ BOOL CRiffSIF::SetField(char id1,char id2,char id3,char id4,LPCTSTR szData)
 	m_fields.erase(mmioFOURCC(id1,id2,id3,id4));
 	if(lstrlen(szData))
 	{
-		m_fields.insert(pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
+		m_fields.insert(std::pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
 	}
 	return TRUE;
 }
 
 CString CRiffSIF::GetField(char id1,char id2,char id3,char id4)
 {
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 	p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
@@ -52,7 +52,7 @@ CString CRiffSIF::GetField(char id1,char id2,char id3,char id4)
 DWORD CRiffSIF::GetTotalFieldSize()
 {
 	DWORD dwSize = 0;
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 
 	p = m_fields.begin();
 	while(p != m_fields.end())
@@ -178,7 +178,7 @@ BOOL CRiffSIF::FindChunk(HANDLE hFile,DWORD dwFileSize,UINT flag,FOURCC type,DWO
 DWORD CRiffSIF::GetInfoChunkSize()
 {
 	DWORD dwSize = 0; 
-	map<FOURCC,CString>::iterator p = m_fields.begin();
+	FieldMap::iterator p = m_fields.begin();
 	while(p != m_fields.end())
 	{
 		FOURCC id = p->first;
@@ -206,7 +206,7 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 	DWORD dwSize;
 	DWORD dwPtr;
 
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 
 	Release();
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -311,11 +311,11 @@ DWORD CRiffSIF::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 				//mapに追加
 				if(data[size-1] == '\0')
 				{
-					m_fields.insert(pair<FOURCC,CString>(id,data));
+					m_fields.insert(std::pair<FOURCC,CString>(id,data));
 				}
 				else
 				{
-					m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+					m_fields.insert(std::pair<FOURCC,CString>(id,CString(data,size)));
 				}
 			}
 			if(dwRemainSize <= (size+8))
@@ -361,7 +361,7 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 	DWORD dwOffset;
 	DWORD dwListInfoHead;
 
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//ファイルを開く

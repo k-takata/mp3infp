@@ -124,8 +124,8 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 
 CString CId3tagv2::GetId3String(const char szId[])
 {
-	pair<multimap<DWORD, CId3Frame>::iterator, multimap<DWORD, CId3Frame>::iterator> pp;
-	multimap<DWORD,CId3Frame>::iterator p;
+	std::pair<FrameMap::iterator, FrameMap::iterator> pp;
+	FrameMap::iterator p;
 	DWORD dwId;
 	DWORD dwReadSize;
 	unsigned char *data;
@@ -206,8 +206,8 @@ CString CId3tagv2::GetId3String(const char szId[])
 
 void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription)
 {
-	pair<multimap<DWORD, CId3Frame>::iterator, multimap<DWORD, CId3Frame>::iterator> pp;
-	multimap<DWORD,CId3Frame>::iterator p;
+	std::pair<FrameMap::iterator, FrameMap::iterator> pp;
+	FrameMap::iterator p;
 	CId3Frame *pFrame;
 	DWORD dwId;
 	memcpy(&dwId,szId,sizeof(dwId));
@@ -303,7 +303,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			frame.SetId(dwId);
 			frame.SetFlags(0);
 			frame.SetData(data,size);
-			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
+			m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
@@ -395,7 +395,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			frame.SetId(dwId);
 			frame.SetFlags(0);
 			frame.SetData(data,size);
-			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
+			m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
@@ -533,7 +533,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			frame.SetId(dwId);
 			frame.SetFlags(0);
 			frame.SetData(data,size);
-			m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
+			m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		}
 		else
 		{
@@ -550,7 +550,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 DWORD CId3tagv2::GetTotalFrameSize()
 {
 	DWORD dwSize = 0;
-	multimap<DWORD,CId3Frame>::iterator p;
+	FrameMap::iterator p;
 
 	p = m_frames.begin();
 	while(p != m_frames.end())
@@ -574,7 +574,7 @@ DWORD CId3tagv2::GetTotalFrameSize()
 // 全てのフレームの文字列エンコードを指定する
 void CId3tagv2::_SetStringEncode(int encode)
 {
-	multimap<DWORD,CId3Frame>::iterator p;
+	FrameMap::iterator p;
 
 	p = m_frames.begin();
 	while(p != m_frames.end())
@@ -1131,7 +1131,7 @@ DWORD CId3tagv2::Load(LPCTSTR szFileName)
 				break;
 			}
 		}
-		m_frames.insert(pair<DWORD,CId3Frame>(frame.GetId(),frame));
+		m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));
 		dwRemainSize -= dwReadSize;
 	}
 
@@ -1190,7 +1190,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	DWORD dwFrameDataPtr = 0;
-	multimap<DWORD,CId3Frame>::iterator p;
+	FrameMap::iterator p;
 	p = m_frames.begin();
 	while(p != m_frames.end())
 	{
@@ -1658,7 +1658,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	DWORD dwFrameDataPtr = 0;
-	multimap<DWORD,CId3Frame>::iterator p;
+	FrameMap::iterator p;
 	p = m_frames.begin();
 	while(p != m_frames.end())
 	{

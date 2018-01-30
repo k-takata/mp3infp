@@ -13,7 +13,6 @@
 
 #pragma warning(disable:4786)
 #include <map>
-using namespace std;
 
 #include <Mmsystem.h>
 
@@ -40,7 +39,8 @@ protected:
 private:
 	FOURCC m_type;
 	DWORD GetInfoChunkSize();
-	map<FOURCC,CString> m_fields;
+	typedef std::map<FOURCC,CString> FieldMap;
+	FieldMap m_fields;
 	DWORD m_dwStreamSize;
 	CString m_strJunkHeader;
 };

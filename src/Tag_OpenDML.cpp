@@ -37,14 +37,14 @@ BOOL CTag_OpenDML::SetField(char id1,char id2,char id3,char id4,LPCTSTR szData)
 	m_fields.erase(mmioFOURCC(id1,id2,id3,id4));
 	if(lstrlen(szData))
 	{
-		m_fields.insert(pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
+		m_fields.insert(std::pair<FOURCC,CString>(mmioFOURCC(id1,id2,id3,id4),szData));
 	}
 	return TRUE;
 }
 
 CString CTag_OpenDML::GetField(char id1,char id2,char id3,char id4)
 {
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 	p = m_fields.find(mmioFOURCC(id1,id2,id3,id4));
 	if(p == m_fields.end())
 	{
@@ -56,7 +56,7 @@ CString CTag_OpenDML::GetField(char id1,char id2,char id3,char id4)
 DWORD CTag_OpenDML::GetTotalFieldSize()
 {
 	DWORD dwSize = 0;
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 
 	p = m_fields.begin();
 	while(p != m_fields.end())
@@ -288,7 +288,7 @@ BOOL CTag_OpenDML::FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC ty
 DWORD CTag_OpenDML::GetInfoChunkSize()
 {
 	DWORD dwSize = 0; 
-	map<FOURCC,CString>::iterator p = m_fields.begin();
+	FieldMap::iterator p = m_fields.begin();
 	while(p != m_fields.end())
 	{
 		FOURCC id = p->first;
@@ -317,7 +317,7 @@ DWORD CTag_OpenDML::Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4)
 	DWORD dwSize;
 
 	Release();
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//ファイルを開く
 	hFile = CreateFile(szFileName,
@@ -416,11 +416,11 @@ OutputDebugString(_T("CTag_OpenDML::Load m_bEnable = TRUE\n"));
 				//mapに追加
 				if(data[size-1] == '\0')
 				{
-					m_fields.insert(pair<FOURCC,CString>(id,data));
+					m_fields.insert(std::pair<FOURCC,CString>(id,data));
 				}
 				else
 				{
-					m_fields.insert(pair<FOURCC,CString>(id,CString(data,size)));
+					m_fields.insert(std::pair<FOURCC,CString>(id,CString(data,size)));
 				}
 			}
 			if(dwRemainSize <= (size+8))
@@ -480,7 +480,7 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 	DWORD dwSize;
 	__int64 llOffset;
 
-	map<FOURCC,CString>::iterator p;
+	FieldMap::iterator p;
 
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	//ファイルを開く

@@ -61,7 +61,7 @@ BOOL CTag_Ogg::AddComment(LPCTSTR name,LPCTSTR value)
 {
 	CString _name(name);
 	_name.MakeUpper();
-	m_comments.insert(pair<CString,CString>(_name,CString(value)));
+	m_comments.insert(std::pair<CString,CString>(_name,CString(value)));
 	
 	return TRUE;
 }
@@ -69,7 +69,7 @@ BOOL CTag_Ogg::AddComment(LPCTSTR name,LPCTSTR value)
 BOOL CTag_Ogg::DelComment(LPCTSTR name,int index)
 {
 	//nameのなかからdwIndexの値を取得
-    pair<multimap<CString,CString>::iterator,multimap<CString,CString>::iterator> itp = m_comments.equal_range(CString(name));
+	std::pair<CommentMap::iterator,CommentMap::iterator> itp = m_comments.equal_range(CString(name));
 	
 	int i = 0;
 	while(itp.first != itp.second)
@@ -90,7 +90,7 @@ BOOL CTag_Ogg::GetComment(LPCTSTR name,int index,CString &strValue)
 {
 	strValue = _T("");
 	//nameのなかからdwIndexの値を取得
-    pair<multimap<CString,CString>::iterator,multimap<CString,CString>::iterator> itp = m_comments.equal_range(CString(name));
+	std::pair<CommentMap::iterator,CommentMap::iterator> itp = m_comments.equal_range(CString(name));
 	
 	int i = 0;
 	while(itp.first != itp.second)
@@ -110,7 +110,7 @@ BOOL CTag_Ogg::GetComment(LPCTSTR name,int index,CString &strValue)
 void CTag_Ogg::GetCommentNames(CStringArray &strArray)
 {
 	//nameリストを返す
-	multimap<CString,CString>::iterator it = m_comments.begin();
+	CommentMap::iterator it = m_comments.begin();
 	
 	CString strName;
 	while(it != m_comments.end())

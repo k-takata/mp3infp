@@ -12,7 +12,6 @@
 #pragma warning(disable:4786)
 #include <map>
 #include <list>
-using namespace std;
 
 class CInfo_MonkeysAudio  
 {
@@ -110,7 +109,7 @@ private:
 	APE_DESCRIPTOR m_apeDescriptor;
 	APE_HEADER m_apeHeader;
 
-	map<CString,CString> m_comments;
+	std::map<CString,CString> m_comments;
 };
 
 #endif // !defined(AFX_Info_MonkeysAudio_H__6C5D4E96_2B7C_4333_A4F8_3CF81D10E6F5__INCLUDED_)

@@ -185,7 +185,6 @@ private:
 
 #pragma warning(disable:4786)
 #include <map>
-using namespace std;
 
 class CId3tagv2  
 {
@@ -287,7 +286,8 @@ private:
 	BOOL m_bUnSynchronization;		//非同期化する
 	ID3HEAD m_head;
 	WORD m_wVer;
-	multimap<DWORD,CId3Frame> m_frames;
+	typedef std::multimap<DWORD,CId3Frame> FrameMap;
+	FrameMap m_frames;
 	CString m_strDefaultEnc;		//TENCのデフォルト値
 //	WORD m_wDefaultId3TagVersion;	// ID3V2の初期値(新規作成時にこのバージョンとなる)
 

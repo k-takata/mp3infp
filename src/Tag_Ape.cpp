@@ -59,7 +59,7 @@ BOOL CTag_Ape::SetComment(LPCTSTR name,LPCTSTR value)
 	m_bHasApetag = TRUE;
 	
 	// 現在のコメントを削除
-	map<CString,CString>::iterator it = m_comments.begin();
+	CommentMap::iterator it = m_comments.begin();
 	while(it != m_comments.end())
 	{
 		// 大文字小文字を区別せずに比較
@@ -76,7 +76,7 @@ BOOL CTag_Ape::SetComment(LPCTSTR name,LPCTSTR value)
 	{
 		return TRUE;	// 空はセットしない
 	}
-	m_comments.insert(pair<CString,CString>(name,CString(value)));
+	m_comments.insert(std::pair<CString,CString>(name,CString(value)));
 	
 	return TRUE;
 }
@@ -85,7 +85,7 @@ BOOL CTag_Ape::GetComment(LPCTSTR name,CString &strValue)
 {
 	strValue = _T("");
 
-	map<CString,CString>::iterator it = m_comments.begin();
+	CommentMap::iterator it = m_comments.begin();
 	while(it != m_comments.end())
 	{
 		// 大文字小文字を区別せずに比較
@@ -103,7 +103,7 @@ BOOL CTag_Ape::GetComment(LPCTSTR name,CString &strValue)
 /*void CTag_Ape::GetCommentNames(CStringArray &strArray)
 {
 	//nameリストを返す
-	map<CString,CString>::iterator it = m_comments.begin();
+	CommentMap::iterator it = m_comments.begin();
 	
 	while(it != m_comments.end())
 	{
@@ -493,7 +493,7 @@ DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 
-	map<CString,CString>::iterator it = m_comments.begin();
+	CommentMap::iterator it = m_comments.begin();
 	APE_TAG_FOOTER footer;
 	// ApeTag header を構築
 	APE_TAG_FOOTER header;

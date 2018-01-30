@@ -935,7 +935,7 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 	}
 	ullNewLength += sizeof(WORD);
 
-	map<CString,CTag_WmaComment>::iterator it;
+	CommentMap::iterator it;
 	///////////////////////////////
 	// Content Descriptors
 	for(it=m_comments.begin(); it!=m_comments.end(); it++)
@@ -995,21 +995,21 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 
 BOOL CTag_Wma::AddComment(LPCTSTR name,WORD type,char *buf,WORD len)
 {
-	map<CString,CTag_WmaComment>::iterator p;
+	CommentMap::iterator p;
 	p = m_comments.find(CString(name));
 	if(p != m_comments.end())
 	{
 		// å≥ÇÃílÇÕçÌèú
 		m_comments.erase(p);
 	}
-	m_comments.insert(pair<CString,CTag_WmaComment>(name,CTag_WmaComment(type,buf,len)));
+	m_comments.insert(std::pair<CString,CTag_WmaComment>(name,CTag_WmaComment(type,buf,len)));
 	
 	return TRUE;
 }
 
 BOOL CTag_Wma::DellComment(LPCTSTR name)
 {
-	map<CString,CTag_WmaComment>::iterator p;
+	CommentMap::iterator p;
 	p = m_comments.find(CString(name));
 	if(p != m_comments.end())
 	{
@@ -1039,7 +1039,7 @@ BOOL CTag_Wma::AddCommentDword(LPCTSTR name,DWORD val)
 
 BOOL CTag_Wma::GetComment(LPCTSTR name,WORD *type,WORD *len,char **buf)
 {
-	map<CString,CTag_WmaComment>::iterator p;
+	CommentMap::iterator p;
 	p = m_comments.find(CString(name));
 	if(p == m_comments.end())
 	{

@@ -11,7 +11,6 @@
 
 #pragma warning(disable:4786)
 #include <map>
-using namespace std;
 
 typedef void (*LPTCPPROGRESS)(__int64 writeSize,__int64 totalSize);
 
@@ -170,7 +169,8 @@ private:
 	CString		m_strRating;
 	
 	__int64		m_lldwPtr_File_Properties_Object;
-	map<CString,CTag_WmaComment> m_comments;
+	typedef std::map<CString,CTag_WmaComment> CommentMap;
+	CommentMap m_comments;
 };
 
 #endif // !defined(AFX_Tag_Wma_H__E33771A1_E2B4_4AE7_8315_1B62735A6280__INCLUDED_)
