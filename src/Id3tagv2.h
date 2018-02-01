@@ -133,6 +133,8 @@ public:
 	void SetTitle(LPCTSTR title);
 	CString GetTrackNo();
 	void SetTrackNo(LPCTSTR szTrackNo);
+	CString GetDiscNo();
+	void SetDiscNo(LPCTSTR szDiscNo);
 	CString GetArtist();
 	void SetArtist(LPCTSTR artist);
 	CString GetAlbumArtist();

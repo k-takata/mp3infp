@@ -11,6 +11,7 @@ static int ids[] =
 	-1,
 	CLP_NAM,
 	CLP_TRACK,
+	CLP_DISC,
 	CLP_ART,
 	CLP_PRD,
 	CLP_AART,
@@ -34,6 +35,7 @@ static int staticWnd[] =
 	IDC_STATIC_TIME_,
 	IDC_STATIC_NAM,
 	IDC_STATIC_TRACK,
+	IDC_STATIC_DISC,
 	IDC_STATIC_ART,
 	IDC_STATIC_PRD,
 	IDC_STATIC_AART,
@@ -57,6 +59,7 @@ static int editWnd[] =
 	IDC_STATIC_TIME,
 	IDC_EDIT_NAM,
 	IDC_EDIT_TRACK,
+	IDC_EDIT_DISC,
 	IDC_EDIT_ART,
 	IDC_EDIT_PRD,
 	IDC_EDIT_AART,
@@ -170,6 +173,9 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_AART),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_AART),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_AART),bEnable);
+	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_DISC),_T(""));
+	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_DISC),bEnable);
+	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_DISC),bEnable);
 	SetWindowText(GetDlgItem(hDlg,IDC_EDIT_CRD),_T(""));
 	EnableWindow(GetDlgItem(hDlg,IDC_EDIT_CRD),bEnable);
 	EnableWindow(GetDlgItem(hDlg,IDC_STATIC_CRD),bEnable);
@@ -301,6 +307,8 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 			SetDlgItemText(hDlg,IDC_EDIT_PRD,lpcs->m_Id3tagv2.GetAlbum());
 			//アルバムアーティスト
 			SetDlgItemText(hDlg,IDC_EDIT_AART,lpcs->m_Id3tagv2.GetAlbumArtist());
+			//ディスク番号
+			SetDlgItemText(hDlg,IDC_EDIT_DISC,lpcs->m_Id3tagv2.GetDiscNo());
 			//西暦
 			SetDlgItemText(hDlg,IDC_EDIT_CRD,lpcs->m_Id3tagv2.GetYear());
 			//ジャンル
@@ -423,6 +431,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 		case IDC_EDIT_ART:
 		case IDC_EDIT_PRD:
 		case IDC_EDIT_AART:
+		case IDC_EDIT_DISC:
 		case IDC_EDIT_CRD:
 		case IDC_EDIT_CMT:
 		case IDC_EDIT_COMP:
@@ -948,6 +957,11 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_AART));
 				wnd.GetWindowText(strTmp);
 				lpcs->m_Id3tagv2.SetAlbumArtist(strTmp);
+				wnd.Detach();
+
+				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_DISC));
+				wnd.GetWindowText(strTmp);
+				lpcs->m_Id3tagv2.SetDiscNo(strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));

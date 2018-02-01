@@ -869,6 +869,18 @@ void CId3tagv2::SetTrackNo(LPCTSTR szTrackNo)
 	SetId3String("TRCK",szTrackNo);
 }
 
+CString CId3tagv2::GetDiscNo()
+{
+	//Disc number (Part of a set)
+	return GetId3String("TPOS");
+}
+
+void CId3tagv2::SetDiscNo(LPCTSTR szDiscNo)
+{
+	//Disc number (Part of a set)
+	SetId3String("TPOS",szDiscNo);
+}
+
 CString CId3tagv2::GetArtist()
 {
 	//アーティスト

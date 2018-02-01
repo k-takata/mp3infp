@@ -3,9 +3,9 @@
 
 /*
 ■改変履歴
-2018-01-25 Ver.2.55
+2018-02-01 Ver.2.55
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
->MP3で"AART_v2"に対応
+>MP3で"AART_v2", "DISC_v2"に対応
 >MP4で"AART"に対応
 
 2009-12-01 Ver.2.54h/u8
@@ -182,7 +182,6 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM_v1"	"INAM_v2"	"INAM_rmp"	"INAM_APE"
 	アーティスト			"IART_v1"	"IART_v2"	"IART_rmp"	"IART_APE"
 	アルバム				"IPRD_v1"	"IPRD_v2"	"IPRD_rmp"	"IPRD_APE"
-	アルバムアーティスト				"AART_v2" (v2.55～)
 	コメント				"ICMT_v1"	"ICMT_v2"	"ICMT_rmp"	"ICMT_APE"
 	作成日					"ICRD_v1"	"ICRD_v2"	"ICRD_rmp"	"ICRD_APE"
 	ジャンル				"IGNR_v1"	"IGNR_v2"	"IGNR_rmp"	"IGNR_APE"
@@ -190,14 +189,16 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	著作権								"ICOP_v2"	"ICOP_rmp"
 	ソフトウェア/エンコーダ				"ISFT_v2"	"ISFT_rmp"
 	(ID3v2)
+	アルバムアーティスト				"AART_v2" (v2.55～)
 	作曲								"COMP_v2"
+	ディスク番号						"DISC_v2" (v2.55～)
 	Orig.アーティスト					"OART_v2"
 	URL									"URL_v2"
 	エンコードした人					"ENC2_v2"
 	(RiffSIF)
 	ソース											"ISRC_rmp"
 	エンジニア										"IENG_rmp"
-	(ID3v1/2)
+	(ID3v1/2/APE)
 	トラック番号			"TRACK_v1"	"TRACK_v2"				"TRACK_APE"
 
 	[WAV]

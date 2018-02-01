@@ -540,6 +540,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		{
 			strRet = theApp.m_Id3tagv2.GetTrackNo();
 		}
+		else if(lstrcmp(szValueName,_T("DISC_v2")) == 0)
+		{
+			strRet = theApp.m_Id3tagv2.GetDiscNo();
+		}
 		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
 			strRet = theApp.m_Id3tagv2.GetEncodest();
@@ -1523,6 +1527,10 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 		else if(lstrcmp(szValueName,_T("TRACK_v2")) == 0)
 		{
 			theApp.m_Id3tagv2.SetTrackNo(buf);
+		}
+		else if(lstrcmp(szValueName,_T("DISC_v2")) == 0)
+		{
+			theApp.m_Id3tagv2.SetDiscNo(buf);
 		}
 		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
