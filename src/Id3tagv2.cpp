@@ -114,8 +114,6 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	}
 	m_dwId = dwId;
 	m_wFlags = ExtractI2(&pData[8]);
-	// TODO: Handle flags properly.
-	// Note that the flags are incompatible between v2.3 and v2.4.
 	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
 	{
 		return LoadApicFrame(pData, size, 0x0400);
@@ -158,9 +156,9 @@ DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
 		return 0;	//ñ≥å¯Ç»ÉtÉåÅ[ÉÄID
 	}
 	m_dwId = dwId;
-	m_wFlags = ExtractI2(&pData[8]);
-	// TODO: Handle flags properly.
-	// Note that the flags are incompatible between v2.3 and v2.4.
+	WORD wFlags = ExtractI2(&pData[8]);
+	// Convert the flags to v2.4 format.
+	m_wFlags = ((wFlags & 0xe000) >> 1) | ((wFlags & 0xc0) >> 4) | ((wFlags & 0x20) << 1);
 	if (memcmp(&m_dwId, "APIC", sizeof(m_dwId)) == 0)
 	{
 		return LoadApicFrame(pData, size, 0x0300);
@@ -400,7 +398,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		p = pp.first;
-		if(p->second.GetSize() == 0)
+		if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
 		{
 			break;
 		}
@@ -418,7 +416,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		p = pp.first;
-		if(p->second.GetSize() == 0)
+		if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
 		{
 			break;
 		}
@@ -444,7 +442,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
 		{
 			p = pp.first;
-			if(p->second.GetSize() == 0)
+			if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
 			{
 				continue;
 			}
@@ -1160,7 +1158,8 @@ void CId3tagv2::MakeV2Size(DWORD dwSize,unsigned char size[4])
 CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
 {
 	const unsigned char *data = frame.GetData();
-	if (!data || frame.GetSize() == 0)
+	if (!data || frame.GetSize() == 0
+			|| (frame.GetFlags() & 0xff))	// Compression, Encryption, etc.
 	{
 		return ID3V2CHARENCODE_UNSPECIFIED;
 	}
@@ -1247,7 +1246,7 @@ retry:
 	//îÒìØä˙âªÇÃâèú
 	if(unsyncTag && (head.flag & 0x80))
 	{
-		// v2.3 or earlier, or v2.4 with incorrect unsynchronization
+		// v2.3 or earlier, or v2.4 with incorrect (tag level) unsynchronization
 		dwId3Size = DecodeUnSynchronization(buf,dwId3Size);
 		m_bUnSynchronization = TRUE;
 	}
@@ -1430,10 +1429,15 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 			continue;
 		}
 		WORD flags = pFrame->GetFlags();
-		WORD flagsBe = ((flags<<8)|(flags>>8));
 		unsigned char *data = pFrame->GetData();
 		if(m_wVer == 0x0200)
 		{
+			if(flags & ~0x2000)	// All flags except file alter preservation.
+			{
+				// Cannot convert to v2.2.
+				p++;
+				continue;
+			}
 			if(memcmp(&id, "APIC", 4) == 0)
 			{
 				dwFrameDataPtr += ConvertApicToV22(data, dwSize, &framedata[dwFrameDataPtr]);
@@ -1458,12 +1462,20 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		}
 		else if(m_wVer == 0x0300)
 		{
+			if(flags & 0x4001)	// Tag alter preservation, Data length indicator
+			{
+				// Should be discarded or cannot convert to v2.3.
+				p++;
+				continue;
+			}
+			flags = ((flags & 0x7000) << 1) | ((flags & 0x0c) << 4) | ((flags & 0x40) >> 1);
+			WORD flagsBe = ((flags<<8)|(flags>>8));
 			unsigned char size[4];
 			size[3] = dwSize & 0xff;
 			size[2] = (dwSize>>8) & 0xff;
 			size[1] = (dwSize>>16) & 0xff;
 			size[0] = (dwSize>>24) & 0xff;
-			// id3v2.3-
+			// id3v2.3
 			memcpy(&framedata[dwFrameDataPtr],&id,sizeof(id));
 			dwFrameDataPtr += sizeof(id);
 			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
@@ -1475,6 +1487,13 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		}
 		else
 		{
+			if(flags & 0x4000)	// Tag alter preservation
+			{
+				// Should be discarded.
+				p++;
+				continue;
+			}
+			WORD flagsBe = ((flags<<8)|(flags>>8));
 			unsigned char size[4];
 			MakeV2Size(dwSize,size);
 			// í∑Ç≥êßå¿
@@ -1900,7 +1919,6 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 		DWORD dwSize = pFrame->GetSize();
 		DWORD id = pFrame->GetId();
 		WORD flags = pFrame->GetFlags();
-		WORD flagsBe = ((flags<<8)|(flags>>8));
 		unsigned char *data = pFrame->GetData();
 		if(m_wVer == 0x0200)
 		{
@@ -1928,14 +1946,33 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 				dwFrameDataPtr += dwSize;
 			}
 		}
-		else
+		else if(m_wVer == 0x0300)
 		{
-			// ID3v2.3-
+			flags = ((flags & 0x7000) << 1) | ((flags & 0x0c) << 4) | ((flags & 0x40) >> 1);
+			WORD flagsBe = ((flags<<8)|(flags>>8));
+			// ID3v2.3
 			unsigned char size[4];
 			size[3] = dwSize & 0xff;
 			size[2] = (dwSize>>8) & 0xff;
 			size[1] = (dwSize>>16) & 0xff;
 			size[0] = (dwSize>>24) & 0xff;
+			memcpy(&framedata[dwFrameDataPtr],&id,sizeof(id));
+			dwFrameDataPtr += sizeof(id);
+			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
+			dwFrameDataPtr += sizeof(size);
+			memcpy(&framedata[dwFrameDataPtr],&flagsBe,sizeof(flagsBe));
+			dwFrameDataPtr += sizeof(flagsBe);
+			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
+			dwFrameDataPtr += dwSize;
+		}
+		else
+		{
+			WORD flagsBe = ((flags<<8)|(flags>>8));
+			unsigned char size[4];
+			MakeV2Size(dwSize,size);
+			// í∑Ç≥êßå¿
+			dwSize &= 0x0fffffff;
+			// id3v2.4
 			memcpy(&framedata[dwFrameDataPtr],&id,sizeof(id));
 			dwFrameDataPtr += sizeof(id);
 			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
