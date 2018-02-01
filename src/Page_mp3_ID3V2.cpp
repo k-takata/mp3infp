@@ -213,11 +213,6 @@ static void EnableEdit(HWND hDlg,CShellExt *lpcs,BOOL bEnable)
 	EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),bEnable);
 	if(bEnable)
 	{
-		if(ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER)) >= 2)	// v2.4
-		{
-			EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),FALSE);
-		}
-
 		if(lpcs->m_Id3tagv2.IsEnable())
 		{
 			EnableWindow(GetDlgItem(hDlg,IDC_BUTTON_DEL_TAG),TRUE);	//Del Id3Tag
@@ -469,16 +464,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					cur = cnt - 1;
 				}
 				ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),cur);
-
-				if(ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER)) >= 2)	// v2.4
-				{
-					CheckDlgButton(hDlg,IDC_CHECK_UNSYNC,BST_UNCHECKED);
-					EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),FALSE);
-				}
-				else
-				{
-					EnableWindow(GetDlgItem(hDlg,IDC_CHECK_UNSYNC),TRUE);
-				}
 			}
 			break;
 		case IDC_EDIT_UNICODE:
@@ -584,7 +569,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 					// ì¬‚·‚éID3ƒo[ƒWƒ‡ƒ“‚ðŒˆ’è
 					long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER));
-					BOOL bUnsync = TRUE;
 					switch(cur){
 					case 0:	// v2.2
 						lpcs->m_Id3tagv2.SetVer(0x0200);
@@ -595,7 +579,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						break;
 					case 2:	// v2.4
 						lpcs->m_Id3tagv2.SetVer(0x0400);
-						bUnsync = FALSE;
 						break;
 					}
 					// Unsync/UnicodeŽw’è
@@ -615,7 +598,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
 						break;
 					}
-					lpcs->m_Id3tagv2.SetUnSynchronization(bUnsync);
+					lpcs->m_Id3tagv2.SetUnSynchronization(TRUE);
 					// Winamp‚ðˆê’U’âŽ~
 /*					int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
 					int nowPlayPos = 0;
@@ -900,7 +883,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					break;
 				case 2:	// v2.4
 					lpcs->m_Id3tagv2.SetVer(0x0400);
-					CheckDlgButton(hDlg,IDC_CHECK_UNSYNC,BST_UNCHECKED);
 					break;
 				default:
 				case CB_ERR:

@@ -1244,10 +1244,13 @@ retry:
 	}
 
 	//非同期化の解除
-	if(unsyncTag && (head.flag & 0x80))
+	if(head.flag & 0x80)
 	{
-		// v2.3 or earlier, or v2.4 with incorrect (tag level) unsynchronization
-		dwId3Size = DecodeUnSynchronization(buf,dwId3Size);
+		if(unsyncTag)
+		{
+			// v2.3 or earlier, or v2.4 with incorrect (tag level) unsynchronization
+			dwId3Size = DecodeUnSynchronization(buf,dwId3Size);
+		}
 		m_bUnSynchronization = TRUE;
 	}
 	else
@@ -1408,7 +1411,15 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 
 	DWORD dwTotalFrameSize = GetTotalFrameSize();
 	//フレーム情報を書き出す準備
-	unsigned char *framedata = (unsigned char *)malloc(dwTotalFrameSize);
+	unsigned char *framedata;
+	if(m_wVer == 0x400 && m_bUnSynchronization)
+	{
+		framedata = (unsigned char *)malloc(dwTotalFrameSize * 2);
+	}
+	else
+	{
+		framedata = (unsigned char *)malloc(dwTotalFrameSize);
+	}
 	if(!framedata)
 	{
 		dwWin32errorCode = GetLastError();
@@ -1501,11 +1512,26 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 			// id3v2.4
 			memcpy(&framedata[dwFrameDataPtr],&id,sizeof(id));
 			dwFrameDataPtr += sizeof(id);
+
+			if(m_bUnSynchronization)
+			{
+				DWORD dwEncodeSize = EncodeUnSynchronization(data, dwSize, &framedata[dwFrameDataPtr+sizeof(size)+sizeof(flagsBe)]);
+				if(dwEncodeSize != dwSize)
+				{
+					dwSize = dwEncodeSize;
+					MakeV2Size(dwSize,size);
+					flagsBe |= 0x02 << 8;	// unsync
+				}
+			}
+			else
+			{
+				memcpy(&framedata[dwFrameDataPtr+sizeof(size)+sizeof(flagsBe)], data, dwSize);
+			}
+
 			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
 			dwFrameDataPtr += sizeof(size);
 			memcpy(&framedata[dwFrameDataPtr],&flagsBe,sizeof(flagsBe));
 			dwFrameDataPtr += sizeof(flagsBe);
-			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
 			dwFrameDataPtr += dwSize;
 		}
 		p++;
@@ -1513,7 +1539,12 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	dwTotalFrameSize = dwFrameDataPtr;
 //	ASSERT(dwFrameDataPtr == dwTotalFrameSize);
 	//非同期化
-	if(m_bUnSynchronization)
+	if(m_wVer == 0x400 && m_bUnSynchronization)
+	{
+		//非同期化フラグをセット
+		m_head.flag |= 0x80;
+	}
+	else if(m_bUnSynchronization)
 	{
 		unsigned char *encData = (unsigned char *)malloc(dwTotalFrameSize*2);
 		DWORD dwEncodeSize = EncodeUnSynchronization(framedata,dwTotalFrameSize,encData);
@@ -1975,19 +2006,39 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 			// id3v2.4
 			memcpy(&framedata[dwFrameDataPtr],&id,sizeof(id));
 			dwFrameDataPtr += sizeof(id);
+
+			if(m_bUnSynchronization)
+			{
+				DWORD dwEncodeSize = EncodeUnSynchronization(data, dwSize, &framedata[dwFrameDataPtr+sizeof(size)+sizeof(flagsBe)]);
+				if(dwEncodeSize != dwSize)
+				{
+					dwSize = dwEncodeSize;
+					MakeV2Size(dwSize,size);
+					flagsBe |= 0x02 << 8;	// unsync
+				}
+			}
+			else
+			{
+				memcpy(&framedata[dwFrameDataPtr+sizeof(size)+sizeof(flagsBe)], data, dwSize);
+			}
+
 			memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
 			dwFrameDataPtr += sizeof(size);
 			memcpy(&framedata[dwFrameDataPtr],&flagsBe,sizeof(flagsBe));
 			dwFrameDataPtr += sizeof(flagsBe);
-			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
 			dwFrameDataPtr += dwSize;
 		}
 		p++;
 	}
-//	dwTotalFrameSize = dwFrameDataPtr;
-	ASSERT(dwFrameDataPtr == dwTotalFrameSize);
+	dwTotalFrameSize = dwFrameDataPtr;
+//	ASSERT(dwFrameDataPtr == dwTotalFrameSize);
 	//非同期化
-	if(m_bUnSynchronization)
+	if(m_wVer == 0x400 && m_bUnSynchronization)
+	{
+		//非同期化フラグをセット
+		m_head.flag |= 0x80;
+	}
+	else if(m_bUnSynchronization)
 	{
 		unsigned char *encData = (unsigned char *)malloc(dwTotalFrameSize*2);
 		DWORD dwEncodeSize = EncodeUnSynchronization(framedata,dwTotalFrameSize,encData);
