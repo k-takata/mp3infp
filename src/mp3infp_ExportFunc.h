@@ -339,6 +339,7 @@ typedef DWORD (WINAPI *LPMP3INFP_GETTYPE)();
 名前：	mp3infp_GetValue
 概要：	タグ情報を取得する
 補足：	mp3infp_Load()の後に呼び出してください
+        本関数を複数回呼び出すと、以前の結果は無効になります
 引数：	
 		IN const char *szValueName	タグの種類を示す名前(表1を参照)
 		OUT char **buf			タグ情報を示すバッファのポインタを受け取るポインタ

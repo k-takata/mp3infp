@@ -9,13 +9,6 @@ Copyright(C) 2009-2018 K.Takata
 http://www.microsoft.com/downloads/details.aspx?FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff&displaylang=en
 ・Windows Driver Kit 6001.18002 (Win2k 用にビルドする場合)
 
-■mp3infp/u (Unicode版) 固有の制限事項
-現時点で判明している制限事項は以下の通りです。
-1. mp3infp_GetValueA() では、512bytes を超えるデータを取得できない。
-2. mp3infp_GetValueA() を複数回呼ぶと、前回のデータが上書きされる。
-
- ※ 問題箇所はソースコード内に // QQQ という形式でコメントを入れています。
-
 ■mp3infp/u (Unicode版) の公開関数
 今までの mp3infp_～ という関数に加え、mp3infp_～A、mp3infp_～W という
 関数をエクスポートしています。（mp3infp_unicode.def 参照）
