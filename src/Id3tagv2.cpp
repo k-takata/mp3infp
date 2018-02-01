@@ -171,7 +171,6 @@ DWORD CId3Frame::LoadFrame2_3(const unsigned char *pData,DWORD dwSize)
 	{
 		return 0;	//ƒƒ‚ƒŠ‚ğŠm•Û‚Å‚«‚È‚©‚Á‚½
 	}
-	//		memcpy(&m_dwId,pData,sizeof(m_dwId));
 	m_dwSize = size;
 	memcpy(m_data,&pData[10],size);
 	return (size + 10);
