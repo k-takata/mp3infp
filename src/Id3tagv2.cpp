@@ -1261,7 +1261,14 @@ retry:
 	//Šg’£ƒwƒbƒ_‚ğ“Ç‚İ”ò‚Î‚·(ID3v2.2‚É‚Í‘¶İ‚µ‚È‚¢)
 	if((ver != 0x0200) && (head.flag & 0x40))
 	{
-		dwRemainSize -= ExtractV2Size(buf) + 4;
+		if(ver < 0x400)
+		{
+			dwRemainSize -= ExtractI4(buf) + 4;
+		}
+		else
+		{
+			dwRemainSize -= ExtractV2Size(buf);
+		}
 	}
 	head.flag &= ~0x40;	//‰ğœ
 
