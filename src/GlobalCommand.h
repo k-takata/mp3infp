@@ -117,6 +117,14 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code);
 // Žg—pŒã‚Ífree()‚Å‰ð•ú‚·‚é‚±‚Æ
 char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code);
 
+// Convert UTF-16LE <-> UTF-16BE.
+static inline void ConvertUTF16Endian(WCHAR *str, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		str[i] = (str[i] << 8) | (str[i] >> 8);
+	}
+}
 
 __int64 GetFileSize64(HANDLE hFile);
 __int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);

@@ -881,17 +881,6 @@ void CId3tagv2::v23IDtov22ID(const char *v23ID,char *v22ID)
 	}
 }
 
-#if 0
-// UNICODE•¶š—ñ‚ÌBE/LE‚ğ•ÏŠ·‚·‚é(len=•¶š”)
-void CId3tagv2::UTF16toUTF16BE(WCHAR *str,int len)
-{
-	for(int i=0; i<len; i++)
-	{
-		str[i] = (str[i] << 8) | (str[i] >> 8);
-	}
-}
-#endif
-
 CString CId3tagv2::GetTitle()
 {
 	//ƒ^ƒCƒgƒ‹

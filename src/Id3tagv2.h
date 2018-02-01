@@ -176,7 +176,6 @@ private:
 	DWORD GetTotalFrameSize();
 //	void _SetStringEncode(int encode);
 	static void v23IDtov22ID(const char *v23ID,char *v22ID);
-//	void UTF16toUTF16BE(WCHAR *str,int len);
 	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
 	static CharEncoding GetFrameEncoding(const CId3Frame &frame);
 	static DWORD ConvertApicToV22(const unsigned char *v23, DWORD dwSize, unsigned char *v22);

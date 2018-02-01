@@ -492,12 +492,11 @@ CString DataToCString(const char *data, int size, int code)
 		{
 			LPWSTR wstr = (LPWSTR) malloc(size + sizeof(WCHAR));
 			if (wstr != NULL) {
-				wcsncpy(wstr, (LPWSTR)data, size/sizeof(WCHAR));
-				wstr[size/sizeof(WCHAR)] = L'\0';
+				int len = size / sizeof(WCHAR);
+				wcsncpy(wstr, (LPWSTR)data, len);
+				wstr[len] = L'\0';
 				// UTF-16BE -> UTF-16LE
-				for (int i = 0; i < size/sizeof(WCHAR); i++) {
-					wstr[i] = (wstr[i] << 8) | (wstr[i] >> 8);
-				}
+				ConvertUTF16Endian(wstr, len);
 				ret = wstr;		// UNICODE -> TCHAR
 				free(wstr);
 			}
@@ -568,10 +567,7 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code)
 #endif
 			if ((data != NULL) && (code == DTC_CODE_UTF16BE)) {
 				// UTF-16LE -> UTF-16BE
-				LPWSTR wstr = (LPWSTR)data;
-				for (int i = 0; i < ret_size/sizeof(WCHAR); i++) {
-					wstr[i] = (wstr[i] << 8) | (wstr[i] >> 8);
-				}
+				ConvertUTF16Endian((LPWSTR)data, ret_size/sizeof(WCHAR));
 			}
 		}
 		break;
