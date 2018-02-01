@@ -598,20 +598,20 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code)
 	return ret_size;
 }
 
-char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code)
+char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code, int offset)
 {
 	int size = TstrToData(tstr, tlen, NULL, 0, code);
 	if (size == 0) {
 		return NULL;
 	}
-	char *buf = (char *)malloc(size);
+	char *buf = (char *)malloc(size + offset);
 	if (buf == NULL) {
 		return NULL;
 	}
 	if (dsize != NULL) {
-		*dsize = size;
+		*dsize = size + offset;
 	}
-	TstrToData(tstr, tlen, buf, size, code);
+	TstrToData(tstr, tlen, buf + offset, size, code);
 	return buf;
 }
 

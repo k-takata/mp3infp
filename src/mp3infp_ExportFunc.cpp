@@ -388,15 +388,20 @@ extern "C" DWORD __stdcall mp3infp_GetType()
 #ifdef UNICODE
 extern "C" BOOL __stdcall mp3infp_GetValueA(const char *szValueName,char **buf)
 {
-	static char strRet[512];
+	static char *strRet = NULL;
 	TCHAR *tbuf;
 	
 	*buf = NULL;
 	BOOL ret = mp3infp_GetValueW(CString(szValueName), &tbuf);
 	if (ret) {
-		strRet[0] = '\0';
-		TstrToData(tbuf, -1, strRet, sizeof(strRet), DTC_CODE_ANSI);
-		*buf = strRet;	// QQQ strRetのサイズをオーバーするときは値を返せない
+		if (strRet != NULL) {
+			free(strRet);
+		}
+		strRet = TstrToDataAlloc(tbuf, -1, NULL, DTC_CODE_ANSI);
+		*buf = strRet;
+		if (strRet == NULL) {
+			ret = FALSE;
+		}
 	}
 	return ret;
 }

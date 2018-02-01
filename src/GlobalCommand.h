@@ -115,7 +115,9 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code);
 
 // TSTRを指定コードのバイト列に変換する（メモリ自動割り当て）
 // 使用後はfree()で解放すること
-char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code);
+// offset を指定すると、そのバイト数だけ余計にメモリを確保し、
+// 先頭を空けてデータを書き込む
+char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code, int offset = 0);
 
 // Convert UTF-16LE <-> UTF-16BE.
 static inline void ConvertUTF16Endian(WCHAR *str, int len)

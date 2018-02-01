@@ -652,7 +652,7 @@ BOOL CRMP::WriteStringChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,LPCTSTR pStr
 {
 #ifdef UNICODE
 	int size;
-	char *buf = (char *)TstrToDataAlloc(pStr, dwLen, &size, DTC_CODE_ANSI);
+	char *buf = TstrToDataAlloc(pStr, dwLen, &size, DTC_CODE_ANSI);
 	if (buf == NULL) {
 		return FALSE;
 	}

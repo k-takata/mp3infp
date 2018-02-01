@@ -498,19 +498,16 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_ANSI) + 1;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 1);
 			if(!data)
 			{
 				return;
 			}
 			data[0] = 0;	//encoding
-			TstrToData(szString, -1, (char *)&data[1], size-1, DTC_CODE_ANSI);
 			break;
 		case ID3V2CHARENCODE_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16LE) + 3;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 3);
 			if(!data)
 			{
 				return;
@@ -518,11 +515,9 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 1;	//encoding
 			data[1] = 0xff;	//BOM
 			data[2] = 0xfe;
-			TstrToData(szString, -1, (char *)&data[3], size-3, DTC_CODE_UTF16LE);
 			break;
 #else
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 3;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 3);
 			if(!data)
 			{
 				return;
@@ -530,31 +525,24 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 1;	//encoding
 			data[1] = 0xfe;	//BOM
 			data[2] = 0xff;
-			TstrToData(szString, -1, (char *)&data[3], size-3, DTC_CODE_UTF16BE);
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 1;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 1);
 			if(!data)
 			{
 				return;
 			}
 			data[0] = 0x02;	//encoding
-			TstrToData(szString, -1, (char *)&data[1], size-1, DTC_CODE_UTF16BE);
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 1);
+			if(!data)
 			{
-				size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF8) + 1;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					return;
-				}
-				data[0] = 3;	//encoding
-				TstrToData(szString, -1, (char *)&data[1], size-1, DTC_CODE_UTF8);
-				break;
+				return;
 			}
+			data[0] = 3;	//encoding
+			break;
 		}
 //		p = m_frames.find(dwId);
 		pp = m_frames.equal_range(dwId);
@@ -583,20 +571,17 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_ANSI) + 2;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
 			}
 			data[0] = 0;	//encoding
 			data[1] = 0;	//説明文(省略)
-			TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 		case ID3V2CHARENCODE_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16LE) + 5;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -606,11 +591,9 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xfe;
 			data[3] = 0;	//説明文(省略)
 			data[4] = 0;
-			TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 #else	// ビックエンディアン
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 5;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -620,12 +603,10 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xff;
 			data[3] = 0;	//説明文(省略)
 			data[4] = 0;
-			TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 3;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 3);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -633,21 +614,16 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 2;	//encoding
 			data[1] = 0;	//説明文(省略)
 			data[2] = 0;
-			TstrToData(szString, -1, (char *)&data[3], size-3, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
+			if(!data)
 			{
-				size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF8) + 2;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					return;
-				}
-				data[0] = 3;	//encoding
-				data[1] = 0;	//説明文(省略)
-				TstrToData(szString, -1, (char *)&data[2], size-2, DTC_CODE_ANSI);	//URL本体（常にISO-8859-1）
-				break;
+				return;
 			}
+			data[0] = 3;	//encoding
+			data[1] = 0;	//説明文(省略)
+			break;
 		}
 		pp = m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
@@ -703,8 +679,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(m_encode){
 		case ID3V2CHARENCODE_ISO_8859_1:
 		default:	// ISO-8859-1
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_ANSI) + 5;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);
 			if(!data)
 			{
 				return;
@@ -714,12 +689,10 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0;	//説明文(省略)
-			TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_ANSI);
 			break;
 		case ID3V2CHARENCODE_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16LE) + 10;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 10);
 			if(!data)
 			{
 				return;
@@ -734,11 +707,9 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[7] = 0;
 			data[8] = 0xff;	//BOM
 			data[9] = 0xfe;
-			TstrToData(szString, -1, (char *)&data[10], size-10, DTC_CODE_UTF16LE);
 			break;
 #else	// ビッグエンディアン
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 10;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 10);
 			if(!data)
 			{
 				return;
@@ -753,12 +724,10 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[7] = 0;
 			data[8] = 0xfe;	//BOM
 			data[9] = 0xff;
-			TstrToData(szString, -1, (char *)&data[10], size-10, DTC_CODE_UTF16BE);
 			break;
 #endif
 		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
-			size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF16BE) + 6;
-			data = (unsigned char *)malloc(size);
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 6);
 			if(!data)
 			{
 				return;
@@ -769,24 +738,19 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[3] = 'g';
 			data[4] = 0;	//説明文(省略)
 			data[5] = 0;	//説明文(省略)
-			TstrToData(szString, -1, (char *)&data[6], size-6, DTC_CODE_UTF16BE);
 			break;
 		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 5);
+			if(!data)
 			{
-				size = TstrToData(szString, -1, NULL, 0, DTC_CODE_UTF8) + 5;
-				data = (unsigned char *)malloc(size);
-				if(!data)
-				{
-					return;
-				}
-				data[0] = 3;	//encoding
-				data[1] = 'e';	//Language
-				data[2] = 'n';
-				data[3] = 'g';
-				data[4] = 0;	//説明文(省略)
-				TstrToData(szString, -1, (char *)&data[5], size-5, DTC_CODE_UTF8);
-				break;
+				return;
 			}
+			data[0] = 3;	//encoding
+			data[1] = 'e';	//Language
+			data[2] = 'n';
+			data[3] = 'g';
+			data[4] = 0;	//説明文(省略)
+			break;
 		}
 	//	pp = m_frames.equal_range(dwId);
 		if((pp.first == pp.second) || !(pp.first->second.GetSize()))
