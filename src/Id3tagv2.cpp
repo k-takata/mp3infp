@@ -1339,7 +1339,7 @@ retry:
 		{
 			if((m_wVer < 0x0400) && (enc > ID3V2CHARENCODE_UTF_16))
 			{
-				// v2.3 or eariler doesn't support UTF-8 or UTF-16BE.
+				// v2.3 or earlier doesn't support UTF-8 or UTF-16BE.
 				m_encode = ID3V2CHARENCODE_UTF_16;
 			}
 			else
