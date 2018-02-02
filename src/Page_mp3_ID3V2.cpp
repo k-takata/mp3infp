@@ -124,9 +124,9 @@ static void SetEncodeCB(HWND hDlg)
 	if(cur >= 2)	// > v2.4
 	{
 #ifndef	ENABLE_UTF_16BE
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)"),_T("UTF-8(Unicode)")};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)")};
 #else
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)"),_T("UTF-8(Unicode)"),_T("UTF-16BE")};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)"),_T("UTF-16BE")};
 #endif
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
@@ -135,7 +135,7 @@ static void SetEncodeCB(HWND hDlg)
 	}
 	else
 	{
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16(Unicode)")};
+		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)")};
 		for(int i=0; i<sizeof_array(encode); i++)
 		{
 			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encode[i]);
@@ -151,7 +151,7 @@ static void EnableButton(HWND hDlg,CShellExt *lpcs)
 		EnableWindow(GetDlgItem(hDlg,IDC_COPY_FROM_ID3V1),FALSE);	//Copy from ID3v1
 
 	if(lpcs->m_Rmp3.IsEnable())
-		EnableWindow(GetDlgItem(hDlg,IDC_COPY_FROM_RIFF),TRUE);	//Copy from RMP
+		EnableWindow(GetDlgItem(hDlg,IDC_COPY_FROM_RIFF),TRUE);		//Copy from RMP
 	else
 		EnableWindow(GetDlgItem(hDlg,IDC_COPY_FROM_RIFF),FALSE);	//Copy from RMP
 }
