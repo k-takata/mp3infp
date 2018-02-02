@@ -1607,6 +1607,8 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		//非同期化フラグを解除
 		m_head.flag &= ~HDR_FLAG_UNSYNC;
 	}
+	// Drop footer flag.
+	m_head.flag &= ~HDR_FLAG_FOOTER;
 
 	//Id3tagサイズ
 	DWORD dwId3Size = ExtractV2Size(m_head.size);
@@ -2096,6 +2098,8 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 		free(framedata);
 		framedata = encData;
 	}
+	// Drop footer flag.
+	m_head.flag &= ~HDR_FLAG_FOOTER;
 
 	//==================元ファイルをメモリに保存==================
 	HANDLE hFile = CreateFile(
