@@ -108,6 +108,12 @@ public:
 		unsigned char size[4];
 	}ID3HEAD;
 #pragma pack()
+	enum HeaderFlags {
+		HDR_FLAG_UNSYNC			= 0x80,		// Unsynchronisation
+		HDR_FLAG_EXT_HEADER		= 0x40,		// Extended header
+		HDR_FLAG_EXPERIMENTAL	= 0x20,		// Experimental indicator
+		HDR_FLAG_FOOTER			= 0x10,		// Footer present
+	};
 //	CId3tagv2(WORD defaultVersion = 0x0300/* ID3v2.3 = 0x0300/ID3v2.4 = 0x0400*/);
 	CId3tagv2();
 	virtual ~CId3tagv2();

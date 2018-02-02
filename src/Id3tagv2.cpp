@@ -1272,7 +1272,7 @@ retry:
 	}
 
 	//非同期化の解除
-	if(head.flag & 0x80)
+	if(head.flag & HDR_FLAG_UNSYNC)
 	{
 		if(unsyncTag)
 		{
@@ -1288,7 +1288,7 @@ retry:
 
 	DWORD dwRemainSize = dwId3Size;
 	//拡張ヘッダを読み飛ばす(ID3v2.2には存在しない)
-	if((ver != 0x0200) && (head.flag & 0x40))
+	if((ver != 0x0200) && (head.flag & HDR_FLAG_EXT_HEADER))
 	{
 		if(ver < 0x400)
 		{
@@ -1299,7 +1299,7 @@ retry:
 			dwRemainSize -= ExtractV2Size(buf);
 		}
 	}
-	head.flag &= ~0x40;	//解除
+	head.flag &= ~HDR_FLAG_EXT_HEADER;	//解除
 
 	m_encode = ID3V2CHARENCODE_UTF_16;
 	while(dwRemainSize)
@@ -1585,7 +1585,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	if(m_wVer == 0x400 && m_bUnSynchronization)
 	{
 		//非同期化フラグをセット
-		m_head.flag |= 0x80;
+		m_head.flag |= HDR_FLAG_UNSYNC;
 	}
 	else if(m_bUnSynchronization)
 	{
@@ -1596,7 +1596,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 //	(非同期化ONが保存できない様子はユーザからみておかしな動きに見えるため)
 		{
 			//非同期化フラグをセット
-			m_head.flag |= 0x80;
+			m_head.flag |= HDR_FLAG_UNSYNC;
 			dwTotalFrameSize = dwEncodeSize;
 		}
 		free(framedata);
@@ -1605,7 +1605,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	else
 	{
 		//非同期化フラグを解除
-		m_head.flag &= ~0x80;
+		m_head.flag &= ~HDR_FLAG_UNSYNC;
 	}
 
 	//Id3tagサイズ
@@ -2079,7 +2079,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 	if(m_wVer == 0x400 && m_bUnSynchronization)
 	{
 		//非同期化フラグをセット
-		m_head.flag |= 0x80;
+		m_head.flag |= HDR_FLAG_UNSYNC;
 	}
 	else if(m_bUnSynchronization)
 	{
@@ -2090,7 +2090,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 //	(非同期化ONが保存できない様子はユーザからみておかしな動きに見えるため)
 		{
 			//非同期化フラグをセット
-			m_head.flag |= 0x80;
+			m_head.flag |= HDR_FLAG_UNSYNC;
 			dwTotalFrameSize = dwEncodeSize;
 		}
 		free(framedata);
