@@ -1449,9 +1449,15 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 				p++;
 				continue;
 			}
+			int offset = 0;
+			if(flags & 0x01)	// Data length indicator
+			{
+				dwSize -= 4;
+				offset += 4;
+			}
 			if(memcmp(&id, "APIC", 4) == 0)
 			{
-				dwFrameDataPtr += ConvertApicToV22(data, dwSize, &framedata[dwFrameDataPtr]);
+				dwFrameDataPtr += ConvertApicToV22(&data[offset], dwSize, &framedata[dwFrameDataPtr]);
 			}
 			else
 			{
@@ -1467,17 +1473,23 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 				dwFrameDataPtr += sizeof(v22id);
 				memcpy(&framedata[dwFrameDataPtr],size,sizeof(size));
 				dwFrameDataPtr += sizeof(size);
-				memcpy(&framedata[dwFrameDataPtr],data,dwSize);
+				memcpy(&framedata[dwFrameDataPtr],&data[offset],dwSize);
 				dwFrameDataPtr += dwSize;
 			}
 		}
 		else if(m_wVer == 0x0300)
 		{
-			if(flags & 0x4001)	// Tag alter preservation, Data length indicator
+			if(flags & 0x4000)	// Tag alter preservation
 			{
-				// Should be discarded or cannot convert to v2.3.
+				// Should be discarded
 				p++;
 				continue;
+			}
+			int offset = 0;
+			if(flags & 0x01)	// Data length indicator
+			{
+				dwSize -= 4;
+				offset += 4;
 			}
 			flags = ((flags & 0x7000) << 1) | ((flags & 0x0c) << 4) | ((flags & 0x40) >> 1);
 			WORD flagsBe = ((flags<<8)|(flags>>8));
@@ -1493,7 +1505,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 			dwFrameDataPtr += sizeof(size);
 			memcpy(&framedata[dwFrameDataPtr],&flagsBe,sizeof(flagsBe));
 			dwFrameDataPtr += sizeof(flagsBe);
-			memcpy(&framedata[dwFrameDataPtr],data,dwSize);
+			memcpy(&framedata[dwFrameDataPtr],&data[offset],dwSize);
 			dwFrameDataPtr += dwSize;
 		}
 		else
