@@ -1614,7 +1614,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	if(dwTotalFrameSize > dwId3Size)
 	{
 		//[パディング領域を挿入]
-		DWORD dwPaddingSize = dwTotalFrameSize - dwId3Size + ID3V2_PADDING_SIZE;
+		DWORD dwPaddingSize = (ID3V2_PADDING_SIZE + dwTotalFrameSize - 1) / ID3V2_PADDING_SIZE * ID3V2_PADDING_SIZE - dwId3Size;
 		dwId3Size += dwPaddingSize;
 
 		//==================元ファイルをメモリに保存==================
@@ -1975,7 +1975,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 	
 	DWORD dwTotalFrameSize = GetTotalFrameSize();
 	//[パディング領域を挿入]
-	DWORD dwPaddingSize = ID3V2_PADDING_SIZE - dwTotalFrameSize;
+	DWORD dwPaddingSize = (ID3V2_PADDING_SIZE + dwTotalFrameSize - 1) / ID3V2_PADDING_SIZE * ID3V2_PADDING_SIZE - dwTotalFrameSize;
 
 	//フレーム情報を書き出す準備
 	unsigned char *framedata = (unsigned char *)malloc(dwTotalFrameSize);
