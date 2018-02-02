@@ -126,7 +126,7 @@ DWORD CId3Frame::LoadFrame2_4(const unsigned char *pData,DWORD dwSize)
 	}
 	m_dwSize = size;
 	memcpy(m_data,&pData[10],size);
-	if(m_wFlags & 0x02)
+	if(m_wFlags & FLAG_UNSYNC)
 	{
 		m_dwSize = CId3tagv2::DecodeUnSynchronization(m_data, size);
 	}
@@ -259,11 +259,29 @@ DWORD CId3Frame::LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wV
 	}
 
 	m_dwSize = dwSize + dwAddSize;
-	if((wVer == 0x0400) && (m_wFlags & 0x02))
+	if((wVer == 0x0400) && (m_wFlags & FLAG_UNSYNC))
 	{
 		m_dwSize = CId3tagv2::DecodeUnSynchronization(m_data, m_dwSize);
 	}
 	return dwSize + hdrsize;
+}
+
+DWORD CId3Frame::GetDataOffset() const
+{
+	DWORD offset = 0;
+	if(m_wFlags & FLAG_GROUP)
+	{
+		offset++;
+	}
+	if(m_wFlags & FLAG_ENCRYPT)
+	{
+		offset++;
+	}
+	if(m_wFlags & (FLAG_DATA_LEN | FLAG_COMPRESS))
+	{
+		offset += 4;
+	}
+	return offset;
 }
 
 bool CId3Frame::IsTextFrame() const
@@ -389,6 +407,9 @@ CString CId3tagv2::GetId3String(const char szId[])
 	DWORD dwReadSize;
 	unsigned char *data;
 	DWORD i;
+	const WORD frameMask = CId3Frame::MASK_FRAME_FORMAT
+		& ~(CId3Frame::FLAG_GROUP | CId3Frame::FLAG_DATA_LEN);
+	DWORD offset = 0;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
 		memcpy(&dwId,szId,sizeof(dwId));
@@ -398,12 +419,13 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		p = pp.first;
-		if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
+		if(p->second.GetSize() == 0 || (p->second.GetFlags() & frameMask))
 		{
 			break;
 		}
+		offset = p->second.GetDataOffset();
 		data = p->second.GetData();
-		return ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, NULL);
+		return ReadEncodedTextString(data[offset], &data[offset+1], p->second.GetSize()-offset-1, NULL);
 	case 'W':	//URLリンクフレームx
 		if(strcmp(szId,"WXXX") != 0)
 		{
@@ -416,23 +438,24 @@ CString CId3tagv2::GetId3String(const char szId[])
 			break;
 		}
 		p = pp.first;
-		if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
+		if(p->second.GetSize() == 0 || (p->second.GetFlags() & frameMask))
 		{
 			break;
 		}
+		offset = p->second.GetDataOffset();
 		data = p->second.GetData();
 		
 		//説明文を読み飛ばす
-		ReadEncodedTextString(data[0], &data[1], p->second.GetSize()-1, &dwReadSize);
+		ReadEncodedTextString(data[offset], &data[offset+1], p->second.GetSize()-offset-1, &dwReadSize);
 		//URL本体
 		//規格上は常に ISO-8859-1（互換性のため、BOMがあればそちらを優先）
 		if ((p->second.GetSize()-1-dwReadSize >= 2)
 				&& (data[0] == ID3V2CHARENCODE_UTF_16)
 				&& ((memcmp(&data[1+dwReadSize], "\xff\xfe", 2) == 0)
 					|| (memcmp(&data[1+dwReadSize], "\xfe\xff", 2) == 0))) {
-			return ReadEncodedTextString(1, &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
+			return ReadEncodedTextString(1, &data[offset+1+dwReadSize], p->second.GetSize()-offset-1-dwReadSize, NULL);
 		}
-		return ReadEncodedTextString(0, &data[1+dwReadSize], p->second.GetSize()-1-dwReadSize, NULL);
+		return ReadEncodedTextString(0, &data[offset+1+dwReadSize], p->second.GetSize()-offset-1-dwReadSize, NULL);
 	case 'C':
 		if(strcmp(szId,"COMM") != 0)
 		{
@@ -442,21 +465,22 @@ CString CId3tagv2::GetId3String(const char szId[])
 		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
 		{
 			p = pp.first;
-			if(p->second.GetSize() == 0 || (p->second.GetFlags() & 0xff))
+			if(p->second.GetSize() == 0 || (p->second.GetFlags() & frameMask))
 			{
 				continue;
 			}
+			offset = p->second.GetDataOffset();
 			data = p->second.GetData();
 
 			// 言語文字列読み飛ばし、説明文取得
-			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
+			CString desc = ReadEncodedTextString(data[offset], &data[offset+4], p->second.GetSize()-offset-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
 			{
 				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
 				continue;
 			}
 			//本文
-			return ReadEncodedTextString(data[0], &data[4+dwReadSize], p->second.GetSize()-4-dwReadSize, NULL);
+			return ReadEncodedTextString(data[offset], &data[offset+4+dwReadSize], p->second.GetSize()-offset-4-dwReadSize, NULL);
 		}
 		break;
 	}
@@ -649,15 +673,18 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		for (pp = m_frames.equal_range(dwId); pp.first != pp.second; ++pp.first)
 		{
 			p = pp.first;
-			if(p->second.GetSize() == 0)
+			const WORD frameMask = CId3Frame::MASK_FRAME_FORMAT
+				& ~(CId3Frame::FLAG_GROUP | CId3Frame::FLAG_DATA_LEN);
+			if(p->second.GetSize() == 0 || (p->second.GetFlags() & frameMask))
 			{
 				continue;
 			}
+			DWORD offset = p->second.GetDataOffset();
 			unsigned char *data = p->second.GetData();
 
 			// 言語文字列読み飛ばし、説明文取得
 			DWORD dwReadSize;
-			CString desc = ReadEncodedTextString(data[0], &data[4], p->second.GetSize()-4, &dwReadSize);
+			CString desc = ReadEncodedTextString(data[offset], &data[offset+4], p->second.GetSize()-offset-4, &dwReadSize);
 			if(desc.Left(4) == _T("iTun"))
 			{
 				// iTunes固有のコメントはスキップ (iTunNORM, iTunSMPB, etc.)
@@ -1157,9 +1184,10 @@ void CId3tagv2::MakeV2Size(DWORD dwSize,unsigned char size[4])
 
 CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
 {
+	const WORD frameMask = CId3Frame::MASK_FRAME_FORMAT
+		& ~(CId3Frame::FLAG_GROUP | CId3Frame::FLAG_DATA_LEN);
 	const unsigned char *data = frame.GetData();
-	if (!data || frame.GetSize() == 0
-			|| (frame.GetFlags() & 0xff))	// Compression, Encryption, etc.
+	if (!data || frame.GetSize() == 0 || (frame.GetFlags() & frameMask))
 	{
 		return ID3V2CHARENCODE_UNSPECIFIED;
 	}
@@ -1167,7 +1195,7 @@ CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
 	{
 		return ID3V2CHARENCODE_UNSPECIFIED;
 	}
-	return (CharEncoding)data[0];
+	return (CharEncoding)data[frame.GetDataOffset()];
 }
 
 DWORD CId3tagv2::Load(LPCTSTR szFileName)
@@ -1289,7 +1317,7 @@ retry:
 		else
 		{
 			dwReadSize = frame.LoadFrame2_4(buf+(dwId3Size-dwRemainSize),dwRemainSize);
-			if(frame.GetFlags() & 0x02)
+			if(frame.GetFlags() & CId3Frame::FLAG_UNSYNC)
 			{
 				// v2.4 with correct (per-frame) unsynchronization is found.
 				if(unsyncTag)
@@ -1301,7 +1329,7 @@ retry:
 					goto retry;
 				}
 				m_bUnSynchronization = TRUE;
-				frame.SetFlags(frame.GetFlags() & ~0x02);	// Drop unsync flag.
+				frame.SetFlags(frame.GetFlags() & ~CId3Frame::FLAG_UNSYNC);	// Drop unsync flag.
 			}
 		}
 		if(!dwReadSize)
@@ -1443,18 +1471,16 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		unsigned char *data = pFrame->GetData();
 		if(m_wVer == 0x0200)
 		{
-			if(flags & ~0x2000)	// All flags except file alter preservation.
+			const WORD frameMask = CId3Frame::MASK_FRAME_FORMAT
+				& ~(CId3Frame::FLAG_GROUP | CId3Frame::FLAG_DATA_LEN);
+			if(flags & (CId3Frame::FLAG_TAG_ALT_PRESERVE | frameMask))
 			{
-				// Cannot convert to v2.2.
+				// Should be discarded or cannot convert to v2.2.
 				p++;
 				continue;
 			}
-			int offset = 0;
-			if(flags & 0x01)	// Data length indicator
-			{
-				dwSize -= 4;
-				offset += 4;
-			}
+			DWORD offset = pFrame->GetDataOffset();
+			dwSize -= offset;
 			if(memcmp(&id, "APIC", 4) == 0)
 			{
 				dwFrameDataPtr += ConvertApicToV22(&data[offset], dwSize, &framedata[dwFrameDataPtr]);
@@ -1479,17 +1505,22 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		}
 		else if(m_wVer == 0x0300)
 		{
-			if(flags & 0x4000)	// Tag alter preservation
+			if(flags & CId3Frame::FLAG_TAG_ALT_PRESERVE)
 			{
 				// Should be discarded
 				p++;
 				continue;
 			}
-			int offset = 0;
-			if(flags & 0x01)	// Data length indicator
+			DWORD offset = 0;
+			if((flags & (CId3Frame::FLAG_DATA_LEN | CId3Frame::FLAG_COMPRESS | CId3Frame::FLAG_ENCRYPT)) == CId3Frame::FLAG_DATA_LEN)
 			{
-				dwSize -= 4;
-				offset += 4;
+				// TODO: Do we need to care about grouping identity flag?
+				// The order of grouping and data length are different between
+				// v2.3 and v2.4.  Drop it for now.
+				flags &= ~CId3Frame::FLAG_GROUP;
+
+				offset = pFrame->GetDataOffset();
+				dwSize -= offset;
 			}
 			flags = ((flags & 0x7000) << 1) | ((flags & 0x0c) << 4) | ((flags & 0x40) >> 1);
 			WORD flagsBe = ((flags<<8)|(flags>>8));
@@ -1510,7 +1541,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 		}
 		else
 		{
-			if(flags & 0x4000)	// Tag alter preservation
+			if(flags & CId3Frame::FLAG_TAG_ALT_PRESERVE)
 			{
 				// Should be discarded.
 				p++;
@@ -1532,7 +1563,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 				{
 					dwSize = dwEncodeSize;
 					MakeV2Size(dwSize,size);
-					flagsBe |= 0x02 << 8;	// unsync
+					flagsBe |= CId3Frame::FLAG_UNSYNC << 8;	// unsync
 				}
 			}
 			else
@@ -2026,7 +2057,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 				{
 					dwSize = dwEncodeSize;
 					MakeV2Size(dwSize,size);
-					flagsBe |= 0x02 << 8;	// unsync
+					flagsBe |= CId3Frame::FLAG_UNSYNC << 8;	// unsync
 				}
 			}
 			else

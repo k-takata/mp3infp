@@ -67,8 +67,22 @@ public:
 		memcpy(m_data,data,size);
 		m_dwSize = size;
 	};
+	DWORD GetDataOffset() const;
 	bool IsTextFrame() const;
 	bool IsNumericFrame() const;
+
+	enum Flags {
+		MASK_FRAME_STATUS		= 0xff00,	// Mask for frame status flags
+		MASK_FRAME_FORMAT		= 0x00ff,	// Mask for frame format flags
+		FLAG_TAG_ALT_PRESERVE	= 0x4000,	// Tag alter preservation
+		FLAG_FILE_ALT_PRESERVE	= 0x2000,	// File alter preservation
+		FLAG_READ_ONLY			= 0x1000,	// Read only
+		FLAG_GROUP				= 0x0040,	// Grouping identity
+		FLAG_COMPRESS			= 0x0008,	// Compression
+		FLAG_ENCRYPT			= 0x0004,	// Encryption
+		FLAG_UNSYNC				= 0x0002,	// Unsynchronisation
+		FLAG_DATA_LEN			= 0x0001,	// Data length indicator
+	};
 
 private:
 	DWORD LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wVer);
