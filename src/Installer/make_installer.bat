@@ -18,6 +18,7 @@ rem set /p version=Input mp3infp version ^(e.g. 2.54g/u7^):
 rem ファイル名用にバージョン文字列から記号を削除・置換
 set filever=%version:/=_%
 set filever=%filever:.=%
+set filever=%filever: =-%
 
 
 rem WDKでビルドしたファイルをVC2008と同じディレクトリに配置
