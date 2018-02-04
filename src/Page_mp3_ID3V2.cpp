@@ -49,7 +49,7 @@ static int staticWnd[] =
 	IDC_STATIC_ENC,
 	IDC_STATIC_ENC2,
 	IDC_STATIC_ID3VER,
-	IDC_STATIC_ENCODE,
+	IDC_STATIC_ENCODING,
 	0
 };
 
@@ -95,26 +95,26 @@ UINT CALLBACK CShellExt::PageCallback_mp3_ID3V2(HWND hWnd, UINT uMessage, LPPROP
 	return TRUE;
 }
 
-static void SelectEncodeCB(HWND hDlg,CId3tagv2::CharEncoding encode)
+static void SelectEncodingCB(HWND hDlg,CId3tagv2::CharEncoding encoding)
 {
-	switch(encode){
-	case CId3tagv2::ID3V2CHARENCODE_ISO_8859_1: // 0
+	switch(encoding){
+	case CId3tagv2::ID3V2CHARENCODING_ISO_8859_1: // 0
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),0);
 		break;
 	default:
-	case CId3tagv2::ID3V2CHARENCODE_UTF_16: // 1
+	case CId3tagv2::ID3V2CHARENCODING_UTF_16: // 1
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),1);
 		break;
-	case CId3tagv2::ID3V2CHARENCODE_UTF_16BE: // 2
+	case CId3tagv2::ID3V2CHARENCODING_UTF_16BE: // 2
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),3);
 		break;
-	case CId3tagv2::ID3V2CHARENCODE_UTF_8: // 3
+	case CId3tagv2::ID3V2CHARENCODING_UTF_8: // 3
 		ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE),2);
 		break;
 	}
 }
 
-static void SetEncodeCB(HWND hDlg)
+static void SetEncodingCB(HWND hDlg)
 {
 	// コンボボックスをクリア
 	ComboBox_ResetContent(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
@@ -124,21 +124,21 @@ static void SetEncodeCB(HWND hDlg)
 	if(cur >= 2)	// > v2.4
 	{
 #ifndef	ENABLE_UTF_16BE
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)")};
+		LPCTSTR encoding[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)")};
 #else
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)"),_T("UTF-16BE")};
+		LPCTSTR encoding[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)"),_T("UTF-8 (Unicode)"),_T("UTF-16BE")};
 #endif
-		for(int i=0; i<sizeof_array(encode); i++)
+		for(int i=0; i<sizeof_array(encoding); i++)
 		{
-			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encode[i]);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encoding[i]);
 		}
 	}
 	else
 	{
-		LPCTSTR encode[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)")};
-		for(int i=0; i<sizeof_array(encode); i++)
+		LPCTSTR encoding[] = {_T("ISO-8859-1"),_T("UTF-16 (Unicode)")};
+		for(int i=0; i<sizeof_array(encoding); i++)
 		{
-			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encode[i]);
+			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_UNICODE),encoding[i]);
 		}
 	}
 }
@@ -271,7 +271,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),2);
 			break;
 		}
-//		if(lpcs->m_Id3tagv2.GetUniocdeEncode())
+//		if(lpcs->m_Id3tagv2.GetUniocdeEncoding())
 //		{
 //			CheckDlgButton(hDlg,IDC_CHECK_UNICODE,BST_CHECKED);
 //		}
@@ -279,8 +279,8 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 //		{
 //			CheckDlgButton(hDlg,IDC_CHECK_UNICODE,BST_UNCHECKED);
 //		}
-		SetEncodeCB(hDlg);
-		SelectEncodeCB(hDlg,lpcs->m_Id3tagv2.GetCharEncode());
+		SetEncodingCB(hDlg);
+		SelectEncodingCB(hDlg,lpcs->m_Id3tagv2.GetCharEncoding());
 		if(lpcs->m_Id3tagv2.GetUnSynchronization())
 		{
 			CheckDlgButton(hDlg,IDC_CHECK_UNSYNC,BST_CHECKED);
@@ -457,7 +457,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				PropSheet_Changed(GetParent(hDlg),hDlg);
 				lpcs->m_bId3v2Apply = TRUE;
 				long cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
-				SetEncodeCB(hDlg);	// ID3バージョンによって選択可能なエンコードが変わる
+				SetEncodingCB(hDlg);	// ID3バージョンによって選択可能なエンコーディングが変わる
 				long cnt = ComboBox_GetCount(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				if(cur >= cnt)
 				{
@@ -585,17 +585,17 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 					switch(cur){
 					case 0:
-						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
+						lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_ISO_8859_1);
 						break;
 					default:
 					case 1:
-						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+						lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16);
 						break;
 					case 2:
-						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_8);
+						lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_8);
 						break;
 					case 3:
-						lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
+						lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16BE);
 						break;
 					}
 					lpcs->m_Id3tagv2.SetUnSynchronization(TRUE);
@@ -892,17 +892,17 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				cur = ComboBox_GetCurSel(GetDlgItem(hDlg,IDC_EDIT_UNICODE));
 				switch(cur){
 				case 0:
-					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
+					lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_ISO_8859_1);
 					break;
 				default:
 				case 1:
-					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+					lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16);
 					break;
 				case 2:
-					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_8);
+					lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_8);
 					break;
 				case 3:
-					lpcs->m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
+					lpcs->m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16BE);
 					break;
 				}
 				if(IsDlgButtonChecked(hDlg,IDC_CHECK_UNSYNC))

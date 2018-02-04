@@ -306,7 +306,7 @@ bool CId3Frame::IsNumericFrame() const
 
 CId3tagv2::CId3tagv2()
 {
-	m_encode = ID3V2CHARENCODE_UTF_16;
+	m_encoding = ID3V2CHARENCODING_UTF_16;
 	m_bUnSynchronization = TRUE;
 //	m_wDefaultId3TagVersion = 0x0300;
 	Release();
@@ -348,10 +348,10 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 	int code;
 	const unsigned char *start = data;
 	switch (encoding) {
-	case ID3V2CHARENCODE_ISO_8859_1:
+	case ID3V2CHARENCODING_ISO_8859_1:
 		code = DTC_CODE_ANSI;
 		break;
-	case ID3V2CHARENCODE_UTF_16:
+	case ID3V2CHARENCODING_UTF_16:
 		if (datasize < 2) {
 			*pdwReadSize = readsize;
 			return _T("");
@@ -367,14 +367,14 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 			return _T("");
 		}
 		break;
-	case ID3V2CHARENCODE_UTF_16BE:
+	case ID3V2CHARENCODING_UTF_16BE:
 		code = DTC_CODE_UTF16BE;
 		break;
-	case ID3V2CHARENCODE_UTF_8:
+	case ID3V2CHARENCODING_UTF_8:
 		code = DTC_CODE_UTF8;
 		break;
 	}
-	if ((encoding == ID3V2CHARENCODE_UTF_16) || (encoding == ID3V2CHARENCODE_UTF_16BE)) {
+	if ((encoding == ID3V2CHARENCODING_UTF_16) || (encoding == ID3V2CHARENCODING_UTF_16BE)) {
 		for (; readsize < datasize; readsize += 2) {
 			if (*(WCHAR*)(data + readsize) == L'\0') {
 				break;
@@ -450,7 +450,7 @@ CString CId3tagv2::GetId3String(const char szId[])
 		//URL本体
 		//規格上は常に ISO-8859-1（互換性のため、BOMがあればそちらを優先）
 		if ((p->second.GetSize()-1-dwReadSize >= 2)
-				&& (data[0] == ID3V2CHARENCODE_UTF_16)
+				&& (data[0] == ID3V2CHARENCODING_UTF_16)
 				&& ((memcmp(&data[1+dwReadSize], "\xff\xfe", 2) == 0)
 					|| (memcmp(&data[1+dwReadSize], "\xfe\xff", 2) == 0))) {
 			return ReadEncodedTextString(1, &data[offset+1+dwReadSize], p->second.GetSize()-offset-1-dwReadSize, NULL);
@@ -505,19 +505,19 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	unsigned char *data;
 	int size = 0;
 	int i;
-	CharEncoding encode;
+	CharEncoding encoding;
 	switch(szId[0]){
 	case 'T':	//テキスト情報フレーム
-		encode = m_encode;
+		encoding = m_encoding;
 		//数字文字列はISO-8859-1
 		for (i = 0; numeric_frames[i] != NULL; i++) {
 			if (strcmp(szId, numeric_frames[i]) == 0) {
-				encode = ID3V2CHARENCODE_ISO_8859_1;
+				encoding = ID3V2CHARENCODING_ISO_8859_1;
 				break;
 			}
 		}
-		switch(encode){
-		case ID3V2CHARENCODE_ISO_8859_1:
+		switch(encoding){
+		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 1);
 			if(!data)
@@ -526,7 +526,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 			data[0] = 0;	//encoding
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 3);
 			if(!data)
@@ -548,15 +548,15 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xff;
 			break;
 #endif
-		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
+		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 1);
 			if(!data)
 			{
 				return;
 			}
-			data[0] = 0x02;	//encoding
+			data[0] = 2;	//encoding
 			break;
-		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+		case ID3V2CHARENCODING_UTF_8:	// UTF-8
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 1);
 			if(!data)
 			{
@@ -589,8 +589,8 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		{
 			break;
 		}
-		switch(m_encode){
-		case ID3V2CHARENCODE_ISO_8859_1:
+		switch(m_encoding){
+		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
 			if(!data)
@@ -600,7 +600,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 0;	//encoding
 			data[1] = 0;	//説明文(省略)
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
 			if(!data)
@@ -626,7 +626,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[4] = 0;
 			break;
 #endif
-		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
+		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 3);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
@@ -636,7 +636,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[1] = 0;	//説明文(省略)
 			data[2] = 0;
 			break;
-		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+		case ID3V2CHARENCODING_UTF_8:	// UTF-8
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
@@ -700,8 +700,8 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			}
 			break;
 		}
-		switch(m_encode){
-		case ID3V2CHARENCODE_ISO_8859_1:
+		switch(m_encoding){
+		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);
 			if(!data)
@@ -714,7 +714,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[3] = 'g';
 			data[4] = 0;	//説明文(省略)
 			break;
-		case ID3V2CHARENCODE_UTF_16:	// UTF-16
+		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 10);
 			if(!data)
@@ -750,7 +750,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[9] = 0xff;
 			break;
 #endif
-		case ID3V2CHARENCODE_UTF_16BE:	// UTF-16BE
+		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 6);
 			if(!data)
 			{
@@ -763,7 +763,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[4] = 0;	//説明文(省略)
 			data[5] = 0;	//説明文(省略)
 			break;
-		case ID3V2CHARENCODE_UTF_8:	// UTF-8
+		case ID3V2CHARENCODING_UTF_8:	// UTF-8
 			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 5);
 			if(!data)
 			{
@@ -822,7 +822,7 @@ DWORD CId3tagv2::GetTotalFrameSize()
 
 #if 0
 // 全てのフレームの文字列エンコードを指定する
-void CId3tagv2::_SetStringEncode(int encode)
+void CId3tagv2::_SetStringEncoding(int encoding)
 {
 	FrameMap::iterator p;
 
@@ -832,19 +832,19 @@ void CId3tagv2::_SetStringEncode(int encode)
 		CId3Frame *pFrame = &p->second;
 		unsigned char *data = pFrame->GetData();
 		
-		switch(encode)
+		switch(encoding)
 		{
 		default:
-		case ID3V2CHARENCODE_ISO_8859_1:
+		case ID3V2CHARENCODING_ISO_8859_1:
 			data[0] = 0;
 			break;
-		case ID3V2CHARENCODE_UTF_16:
+		case ID3V2CHARENCODING_UTF_16:
 			data[0] = 1;
 			break;
-		case ID3V2CHARENCODE_UTF_16BE:
+		case ID3V2CHARENCODING_UTF_16BE:
 			data[0] = 2;
 			break;
-		case ID3V2CHARENCODE_UTF_8:
+		case ID3V2CHARENCODING_UTF_8:
 			data[0] = 3;
 			break;
 		}
@@ -1189,11 +1189,11 @@ CId3tagv2::CharEncoding CId3tagv2::GetFrameEncoding(const CId3Frame &frame)
 	const unsigned char *data = frame.GetData();
 	if (!data || frame.GetSize() == 0 || (frame.GetFlags() & frameMask))
 	{
-		return ID3V2CHARENCODE_UNSPECIFIED;
+		return ID3V2CHARENCODING_UNSPECIFIED;
 	}
 	if (!frame.IsTextFrame() || frame.IsNumericFrame())
 	{
-		return ID3V2CHARENCODE_UNSPECIFIED;
+		return ID3V2CHARENCODING_UNSPECIFIED;
 	}
 	return (CharEncoding)data[frame.GetDataOffset()];
 }
@@ -1301,7 +1301,7 @@ retry:
 	}
 	head.flag &= ~HDR_FLAG_EXT_HEADER;	//解除
 
-	m_encode = ID3V2CHARENCODE_UTF_16;
+	m_encoding = ID3V2CHARENCODING_UTF_16;
 	while(dwRemainSize)
 	{
 		CId3Frame frame;
@@ -1335,16 +1335,16 @@ retry:
 		if(!dwReadSize)
 			break;
 		CharEncoding enc = GetFrameEncoding(frame);
-		if(enc != ID3V2CHARENCODE_UNSPECIFIED)
+		if(enc != ID3V2CHARENCODING_UNSPECIFIED)
 		{
-			if((m_wVer < 0x0400) && (enc > ID3V2CHARENCODE_UTF_16))
+			if((m_wVer < 0x0400) && (enc > ID3V2CHARENCODING_UTF_16))
 			{
 				// v2.3 or earlier doesn't support UTF-8 or UTF-16BE.
-				m_encode = ID3V2CHARENCODE_UTF_16;
+				m_encoding = ID3V2CHARENCODING_UTF_16;
 			}
 			else
 			{
-				m_encode = enc;
+				m_encoding = enc;
 			}
 		}
 		m_frames.insert(std::pair<DWORD,CId3Frame>(frame.GetId(),frame));
@@ -1425,16 +1425,16 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	// エンコード指定$2/$3が使えるのはv2.4以降
 	if(m_wVer < 0x0400)
 	{
-		if(	(m_encode != ID3V2CHARENCODE_ISO_8859_1) &&
-			(m_encode != ID3V2CHARENCODE_UTF_16) )
+		if(	(m_encoding != ID3V2CHARENCODING_ISO_8859_1) &&
+			(m_encoding != ID3V2CHARENCODING_UTF_16) )
 		{
 			// ISO-8859-1に自動設定
-			m_encode = ID3V2CHARENCODE_ISO_8859_1;
+			m_encoding = ID3V2CHARENCODING_ISO_8859_1;
 		}
 	}
 
 	// 全フレームの文字列エンコードを設定
-	_SetStringEncode(m_encode);
+	_SetStringEncoding(m_encoding);
 */
 
 	DWORD dwTotalFrameSize = GetTotalFrameSize();

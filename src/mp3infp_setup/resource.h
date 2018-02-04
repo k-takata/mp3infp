@@ -136,7 +136,7 @@
 #define IDC_STATIC_DISC                 1105
 #define IDC_STATIC_ENC                  1106
 #define IDC_STATIC_ENC2                 1107
-#define IDC_STATIC_ENCODE               1108
+#define IDC_STATIC_ENCODING             1108
 #define IDC_STATIC_ENG                  1109
 #define IDC_STATIC_ETC_INFO             1110
 #define IDC_STATIC_FILE                 1111

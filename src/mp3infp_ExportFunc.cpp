@@ -1388,30 +1388,30 @@ extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
 		int val = _ttoi(value);
 		switch(val){
 		case 0:
-			theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_ISO_8859_1);
+			theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_ISO_8859_1);
 			break;
 		case 1:
 		default:
-			theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+			theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16);
 			break;
 		case 2:
 			if (theApp.m_Id3tagv2.GetVer() == 0x0400)
 			{
-				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
+				theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16BE);
 			}
 			else
 			{
-				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+				theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16);
 			}
 			break;
 		case 3:
 			if (theApp.m_Id3tagv2.GetVer() == 0x0400)
 			{
-				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_8);
+				theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_8);
 			}
 			else
 			{
-				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+				theApp.m_Id3tagv2.SetCharEncoding(CId3tagv2::ID3V2CHARENCODING_UTF_16);
 			}
 			break;
 		}

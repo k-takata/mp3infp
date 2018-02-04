@@ -124,27 +124,27 @@ public:
 	WORD GetVer(){return m_wVer;};
 
 	enum CharEncoding {
-		ID3V2CHARENCODE_UNSPECIFIED = -1,
-		ID3V2CHARENCODE_ISO_8859_1 = 0,
-		ID3V2CHARENCODE_UTF_16 = 1,
-		ID3V2CHARENCODE_UTF_16BE = 2,
-		ID3V2CHARENCODE_UTF_8 = 3
+		ID3V2CHARENCODING_UNSPECIFIED = -1,
+		ID3V2CHARENCODING_ISO_8859_1 = 0,
+		ID3V2CHARENCODING_UTF_16 = 1,
+		ID3V2CHARENCODING_UTF_16BE = 2,
+		ID3V2CHARENCODING_UTF_8 = 3
 	};
-	void SetCharEncode(CharEncoding encode)
+	void SetCharEncoding(CharEncoding encoding)
 	{
 		// エンコード指定$2/$3が使えるのはv2.4以降
 		if(m_wVer < 0x0400)
 		{
-			if(	(encode != ID3V2CHARENCODE_ISO_8859_1) &&
-				(encode != ID3V2CHARENCODE_UTF_16) )
+			if(	(encoding != ID3V2CHARENCODING_ISO_8859_1) &&
+				(encoding != ID3V2CHARENCODING_UTF_16) )
 			{
 				// UTF-16に自動設定
-				encode = ID3V2CHARENCODE_UTF_16;
+				encoding = ID3V2CHARENCODING_UTF_16;
 			}
 		}
-		m_encode = encode;
+		m_encoding = encoding;
 	};
-	CharEncoding GetCharEncode(){return m_encode;};
+	CharEncoding GetCharEncoding(){return m_encoding;};
 
 	void SetUnSynchronization(BOOL bEnable){m_bUnSynchronization = bEnable;};
 	BOOL GetUnSynchronization(){return m_bUnSynchronization;};
@@ -196,7 +196,7 @@ private:
 	CString GetId3String(const char szId[]);
 	void SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescription = NULL);
 	DWORD GetTotalFrameSize();
-//	void _SetStringEncode(int encode);
+//	void _SetStringEncoding(int encoding);
 	static void v23IDtov22ID(const char *v23ID,char *v22ID);
 	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
 	static CharEncoding GetFrameEncoding(const CId3Frame &frame);
@@ -204,8 +204,8 @@ private:
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2が無い場合はFALSE
-	CharEncoding m_encode;			// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
-//	BOOL m_bUnicodeEncode;			//文字コードエンコードにUnicodeを使用する
+	CharEncoding m_encoding;			// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
+//	BOOL m_bUnicodeEncoding;			//文字コードエンコードにUnicodeを使用する
 	BOOL m_bUnSynchronization;		//非同期化する
 	ID3HEAD m_head;
 	WORD m_wVer;
