@@ -126,6 +126,8 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0089,_T("Onlive")},
 		{0x0091,_T("Siemens SBC24")},
 		{0x0092,_T("Dolby AC3 SPDIF")},
+		{0x0093,_T("MediaSonic G.723")},
+		{0x0094,_T("Aculab 8Kbps")},
 		{0x0097,_T("ZyXEL ADPCM")},
 		{0x0098,_T("Philips LPCBB")},
 		{0x0099,_T("Packed")},
@@ -175,6 +177,7 @@ AUDIO_CODEC_TYPE audio_codecs[] =
 		{0x0401,_T("Intel Music Coder")},
 		{0x0402,_T("Ligos Indeo Audio")},
 		{0x0450,_T("QDesign Music")},
+		{0x0500,_T("On2 AVC Audio(?)")},
 		{0x0680,_T("AT&T Labs VME VMPCM")},
 		{0x0681,_T("AT&T Labs TPC")},
 		{0x1000,_T("Olivetti GSM")},
@@ -249,6 +252,7 @@ VIDEO_CODEC_TYPE divx_vers[] =
 		{"DivX503b1314",_T("DivX Pro 5.2.1 Codec (X-Transcoder)")},	// 2006-11-13
 		{"DivX503b1328",_T("DivX 5.2.1")},	// 2004-09-24
 		{"DivX503b1338",_T("DivX 5.2.1(Dr.DivX 1.0.6)")},	// 2004-11-07
+		{"DivX503b1393",_T("DivX 5.3.0(XviD 1.3.2)")},
 		{"DivX503b1394",_T("DivX Pro Plasma Codec Ver.5.3.0 Build 1394")},
 		{"DivX503b1408",_T("DivX Pro Plasma Codec Ver.5.3.0 Build 1408")},
 		{"DivX503b1453",_T("DivX Pro Fusion Beta Build 1453 (DivX Ver.5.9)")},
@@ -259,13 +263,13 @@ VIDEO_CODEC_TYPE divx_vers[] =
 		{"DivX503b1599",_T("DivX 6 Helium")},
 		{"DivX503b1612",_T("DivX 6 Helium")},
 		{"DivX503b1670",_T("Dr.DivX 1.07")},
-		{"DivX503b1697",_T("DivX 6.0.3")},	// 2005-12-04 BBS8167
+		{"DivX503b1697",_T("DivX 6.0.3 Fusion")},	// 2005-12-04 BBS8167
 		{"DivX503b1737",_T("DivX He-3")},
 		{"DivX503b1786",_T("DivX 6.1.0")},		// 2006-03-12 BBS8433
 		{"DivX503b1807",_T("DivX 6.1.0 Patch 1 Beta")},
 		{"DivX503b1814",_T("DivX 6.1.0 Patch 2 Beta")},
 		{"DivX503b1828",_T("DivX 6.1.1")},	// 2006-03-12 BBS8433
-		{"DivX503b1838",_T("DivX 6 (TMPGEnc)")},	// 2007-07-17 BBS8655
+		{"DivX503b1838",_T("DivX 6 (TMPGEnc 4.1.0.180)")},	// 2007-07-17 BBS8655
 		{"DivX503b1856",_T("DivX 6.1.1")},
 		{"DivX503b1893",_T("DivX 6.2.0 Beta 1")},	// 2006-04-01 BBS8463
 		{"DivX503b1910",_T("DivX 6.2.0")},	// 2006-04-12
@@ -336,6 +340,13 @@ VIDEO_CODEC_TYPE xvid_vers[] =
 		{"XviD0049",_T("XviD 1.2.0")},
 		{"XviD0050",_T("XviD 1.2.1")},
 		{"XviD0055",_T("XviD 1.3.-127")},
+		{"XviD0057",_T("XviD 1.3.-127 Dev")},
+		{"XviD0061",_T("XviD 1.3.0 RC1")},
+		{"XviD0062",_T("XviD 1.3.0 Final")},
+		{"XviD0063",_T("XviD 1.3.1 Final")},
+		{"XviD0064",_T("XviD 1.3.2")},
+		{"XviD0065",_T("XviD 1.3.3")},
+		{"XviD0070",_T("XviD 1.4.-127 Dev")},
 };
 
 VIDEO_CODEC_TYPE video_codecs[] =
@@ -346,11 +357,11 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"BGR ",_T("NoCompress(RGB32)")},
 		{"RAW ",_T("NoCompress(RAW)")},
 		//à≥èk
-		{"3IVX",_T("3ivx Delta x.x")},
-		{"3IVD",_T("DivX3/MS MPEG4-V3(3IVD)")},
 		{"3IV0",_T("3ivx Delta 1.0-3.5(3IV0)")},
 		{"3IV1",_T("3ivx Delta 1.0-3.5(3IV1)")},
 		{"3IV2",_T("3ivx Delta 4.0")},
+		{"3IVX",_T("3ivx Delta 1-3")},
+		{"3IVD",_T("DivX3/MS MPEG4-V3(3IVD)")},
 		{"8BPS",_T("Planar RGB Codec (8BPS)")},
 		{"AAS4",_T("Autodesk Animator (AAS4)")},
 		{"AASC",_T("Autodesk Animator (AASC)")},
@@ -365,6 +376,7 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"AMM2",_T("AMV2 MT Codec")},
 		{"AMPG",_T("Array VideoONE MPEG")},
 		{"AMV3",_T("AMV3 Codec")},
+		{"AMV4",_T("AMV4 Codec")},
 		{"ANIM",_T("Intel RDX(ANIM)")},
 		{"AP41",_T("AngelPotion MPEG4-V3 Hacked")},
 		{"ASLC",_T("Alparysoft Lossless Video Codec")},
@@ -424,8 +436,8 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"DIVF",_T("DivX (DIVF)")},
 
 		{"DVIS",_T("DV Codec \"Iris\"")},	// 2004-03-13
-		{"DVSD",_T("DV Codec \"Iris\" [vdsd]")},	// 2004-03-13
 		{"DVRS",_T("DV Codec \"Iris\" Reference AVI")},	// 2004-03-13
+		{"DVSD",_T("DV Codec \"Iris\" [vdsd]")},	// 2004-03-13
 
 		{"DM4V",_T("Dicas MPEGable MPEG-4")},
 		{"DMB1",_T("Matrox Rainbow Runner MJPEG")},
@@ -473,6 +485,7 @@ VIDEO_CODEC_TYPE video_codecs[] =
 		{"FFV1",_T("FFMPEG")},
 		{"FLJP",_T("D-Vision Field Encoded Motion JPEG")},
 		{"FLV1",_T("FlashVideo VP6(ffdshow)")},
+		{"FLV4",_T("FlashVideo VP6(ffdshow)")},
 		{"FMP4",_T("FFmpeg MPEG4")},
 		{"FMVC",_T("FM Screen Capture Codec (FMVC)")},
 		{"FPS1",_T("Fraps Movie Capture")},
