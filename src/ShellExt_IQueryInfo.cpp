@@ -168,7 +168,7 @@ CString CShellExt::GetInfoTip_mp3()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -177,7 +177,7 @@ CString CShellExt::GetInfoTip_mp3()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -187,7 +187,7 @@ CString CShellExt::GetInfoTip_mp3()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -632,7 +632,7 @@ CString CShellExt::GetInfoTip_wave()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -641,7 +641,7 @@ CString CShellExt::GetInfoTip_wave()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -651,7 +651,7 @@ CString CShellExt::GetInfoTip_wave()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -813,7 +813,7 @@ CString CShellExt::GetInfoTip_avi()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -822,7 +822,7 @@ CString CShellExt::GetInfoTip_avi()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -832,7 +832,7 @@ CString CShellExt::GetInfoTip_avi()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -1020,7 +1020,7 @@ CString CShellExt::GetInfoTip_vqf()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -1029,7 +1029,7 @@ CString CShellExt::GetInfoTip_vqf()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -1039,7 +1039,7 @@ CString CShellExt::GetInfoTip_vqf()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -1140,7 +1140,7 @@ CString CShellExt::GetInfoTip_wma()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -1149,7 +1149,7 @@ CString CShellExt::GetInfoTip_wma()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -1159,7 +1159,7 @@ CString CShellExt::GetInfoTip_wma()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -1324,7 +1324,7 @@ CString CShellExt::GetInfoTip_ogg()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -1333,7 +1333,7 @@ CString CShellExt::GetInfoTip_ogg()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -1343,7 +1343,7 @@ CString CShellExt::GetInfoTip_ogg()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -1462,7 +1462,7 @@ CString CShellExt::GetInfoTip_ape()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -1471,7 +1471,7 @@ CString CShellExt::GetInfoTip_ape()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -1481,7 +1481,7 @@ CString CShellExt::GetInfoTip_ape()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
@@ -1600,7 +1600,7 @@ CString CShellExt::GetInfoTip_mp4()
 				CString strSize;
 				CString strSize2;
 				strSize.Format(_T("%I64u"),m_i64FileSize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZK"),4) == 0)
 			{
@@ -1609,7 +1609,7 @@ CString CShellExt::GetInfoTip_mp4()
 				CString strSize2;
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("SIZM"),4) == 0)
 			{
@@ -1619,7 +1619,7 @@ CString CShellExt::GetInfoTip_mp4()
 				__int64 fsize = (m_i64FileSize / 1024) + ((m_i64FileSize % 1024)?1:0);
 				fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
 				strSize.Format(_T("%I64u"),fsize);
-				strInfoTip += divString((LPTSTR )(LPCTSTR )strSize,',',3);
+				strInfoTip += divString(strSize,',',3);
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{

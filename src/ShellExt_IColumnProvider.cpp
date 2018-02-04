@@ -192,7 +192,7 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 				CString strSize2;
 				strSize.Format(_T("%I64u"),(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
 //				strVal.Format(_T("%I64u"),(((__int64 )fd.nFileSizeHigh)<<32)|(__int64 )fd.nFileSizeLow);
-				strSize2 = divString((LPTSTR)(LPCTSTR )strSize,',',3);
+				strSize2 = divString(strSize,',',3);
 				strVal = _T("");
 				for(int i=0; i<26-strSize2.GetLength(); i++)
 				{
