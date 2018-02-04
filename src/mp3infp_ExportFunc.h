@@ -3,10 +3,11 @@
 
 /*
 ■改変履歴
-2018-02-01 Ver.2.55
+2018-02-04 Ver.2.55
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
 >MP3で"AART_v2", "DISC_v2"に対応
 >MP4で"AART"に対応
+・mp3infp_SetConf()の引数をconstポインタに変更
 
 2009-12-01 Ver.2.54h/u8
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
@@ -394,18 +395,18 @@ typedef DWORD (WINAPI *LPMP3INFP_MP3_GETTAGTYPE)();
 /*=======================================================================================
 名前：	mp3infp_SetConf
 概要：	mp3infpの動作設定
-引数：	IN char *tag		設定項目(表2参照)
-		IN char *val		設定値(表2参照)
+引数：	IN const char *tag		設定項目(表2参照)
+		IN const char *val		設定値(表2参照)
 戻値：	BOOL 成功=TRUE/失敗=FALSE
 対応：	Ver2.42～
 補足：	・他のプロセスのmp3infp.dll/シェル拡張のmp3infpには影響しない
 		・設定内容は保存されない
 */
-BOOL __stdcall mp3infp_SetConfA(char *tag,char *value);
-typedef BOOL (WINAPI *LPMP3INFP_SETCONFA)(char *tag,char *value);
+BOOL __stdcall mp3infp_SetConfA(const char *tag,const char *value);
+typedef BOOL (WINAPI *LPMP3INFP_SETCONFA)(const char *tag,const char *value);
 
-BOOL __stdcall mp3infp_SetConfW(WCHAR *tag,WCHAR *value);
-typedef BOOL (WINAPI *LPMP3INFP_SETCONFW)(WCHAR *tag,WCHAR *value);
+BOOL __stdcall mp3infp_SetConfW(LPCWSTR tag,LPCWSTR value);
+typedef BOOL (WINAPI *LPMP3INFP_SETCONFW)(LPCWSTR tag,LPCWSTR value);
 
 #ifdef UNICODE
 #define mp3infp_SetConf		mp3infp_SetConfW

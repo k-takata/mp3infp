@@ -1343,13 +1343,13 @@ extern "C" DWORD __stdcall mp3infp_mp3_GetTagType()
 }
 
 #ifdef UNICODE
-extern "C" BOOL __stdcall mp3infp_SetConfA(char *tag,char *value)
+extern "C" BOOL __stdcall mp3infp_SetConfA(const char *tag,const char *value)
 {
-	return mp3infp_SetConfW((LPTSTR)(LPCTSTR)CString(tag),(LPTSTR)(LPCTSTR)CString(value));
+	return mp3infp_SetConfW(CString(tag),CString(value));
 }
 #endif
 
-extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
+extern "C" BOOL __stdcall mp3infp_SetConf(LPCTSTR tag,LPCTSTR value)
 {
 	if(lstrcmp(tag,_T("wave_CodecFind")) == 0)
 	{
