@@ -139,7 +139,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 						}
 					}
 					int yenCount = 0;
-					LPTSTR yenPtr = (LPTSTR)&(((LPCTSTR )lpcs->m_strSelectFile)[offset]);
+					LPCTSTR yenPtr = &(((LPCTSTR )lpcs->m_strSelectFile)[offset]);
 					while(1)
 					{
 						yenPtr = _tcschr(yenPtr+1,'\\');
