@@ -321,7 +321,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 			//エンコーダ
 			SetDlgItemText(hDlg,IDC_EDIT_ENC,lpcs->m_Id3tagv2.GetEncoder());
 			//エンコードした人または組織
-			SetDlgItemText(hDlg,IDC_EDIT_ENC2,lpcs->m_Id3tagv2.GetEncodest());
+			SetDlgItemText(hDlg,IDC_EDIT_ENC2,lpcs->m_Id3tagv2.GetEncodedBy());
 		}
 
 		lpcs->m_bId3v2Apply = FALSE;
@@ -988,7 +988,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ENC2));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Id3tagv2.SetEncodest(strTmp);
+				lpcs->m_Id3tagv2.SetEncodedBy(strTmp);
 				wnd.Detach();
 
 				//タイムスタンプを保存

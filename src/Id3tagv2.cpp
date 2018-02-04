@@ -1108,13 +1108,13 @@ void CId3tagv2::SetEncoder(LPCTSTR encoder)
 	SetId3String("TSSE",encoder);
 }
 
-CString CId3tagv2::GetEncodest()
+CString CId3tagv2::GetEncodedBy()
 {
 	//エンコードした人または組織
 	return GetId3String("TENC");
 }
 
-void CId3tagv2::SetEncodest(LPCTSTR encoder)
+void CId3tagv2::SetEncodedBy(LPCTSTR encoder)
 {
 	//エンコードした人または組織
 	SetId3String("TENC",encoder);

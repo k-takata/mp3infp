@@ -551,7 +551,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += m_Id3tagv2.GetEncodest();
+					strInfoTip += m_Id3tagv2.GetEncodedBy();
 				}
 				else if(m_Ape.IsEnable())
 				{

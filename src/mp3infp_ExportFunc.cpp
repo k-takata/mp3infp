@@ -546,7 +546,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
-			strRet = theApp.m_Id3tagv2.GetEncodest();
+			strRet = theApp.m_Id3tagv2.GetEncodedBy();
 		}
 		else if(lstrcmp(szValueName,_T("INAM_rmp")) == 0)
 		{
@@ -1534,7 +1534,7 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 		}
 		else if(lstrcmp(szValueName,_T("ENC2_v2")) == 0)
 		{
-			theApp.m_Id3tagv2.SetEncodest(buf);
+			theApp.m_Id3tagv2.SetEncodedBy(buf);
 		}
 		else if(lstrcmp(szValueName,_T("INAM_rmp")) == 0)
 		{

@@ -177,8 +177,8 @@ public:
 	void SetUrl(LPCTSTR url);
 	CString GetEncoder();
 	void SetEncoder(LPCTSTR encoder);
-	CString GetEncodest();
-	void SetEncodest(LPCTSTR encoder);
+	CString GetEncodedBy();
+	void SetEncodedBy(LPCTSTR encoder);
 
 	DWORD Load(LPCTSTR szFileName);
 	DWORD Save(LPCTSTR szFileName);
