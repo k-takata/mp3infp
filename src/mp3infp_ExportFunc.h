@@ -449,8 +449,10 @@ mp3infp_SetConf()指定する設定項目・値一覧
 	(項目名)
 	"mp3_ID3v2Unicode"
 	(値)
-	"0"(default)	無効
-	"1"				有効
+	"0"				無効
+	"1"(default)	有効 (UTF-16)
+	"2"				UTF-16BE (ID3v2.4のみ) (Ver2.55～)
+	"3"				UTF-8 (ID3v2.4のみ) (Ver2.55～)
 
 	[ID3v2を非同期化する](Ver2.43～)
 	(項目名)

@@ -1394,6 +1394,26 @@ extern "C" BOOL __stdcall mp3infp_SetConf(TCHAR *tag,TCHAR *value)
 		default:
 			theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
 			break;
+		case 2:
+			if (theApp.m_Id3tagv2.GetVer() == 0x0400)
+			{
+				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16BE);
+			}
+			else
+			{
+				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+			}
+			break;
+		case 3:
+			if (theApp.m_Id3tagv2.GetVer() == 0x0400)
+			{
+				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_8);
+			}
+			else
+			{
+				theApp.m_Id3tagv2.SetCharEncode(CId3tagv2::ID3V2CHARENCODE_UTF_16);
+			}
+			break;
 		}
 		return TRUE;
 	}
