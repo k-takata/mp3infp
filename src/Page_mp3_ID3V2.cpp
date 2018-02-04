@@ -271,14 +271,6 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 			ComboBox_SetCurSel(GetDlgItem(hDlg,IDC_EDIT_ID3VER),2);
 			break;
 		}
-//		if(lpcs->m_Id3tagv2.GetUniocdeEncoding())
-//		{
-//			CheckDlgButton(hDlg,IDC_CHECK_UNICODE,BST_CHECKED);
-//		}
-//		else
-//		{
-//			CheckDlgButton(hDlg,IDC_CHECK_UNICODE,BST_UNCHECKED);
-//		}
 		SetEncodingCB(hDlg);
 		SelectEncodingCB(hDlg,lpcs->m_Id3tagv2.GetCharEncoding());
 		if(lpcs->m_Id3tagv2.GetUnSynchronization())
