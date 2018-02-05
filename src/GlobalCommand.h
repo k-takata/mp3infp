@@ -154,4 +154,19 @@ static inline CString GetSizeStringM(__int64 filesize)
 	return divString(strSize,',',3);
 }
 
+// タイムスタンプ保存・復元
+class CTimeStampSaver {
+public:
+	CTimeStampSaver() : m_bTimeStampPushed(FALSE) {};
+	~CTimeStampSaver() {};
+	BOOL Push(LPCTSTR szFile);
+	BOOL Pop(LPCTSTR szFile = NULL);
+	void Clear() {m_bTimeStampPushed = FALSE;};
+protected:
+	FILETIME	m_fileTime;	//タイムスタンプ保存用
+	FILETIME	m_createTime;	//タイムスタンプ保存用
+	BOOL		m_bTimeStampPushed;	//タイムスタンプが保存されている
+	CString		m_strFile;
+};
+
 #endif //_GLOBALCOMMAND_H

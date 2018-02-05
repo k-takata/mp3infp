@@ -637,3 +637,58 @@ __int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMetho
 	}
 	return liDist.QuadPart;
 }
+
+
+BOOL CTimeStampSaver::Push(LPCTSTR szFile)
+{
+	BOOL ret = FALSE;
+
+	//タイムスタンプを保存
+	HANDLE hFile = CreateFile(
+						szFile,
+						GENERIC_READ,
+						FILE_SHARE_READ|FILE_SHARE_WRITE,
+						NULL,
+						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
+						FILE_ATTRIBUTE_NORMAL,
+						NULL);
+	if(hFile != INVALID_HANDLE_VALUE)
+	{
+		ret = GetFileTime(hFile,&m_createTime,NULL,&m_fileTime);
+		CloseHandle(hFile);
+	}
+	m_bTimeStampPushed = ret;
+	m_strFile = szFile;
+	return ret;
+}
+
+BOOL CTimeStampSaver::Pop(LPCTSTR szFile)
+{
+	if(!m_bTimeStampPushed)
+	{
+		//直前のPushが失敗した場合はタイムスタンプを復元しない
+		return FALSE;
+	}
+	if(szFile == NULL)
+	{
+		szFile = m_strFile;
+	}
+	m_bTimeStampPushed = FALSE;
+
+	//タイムスタンプを復元
+	HANDLE hFile = CreateFile(
+						szFile,
+						GENERIC_READ|GENERIC_WRITE,
+						FILE_SHARE_READ|FILE_SHARE_WRITE,
+						NULL,
+						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
+						FILE_ATTRIBUTE_NORMAL,
+						NULL);
+	if(hFile != INVALID_HANDLE_VALUE)
+	{
+		SetFileTime(hFile,&m_createTime,NULL,&m_fileTime);
+		CloseHandle(hFile);
+		return TRUE;
+	}
+	return FALSE;
+}

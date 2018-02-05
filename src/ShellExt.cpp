@@ -275,7 +275,7 @@ CShellExt::CShellExt()
 	
 	m_fileType = UNKNOWN;
 	m_bMultiSelect = FALSE;
-	m_bTimeStampPushed = FALSE;
+	m_timestamp.Clear();
 }
 
 CShellExt::~CShellExt()
@@ -684,55 +684,6 @@ TRACE(_T("strHelPath=%s\n"),strHelpPath);
 //		ShellExecute(hWnd,_T("open"),szHelpFile,NULL,NULL,SW_SHOWNORMAL);
 	}*/
 
-}
-
-BOOL CShellExt::PushTimeStamp(LPCTSTR szFile)
-{
-	BOOL ret = FALSE;
-
-	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFile,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		ret = GetFileTime(hFile,&m_createTime,NULL,&m_fileTime);
-		CloseHandle(hFile);
-	}
-	m_bTimeStampPushed = ret;
-	return ret;
-}
-
-BOOL CShellExt::PopTimeStamp(LPCTSTR szFile)
-{
-	if(!m_bTimeStampPushed)
-	{
-		//直前のPushTimeStampが失敗した場合はタイムスタンプを復元しない
-		return FALSE;
-	}
-	m_bTimeStampPushed = FALSE;
-
-	//タイムスタンプを復元
-	HANDLE hFile = CreateFile(
-						szFile,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&m_createTime,NULL,&m_fileTime);
-		CloseHandle(hFile);
-		return TRUE;
-	}
-	return FALSE;
 }
 
 void CShellExt::ConfigLoad()

@@ -107,9 +107,7 @@ protected:
 	EN_FILETYPE		m_fileType;
 	BOOL			m_bMultiSelect;
 	CString			m_strSelectFile;
-	FILETIME		m_fileTime;	//タイムスタンプ保存用
-	FILETIME		m_createTime;	//タイムスタンプ保存用
-	BOOL			m_bTimeStampPushed;	//タイムスタンプが保存されている
+	CTimeStampSaver	m_timestamp;	//タイムスタンプ保存用
 
 	BOOL			m_bSaveTimeStamp;	//タイムスタンプを保存
 	BOOL			m_bContextMenu;		//コンテキストメニューに"mp3infp"を追加
@@ -289,8 +287,8 @@ public:
 private:
 	BOOL Load();
 	void OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile);
-	BOOL PushTimeStamp(LPCTSTR szFile);
-	BOOL PopTimeStamp(LPCTSTR szFile);
+	BOOL PushTimeStamp(LPCTSTR szFile){return m_timestamp.Push(szFile);};
+	BOOL PopTimeStamp(LPCTSTR szFile){return m_timestamp.Pop(szFile);};
 	void ConfigLoad();
 	//IShellPropSheetExt methods
 	friend void EnableButton(HWND hDlg,CShellExt *lpcs);

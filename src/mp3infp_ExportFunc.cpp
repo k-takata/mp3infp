@@ -1880,23 +1880,9 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	DWORD dwRet = -1;
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	switch(theApp.m_fileType){
 	case CShellExt::MP3:
@@ -1960,19 +1946,7 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 	}
 
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2001,23 +1975,9 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 		return -1;	// 既にid3v1が存在します
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//ID3TAGを作成
 	if(theApp.m_Rmp3.IsEnable())
@@ -2035,19 +1995,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 	}
 
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2072,23 +2020,9 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 		return -1;	// id3v1が存在しません
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//ID3TAGを消去
 	if(theApp.m_Rmp3.IsEnable())
@@ -2109,19 +2043,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 	}
 
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2158,41 +2080,15 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v2(LPCTSTR szFileName)
 		return -1;
 	}
 	
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//ID3TAGを作成
 	dwRet = theApp.m_Id3tagv2.MakeTag(szFileName);
 	
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2223,41 +2119,15 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v2(LPCTSTR szFileName)
 		return -1;	// 既にid3v2が存在しない
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//ID3TAGを消去
 	dwRet = theApp.m_Id3tagv2.DelTag(szFileName);
 	
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2294,23 +2164,9 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 		return -1;
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//Riff SIFを作成
 	dwRet = theApp.m_Rmp3.MakeTag(NULL,szFileName);
@@ -2319,19 +2175,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 	theApp.m_Id3tagv2.Load(szFileName);
 
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2362,41 +2206,15 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(LPCTSTR szFileName)
 		return -1;	// Riff形式ではありません
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//Riff SIFを消去
 	dwRet = theApp.m_Rmp3.DelTag(NULL,szFileName);
 	
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2433,41 +2251,15 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeApeTag(LPCTSTR szFileName)
 		return -1;
 	}
 	
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//ID3TAGを作成
 	dwRet = theApp.m_Ape.MakeTag(szFileName);
 	
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
@@ -2498,41 +2290,15 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelApeTag(LPCTSTR szFileName)
 		return -1;	// 既にid3v2が存在しない
 	}
 
-	FILETIME	fileTime;	//タイムスタンプ保存用
-	FILETIME	createTime;	//タイムスタンプ保存用
+	CTimeStampSaver timestamp;	//タイムスタンプ保存用
 	//タイムスタンプを保存
-	HANDLE hFile = CreateFile(
-						szFileName,
-						GENERIC_READ,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		return GetLastError();
-	}
-	GetFileTime(hFile,&createTime,NULL,&fileTime);
-	CloseHandle(hFile);
+	timestamp.Push(szFileName);
 	
 	//APE Tagを消去
 	dwRet = theApp.m_Ape.DelTag(szFileName);
 	
 	//タイムスタンプを復元
-	hFile = CreateFile(
-						szFileName,
-						GENERIC_READ|GENERIC_WRITE,
-						FILE_SHARE_READ|FILE_SHARE_WRITE,
-						NULL,
-						OPEN_EXISTING,	//ファイルをオープンします。指定ファイルが存在していない場合、関数は失敗します。
-						FILE_ATTRIBUTE_NORMAL,
-						NULL);
-	if(hFile != INVALID_HANDLE_VALUE)
-	{
-		SetFileTime(hFile,&createTime,NULL,&fileTime);
-		CloseHandle(hFile);
-	}
+	timestamp.Pop();
 
 	//シェルに変更を通知
 	SHChangeNotify(SHCNE_UPDATEITEM,SHCNF_FLUSH|SHCNF_PATH,szFileName,NULL);
