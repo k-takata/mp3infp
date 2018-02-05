@@ -430,27 +430,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
@@ -632,27 +620,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
@@ -729,27 +705,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("AFMT")) == 0)
 		{
@@ -828,27 +792,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(!theApp.m_Vqf.IsEnable())
 			break;
@@ -896,27 +848,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(!theApp.m_Wma.IsEnable())
 			break;
@@ -988,27 +928,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(!theApp.m_Ogg.IsEnable())
 			break;
@@ -1064,27 +992,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(!theApp.m_Ape.IsEnable())
 			break;
@@ -1140,27 +1056,15 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		}
 		else if(lstrcmp(szValueName,_T("SIZ1")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			strSize.Format(_T("%I64u"),theApp.m_i64FileSize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeString1(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZK")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringK(theApp.m_i64FileSize);
 		}
 		else if(lstrcmp(szValueName,_T("SIZM")) == 0)
 		{
-			CString strSize;
-			CString strSize2;
-			__int64 fsize = (theApp.m_i64FileSize / 1024) + ((theApp.m_i64FileSize % 1024)?1:0);
-			fsize = (fsize / 1024) + ((fsize % 1024)?1:0);
-			strSize.Format(_T("%I64u"),fsize);
-			strRet = divString(strSize,',',3);
+			strRet = GetSizeStringM(theApp.m_i64FileSize);
 		}
 		else if(!theApp.m_Mp4.IsEnable())
 			break;

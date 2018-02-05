@@ -131,4 +131,27 @@ static inline void ConvertUTF16Endian(WCHAR *str, int len)
 __int64 GetFileSize64(HANDLE hFile);
 __int64 SetFilePointer64(HANDLE hFile,__int64 llDistanceToMove,DWORD dwMoveMethod);
 
+static inline CString GetSizeString1(__int64 filesize)
+{
+	CString strSize;
+	strSize.Format(_T("%I64u"),filesize);
+	return divString(strSize,',',3);
+}
+
+static inline CString GetSizeStringK(__int64 filesize)
+{
+	CString strSize;
+	__int64 fsize = (filesize + 1023) / 1024;
+	strSize.Format(_T("%I64u"),fsize);
+	return divString(strSize,',',3);
+}
+
+static inline CString GetSizeStringM(__int64 filesize)
+{
+	CString strSize;
+	__int64 fsize = (filesize + 1048575) / 1048576;
+	strSize.Format(_T("%I64u"),fsize);
+	return divString(strSize,',',3);
+}
+
 #endif //_GLOBALCOMMAND_H
