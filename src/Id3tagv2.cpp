@@ -580,6 +580,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		{
 			p = pp.first;
 			pFrame = &p->second;
+			pFrame->SetFlags(0);
 			pFrame->SetData(data,size);
 		}
 		free(data);
@@ -660,6 +661,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		{
 			p = pp.first;
 			pFrame = &p->second;
+			pFrame->SetFlags(0);
 			pFrame->SetData(data,size);
 		}
 		free(data);
@@ -789,6 +791,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		{
 			p = pp.first;
 			pFrame = &p->second;
+			pFrame->SetFlags(0);
 			pFrame->SetData(data,size);
 		}
 		free(data);
