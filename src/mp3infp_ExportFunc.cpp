@@ -2287,7 +2287,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelApeTag(LPCTSTR szFileName)
 	}
 	if(!theApp.m_Ape.IsEnable())
 	{
-		return -1;	// 既にid3v2が存在しない
+		return -1;	// 既にAPEタグが存在しない
 	}
 
 	CTimeStampSaver timestamp;	//タイムスタンプ保存用

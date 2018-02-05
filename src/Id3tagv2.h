@@ -204,8 +204,8 @@ private:
 
 	void Release();
 	BOOL m_bEnable;					//ID3v2が無い場合はFALSE
-	CharEncoding m_encoding;			// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
-//	BOOL m_bUnicodeEncoding;			//文字コードエンコードにUnicodeを使用する
+	CharEncoding m_encoding;		// 文字エンコードタイプ (0=ISO-8859-1/1=UTF-16/2=UTF-16BE/3=UTF-8)
+//	BOOL m_bUnicodeEncoding;		//文字コードエンコードにUnicodeを使用する
 	BOOL m_bUnSynchronization;		//非同期化する
 	ID3HEAD m_head;
 	WORD m_wVer;
