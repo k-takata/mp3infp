@@ -946,10 +946,25 @@ void CId3tagv2::SetAlbum(LPCTSTR album)
 
 CString CId3tagv2::GetYear()
 {
-	//êºóÔ
+	//êºóÔ(Ç®ÇÊÇ—åéì˙)
 	if(m_wVer < 0x0400)
 	{
-		return GetId3String("TYER");
+		CString strYear = GetId3String("TYER");
+		CString strDate = GetId3String("TDAT");
+		if(strDate.GetLength() == 4)
+		{
+			if(strDate.Left(2) == _T("00"))
+			{
+				// YYYY-MM
+				strYear += _T("-") + strDate.Right(2);
+			}
+			else
+			{
+				// YYYY-MM-DD
+				strYear += _T("-") + strDate.Right(2) + _T("-") + strDate.Left(2);
+			}
+		}
+		return strYear;
 	}
 	else
 	{
@@ -959,16 +974,38 @@ CString CId3tagv2::GetYear()
 
 void CId3tagv2::SetYear(LPCTSTR year)
 {
-	//êºóÔ
+	//êºóÔ(Ç®ÇÊÇ—åéì˙)
 	if(m_wVer < 0x0400)
 	{
 		SetId3String("TDRC",_T(""));
-		SetId3String("TYER",year);
+		CString strYear = year;
+		if(strYear.GetLength() == 7 && strYear[4] == _T('-'))
+		{
+			// YYYY-MM -> YYYY, 00MM
+			SetId3String("TYER",strYear.Left(4));
+			CString strDate = _T("00") + strYear.Right(2);
+			SetId3String("TDAT",strDate);
+		}
+		else if(strYear.GetLength() >= 10
+				&& strYear[4] == _T('-') && strYear[7] == _T('-'))
+		{
+			// YYYY-MM-DD -> YYYY, DDMM
+			SetId3String("TYER",strYear.Left(4));
+			CString strDate = strYear.Mid(8,2) + strYear.Mid(5,2);
+			SetId3String("TDAT",strDate);
+		}
+		else
+		{
+			// YYYY or unknown format
+			SetId3String("TYER",strYear);
+			SetId3String("TDAT",_T(""));
+		}
 	}
 	else
 	{
 		SetId3String("TDRC",year);
 		SetId3String("TYER",_T(""));
+		SetId3String("TDAT",_T(""));
 	}
 }
 
