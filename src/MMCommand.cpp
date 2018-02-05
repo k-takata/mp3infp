@@ -10,7 +10,6 @@
 #include <mmreg.h>
 #include <Msacm.h>
 #include <Vfw.h>
-#define sizeof_array(a) (sizeof(a)/sizeof(a[0]))
 
 #define INITGUID
 #include <Ks.h>
@@ -1116,7 +1115,7 @@ BOOL findVideoCodecName1(CString &strVideoFormat,DWORD biCompression,DWORD fccHe
 		return TRUE;
 	}
 	int i=0;
-	for(; i<sizeof(video_codecs)/sizeof(video_codecs[0]); i++)
+	for(; i<sizeof_array(video_codecs); i++)
 	{
 		if(mmioFOURCC(video_codecs[i].type[0],video_codecs[i].type[1],video_codecs[i].type[2],video_codecs[i].type[3]) == fccHeader)
 		{
@@ -1124,7 +1123,7 @@ BOOL findVideoCodecName1(CString &strVideoFormat,DWORD biCompression,DWORD fccHe
 			return TRUE;
 		}
 	}
-	for(i=0; i<sizeof(video_codecs)/sizeof(video_codecs[0]); i++)
+	for(i=0; i<sizeof_array(video_codecs); i++)
 	{
 		if(mmioFOURCC(video_codecs[i].type[0],video_codecs[i].type[1],video_codecs[i].type[2],video_codecs[i].type[3]) == biCompression)
 		{

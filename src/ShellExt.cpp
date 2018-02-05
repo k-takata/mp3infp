@@ -75,7 +75,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 				if(idArray[i] == id)
 				{
 					_TCHAR szClassName[100];
-					GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof(szClassName)/sizeof(szClassName[0]));
+					GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
 					if(_tcscmp(szClassName,_T("Button")) != 0)
 					{
 						// Edit
@@ -128,7 +128,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 		writeOffset += sizeof(int);
 
 		_TCHAR szClassName[100];
-		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof(szClassName)/sizeof(szClassName[0]));
+		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
 		if(_tcscmp(szClassName,_T("Button")) != 0)
 		{
 			// editbox
@@ -202,7 +202,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 		}
 
 		_TCHAR szClassName[100];
-		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof(szClassName)/sizeof(szClassName[0]));
+		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
 		if(_tcscmp(szClassName,_T("Button")) != 0)
 		{
 			// editbox
