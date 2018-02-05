@@ -287,7 +287,7 @@ STDAPI DllUnregisterServer()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	//ä÷òAïtÇØâèú
-	TCHAR szKey[256];
+	TCHAR szKey[MAX_PATH];
 	//(ContextMenu)
 	wsprintf(szKey,_T("*\\shellex\\ContextMenuHandlers\\mp3infp"));
 	RegDeleteKey(HKEY_CLASSES_ROOT,szKey);

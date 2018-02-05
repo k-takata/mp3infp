@@ -50,13 +50,13 @@ BOOL regSetString(HKEY keyRoot,LPCTSTR szExName,LPCTSTR szEntry,LPCTSTR szData)
 void regGetString(HKEY hRootKey, LPCTSTR szKey,LPCTSTR szVal, LPTSTR szRetVal,LPCTSTR szDefault)
 {
 	HKEY	hKey=NULL;
-	DWORD	dwSize=255*sizeof(TCHAR);
+	DWORD	dwSize;
 	DWORD	dwType;
 
 	lstrcpy(szRetVal,szDefault);
 	if(RegOpenKeyEx(hRootKey,szKey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
 	{
-		dwSize = 255*sizeof(TCHAR);
+		dwSize = MAX_PATH*sizeof(TCHAR);
 		if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)szRetVal,&dwSize) == ERROR_SUCCESS)
 		{
 			if(dwSize == 0)
@@ -73,7 +73,7 @@ CString regGetStringEx(HKEY hRootKey, LPCTSTR szKey,LPCTSTR szVal,LPCTSTR szDefa
 {
 	HKEY	hKey=NULL;
 	CString strRet = szDefault;
-	DWORD	dwSize=255*sizeof(TCHAR);
+	DWORD	dwSize;
 	DWORD	dwType;
 
 	if(RegOpenKeyEx(hRootKey,szKey,0,KEY_READ,&hKey) == ERROR_SUCCESS)
