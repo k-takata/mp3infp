@@ -376,7 +376,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 	}
 	if ((encoding == ID3V2CHARENCODING_UTF_16) || (encoding == ID3V2CHARENCODING_UTF_16BE)) {
 		for (; readsize < datasize; readsize += 2) {
-			if (*(WCHAR*)(data + readsize) == L'\0') {
+			if (*(LPCWSTR)(data + readsize) == L'\0') {
 				break;
 			}
 		}

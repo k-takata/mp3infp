@@ -946,8 +946,8 @@ BOOL findChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC type,DWORD *pdwS
 			break;
 		}
 		TRACE(_T("%c%c%c%c %c%c%c%c %I64u(%lu)\n"),
-			(((LPTSTR)(&id))[0]),(((LPTSTR)(&id))[1]),(((LPTSTR)(&id))[2]),(((LPTSTR)(&id))[3]),
-			(((LPTSTR)(&fType))[0]),(((LPTSTR)(&fType))[1]),(((LPTSTR)(&fType))[2]),(((LPTSTR)(&fType))[3]),
+			(((LPCSTR)(&id))[0]),(((LPCSTR)(&id))[1]),(((LPCSTR)(&id))[2]),(((LPCSTR)(&id))[3]),
+			(((LPCSTR)(&fType))[0]),(((LPCSTR)(&fType))[1]),(((LPCSTR)(&fType))[2]),(((LPCSTR)(&fType))[3]),
 			llChunkHead,dwSize
 			);
 		SetFilePointer64(hFile,(__int64 )*pdwSize,FILE_CURRENT);
@@ -1007,8 +1007,8 @@ BOOL findChunk2(HANDLE hFile,__int64 llFileSize,DWORD *pdwSize)
 		}
 		SetFilePointer64(hFile,(__int64 )*pdwSize,FILE_CURRENT);
 		TRACE(_T("%c%c%c%c %c%c%c%c %I64u(%lu)\n"),
-			(((LPTSTR)(&id))[0]),(((LPTSTR)(&id))[1]),(((LPTSTR)(&id))[2]),(((LPTSTR)(&id))[3]),
-			(((LPTSTR)(&fType))[0]),(((LPTSTR)(&fType))[1]),(((LPTSTR)(&fType))[2]),(((LPTSTR)(&fType))[3]),
+			(((LPCSTR)(&id))[0]),(((LPCSTR)(&id))[1]),(((LPCSTR)(&id))[2]),(((LPCSTR)(&id))[3]),
+			(((LPCSTR)(&fType))[0]),(((LPCSTR)(&fType))[1]),(((LPCSTR)(&fType))[2]),(((LPCSTR)(&fType))[3]),
 			llChunkHead,dwSize
 			);
 
@@ -1796,7 +1796,7 @@ void Ffw5Winamp()
 // 1 = çƒê∂íÜ
 // 3 = àÍéûí‚é~íÜ
 // 0 = í‚é~íÜ
-int IsPlayingWinamp(LPTSTR szFileName)
+int IsPlayingWinamp(LPCTSTR szFileName)
 {
 	HWND hwndWinamp = FindWindow(WINAMP_CLASS,NULL);
 //	HWND hwndWinampPE = FindWindow(WINAMP_PE_CLASS,NULL);

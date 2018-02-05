@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 //ílÇÃçÌèú
-BOOL regDelVal(HKEY keyRoot,LPTSTR szSubkey,LPTSTR szEntry)
+BOOL regDelVal(HKEY keyRoot,LPCTSTR szSubkey,LPCTSTR szEntry)
 {
 	HKEY	hKey=NULL;
 	BOOL	bReturn=FALSE;
@@ -18,7 +18,7 @@ BOOL regDelVal(HKEY keyRoot,LPTSTR szSubkey,LPTSTR szEntry)
 }
 
 //ÉGÉìÉgÉäÇÃí«â¡
-BOOL regSetString(HKEY keyRoot,LPTSTR szExName,LPTSTR szEntry,LPCTSTR szData)
+BOOL regSetString(HKEY keyRoot,LPCTSTR szExName,LPCTSTR szEntry,LPCTSTR szData)
 {
 	HKEY		hKeyResult=0;
 	DWORD		dwDisposition=0;
@@ -47,7 +47,7 @@ BOOL regSetString(HKEY keyRoot,LPTSTR szExName,LPTSTR szEntry,LPCTSTR szData)
 	return FALSE;
 }
 
-void regGetString(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal, LPTSTR szRetVal,LPCTSTR szDefault)
+void regGetString(HKEY hRootKey, LPCTSTR szKey,LPCTSTR szVal, LPTSTR szRetVal,LPCTSTR szDefault)
 {
 	HKEY	hKey=NULL;
 	DWORD	dwSize=255*sizeof(TCHAR);
@@ -69,7 +69,7 @@ void regGetString(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal, LPTSTR szRetVal,LPCT
 }
 
 #ifdef __AFX_H__
-CString regGetStringEx(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal,LPCTSTR szDefault)
+CString regGetStringEx(HKEY hRootKey, LPCTSTR szKey,LPCTSTR szVal,LPCTSTR szDefault)
 {
 	HKEY	hKey=NULL;
 	CString strRet = szDefault;
@@ -98,7 +98,7 @@ CString regGetStringEx(HKEY hRootKey, LPTSTR szKey,LPTSTR szVal,LPCTSTR szDefaul
 }
 #endif //__AFX_H__
 
-BOOL regSetDword(HKEY hRootKey,LPTSTR szSubkey,LPTSTR szEntry,DWORD dwVal)
+BOOL regSetDword(HKEY hRootKey,LPCTSTR szSubkey,LPCTSTR szEntry,DWORD dwVal)
 {
 	HKEY	hKey=NULL;
 	DWORD	dwDisposition=0;
@@ -124,7 +124,7 @@ BOOL regSetDword(HKEY hRootKey,LPTSTR szSubkey,LPTSTR szEntry,DWORD dwVal)
 }
 
 
-void regGetDword(HKEY hRootKey,LPTSTR szSubkey,LPTSTR szEntry,DWORD* pdwVal,DWORD dwDefault)
+void regGetDword(HKEY hRootKey,LPCTSTR szSubkey,LPCTSTR szEntry,DWORD* pdwVal,DWORD dwDefault)
 {
 	HKEY	hKey=NULL;
 	DWORD	dwSize=0;

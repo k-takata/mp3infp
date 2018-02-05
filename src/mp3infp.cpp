@@ -238,7 +238,7 @@ static BOOL regExSet(LPCTSTR szExName,LPCTSTR szData)
 	return FALSE;
 }
 
-static const LPTSTR	extlist[]={_T(".mp3"),_T(".mp2"),_T(".mp1"),_T(".rmp"),_T(".wav"),_T(".avi"),_T(".vqf"),_T(".wma"),_T(".wmv"),_T(".asf"),_T(".m3u"),_T(".m3u8"),_T(".ogg"),_T(".ape"),_T(".mp4"),_T(".m4v"),_T(".m4a"),_T(".3gp"),_T(".3g2"),_T(".cda")};
+static const LPCTSTR	extlist[]={_T(".mp3"),_T(".mp2"),_T(".mp1"),_T(".rmp"),_T(".wav"),_T(".avi"),_T(".vqf"),_T(".wma"),_T(".wmv"),_T(".asf"),_T(".m3u"),_T(".m3u8"),_T(".ogg"),_T(".ape"),_T(".mp4"),_T(".m4v"),_T(".m4a"),_T(".3gp"),_T(".3g2"),_T(".cda")};
 
 STDAPI DllRegisterServer()
 {

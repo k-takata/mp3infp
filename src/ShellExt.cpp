@@ -79,12 +79,12 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 					if(_tcscmp(szClassName,_T("Button")) != 0)
 					{
 						// Edit
-						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),(LPTSTR)&(txtData[readOffset]));
+						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),(LPCTSTR)&(txtData[readOffset]));
 					}
 					else
 					{
 						// Checkbox
-						int val = _ttoi((LPTSTR)&(txtData[readOffset]));
+						int val = _ttoi((LPCTSTR)&(txtData[readOffset]));
 						if(val)
 						{
 							CheckDlgButton(hDlg,editWndArray[i],1);
@@ -98,7 +98,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 				}
 			}
 		}
-		readOffset += (lstrlen((LPTSTR)&(txtData[readOffset])) + 1) * sizeof(TCHAR);
+		readOffset += (lstrlen((LPCTSTR)&(txtData[readOffset])) + 1) * sizeof(TCHAR);
 		arrayOffset++;
 	}
 		

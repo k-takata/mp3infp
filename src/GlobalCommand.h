@@ -20,7 +20,7 @@
 
 void mbsncpy2(unsigned char *dst,unsigned char *src,int c);
 //DLLのバージョン情報を取得
-BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
+BOOL GetDLLVersion(IN LPCTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
 				   IN DWORD *pdwMinor,
 				   IN DWORD *pdwBuildNumber1,
@@ -75,8 +75,8 @@ LPCTSTR getExtName(LPCTSTR szPath);
 long check2ByteLength(const char *szTag,long lLimit);
 
 //システムエラーメッセージボックスを表示
-void sysError(HWND hWnd,LPTSTR mes = _T("Error"));
-void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPTSTR mes = _T("Error"));
+void sysError(HWND hWnd,LPCTSTR mes = _T("Error"));
+void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPCTSTR mes = _T("Error"));
 
 //////////////////////////////////////////////////////////////////////////////
 //cutFileName

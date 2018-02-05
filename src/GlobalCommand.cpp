@@ -27,7 +27,7 @@ void mbsncpy2(unsigned char *dst,unsigned char *src,int c)
 	}
 }
 
-BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
+BOOL GetDLLVersion(IN LPCTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
 				   IN DWORD *pdwMinor,
 				   IN DWORD *pdwBuildNumber1,
@@ -67,7 +67,7 @@ BOOL GetDLLVersion(IN LPTSTR szDLLFileName,
 				free(versionInfo);
 				return FALSE;
 			}
-			lstrcpyn(fileVersion,(LPTSTR)version,sizeof_array(fileVersion));
+			lstrcpyn(fileVersion,(LPCTSTR)version,sizeof_array(fileVersion));
 		//	fileVersion[255] = '\0';
 			free(versionInfo);
 		}
@@ -320,12 +320,12 @@ long check2ByteLength(const char *szTag,long lLimit)
 	return i;
 }
 
-void sysError(HWND hWnd,LPTSTR mes)
+void sysError(HWND hWnd,LPCTSTR mes)
 {
 	errMessageBox(hWnd, GetLastError(), mes);
 }
 
-void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPTSTR mes)
+void errMessageBox(HWND hWnd,DWORD dwErrorCode,LPCTSTR mes)
 {
 	LPTSTR lpBuffer;
 
