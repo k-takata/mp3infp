@@ -612,8 +612,7 @@ DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
 	}
 	//ID3É^ÉOÇçÏê¨
 	GetId3tagString(szTag);
-	CString strFileName = szFileName;
-	lstrcpy(szDefaultName,getFileName(strFileName));
+	lstrcpy(szDefaultName,getFileName(CString(szFileName)));
 	char *buf = TstrToDataAlloc(szDefaultName, -1, NULL, DTC_CODE_ANSI);
 	if (buf != NULL) {
 		strncpy(szTag+3,buf,30);
