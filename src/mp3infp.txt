@@ -73,6 +73,11 @@ https://github.com/k-takata/mp3infp で配布しています。
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
 
+2018/02/xx  Ver.2.55
+・ID3v2で、年だけでなく YYYY-MM-DD 形式の日付の設定に対応。
+  - ID3v2.3: TYER, TDAT に対応。
+  - ID3v2.4: TDRC に対応。
+
 2018/02/03  Ver.2.55 beta1
 ・libogg 1.3.3 に更新。
 ・[mp3infp設定] をコントロールパネル上のアプリから通常アプリに変更。
