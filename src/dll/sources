@@ -24,6 +24,7 @@ TARGETLIBS=\
 	$(SDK_LIB_PATH)\htmlhelp.lib \
 	$(SDK_LIB_PATH)\uuid.lib \
 	$(SDK_LIB_PATH)\oldnames.lib \
+	$(SDK_LIB_PATH)\psapi.lib \
 	..\lib\mp4v2\src\build\$(O)\mp4v2.lib \
 	..\lib\mp4v2\src\bmff\$(O)\bmff.lib \
 	..\lib\mp4v2\src\itmf\$(O)\itmf.lib \
@@ -109,6 +110,9 @@ C_DEFINES=/D_MBCS
 
 USER_C_FLAGS=/DOV_EXCLUDE_STATIC_CALLBACKS
 
+#!if "$(DDKBUILDENV)"=="chk"
+#C_DEFINES=$(C_DEFINES) /D_DEBUG /DDEBUG
+#!endif
 
 #USE_NATIVE_EH=1
 USE_RTTI=1

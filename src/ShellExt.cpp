@@ -260,9 +260,9 @@ CShellExt::CShellExt()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 #ifdef _DEBUG
-	char szProcessName[MAX_PATH];
+	TCHAR szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
-	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
+	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof_array(szProcessName));
 	TRACE(_T("[%s]CShellExt::CShellExt(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll+1,szProcessName);
 #endif
 
@@ -282,9 +282,9 @@ CShellExt::~CShellExt()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 #ifdef _DEBUG
-	char szProcessName[MAX_PATH];
+	TCHAR szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
-	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
+	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof_array(szProcessName));
 	TRACE(_T("[%s]CShellExt::~CShellExt(%d->%d) process=%s\n"),APP_NAME,g_cRefThisDll,g_cRefThisDll-1,szProcessName);
 #endif
 

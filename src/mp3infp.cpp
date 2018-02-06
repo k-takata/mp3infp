@@ -149,9 +149,9 @@ STDAPI DllCanUnloadNow(void)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 #ifdef _DEBUG
-	char szProcessName[MAX_PATH];
+	TCHAR szProcessName[MAX_PATH];
 	HANDLE hProcess = GetCurrentProcess();
-	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof(szProcessName));
+	GetModuleBaseName(hProcess,NULL,szProcessName,sizeof_array(szProcessName));
 	TRACE(_T("[%s]In DLLCanUnloadNow(Ref=%d) process=%s\r\n"),APP_NAME,g_cRefThisDll,szProcessName);
 #endif
 
