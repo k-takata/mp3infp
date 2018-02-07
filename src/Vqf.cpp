@@ -167,9 +167,7 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 		CloseHandle(hFile);
 		return -1;
 	}
-	long lHeadSize = ((unsigned char )szTmp[0] << 24) | ((unsigned char )szTmp[1] << 16) |
-						((unsigned char )szTmp[2] << 8) | (unsigned char )szTmp[3];
-
+	long lHeadSize = ExtractI4((unsigned char*)szTmp);
 	char *HeadBuf = (char *)malloc(lHeadSize);
 	if(!HeadBuf)
 	{
@@ -201,10 +199,7 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 		char id3 = HeadBuf[lHeadSize-lRemainSize+2];
 		char id4 = HeadBuf[lHeadSize-lRemainSize+3];
 		lRemainSize -= 4;
-		long lSize = ((unsigned char )HeadBuf[lHeadSize-lRemainSize+0] << 24) |
-					((unsigned char )HeadBuf[lHeadSize-lRemainSize+1] << 16) |
-					((unsigned char )HeadBuf[lHeadSize-lRemainSize+2] << 8) |
-					(unsigned char )HeadBuf[lHeadSize-lRemainSize+3];
+		long lSize = ExtractI4((unsigned char*)&HeadBuf[lHeadSize-lRemainSize]);
 		lRemainSize -= 4;
 		if(lSize > lRemainSize)
 		{
@@ -226,19 +221,10 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 		DWORD size = p->second.GetSize();
 		if(size >= 12)
 		{
-			m_dwStereo =	((DWORD )data[0] << 24) |
-							((DWORD )data[1] << 16) |
-							((DWORD )data[2] << 8) |
-							(DWORD )data[3];
-			m_dwCompRate =	((DWORD )data[4] << 24) |
-							((DWORD )data[5] << 16) |
-							((DWORD )data[6] << 8) |
-							(DWORD )data[7];
+			m_dwStereo = ExtractI4(data);
+			m_dwCompRate = ExtractI4(&data[4]);
 //			m_dwCompRate /= m_dwStereo + 1;
-			m_dwSamplingFrequency = ((DWORD )data[8] << 24) |
-									((DWORD )data[9] << 16) |
-									((DWORD )data[10] << 8) |
-									(DWORD )data[11];
+			m_dwSamplingFrequency = ExtractI4(&data[8]);
 		}
 	}
 	p = m_fields.find(MakeKey('D','S','I','Z'));
@@ -248,10 +234,7 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 		DWORD size = p->second.GetSize();
 		if(size >= 4)
 		{
-			m_dwStreamSize =((DWORD )data[0] << 24) |
-							((DWORD )data[1] << 16) |
-							((DWORD )data[2] << 8) |
-							(DWORD )data[3];
+			m_dwStreamSize = ExtractI4(data);
 		}
 	}
 
@@ -307,9 +290,7 @@ DWORD CVqf::Save(HWND hWnd,LPCTSTR szFileName)
 		CloseHandle(hFile);
 		return -1;
 	}
-	long lHeadSize = ((unsigned char )szTmp[0] << 24) | ((unsigned char )szTmp[1] << 16) |
-						((unsigned char )szTmp[2] << 8) | (unsigned char )szTmp[3];
-
+	long lHeadSize = ExtractI4((unsigned char*)szTmp);
 	DWORD dwDataSize = GetFileSize(hFile,NULL);
 	dwDataSize -= lHeadSize + 16;
 

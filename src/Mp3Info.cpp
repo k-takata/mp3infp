@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "GlobalCommand.h"
+#include "Id3tagv2.h"
 
 #include "Mp3Info.h"
 
@@ -144,8 +145,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 		(dwRet == sizeof(id3v2head)) &&
 		(memcmp(id3v2head,"ID3",3) == 0) )
 	{
-		lDataPtr = (((long )(id3v2head[6]&0x7f)<<21) | ((long )(id3v2head[7]&0x7f)<<14) | ((long )(id3v2head[8]&0x7f)<<7) | (long )(id3v2head[9]&0x7f));
-		lDataPtr += 10;
+		lDataPtr = CId3tagv2::ExtractV2Size(&id3v2head[6]) + 10;
 	}
 
 	//Mp3ヘッダ情報の読み取り
@@ -155,8 +155,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 	SetFilePointer(hFile,lDataPtr,NULL,FILE_BEGIN);
 	while(ReadFile(hFile,&hbuf,sizeof(hbuf),&dwRet,NULL) && (dwRet == sizeof(hbuf)))
 	{
-		head=((unsigned long )hbuf[0] << 24) | ((unsigned long) hbuf[1] << 16) |
-				((unsigned long) hbuf[2] << 8) | (unsigned long) hbuf[3];
+		head = ExtractI4(hbuf);
 		//mp3ヘッダとしての妥当性をチェック
 		if(!mp3head_check(head))
 		{
