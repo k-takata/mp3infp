@@ -18,7 +18,7 @@
 #define Static_SetImage_Icon(hwndCtl, hIcon)	\
 	((HICON)(UINT_PTR)SNDMSG((hwndCtl), STM_SETIMAGE, IMAGE_ICON, (LPARAM)(HICON)(hIcon)))
 
-void mbsncpy2(unsigned char *dst,unsigned char *src,int c);
+void mbsncpy2(unsigned char *dst,const unsigned char *src,int c);
 //DLL‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğæ“¾
 BOOL GetDLLVersion(IN LPCTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,

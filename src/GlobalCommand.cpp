@@ -4,7 +4,7 @@
 #pragma comment(lib,"Version.lib")
 
 //欠けている可能性のある２バイト文字対応
-void mbsncpy2(unsigned char *dst,unsigned char *src,int c)
+void mbsncpy2(unsigned char *dst,const unsigned char *src,int c)
 {
 	for(int i=0; i<c; i++)
 	{

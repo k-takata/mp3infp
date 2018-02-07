@@ -92,11 +92,11 @@ public:
 private:
 	BOOL				m_bEnable;
 
-	DWORD MakeKey(char id1,char id2,char id3,char id4)
+	static DWORD MakeKey(char id1,char id2,char id3,char id4)
 	{
 		return id1<<24 | id2<<16 | id3<<8 | id4;
 	}
-	void MakeBeSize(DWORD dwSize,char size[4])
+	static void MakeBeSize(DWORD dwSize,char size[4])
 	{
 		size[3] = char(dwSize & 0xff);
 		size[2] = char((dwSize>>8) & 0xff);
