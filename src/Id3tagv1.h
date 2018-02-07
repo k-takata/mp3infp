@@ -12,6 +12,19 @@
 class CId3tagv1  
 {
 public:
+#pragma pack(1)
+	typedef struct _ID3_TAG
+	{
+		char TagHeader[3];
+		char Title[30];
+		char Artist[30];
+		char Album[30];
+		char Year[4];
+		char Comment[29];
+		unsigned char Track;
+		unsigned char Genre;
+	}ID3_TAG;
+#pragma pack()
 	CId3tagv1(BOOL bScmpxGenre = FALSE);
 	virtual ~CId3tagv1();
 	void SetScmpxGenre(BOOL bSwitch);
@@ -43,7 +56,7 @@ public:
 	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,LPCTSTR szFileName);
 	DWORD DelTag(HWND hWnd,LPCTSTR szFileName);
-	void GetId3tagString(char *szTag);
+	void GetId3tag(ID3_TAG *tag);
 	DWORD MakeTag(HWND hWnd,LPCTSTR szFileName);
 
 private:

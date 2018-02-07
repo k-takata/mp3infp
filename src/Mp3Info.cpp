@@ -139,13 +139,13 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 		}
 	}
 	//ID3V2ヘッダを読み込む
-	char id3v2head[10];
+	CId3tagv2::ID3HEAD id3v2head;
 	SetFilePointer(hFile,0,NULL,FILE_BEGIN);
 	if(ReadFile(hFile,&id3v2head,sizeof(id3v2head),&dwRet,NULL) &&
 		(dwRet == sizeof(id3v2head)) &&
-		(memcmp(id3v2head,"ID3",3) == 0) )
+		(memcmp(id3v2head.id3des,"ID3",3) == 0) )
 	{
-		lDataPtr = CId3tagv2::ExtractV2Size(&id3v2head[6]) + 10;
+		lDataPtr = CId3tagv2::ExtractV2Size(id3v2head.size) + 10;
 	}
 
 	//Mp3ヘッダ情報の読み取り

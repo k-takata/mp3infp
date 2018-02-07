@@ -13,6 +13,8 @@
 #include <map>
 #include <list>
 
+#include "Id3tagv1.h"
+
 /*
 Memo:
 ID3tag->Ape tag‚Ì‡‚Åƒ[ƒh‚·‚é
@@ -68,17 +70,7 @@ private:
 	DWORD _DelTag(LPCTSTR szFileName);
 
 #pragma pack(1)
-	typedef struct _ID3_TAG
-	{
-		char TagHeader[3];
-		char Title[30];
-		char Artist[30];
-		char Album[30];
-		char Year[4];
-		char Comment[29];
-		unsigned char Track;
-		unsigned char Genre;
-	}ID3_TAG;
+	typedef CId3tagv1::ID3_TAG ID3_TAG;
 	typedef struct _APE_TAG_FOOTER
 	{
 		char id[8];		// "APETAGEX"

@@ -288,20 +288,18 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	}
 
 	//ID3タグかどうかをチェック
-	char szTmp[128];
-	fread(szTmp,1,128,fp);
+	ID3_TAG tag;
+	fread(&tag,1,sizeof(tag),fp);
 	fclose(fp);
-	if(strncmp("TAG",szTmp,3) != 0)
+	if(strncmp("TAG",tag.TagHeader,3) != 0)
 	{
 		return -1;
 	}
 	
 	m_bEnable = TRUE;
 	//情報の採取
-	char *p;
 	int i;
-	p = szTmp+3;
-	mbsncpy2((unsigned char *)m_szTitle,(unsigned char *)p,30);
+	mbsncpy2((unsigned char *)m_szTitle,(unsigned char *)tag.Title,30);
 	m_szTitle[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -310,8 +308,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	p += 30;
-	mbsncpy2((unsigned char *)m_szArtist,(unsigned char *)p,30);
+	mbsncpy2((unsigned char *)m_szArtist,(unsigned char *)tag.Artist,30);
 	m_szArtist[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -320,8 +317,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	p+=30;
-	mbsncpy2((unsigned char *)m_szAlbum,(unsigned char *)p,30);
+	mbsncpy2((unsigned char *)m_szAlbum,(unsigned char *)tag.Album,30);
 	m_szAlbum[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -330,8 +326,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	p+=30;
-	mbsncpy2((unsigned char *)m_szYear,(unsigned char *)p,4);
+	mbsncpy2((unsigned char *)m_szYear,(unsigned char *)tag.Year,4);
 	m_szYear[4] = '\0';
 	for(i=3; i>=0; i--)
 	{
@@ -340,11 +335,10 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	p+=4;
-	if((szTmp[125] == '\0') && szTmp[126])
+	if((tag.Comment[28] == '\0') && tag.Track)
 	{
-		m_cTrackNo = szTmp[126];
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)p,28);
+		m_cTrackNo = tag.Track;
+		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)tag.Comment,28);
 		m_szComment[28] = '\0';
 		for(i=27; i>=0; i--)
 		{
@@ -357,7 +351,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	else
 	{
 		m_cTrackNo = 0;
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)p,30);
+		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)tag.Comment,30);
 		m_szComment[30] = '\0';
 		for(i=29; i>=0; i--)
 		{
@@ -367,8 +361,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 				break;
 		}
 	}
-	p+=30;
-	m_cGenre = *p;
+	m_cGenre = tag.Genre;
 	return dwWin32errorCode;
 }
 
@@ -438,30 +431,22 @@ DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
-	char	szTmp[128];
+	ID3_TAG	tag;
 	char	szTagTmp[4];
-	char	*p;
 
 	//情報の保存
-	p = szTmp;
-	memset(p,0x00,128-3);
-	strncpy(p,m_szTitle,strlen(m_szTitle));
-	p += 30;
-	strncpy(p,m_szArtist,strlen(m_szArtist));
-	p += 30;
-	strncpy(p,m_szAlbum,strlen(m_szAlbum));
-	p += 30;
-	strncpy(p,m_szYear,strlen(m_szYear));
-	p += 4;
-	strncpy(p,m_szComment,strlen(m_szComment));
-	p += 28;
+	memset(&tag,0x00,sizeof(tag));
+	strncpy(tag.Title,m_szTitle,strlen(m_szTitle));
+	strncpy(tag.Artist,m_szArtist,strlen(m_szArtist));
+	strncpy(tag.Album,m_szAlbum,strlen(m_szAlbum));
+	strncpy(tag.Year,m_szYear,strlen(m_szYear));
+	strncpy(tag.Comment,m_szComment,strlen(m_szComment));
 	if(m_cTrackNo)
 	{
-		*p = '\0';
-		*(p+1) = m_cTrackNo;
+		tag.Comment[28] = '\0';
+		tag.Track = m_cTrackNo;
 	}
-	p += 2;
-	*p = m_cGenre;
+	tag.Genre = m_cGenre;
 
 	if((fp = _tfopen(szFileName,_T("r+b"))) == NULL)
 	{
@@ -499,7 +484,7 @@ DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 		fclose(fp);
 		return dwWin32errorCode;
 	}
-	if(fwrite(szTmp,1,128-3,fp) < 128-3)
+	if(fwrite(tag.Title,1,sizeof(tag)-3,fp) < sizeof(tag)-3)
 	{
 		dwWin32errorCode = GetLastError();
 		fclose(fp);
@@ -571,14 +556,14 @@ DWORD CId3tagv1::DelTag(HWND hWnd,LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-void CId3tagv1::GetId3tagString(char *szTag)
+void CId3tagv1::GetId3tag(ID3_TAG *tag)
 {
-	memset(szTag,0x00,128);
-	strncpy(szTag,"TAG",3);
+	memset(tag,0x00,sizeof(ID3_TAG));
+	strncpy(tag->TagHeader,"TAG",3);
 	if(m_bScmpxGenre)
-		szTag[127] = (char )SCMPX_GENRE_NULL;
+		tag->Genre = SCMPX_GENRE_NULL;
 	else
-		szTag[127] = (char )WINAMP_GENRE_NULL;
+		tag->Genre = WINAMP_GENRE_NULL;
 }
 
 DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
@@ -586,7 +571,7 @@ DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;
 	DWORD	dwWritten = 0;
-	char	szTag[128];
+	ID3_TAG	tag;
 	TCHAR	szDefaultName[MAX_PATH];
 	
 	hFile = CreateFile(
@@ -611,23 +596,17 @@ DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	//ID3タグを作成
-	GetId3tagString(szTag);
-	lstrcpy(szDefaultName,getFileName(CString(szFileName)));
-	char *buf = TstrToDataAlloc(szDefaultName, -1, NULL, DTC_CODE_ANSI);
-	if (buf != NULL) {
-		strncpy(szTag+3,buf,30);
-		free(buf);
-	}
-	if(WriteFile(hFile,szTag,128,&dwWritten,NULL) == 0)
+	GetId3tag(&tag);
+	Release();
+	SetTitle(getFileName(CString(szFileName)));
+	strncpy(tag.Title,m_szTitle,strlen(m_szTitle));
+	if(WriteFile(hFile,&tag,sizeof(tag),&dwWritten,NULL) == 0)
 	{
 		dwWin32errorCode = GetLastError();
 		CloseHandle(hFile);
 		return dwWin32errorCode;
 	}
 	CloseHandle(hFile);
-
-	Release();
-	SetTitle(szDefaultName);
 	
 	return dwWin32errorCode;
 }
