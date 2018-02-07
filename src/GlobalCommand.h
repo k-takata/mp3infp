@@ -38,8 +38,15 @@ CString LoadResString(HINSTANCE hInstance,UINT uID);
 
 //---------------------------------------------------------------------
 //★ビッグエンディアン->リトルエンディアンの変換
-DWORD ExtractI4(const unsigned char buf[4]);
-WORD ExtractI2(const unsigned char buf[2]);
+static inline DWORD ExtractI4(const unsigned char buf[4])
+{
+	return ((DWORD)buf[0] << 24) | ((DWORD)buf[1] << 16) | ((DWORD)buf[2] << 8) | (DWORD)buf[3];
+}
+
+static inline WORD ExtractI2(const unsigned char buf[2])
+{
+	return ((WORD)buf[0] << 8) | (WORD)buf[1];
+}
 
 CString getFileNameExtName(const CString &path);
 CString getExtName(const CString &path);

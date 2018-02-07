@@ -167,33 +167,6 @@ CString LoadResString(HINSTANCE hInstance,UINT uID)
 }
 
 //---------------------------------------------------------------------
-//★ビッグエンディアン->リトルエンディアンの変換
-DWORD ExtractI4(const unsigned char buf[4])
-{
-	DWORD x;
-	// big endian extract
-	x = buf[0];
-	x <<= 8;
-	x |= buf[1];
-	x <<= 8;
-	x |= buf[2];
-	x <<= 8;
-	x |= buf[3];
-	return x;
-}
-
-//---------------------------------------------------------------------
-//★ビッグエンディアン->リトルエンディアンの変換
-WORD ExtractI2(const unsigned char buf[2])
-{
-	WORD x;
-	// big endian extract
-	x = buf[0];
-	x <<= 8;
-	x |= buf[1];
-	return x;
-}
-
 LPCTSTR getFileNameExtName(LPCTSTR szPath)
 {
 	LPCTSTR szPtr = szPath;
