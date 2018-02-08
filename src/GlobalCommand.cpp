@@ -27,6 +27,25 @@ void mbsncpy2(unsigned char *dst,const unsigned char *src,int c)
 	}
 }
 
+long check2ByteLength(const char *szTag,long lLimit)
+{
+	long i=0;
+	while(szTag[i])
+	{
+		BOOL bIsLb = IsDBCSLeadByte(szTag[i]);
+		if(bIsLb)
+			i++;
+		if(i >= lLimit)
+		{
+			if(bIsLb)
+				return (i-1);
+			return i;
+		}
+		i++;
+	}
+	return i;
+}
+
 BOOL GetDLLVersion(IN LPCTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
 				   IN DWORD *pdwMinor,
@@ -272,25 +291,6 @@ CString getExtName(const CString &path)
 	{
 		return fName.Right(fName.GetLength() - pathOffset);
 	}
-}
-
-long check2ByteLength(const char *szTag,long lLimit)
-{
-	long i=0;
-	while(szTag[i])
-	{
-		BOOL bIsLb = IsDBCSLeadByte(szTag[i]);
-		if(bIsLb)
-			i++;
-		if(i >= lLimit)
-		{
-			if(bIsLb)
-				return (i-1);
-			return i;
-		}
-		i++;
-	}
-	return i;
 }
 
 void sysError(HWND hWnd,LPCTSTR mes)

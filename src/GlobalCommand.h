@@ -19,6 +19,9 @@
 	((HICON)(UINT_PTR)SNDMSG((hwndCtl), STM_SETIMAGE, IMAGE_ICON, (LPARAM)(HICON)(hIcon)))
 
 void mbsncpy2(unsigned char *dst,const unsigned char *src,int c);
+//２バイト文字列の切りのいい文字数を取得
+long check2ByteLength(const char *szTag,long lLimit);
+
 //DLLのバージョン情報を取得
 BOOL GetDLLVersion(IN LPCTSTR szDLLFileName,
 				   IN DWORD *pdwMajor,
@@ -77,9 +80,6 @@ LPCTSTR getFileNameExtName(LPCTSTR szPath);
 　　　　　　　拡張子を含まないときは""へのポインタ
 */
 LPCTSTR getExtName(LPCTSTR szPath);
-
-//２バイト文字列の切りのいい文字数を取得
-long check2ByteLength(const char *szTag,long lLimit);
 
 //システムエラーメッセージボックスを表示
 void sysError(HWND hWnd,LPCTSTR mes = _T("Error"));
