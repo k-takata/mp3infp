@@ -236,9 +236,9 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 				CloseHandle(hFile);
 				return FALSE;//0œŽZ–hŽ~
 			}
-//			_int64 i64Msec;
+//			__int64 i64Msec;
 			pMpegHead->flmnum = pMpegHead->size/(pMpegHead->framesize+4);
-//			i64Msec = (_int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency;
+//			i64Msec = (__int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency;
 //			pMpegHead->msec = (ULONG )i64Msec;
 			if(pMpegHead->bps == 0)
 			{
@@ -286,14 +286,14 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 				{
 					iOffset += 4;
 					pMpegHead->flmnum = ExtractI4(&xingTag[iOffset])+1;
-					pMpegHead->msec = (ULONG )((_int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
+					pMpegHead->msec = (ULONG )((__int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
 				}
 				if(flag & BYTES_FLAG)
 				{
 					iOffset += 4;
 					pMpegHead->size = ExtractI4(&xingTag[iOffset]);
 				}
-				pMpegHead->bps = (_int64 )(pMpegHead->size*8)/(pMpegHead->msec);
+				pMpegHead->bps = (__int64 )(pMpegHead->size*8)/(pMpegHead->msec);
 				pMpegHead->bVbr = TRUE;
 			}
 			// 2004-10-04 ’Ç‰Á
@@ -317,9 +317,9 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 				vbri.entryBytes		= ExtractI2((unsigned char *)&vbri.entryBytes);
 				vbri.entryFrames	= ExtractI2((unsigned char *)&vbri.entryFrames);
 				pMpegHead->flmnum = vbri.streamFrames;
-				pMpegHead->msec = (ULONG )((_int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
+				pMpegHead->msec = (ULONG )((__int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
 				pMpegHead->size = vbri.streamBytes;
-				pMpegHead->bps = (_int64 )(pMpegHead->size*8)/(pMpegHead->msec);
+				pMpegHead->bps = (__int64 )(pMpegHead->size*8)/(pMpegHead->msec);
 				pMpegHead->bVbr = TRUE;
 			}
 
@@ -342,7 +342,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 	if(bVbrScan)
 	{
 		pMpegHead->flmnum = dwFrameCount;
-		pMpegHead->msec = (ULONG )((_int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
+		pMpegHead->msec = (ULONG )((__int64 )pMpegHead->flmnum * 576 * (pMpegHead->lsf?1:2) * 1000 / pMpegHead->sampling_frequency);
 	}
 
 	CloseHandle(hFile);
