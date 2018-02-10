@@ -56,7 +56,7 @@ public:
 	long GenreString2Num(LPCTSTR szGenre);
 
 	DWORD Load(LPCTSTR szFileName);
-	DWORD LoadMulti(LPCTSTR szFileName);
+//	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,LPCTSTR szFileName);
 	DWORD DelTag(HWND hWnd,LPCTSTR szFileName);
 	static void GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre);

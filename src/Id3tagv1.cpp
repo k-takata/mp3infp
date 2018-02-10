@@ -365,6 +365,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
+#if 0
 DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 {
 	DWORD dwError;
@@ -426,6 +427,7 @@ DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 
 	return ERROR_SUCCESS;
 }
+#endif
 
 DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 {
