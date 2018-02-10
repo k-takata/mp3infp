@@ -92,7 +92,7 @@ CString CVqf::GetField(char id1,char id2,char id3,char id4)
 	if (data == NULL) {
 		return _T("");
 	}
-	return CString((LPSTR)data, dwSize);
+	return CString((LPCSTR)data, dwSize);
 }
 
 DWORD CVqf::GetTotalFieldSize()

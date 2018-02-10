@@ -466,7 +466,7 @@ CString DataToCString(const char *data, int size, int code)
 			LPWSTR wstr = (LPWSTR) malloc(size + sizeof(WCHAR));
 			if (wstr != NULL) {
 				int len = size / sizeof(WCHAR);
-				wcsncpy(wstr, (LPWSTR)data, len);
+				wcsncpy(wstr, (LPCWSTR)data, len);
 				wstr[len] = L'\0';
 				// UTF-16BE -> UTF-16LE
 				ConvertUTF16Endian(wstr, len);
