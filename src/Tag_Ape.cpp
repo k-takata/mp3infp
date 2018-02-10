@@ -143,15 +143,8 @@ DWORD CTag_Ape::_LoadId3Tag(LPCTSTR szFileName)
 	}
 
 	// ID3TAGの正当性をチェック
-	if((m_id3tag.TagHeader[0] != 'T') ||
-		(m_id3tag.TagHeader[1] != 'A') ||
-		(m_id3tag.TagHeader[2] != 'G'))
-	{
-		CloseHandle(hFile);
-		return ERROR_SUCCESS;
-	}
-	
-	m_bHasId3tag = TRUE;
+	m_bHasId3tag = CId3tagv1::IsTagValid(&m_id3tag);
+
 	CloseHandle(hFile);
 	return ERROR_SUCCESS;
 }
@@ -170,14 +163,8 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 		return dwWin32errorCode;
 	}
 
-	BOOL bId3v1 = FALSE;
 	// ID3TAGの正当性をチェック
-	if((m_id3tag.TagHeader[0] == 'T') &&
-		(m_id3tag.TagHeader[1] == 'A') &&
-		(m_id3tag.TagHeader[2] == 'G'))
-	{
-		bId3v1 = TRUE;
-	}
+	BOOL bId3v1 = CId3tagv1::IsTagValid(&m_id3tag);
 	
 	int rawFieldBytes = m_footer.size - sizeof(APE_TAG_FOOTER);
 	char *pRawTag = (char *)malloc(rawFieldBytes);
@@ -282,14 +269,8 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 		return dwWin32errorCode;
 	}
 
-	BOOL bId3v1 = FALSE;
 	// ID3TAGの正当性をチェック
-	if((m_id3tag.TagHeader[0] == 'T') &&
-		(m_id3tag.TagHeader[1] == 'A') &&
-		(m_id3tag.TagHeader[2] == 'G'))
-	{
-		bId3v1 = TRUE;
-	}
+	BOOL bId3v1 = CId3tagv1::IsTagValid(&m_id3tag);
 	
 	DWORD rawFieldBytes = m_footer.size - ((m_footer.flags&APE_FLAG_TAG_HAS_HEADER)?sizeof(APE_TAG_FOOTER):0);
 	char *pRawTag = (char *)malloc(rawFieldBytes);
@@ -359,6 +340,20 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 	return ERROR_SUCCESS;
 }
 
+BOOL CTag_Ape::IsTagValid(const APE_TAG_FOOTER *footer)
+{
+
+	if((strncmp(footer->id,"APETAGEX",8) == 0) &&
+		(footer->version <= CURRENT_APE_TAG_VERSION) &&
+		(footer->fields < 65536) &&
+		(footer->size < (1024 * 1024 * 16))
+		)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
 DWORD CTag_Ape::Load(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
@@ -392,9 +387,7 @@ DWORD CTag_Ape::Load(LPCTSTR szFileName)
 
 	BOOL bId3v1 = FALSE;
 	// ID3TAGの正当性をチェック
-	if((m_id3tag.TagHeader[0] == 'T') &&
-		(m_id3tag.TagHeader[1] == 'A') &&
-		(m_id3tag.TagHeader[2] == 'G'))
+	if(CId3tagv1::IsTagValid(&m_id3tag))
 	{
 		bId3v1 = TRUE;
 	}
@@ -409,11 +402,7 @@ DWORD CTag_Ape::Load(LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	// APE_TAG_FOOTERの正当性をチェック
-	if((strncmp(m_footer.id,"APETAGEX",8) == 0) &&
-		(m_footer.version <= CURRENT_APE_TAG_VERSION) &&
-		(m_footer.fields < 65536) &&
-		(m_footer.size < (1024 * 1024 * 16))
-		)
+	if(IsTagValid(&m_footer))
 	{
 		m_bHasApetag = TRUE;
 		m_apeVersion = m_footer.version;
@@ -661,9 +650,7 @@ DWORD CTag_Ape::_DelTag(LPCTSTR szFileName)
 	if(ReadFile(hFile,&id3tag,sizeof(id3tag),&dwRet,NULL) && (dwRet == sizeof(id3tag)))
 	{
 		// ID3TAGの正当性をチェック
-		if((id3tag.TagHeader[0] == 'T') &&
-			(id3tag.TagHeader[1] == 'A') &&
-			(id3tag.TagHeader[2] == 'G'))
+		if(CId3tagv1::IsTagValid(&id3tag))
 		{
 			// ID3tagをカット
 			SetFilePointer(hFile,-128,NULL,FILE_END);

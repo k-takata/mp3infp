@@ -24,6 +24,18 @@ ID3tag->Ape tagの順でロードする
 class CTag_Ape  
 {
 public:
+#pragma pack(1)
+	typedef struct _APE_TAG_FOOTER
+	{
+		char id[8];		// "APETAGEX"
+		int version;		// タグバージョン
+		int size;			// このフッタを含むタグサイズ
+		int fields;			// タグに含まれるフィールド数
+		int flags;			// フラグ
+		char reserved[8];	// 予約
+	}APE_TAG_FOOTER;
+#pragma pack()
+
 	CTag_Ape(BOOL bScmpxGenre = TRUE);
 	virtual ~CTag_Ape();
 	void	Release();
@@ -47,6 +59,7 @@ public:
 	DWORD	Save(LPCTSTR szFileName);
 	DWORD	DelTag(LPCTSTR szFileName);
 	DWORD	MakeTag(LPCTSTR szFileName);
+	static BOOL IsTagValid(const APE_TAG_FOOTER *footer);
 
 	static const int CTag_Ape::CURRENT_APE_TAG_VERSION;
 	static LPCTSTR CTag_Ape::APE_TAG_FIELD_TITLE;
@@ -69,18 +82,7 @@ private:
 //	DWORD _SaveId3V1(HANDLE hFile);
 	DWORD _DelTag(LPCTSTR szFileName);
 
-#pragma pack(1)
 	typedef CId3tagv1::ID3_TAG ID3_TAG;
-	typedef struct _APE_TAG_FOOTER
-	{
-		char id[8];		// "APETAGEX"
-		int version;		// タグバージョン
-		int size;			// このフッタを含むタグサイズ
-		int fields;			// タグに含まれるフィールド数
-		int flags;			// フラグ
-		char reserved[8];	// 予約
-	}APE_TAG_FOOTER;
-#pragma pack()
 	ID3_TAG m_id3tag;
 	APE_TAG_FOOTER m_footer;
 	BOOL m_bHasId3tag;

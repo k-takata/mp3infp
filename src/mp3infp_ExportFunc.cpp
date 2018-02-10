@@ -43,7 +43,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 				CloseHandle(hFile);
 				return _T("");
 			}
-			if((dwRet >= 10) && (memcmp(buf,"ID3",3) == 0))
+			if((dwRet >= 10) && CId3tagv2::IsTagValid((CId3tagv2::ID3HEAD *)buf))
 			{
 				bId3v2 = TRUE;
 				break;
@@ -59,56 +59,39 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			}
 			//id3tagタグを捜す
 			SetFilePointer(hFile,-128,NULL,FILE_END);
-			char id3tag[128];
+			CId3tagv1::ID3_TAG id3tag;
 			if(!ReadFile(hFile,&id3tag,sizeof(id3tag),&dwRet,NULL))
 			{
 				CloseHandle(hFile);
 				return _T("");
 			}
-			if((dwRet == sizeof(id3tag)) && (memcmp(id3tag,"TAG",3) == 0))
+			if((dwRet == sizeof(id3tag)) && CId3tagv1::IsTagValid(&id3tag))
 			{
 				bId3v1 = TRUE;
 			}
 			//Apeタグを捜す
-			typedef struct _APE_TAG_FOOTER
-			{
-				char id[8];		// "APETAGEX"
-				int version;		// タグバージョン
-				int size;			// このフッタを含むタグサイズ
-				int fields;			// タグに含まれるフィールド数
-				int flags;			// フラグ
-				char reserved[8];	// 予約
-			}APE_TAG_FOOTER;
-			APE_TAG_FOOTER footer;
+			CTag_Ape::APE_TAG_FOOTER footer;
 			// apeフッタを探す1
-			SetFilePointer(hFile,-(LONG)sizeof(APE_TAG_FOOTER)-(bId3v1?128:0),NULL,FILE_END);
+			SetFilePointer(hFile,-(LONG)sizeof(footer)-(bId3v1?128:0),NULL,FILE_END);
 			// APE_TAG_FOOTERを読みとる
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
 				CloseHandle(hFile);
 				return _T("");
 			}
-			if((strncmp(footer.id,"APETAGEX",8) == 0) &&
-				(footer.version <= 2000) &&
-				(footer.fields < 65536) &&
-				(footer.size < (1024 * 1024 * 16))
-				)
+			if(CTag_Ape::IsTagValid(&footer))
 			{
 				bApe = TRUE;
 			}
 			// apeフッタを探す2
-			SetFilePointer(hFile,-(LONG)sizeof(APE_TAG_FOOTER)-128,NULL,FILE_END);
+			SetFilePointer(hFile,-(LONG)sizeof(footer)-128,NULL,FILE_END);
 			// APE_TAG_FOOTERを読みとる
 			if(!ReadFile(hFile,&footer,sizeof(footer),&dwRet,NULL) || (dwRet != sizeof(footer)))
 			{
 				CloseHandle(hFile);
 				return _T("");
 			}
-			if((strncmp(footer.id,"APETAGEX",8) == 0) &&
-				(footer.version <= 2000) &&
-				(footer.fields < 65536) &&
-				(footer.size < (1024 * 1024 * 16))
-				)
+			if(CTag_Ape::IsTagValid(&footer))
 			{
 				bApe = TRUE;
 			}

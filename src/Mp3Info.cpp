@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "GlobalCommand.h"
+#include "Id3tagv1.h"
 #include "Id3tagv2.h"
 
 #include "Mp3Info.h"
@@ -67,7 +68,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 	unsigned char			hbuf[4];
 	static unsigned long	head;
 	unsigned char			xingTag[4+12];
-	unsigned char			id3tag[128];
+	CId3tagv1::ID3_TAG		id3tag;
 	//XING VBR ヘッダで使用
 	const unsigned long FRAMES_FLAG		= 0x0001;
 	const unsigned long BYTES_FLAG		= 0x0002;
@@ -132,7 +133,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 			CloseHandle(hFile);
 			return FALSE;
 		}
-		if((dwRet == sizeof(id3tag)) && (memcmp(id3tag,"TAG",3) == 0))
+		if((dwRet == sizeof(id3tag)) && CId3tagv1::IsTagValid(&id3tag))
 		{
 			//ID3TAGのサイズ分を差し引く
 			dataSize -= 128;
@@ -143,7 +144,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 	SetFilePointer(hFile,0,NULL,FILE_BEGIN);
 	if(ReadFile(hFile,&id3v2head,sizeof(id3v2head),&dwRet,NULL) &&
 		(dwRet == sizeof(id3v2head)) &&
-		(memcmp(id3v2head.id3des,"ID3",3) == 0) )
+		CId3tagv2::IsTagValid(&id3v2head) )
 	{
 		lDataPtr = CId3tagv2::ExtractV2Size(id3v2head.size) + 10;
 	}

@@ -1043,8 +1043,7 @@ CString CId3tagv2::GetGenre()
 	}
 	//ジャンルが番号のみで指定されている場合は、文字列に変換
 	if ((genre >= 0) && strGenre.IsEmpty()) {
-		CId3tagv1 id3tagv1(FALSE);
-		strGenre = id3tagv1.GenreNum2String(genre);
+		strGenre = CId3tagv1::GenreNum2String(genre,FALSE);
 	}
 	return strGenre;
 }
@@ -1269,7 +1268,7 @@ retry:
 	}
 
 	//ID3v2を確認
-	if(memcmp(head.id3des,"ID3",3) != 0)
+	if(!IsTagValid(&head))
 	{
 		CloseHandle(hFile);
 		return -1;

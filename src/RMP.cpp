@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "resource.h"		// メイン シンボル
 #include "GlobalCommand.h"
+#include "Id3tagv1.h"
 #include "RMP.h"
 #include <io.h>
 
@@ -253,32 +254,23 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	//ID3TAGv1情報の保存
-	char id3tag[128];
+	CId3tagv1::ID3_TAG id3tag;
 	if(SetFilePointer(hFile,-128,NULL,FILE_END) == INVALID_SET_FILE_POINTER)
 	{
 		dwWin32errorCode = GetLastError();
 		CloseHandle(hFile);
 		return dwWin32errorCode;
 	}
-	if(	!ReadFile(hFile,id3tag,sizeof(id3tag),&dwWritten,NULL) ||
-		(strncmp("TAG",id3tag,3) != 0) ||
+	if(	!ReadFile(hFile,&id3tag,sizeof(id3tag),&dwWritten,NULL) ||
+		!CId3tagv1::IsTagValid(&id3tag) ||
 		(dwWritten != sizeof(id3tag)) )
 	{
 		if(m_bHasId3tag)
 		{
-			TCHAR	szDefaultName[MAX_PATH];
-			memset(id3tag,0,sizeof(id3tag));
-
-			memcpy(id3tag,"TAG",3);
-			if(m_bScmpxGenre)
-				id3tag[127] = (char )SCMPX_GENRE_NULL;
-			else
-				id3tag[127] = (char )WINAMP_GENRE_NULL;
-			lstrcpy(szDefaultName,getFileName((CString)szFileName));
-			
-			char *buf = TstrToDataAlloc(szDefaultName, -1, NULL, DTC_CODE_ANSI);
+			CId3tagv1::GetId3tag(&id3tag,m_bScmpxGenre);
+			char *buf = TstrToDataAlloc(getFileName(szFileName), -1, NULL, DTC_CODE_ANSI);
 			if (buf) {
-				strncpy(id3tag+3,buf,30);
+				mbsncpy2((unsigned char *)id3tag.Title,(unsigned char *)buf,30);
 				free(buf);
 			}
 		}
@@ -455,7 +447,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
-		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),id3tag,sizeof(id3tag));
+		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(const char *)&id3tag,sizeof(id3tag));
 
 	//サイズの確定
 	if(mmioAscend(hmmio,&mmckOutinfoSubchunk,0) != MMSYSERR_NOERROR)
@@ -536,7 +528,7 @@ DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
 		free(pRawData);
 		return dwWin32errorCode;
 	}
-	char id3tag[128];
+	CId3tagv1::ID3_TAG id3tag;
 	if(SetFilePointer(hFile,-128,NULL,FILE_END) == INVALID_SET_FILE_POINTER)
 	{
 		dwWin32errorCode = GetLastError();
@@ -545,8 +537,8 @@ DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	DWORD dwWritten;
-	if(	ReadFile(hFile,id3tag,sizeof(id3tag),&dwWritten,NULL) &&
-		(strncmp("TAG",id3tag,3) == 0) &&
+	if(	ReadFile(hFile,&id3tag,sizeof(id3tag),&dwWritten,NULL) &&
+		CId3tagv1::IsTagValid(&id3tag) &&
 		(dwWritten == sizeof(id3tag)) )
 	{
 		m_bHasId3tag = TRUE;
@@ -600,7 +592,7 @@ DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
 	//書き出し(id3tag)
 	if(m_bHasId3tag)
 	{
-		if(WriteFile(hFile,id3tag,sizeof(id3tag),&dwWritten,NULL) == FALSE)
+		if(WriteFile(hFile,&id3tag,sizeof(id3tag),&dwWritten,NULL) == FALSE)
 		{
 			dwWin32errorCode = GetLastError();
 			CloseHandle(hFile);
@@ -755,7 +747,7 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 		return dwWin32errorCode;
 	}
 	//ID3TAGv1情報の保存
-	char id3tag[128];
+	CId3tagv1::ID3_TAG id3tag;
 	if(SetFilePointer(hFile,-128,NULL,FILE_END) == INVALID_SET_FILE_POINTER)
 	{
 		dwWin32errorCode = GetLastError();
@@ -763,8 +755,8 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 		free(pRawData);
 		return dwWin32errorCode;
 	}
-	if(	ReadFile(hFile,id3tag,sizeof(id3tag),&dwWritten,NULL) &&
-		(strncmp("TAG",id3tag,3) == 0) &&
+	if(	ReadFile(hFile,&id3tag,sizeof(id3tag),&dwWritten,NULL) &&
+		CId3tagv1::IsTagValid(&id3tag) &&
 		(dwWritten == sizeof(id3tag)) )
 	{
 		m_bHasId3tag = TRUE;
@@ -913,7 +905,7 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
-		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),id3tag,sizeof(id3tag));
+		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(const char *)&id3tag,sizeof(id3tag));
 
 	//サイズの書き込み
 	if(mmioAscend(hmmio,&mmckOutinfoSubchunk,0) != MMSYSERR_NOERROR)

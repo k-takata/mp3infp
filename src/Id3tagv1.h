@@ -49,15 +49,22 @@ public:
 	CString GetComment();
 	void SetComment(LPCTSTR comment);
 
-	CString GenreNum2String(unsigned char cGenre);
+	static CString GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre);
+	CString GenreNum2String(unsigned char cGenre) {
+		return GenreNum2String(cGenre,m_bScmpxGenre);
+	};
 	long GenreString2Num(LPCTSTR szGenre);
 
 	DWORD Load(LPCTSTR szFileName);
 	DWORD LoadMulti(LPCTSTR szFileName);
 	DWORD Save(HWND hWnd,LPCTSTR szFileName);
 	DWORD DelTag(HWND hWnd,LPCTSTR szFileName);
-	void GetId3tag(ID3_TAG *tag);
+	static void GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre);
+	void GetId3tag(ID3_TAG *tag){GetId3tag(tag,m_bScmpxGenre);};
 	DWORD MakeTag(HWND hWnd,LPCTSTR szFileName);
+	static BOOL IsTagValid(const ID3_TAG *tag) {
+		return memcmp(tag->TagHeader,"TAG",3) == 0;
+	};
 
 private:
 	void Release();

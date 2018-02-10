@@ -240,9 +240,9 @@ void CId3tagv1::SetComment(LPCTSTR comment)
 #endif
 }
 
-CString CId3tagv1::GenreNum2String(unsigned char cGenre)
+CString CId3tagv1::GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre)
 {
-	if(!m_bScmpxGenre && (cGenre >= SCMPX_GENRE_NULL))
+	if(!bScmpxGenre && (cGenre >= SCMPX_GENRE_NULL))
 		return _T("");
 	return szId3gnr[cGenre];
 }
@@ -291,7 +291,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	ID3_TAG tag;
 	fread(&tag,1,sizeof(tag),fp);
 	fclose(fp);
-	if(strncmp("TAG",tag.TagHeader,3) != 0)
+	if(!IsTagValid(&tag))
 	{
 		return -1;
 	}
@@ -467,7 +467,7 @@ DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 		fclose(fp);
 		return -1;
 	}
-	if(strncmp("TAG",szTagTmp,3) != 0)
+	if(!IsTagValid((ID3_TAG *)szTagTmp))
 	{
 		//ID3TAG‚ªŒ©‚Â‚©‚ç‚È‚¢
 		if(fseek(fp,0,SEEK_END))
@@ -525,7 +525,7 @@ DWORD CId3tagv1::DelTag(HWND hWnd,LPCTSTR szFileName)
 		fclose(fp);
 		return -1;
 	}
-	if(strncmp("TAG",szTag,3) != 0)
+	if(!IsTagValid((ID3_TAG *)szTag))
 	{
 		fclose(fp);
 		//ID3ƒ^ƒO‚ª–³‚¢‚È‚ç‚»‚ê‚àOK
@@ -556,11 +556,11 @@ DWORD CId3tagv1::DelTag(HWND hWnd,LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-void CId3tagv1::GetId3tag(ID3_TAG *tag)
+void CId3tagv1::GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre)
 {
 	memset(tag,0x00,sizeof(ID3_TAG));
 	strncpy(tag->TagHeader,"TAG",3);
-	if(m_bScmpxGenre)
+	if(bScmpxGenre)
 		tag->Genre = SCMPX_GENRE_NULL;
 	else
 		tag->Genre = WINAMP_GENRE_NULL;

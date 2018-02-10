@@ -184,6 +184,9 @@ public:
 	DWORD Save(LPCTSTR szFileName);
 	DWORD DelTag(LPCTSTR szFileName);
 	DWORD MakeTag(LPCTSTR szFileName);
+	static BOOL IsTagValid(const ID3HEAD *head) {
+		return memcmp(head->id3des,"ID3",3) == 0;
+	};
 
 	static inline DWORD ExtractV2Size(const unsigned char size[4]) {
 		return (((DWORD )(size[0]&0x7f)<<21) | ((DWORD )(size[1]&0x7f)<<14) | ((DWORD )(size[2]&0x7f)<<7) | (DWORD )(size[3]&0x7f));
