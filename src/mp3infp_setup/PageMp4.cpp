@@ -29,7 +29,7 @@ CPageMp4::CPageMp4() : CPropertyPage(CPageMp4::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_InfotipEnable",(DWORD *)&m_bInfotipEnable,DEF_MP4_INFOTIP_ENABLE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP4_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_MP4_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp4_ColumnEnable",(DWORD *)&m_bColumnEnable,DEF_MP4_COLUMN_ENABLE);
 }

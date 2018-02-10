@@ -29,7 +29,7 @@ CPageApe::CPageApe() : CPropertyPage(CPageApe::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_InfotipEnable",(DWORD *)&m_bInfotipEnable,DEF_APE_INFOTIP_ENABLE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_APE_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_APE_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ape_ColumnEnable",(DWORD *)&m_bColumnEnable,DEF_APE_COLUMN_ENABLE);
 }

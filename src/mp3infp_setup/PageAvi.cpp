@@ -31,7 +31,7 @@ CPageAvi::CPageAvi() : CPropertyPage(CPageAvi::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_InfotipEnable",(DWORD *)&m_bInfotipEnable,TRUE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_AVI_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_AVI_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_ColumnEnable",(DWORD *)&m_bColumnEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"avi_CodecFind",(DWORD *)&m_intAviCodecFind,0);

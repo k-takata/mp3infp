@@ -29,7 +29,7 @@ CPageOgg::CPageOgg() : CPropertyPage(CPageOgg::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_InfotipEnable",(DWORD *)&m_bInfotipEnable,DEF_OGG_INFOTIP_ENABLE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_OGG_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_OGG_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ogg_ColumnEnable",(DWORD *)&m_bColumnEnable,DEF_OGG_COLUMN_ENABLE);
 }

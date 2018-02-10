@@ -30,7 +30,7 @@ CPageWma::CPageWma() : CPropertyPage(CPageWma::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_InfotipEnable",(DWORD *)&m_bInfotipEnable,TRUE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_WMA_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_WMA_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wma_ColumnEnable",(DWORD *)&m_bColumnEnable,TRUE);
 }

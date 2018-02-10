@@ -31,7 +31,7 @@ CPageWave::CPageWave() : CPropertyPage(CPageWave::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_InfotipEnable",(DWORD *)&m_bInfotipEnable,TRUE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_WAVE_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_WAVE_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_ColumnEnable",(DWORD *)&m_bColumnEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"wave_CodecFind",(DWORD *)&m_intAviCodecFind,0);

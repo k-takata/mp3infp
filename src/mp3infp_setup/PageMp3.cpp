@@ -37,7 +37,7 @@ CPageMp3::CPageMp3() : CPropertyPage(CPageMp3::IDD)
 
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP3_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_MP3_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"mp3_ColumnEnable",(DWORD *)&m_bColumnEnable,TRUE);
 }

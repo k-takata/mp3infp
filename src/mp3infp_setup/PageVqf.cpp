@@ -30,7 +30,7 @@ CPageVqf::CPageVqf() : CPropertyPage(CPageVqf::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_InfotipEnable",(DWORD *)&m_bInfotipEnable,TRUE);
 	CString strDefault;
 	strDefault.LoadString(IDS_DEF_INFOTIP_VQF_FORMAT);
-	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_InfotipFormat",(char *)(LPCSTR )strDefault);
+	m_strInfotipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_InfotipFormat",strDefault);
 	m_strInfotipInfo = LoadResString(AfxGetResourceHandle(),IDS_DEF_INFOTIP_INF_VQF_FORMAT);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"vqf_ColumnEnable",(DWORD *)&m_bColumnEnable,TRUE);
 }

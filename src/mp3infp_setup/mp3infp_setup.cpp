@@ -106,7 +106,7 @@ LONG CMp3infpSetupApp::LoadLanguage()
 	strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","c:\\progra~1\\mp3infp");
 	AddTailYenSign(strLangPath);
 	strLangPath += "language\\";
-	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Language",(char *)(LPCSTR )DEF_SETUP_MAIN_LANGUAGE);
+	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Language",DEF_SETUP_MAIN_LANGUAGE);
 	strLanguage += ".lng";
 	strLangPath += strLanguage;
 #ifdef _DEBUG
