@@ -210,7 +210,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -294,27 +294,27 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				CWnd wnd;
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('N','A','M','E',(LPCTSTR )strTmp);
+				lpcs->m_Vqf.SetField('N','A','M','E',strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('A','U','T','H',(LPCTSTR )strTmp);
+				lpcs->m_Vqf.SetField('A','U','T','H',strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_FILE));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('F','I','L','E',(LPCTSTR )strTmp);
+				lpcs->m_Vqf.SetField('F','I','L','E',strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COP));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('(','c',')',' ',(LPCTSTR )strTmp);
+				lpcs->m_Vqf.SetField('(','c',')',' ',strTmp);
 				wnd.Detach();
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
 				wnd.GetWindowText(strTmp);
-				lpcs->m_Vqf.SetField('C','O','M','T',(LPCTSTR )strTmp);
+				lpcs->m_Vqf.SetField('C','O','M','T',strTmp);
 				wnd.Detach();
 
 				//タイムスタンプを保存

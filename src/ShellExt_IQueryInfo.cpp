@@ -17,49 +17,49 @@ TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_mp3();
+		strInfoTip += GetInfoTip_mp3();
 		break;
 	case WAVE:
 		if(!m_bWaveInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_wave();
+		strInfoTip += GetInfoTip_wave();
 		break;
 	case AVI:
 		if(!m_bAviInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_avi();
+		strInfoTip += GetInfoTip_avi();
 		break;
 	case VQF:
 		if(!m_bVqfInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_vqf();
+		strInfoTip += GetInfoTip_vqf();
 		break;
 	case WMA:
 		if(!m_bWmaInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_wma();
+		strInfoTip += GetInfoTip_wma();
 		break;
 	case M3U:
 		if(!m_bM3uInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_m3u();
+		strInfoTip += GetInfoTip_m3u();
 		break;
 	case OGG:
 		if(!m_bOggInfotipEnable)
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_ogg();
+		strInfoTip += GetInfoTip_ogg();
 		break;
 	case APE:
 		TRACE(_T("APE\n"));
@@ -67,7 +67,7 @@ TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_ape();
+		strInfoTip += GetInfoTip_ape();
 		break;
 	case MP4:
 		TRACE(_T("MP4\n"));
@@ -75,7 +75,7 @@ TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 		{
 			return S_FALSE;
 		}
-		strInfoTip += (LPCTSTR )GetInfoTip_mp4();
+		strInfoTip += GetInfoTip_mp4();
 		break;
 	case UNKNOWN:
 	default:
@@ -180,12 +180,12 @@ CString CShellExt::GetInfoTip_mp3()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_mp3info.GetFormatString();
+				strInfoTip += m_mp3info.GetFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_mp3info.GetTimeString();
+				strInfoTip += m_mp3info.GetTimeString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TYPE"),4) == 0)
 			{
@@ -222,7 +222,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetTitle();
+					strInfoTip += m_Id3tagv2.GetTitle();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -231,11 +231,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetNAM();
+					strInfoTip += m_Rmp3.GetNAM();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetTitle();
+					strInfoTip += m_Id3tagv1.GetTitle();
 				}
 				else
 				{
@@ -247,7 +247,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetArtist();
+					strInfoTip += m_Id3tagv2.GetArtist();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -256,11 +256,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetART();
+					strInfoTip += m_Rmp3.GetART();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetArtist();
+					strInfoTip += m_Id3tagv1.GetArtist();
 				}
 				else
 				{
@@ -272,7 +272,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetAlbum();
+					strInfoTip += m_Id3tagv2.GetAlbum();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -281,11 +281,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetPRD();
+					strInfoTip += m_Rmp3.GetPRD();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetAlbum();
+					strInfoTip += m_Id3tagv1.GetAlbum();
 				}
 				else
 				{
@@ -297,7 +297,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetComment();
+					strInfoTip += m_Id3tagv2.GetComment();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -306,11 +306,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetCMT();
+					strInfoTip += m_Rmp3.GetCMT();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetComment();
+					strInfoTip += m_Id3tagv1.GetComment();
 				}
 				else
 				{
@@ -322,7 +322,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetYear();
+					strInfoTip += m_Id3tagv2.GetYear();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -331,11 +331,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetCRD();
+					strInfoTip += m_Rmp3.GetCRD();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetYear();
+					strInfoTip += m_Id3tagv1.GetYear();
 				}
 				else
 				{
@@ -347,7 +347,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetGenre();
+					strInfoTip += m_Id3tagv2.GetGenre();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -356,11 +356,11 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetGNR();
+					strInfoTip += m_Rmp3.GetGNR();
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetGenre();
+					strInfoTip += m_Id3tagv1.GetGenre();
 				}
 				else
 				{
@@ -372,7 +372,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 4;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetTrackNo();
+					strInfoTip += m_Id3tagv2.GetTrackNo();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -385,7 +385,7 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Id3tagv1.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv1.GetTrackNo();
+					strInfoTip += m_Id3tagv1.GetTrackNo();
 				}
 				else
 				{
@@ -398,7 +398,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetCopyright();
+					strInfoTip += m_Id3tagv2.GetCopyright();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -406,7 +406,7 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetCOP();
+					strInfoTip += m_Rmp3.GetCOP();
 				}
 				else
 				{
@@ -418,7 +418,7 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv2.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Id3tagv2.GetEncoder();
+					strInfoTip += m_Id3tagv2.GetEncoder();
 				}
 				else if(m_Ape.IsEnable())
 				{
@@ -426,7 +426,7 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetSFT();
+					strInfoTip += m_Rmp3.GetSFT();
 				}
 				else
 				{
@@ -447,7 +447,7 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetSRC();
+					strInfoTip += m_Rmp3.GetSRC();
 				}
 				else
 				{
@@ -467,7 +467,7 @@ CString CShellExt::GetInfoTip_mp3()
 				}
 				else if(m_Rmp3.IsEnable())
 				{
-					strInfoTip += (LPCTSTR )m_Rmp3.GetENG();
+					strInfoTip += m_Rmp3.GetENG();
 				}
 				else
 				{
@@ -634,7 +634,7 @@ CString CShellExt::GetInfoTip_wave()
 				i += 3;
 				if(strFormat.GetLength() == 0)
 				{
-					GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
+					GetWaveAudioFormat(m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -647,7 +647,7 @@ CString CShellExt::GetInfoTip_wave()
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
+					GetWaveAudioFormat(m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -803,7 +803,7 @@ CString CShellExt::GetInfoTip_avi()
 				i += 3;
 				if(strAudioFormat.GetLength() == 0)
 				{
-					GetAviFormat((LPCTSTR )m_strSelectFile,
+					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -819,7 +819,7 @@ CString CShellExt::GetInfoTip_avi()
 				i += 3;
 				if(strVideoFormat.GetLength() == 0)
 				{
-					GetAviFormat((LPCTSTR )m_strSelectFile,
+					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -836,7 +836,7 @@ CString CShellExt::GetInfoTip_avi()
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetAviFormat((LPCTSTR )m_strSelectFile,
+					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -910,7 +910,7 @@ CString CShellExt::GetInfoTip_avi()
 				i += 3;
 				if(strTime.GetLength() == 0)
 				{
-					GetAviFormat((LPCTSTR )m_strSelectFile,
+					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
 									strVideoFormat,
 									strStreamFormat,
@@ -996,37 +996,37 @@ CString CShellExt::GetInfoTip_vqf()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetFormatString();
+				strInfoTip += m_Vqf.GetFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetTimeString();
+				strInfoTip += m_Vqf.GetTimeString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetField('N','A','M','E');
+				strInfoTip += m_Vqf.GetField('N','A','M','E');
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("IART"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetField('A','U','T','H');
+				strInfoTip += m_Vqf.GetField('A','U','T','H');
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("ICMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetField('C','O','M','T');
+				strInfoTip += m_Vqf.GetField('C','O','M','T');
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("ICOP"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetField('(','c',')',' ');
+				strInfoTip += m_Vqf.GetField('(','c',')',' ');
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("FILE"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR)m_Vqf.GetField('F','I','L','E');
+				strInfoTip += m_Vqf.GetField('F','I','L','E');
 			}
 		}
 		else
@@ -1104,17 +1104,17 @@ CString CShellExt::GetInfoTip_wma()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Wma.GetAudioFormatString();
+				strInfoTip += m_Wma.GetAudioFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Wma.GetVideoFormatString();
+				strInfoTip += m_Wma.GetVideoFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Wma.GetTimeString();
+				strInfoTip += m_Wma.GetTimeString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
@@ -1187,7 +1187,7 @@ CString CShellExt::GetInfoTip_m3u()
 		{
 			break;
 		}
-		if(_tcsncmp((LPCTSTR )strTmp,_T("#"),1) == 0)
+		if(_tcsncmp(strTmp,_T("#"),1) == 0)
 		{
 			continue;
 		}
@@ -1276,12 +1276,12 @@ CString CShellExt::GetInfoTip_ogg()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Ogg.GetAudioFormatString();
+				strInfoTip += m_Ogg.GetAudioFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Ogg.GetTimeString();
+				strInfoTip += m_Ogg.GetTimeString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
@@ -1402,12 +1402,12 @@ CString CShellExt::GetInfoTip_ape()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Monkeys.GetAudioFormatString();
+				strInfoTip += m_Monkeys.GetAudioFormatString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Monkeys.GetTimeString();
+				strInfoTip += m_Monkeys.GetTimeString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{
@@ -1528,12 +1528,12 @@ CString CShellExt::GetInfoTip_mp4()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Mp4.GetAudioInfoString();
+				strInfoTip += m_Mp4.GetAudioInfoString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
-				strInfoTip += (LPCTSTR )m_Mp4.GetVideoInfoString();
+				strInfoTip += m_Mp4.GetVideoInfoString();
 			}
 			else if(_tcsncmp(&pFormatString[i],_T("INAM"),4) == 0)
 			{

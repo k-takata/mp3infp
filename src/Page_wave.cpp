@@ -143,7 +143,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		//wave
 		CString strFormat;
 		CString strTime;
-		GetWaveAudioFormat((LPCTSTR )lpcs->m_strSelectFile,
+		GetWaveAudioFormat(lpcs->m_strSelectFile,
 						lpcs->m_RiffSIF.GetStreamSize(),
 						strFormat,
 						strTime,
@@ -314,7 +314,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:

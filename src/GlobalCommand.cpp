@@ -148,7 +148,7 @@ void AddTailYenSign(LPTSTR szStr)
 
 void AddTailYenSign(CString &str)
 {
-	if(!IsTailYenSign((LPCTSTR )str))
+	if(!IsTailYenSign(str))
 	{
 		str += _T("\\");
 	}

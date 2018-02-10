@@ -313,7 +313,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:

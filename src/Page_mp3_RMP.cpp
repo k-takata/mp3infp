@@ -507,7 +507,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:

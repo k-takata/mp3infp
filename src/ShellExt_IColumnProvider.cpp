@@ -403,7 +403,7 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		strVal = m_RiffSIF.GetField('I','C','R','D');
 		break;
 	case IDX_AFMT:	//音声フォーマット
-		GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
+		GetWaveAudioFormat(m_strSelectFile,
 			m_RiffSIF.GetStreamSize(),
 			strFormat,
 			strTime,
@@ -412,7 +412,7 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		break;
 //	case IDX_VFMT:	//映像フォーマット
 	case IDX_TIME:	//時間
-		GetWaveAudioFormat((LPCTSTR )m_strSelectFile,
+		GetWaveAudioFormat(m_strSelectFile,
 			m_RiffSIF.GetStreamSize(),
 			strFormat,
 			strTime,
@@ -485,7 +485,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//「なし」
 		if(strAudioFormat.GetLength() == 0)
 		{
-			GetAviFormat((LPCTSTR )m_strSelectFile,
+			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -498,7 +498,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_VFMT:	//映像フォーマット
 		if(strVideoFormat.GetLength() == 0)
 		{
-			GetAviFormat((LPCTSTR )m_strSelectFile,
+			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -513,7 +513,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_TIME:	//時間
 		if(strTime.GetLength() == 0)
 		{
-			GetAviFormat((LPCTSTR )m_strSelectFile,
+			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,
@@ -526,7 +526,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	case IDX_AVI_VER:	//AVIバージョン
 		if(strTime.GetLength() == 0)
 		{
-			GetAviFormat((LPCTSTR )m_strSelectFile,
+			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
 							strVideoFormat,
 							strStreamFormat,

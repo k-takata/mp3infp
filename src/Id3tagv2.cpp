@@ -1014,7 +1014,6 @@ CString CId3tagv2::GetGenre()
 	//ƒWƒƒƒ“ƒ‹
 	CString strGenre = GetId3String("TCON");
 	int genre = -1;
-//	unsigned char *data = (unsigned char *)(LPCSTR )strGenre;
 	//Å‰‚Ì()‚ğ“Ç‚İ”ò‚Î‚·ˆ—	Fix 2001-05-20
 	while(1)
 	{

@@ -153,7 +153,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 			*(int *)(&(txtData[writeOffset])) = strTmp.GetLength();
 			writeOffset += sizeof(int);
 		}
-		lstrcpy((LPTSTR)&(txtData[writeOffset]),(LPCTSTR )strTmp);
+		lstrcpy((LPTSTR)&(txtData[writeOffset]),strTmp);
 		writeOffset += (strTmp.GetLength() + 1) * sizeof(TCHAR);
 	}
 	*(int *)(&(txtData[writeOffset])) = 0;
@@ -187,7 +187,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 	TCHAR *txtData = (TCHAR *)GlobalLock(hg);
 	lstrcpy(txtData,_T(""));
 				
-	lstrcat(txtData,(LPCTSTR )strFileName);
+	lstrcat(txtData,strFileName);
 	lstrcat(txtData,_T("\r\n"));
 
 	for(i=0; editWndArray[i]!=0; i++)
@@ -197,7 +197,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			wnd.Attach(GetDlgItem(hDlg,staticWndArray[i]));
 			wnd.GetWindowText(strTmp);
 			wnd.Detach();
-			lstrcat(txtData,(LPCTSTR )strTmp);
+			lstrcat(txtData,strTmp);
 			lstrcat(txtData,_T("\t"));
 		}
 
@@ -211,7 +211,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 				wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lstrcat(txtData,(LPCTSTR )strTmp);
+				lstrcat(txtData,strTmp);
 				if(staticWndArray[i+1] != -1)	// トラック番号など第二値を / 区切りする
 				{
 					lstrcat(txtData,_T("\r\n"));
@@ -233,7 +233,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CStrin
 			{
 				strTmp = _T("No\r\n");
 			}
-			lstrcat(txtData,(LPCTSTR )strTmp);
+			lstrcat(txtData,strTmp);
 		}
 	}
 
@@ -253,7 +253,7 @@ void OpenSetupPage(HWND hwnd, int pagenum)
 	CString strParam;
 	strParam.Format(_T("%d"),pagenum);
 
-	ShellExecute(hwnd,_T("open"),(LPCTSTR)strSetupPath,(LPCTSTR)strParam,NULL,SW_SHOW);
+	ShellExecute(hwnd,_T("open"),strSetupPath,strParam,NULL,SW_SHOW);
 }
 
 CShellExt::CShellExt()
@@ -499,7 +499,7 @@ BOOL CShellExt::Load()
 		}
 	}
 
-	switch(GetFileType((LPCTSTR )m_strSelectFile))
+	switch(GetFileType(m_strSelectFile))
 	{
 	case MP3:
 		if(!m_bMp3PropEnable && !m_bMp3InfotipEnable && !m_bMp3ColumnEnable)
@@ -708,7 +708,7 @@ void CShellExt::ConfigLoad()
 	m_strRmpSoft = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_RmpSoft"),SOFT_NAME);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_InfotipEnable"),(DWORD *)&m_bMp3InfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP3_FORMAT);
-	m_strMp3InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strMp3InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp3_ColumnEnable"),(DWORD *)&m_bMp3ColumnEnable,TRUE);
 	m_bMp3ApeTagDisable = FALSE;
 
@@ -716,7 +716,7 @@ void CShellExt::ConfigLoad()
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_PropEnable"),(DWORD *)&m_bWavePropEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_InfotipEnable"),(DWORD *)&m_bWaveInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_WAVE_FORMAT);
-	m_strWaveInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strWaveInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_ColumnEnable"),(DWORD *)&m_bWaveColumnEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wave_CodecFind"),(DWORD *)&m_iWaveCodecFind,0);
 	m_iWaveCodecFind = 2;	// 2004-01-21 コーデック取得方法は内蔵辞書固定
@@ -725,7 +725,7 @@ void CShellExt::ConfigLoad()
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_PropEnable"),(DWORD *)&m_bAviPropEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_InfotipEnable"),(DWORD *)&m_bAviInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_AVI_FORMAT);
-	m_strAviInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strAviInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_ColumnEnable"),(DWORD *)&m_bAviColumnEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("avi_CodecFind"),(DWORD *)&m_iAviCodecFind,0);
 	m_iAviCodecFind = 2;	// 2004-01-21 コーデック取得方法は内蔵辞書固定
@@ -734,14 +734,14 @@ void CShellExt::ConfigLoad()
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_PropEnable"),(DWORD *)&m_bVqfPropEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_InfotipEnable"),(DWORD *)&m_bVqfInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_VQF_FORMAT);
-	m_strVqfInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strVqfInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("vqf_ColumnEnable"),(DWORD *)&m_bVqfColumnEnable,TRUE);
 	
 	//(wma)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_PropEnable"),(DWORD *)&m_bWmaPropEnable,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_InfotipEnable"),(DWORD *)&m_bWmaInfotipEnable,TRUE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_WMA_FORMAT);
-	m_strWmaInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strWmaInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("wma_ColumnEnable"),(DWORD *)&m_bWmaColumnEnable,TRUE);
 	
 	//(m3u)
@@ -753,21 +753,21 @@ void CShellExt::ConfigLoad()
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_PropEnable"),(DWORD *)&m_bOggPropEnable,DEF_OGG_PROP_ENABLE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_InfotipEnable"),(DWORD *)&m_bOggInfotipEnable,DEF_OGG_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_OGG_FORMAT);
-	m_strOggInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strOggInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ogg_ColumnEnable"),(DWORD *)&m_bOggColumnEnable,DEF_OGG_COLUMN_ENABLE);
 
 	//(ape)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_PropEnable"),(DWORD *)&m_bApePropEnable,DEF_APE_PROP_ENABLE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_InfotipEnable"),(DWORD *)&m_bApeInfotipEnable,DEF_APE_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_APE_FORMAT);
-	m_strApeInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strApeInfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ape_ColumnEnable"),(DWORD *)&m_bApeColumnEnable,DEF_APE_COLUMN_ENABLE);
 	
 	//(mp4)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_PropEnable"),(DWORD *)&m_bMp4PropEnable,DEF_MP4_PROP_ENABLE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_InfotipEnable"),(DWORD *)&m_bMp4InfotipEnable,DEF_MP4_INFOTIP_ENABLE);
 	strDefault.LoadString(IDS_DEF_INFOTIP_MP4_FORMAT);
-	m_strMp4InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_InfotipFormat"),(LPCTSTR )strDefault);
+	m_strMp4InfoTipFormat = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_InfotipFormat"),strDefault);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("mp4_ColumnEnable"),(DWORD *)&m_bMp4ColumnEnable,DEF_MP4_COLUMN_ENABLE);
 	
 }

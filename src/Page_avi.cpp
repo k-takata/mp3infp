@@ -138,7 +138,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		CString strTime;
 		BOOL bAvi2;
 
-		GetAviFormat((LPCTSTR )lpcs->m_strSelectFile,
+		GetAviFormat(lpcs->m_strSelectFile,
 						strAudioFormat,
 						strVideoFormat,
 						strStreamFormat,
@@ -288,7 +288,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:

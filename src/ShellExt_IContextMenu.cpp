@@ -90,7 +90,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 	switch(LOWORD(lpcmi->lpVerb)){
 	case 0:
 		
-		mp3infp_ViewProp(lpcmi->hwnd,(LPCTSTR )m_strSelectFile,0);
+		mp3infp_ViewProp(lpcmi->hwnd,m_strSelectFile,0);
 //		MessageBox(NULL,_T("mp3infp"),0,0);
 		break;
 	}

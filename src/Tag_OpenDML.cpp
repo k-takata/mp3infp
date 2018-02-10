@@ -50,7 +50,7 @@ CString CTag_OpenDML::GetField(char id1,char id2,char id3,char id4)
 	{
 		return _T("");
 	}
-	return (LPCTSTR )p->second;
+	return p->second;
 }
 
 DWORD CTag_OpenDML::GetTotalFieldSize()

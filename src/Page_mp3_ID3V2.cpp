@@ -482,7 +482,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 				
 				// Winamp‚ðˆê’U’âŽ~
-/*				int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
+/*				int nowPlaying = IsPlayingWinamp(lpcs->m_strSelectFile);
 				int nowPlayPos = 0;
 				if(nowPlaying)
 				{
@@ -502,7 +502,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winamp‚ðÄŠJ
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();
@@ -592,7 +592,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					}
 					lpcs->m_Id3tagv2.SetUnSynchronization(TRUE);
 					// Winamp‚ðˆê’U’âŽ~
-/*					int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
+/*					int nowPlaying = IsPlayingWinamp(lpcs->m_strSelectFile);
 					int nowPlayPos = 0;
 					if(nowPlaying)
 					{
@@ -611,7 +611,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					// Winamp‚ðÄŠJ
 /*					if(nowPlaying)
 					{
-						PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+						PlayWinamp(hDlg,lpcs->m_strSelectFile);
 						if(nowPlaying == 3)
 						{
 							PauseWinamp();
@@ -687,7 +687,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ð•Û‘¶
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 				// Winamp‚ðˆê’U’âŽ~
-/*				int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
+/*				int nowPlaying = IsPlayingWinamp(lpcs->m_strSelectFile);
 				int nowPlayPos = 0;
 				if(nowPlaying)
 				{
@@ -699,7 +699,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winamp‚ðÄŠJ
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();
@@ -763,7 +763,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:
@@ -987,7 +987,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
 				// Winamp‚ðˆê’U’âŽ~
-/*				int nowPlaying = IsPlayingWinamp((char *)(LPCTSTR )lpcs->m_strSelectFile);
+/*				int nowPlaying = IsPlayingWinamp(lpcs->m_strSelectFile);
 				int nowPlayPos = 0;
 				if(nowPlaying)
 				{
@@ -1006,7 +1006,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 				// Winamp‚ðÄŠJ
 /*				if(nowPlaying)
 				{
-					PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+					PlayWinamp(hDlg,lpcs->m_strSelectFile);
 					if(nowPlaying == 3)
 					{
 						PauseWinamp();

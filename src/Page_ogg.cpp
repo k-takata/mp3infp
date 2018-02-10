@@ -223,7 +223,7 @@ static void DispInfoExt(HWND hDlg,CShellExt *lpcs)
 				continue;
 			}
 //			TRACE(_T("OGG %s %s\n"),strName,strValue);
-			COggExt *oggExt = new COggExt((LPCTSTR )strName,(LPCTSTR )strValue);
+			COggExt *oggExt = new COggExt(strName,strValue);
 			ListBox_AddString(GetDlgItem(hDlg,IDC_LIST_VALUE),oggExt->Get1LineDisp());
 			ListBox_SetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),items,oggExt);
 			items++;
@@ -310,7 +310,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				CDlg_ogg_exttag dlg;
 				if(dlg.DoModal() == IDOK)
 				{
-					COggExt *oggExt = new COggExt((LPCTSTR )dlg.m_strName,(LPCTSTR )dlg.m_strValue);
+					COggExt *oggExt = new COggExt(dlg.m_strName,dlg.m_strValue);
 					long index = ListBox_AddString(GetDlgItem(hDlg,IDC_LIST_VALUE),oggExt->Get1LineDisp());
 					if(index == LB_ERR)
 					{
@@ -362,8 +362,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				dlg.m_strValue = oggExt->GetValue();
 				if(dlg.DoModal() == IDOK)
 				{
-					oggExt->SetName((LPCTSTR )dlg.m_strName);
-					oggExt->SetValue((LPCTSTR )dlg.m_strValue);
+					oggExt->SetName(dlg.m_strName);
+					oggExt->SetValue(dlg.m_strValue);
 					ListBox_DeleteString(GetDlgItem(hDlg,IDC_LIST_VALUE),item);
 					ListBox_InsertString(GetDlgItem(hDlg,IDC_LIST_VALUE),item,oggExt->Get1LineDisp());
 					ListBox_SetItemData(GetDlgItem(hDlg,IDC_LIST_VALUE),item,oggExt);
@@ -396,7 +396,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			break;
 		case IDC_BUTTON_PLAY:
 			{
-				PlayWinamp(hDlg,(LPCTSTR )lpcs->m_strSelectFile);
+				PlayWinamp(hDlg,lpcs->m_strSelectFile);
 				break;
 			}
 		case IDC_BUTTON_PAUSE:

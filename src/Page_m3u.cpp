@@ -32,7 +32,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 		strEdit += strTmp;
 		strEdit += _T("\r\n");
 	}
-	SetDlgItemText(hDlg,IDC_EDIT_LIST,(LPCTSTR )strEdit);
+	SetDlgItemText(hDlg,IDC_EDIT_LIST,strEdit);
 
 	if(lpcs->m_bPropAOT)
 	{
@@ -282,7 +282,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 						break;
 					}
 					strLine = CString((LPCTSTR )strTmp+start,end-start);
-					lpcs->m_M3u.Add((LPCTSTR )strLine);
+					lpcs->m_M3u.Add(strLine);
 					TRACE(_T("lpcs->m_M3u.Add(%s)\n"),strLine);
 					
 					start = end + 2;

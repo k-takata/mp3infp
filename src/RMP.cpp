@@ -455,7 +455,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
-		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(LPCSTR )id3tag,sizeof(id3tag));
+		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),id3tag,sizeof(id3tag));
 
 	//サイズの確定
 	if(mmioAscend(hmmio,&mmckOutinfoSubchunk,0) != MMSYSERR_NOERROR)
@@ -913,7 +913,7 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 	WriteStringChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','M','P','3'),m_strMP3,m_strMP3.GetLength()+1);
 	//IID3 ID3V1 TAG
 	if(m_bHasId3tag)
-		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),(LPCSTR )id3tag,sizeof(id3tag));
+		WriteChunk(hmmio,mmckOutinfoSubchunk,mmioFOURCC('I','I','D','3'),id3tag,sizeof(id3tag));
 
 	//サイズの書き込み
 	if(mmioAscend(hmmio,&mmckOutinfoSubchunk,0) != MMSYSERR_NOERROR)
