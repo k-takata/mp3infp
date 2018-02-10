@@ -83,6 +83,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			{
 				bApe = TRUE;
 			}
+#if 0
 			// apeƒtƒbƒ^‚ð’T‚·2
 			SetFilePointer(hFile,-(LONG)sizeof(footer)-128,NULL,FILE_END);
 			// APE_TAG_FOOTER‚ð“Ç‚Ý‚Æ‚é
@@ -95,6 +96,7 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 			{
 				bApe = TRUE;
 			}
+#endif
 			break;
 		}
 		CloseHandle(hFile);
