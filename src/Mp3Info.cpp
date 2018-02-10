@@ -79,7 +79,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 	long lDataPtr = 0;	//mp3ストリームの開始位置
 	ULONG dataSize = 0;
 	//RMP形式のストリームサイズを取得する==========================
-	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT);
 	if(hmmio)
 	{
 		//RMP3ファイルの確認

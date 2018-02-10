@@ -1194,7 +1194,7 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		return FALSE;
 	}
 
-	*buf = (LPTSTR)(LPCTSTR )strRet;
+	*buf = const_cast<LPTSTR>((LPCTSTR )strRet);
 
 	return TRUE;
 }

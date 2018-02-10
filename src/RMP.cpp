@@ -92,7 +92,7 @@ DWORD CRMP::Load(LPCTSTR szFileName)
 	Release();
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT);
 	if(!hmmio)
 	{
 		return -1;
@@ -313,7 +313,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 	CloseHandle(hFile);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((LPTSTR )szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT);
 	if(!hmmio)
 	{
 		return -1;
@@ -383,7 +383,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 	fclose(fp);
 
 	// バッファ付きI/Oを使ってファイルを開く
-	if((hmmio = mmioOpen((LPTSTR )szFileName,NULL,MMIO_COMPAT | MMIO_READWRITE)) == NULL)
+	if((hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT | MMIO_READWRITE)) == NULL)
 	{
 		return -1;
 	}
@@ -477,7 +477,7 @@ DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	// バッファ付きI/Oを使ってファイルを開く
-	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT);
 	if(hmmio == NULL)
 	{
 		return -1;

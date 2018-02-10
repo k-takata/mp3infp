@@ -1585,7 +1585,7 @@ void GetWaveAudioFormat(IN LPCTSTR szFileName,
 	//ÅuïsñæÅv
 	strTime.LoadString(IDS_UNKNOWN);
 	
-	HMMIO hmmio = mmioOpen((LPTSTR)szFileName,NULL,MMIO_COMPAT);
+	HMMIO hmmio = mmioOpen(const_cast<LPTSTR>(szFileName),NULL,MMIO_COMPAT);
 	if(!hmmio)
 	{
 		return;
