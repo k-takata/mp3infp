@@ -284,11 +284,6 @@ DWORD CId3Frame::GetDataOffset() const
 	return offset;
 }
 
-bool CId3Frame::IsTextFrame() const
-{
-	return (m_dwId & 0xff) == 'T';
-}
-
 bool CId3Frame::IsNumericFrame() const
 {
 	for (int i = 0; numeric_frames[i] != NULL; i++) {

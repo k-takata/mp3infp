@@ -68,7 +68,7 @@ public:
 		m_dwSize = size;
 	};
 	DWORD GetDataOffset() const;
-	bool IsTextFrame() const;
+	bool IsTextFrame() const {return (m_dwId & 0xff) == 'T';};
 	bool IsNumericFrame() const;
 
 	enum Flags {
