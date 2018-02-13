@@ -43,7 +43,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 {
 	if(!OpenClipboard(hDlg))
 	{
-		AfxMessageBox(_T("clipboad fail!"));
+		AfxMessageBox(_T("clipboard fail!"));
 		return;
 	}
 
