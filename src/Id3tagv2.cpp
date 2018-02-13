@@ -1321,9 +1321,16 @@ retry:
 
 	DWORD dwRemainSize = dwId3Size;
 	//ägí£ÉwÉbÉ_Çì«Ç›îÚÇŒÇ∑(ID3v2.2Ç…ÇÕë∂ç›ÇµÇ»Ç¢)
-	if((ver != 0x0200) && (head.flag & HDR_FLAG_EXT_HEADER))
+	if(head.flag & HDR_FLAG_EXT_HEADER)
 	{
-		if(ver < 0x400)
+		if(m_wVer < 0x300)
+		{
+			// This flag is used for encryption in ID3v2.2.
+			free(buf);
+			CloseHandle(hFile);
+			return -1;
+		}
+		else if(m_wVer < 0x400)
 		{
 			dwRemainSize -= ExtractI4(buf) + 4;
 		}
