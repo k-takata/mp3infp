@@ -70,7 +70,7 @@ ManifestDPIAware true
 !insertmacro MUI_LANGUAGE "Japanese"
 
 LangString LangRegKey ${LANG_ENGLISH} "default"
-LangString MP3INFP_SETUP_NAME ${LANG_ENGLISH} "mp3infp setup"
+LangString MP3INFP_CONFIG_NAME ${LANG_ENGLISH} "mp3infp configuration"
 
 !include "Japanese.nsh"
 ;!include "..\lang\Chinese_Traditional.nsh"
@@ -105,9 +105,11 @@ Section "main files" SecCopyUI
 		Delete /REBOOTOK "$INSTDIR\mp3infp_regist_x64.exe"
 	${EndIf}
 	Delete /REBOOTOK "$INSTDIR\mp3infp_regist.exe"
+	Delete /REBOOTOK "$INSTDIR\mp3infp_setup.exe"
+	Delete "$SMPROGRAMS\${PRODUCT}\mp3infp setup.lnk"
 
-	; (Should we install x64 version of mp3infp_setup.exe on 64-bit OS?)
-	File "..\x86\mp3infp_setup.exe"
+	; (Should we install x64 version of mp3infp_config.exe on 64-bit OS?)
+	File "..\x86\mp3infp_config.exe"
 	File "..\mp3infp_eng.txt"
 	File "..\mp3infp.txt"
 
@@ -178,8 +180,8 @@ Section "main files" SecCopyUI
 
 	;Start menu
 	CreateDirectory "$SMPROGRAMS\${PRODUCT}"
-	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk" \
-			"$INSTDIR\mp3infp_setup.exe"
+	CreateShortcut "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_CONFIG_NAME).lnk" \
+			"$INSTDIR\mp3infp_config.exe"
 
 	;[1] mp3infp_regist.exe (Obsolete)
 	; Delete old registory values.
@@ -194,7 +196,7 @@ Section "main files" SecCopyUI
 	${If} ${RunningX64}
 		SetRegView 64
 	${EndIf}
-	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" '"$INSTDIR\mp3infp_setup.exe",0'
+	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayIcon" '"$INSTDIR\mp3infp_config.exe",0'
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayName" "${PRODUCT_FULL}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "DisplayVersion" "${VERSION}"
 	WriteRegStr HKLM "${UNINST_REG_KEY}" "Publisher" "${PUBLISHER}"
@@ -256,7 +258,7 @@ Section "Uninstall"
 	!insertmacro UnInstallLib REGDLL NOTSHARED REBOOT_NOTPROTECTED \
 			"$SYSDIR\mp3infp.dll"
 
-	Delete /REBOOTOK "$INSTDIR\mp3infp_setup.exe"
+	Delete /REBOOTOK "$INSTDIR\mp3infp_config.exe"
 	Delete /REBOOTOK "$INSTDIR\mp3infp.txt"
 	Delete /REBOOTOK "$INSTDIR\mp3infp_eng.txt"
 	Delete /REBOOTOK "$INSTDIR\language\Japanese.chm"
@@ -271,7 +273,7 @@ Section "Uninstall"
 	RMDir "$INSTDIR"
 
 	;Start menu
-	Delete "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_SETUP_NAME).lnk"
+	Delete "$SMPROGRAMS\${PRODUCT}\$(MP3INFP_CONFIG_NAME).lnk"
 	RMDir "$SMPROGRAMS\${PRODUCT}"
 
 	; [1]

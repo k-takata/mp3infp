@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "mp3infp_setup.h"
+#include "mp3infp_config.h"
 #include "SetupProperty.h"
 
 #include "PageMain.h"

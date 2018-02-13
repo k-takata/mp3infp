@@ -1,4 +1,4 @@
-TARGETNAME=mp3infp_setup
+TARGETNAME=mp3infp_config
 
 TARGETPATH=obj
 
@@ -17,7 +17,7 @@ INCLUDES=$(DDK_INC_PATH);$(MFC_INC_PATH)
 
 
 SOURCES=\
-	mp3infp_setup.cpp \
+	mp3infp_config.cpp \
 	PageApe.cpp \
 	PageAvi.cpp \
 	PageM3u.cpp \
@@ -31,7 +31,7 @@ SOURCES=\
 	SetupProperty.cpp \
 	..\GlobalCommand.cpp \
 	..\RegAccess.cpp \
-	mp3infp_setup.rc
+	mp3infp_config.rc
 #	StdAfx.cpp
 
 #BUILD_ALLOW_COMPILER_WARNINGS=1

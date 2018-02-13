@@ -1,4 +1,4 @@
-// mp3infp_setup.h : MP3INFP_SETUP アプリケーションのメイン ヘッダー ファイルです。
+// mp3infp_config.h : MP3INFP_CONFIG アプリケーションのメイン ヘッダー ファイルです。
 //
 
 #if !defined(AFX_MP3INFP_CPL_H__BE5BCB1F_0339_4A80_AA8C_365A4C87F21F__INCLUDED_)
@@ -17,27 +17,27 @@
 #include <windowsx.h>
 
 /////////////////////////////////////////////////////////////////////////////
-// CMp3infpSetupApp
+// CMp3infpConfigApp
 // このクラスの動作の定義に関しては mp3infp_cpl.cpp ファイルを参照してください。
 //
 
-class CMp3infpSetupApp : public CWinApp
+class CMp3infpConfigApp : public CWinApp
 {
 public:
-	CMp3infpSetupApp();
-	virtual ~CMp3infpSetupApp();
+	CMp3infpConfigApp();
+	virtual ~CMp3infpConfigApp();
 	LONG LoadLanguage();
 
 	HINSTANCE m_hResource;
 
 // オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
-	//{{AFX_VIRTUAL(CMp3infpSetupApp)
+	//{{AFX_VIRTUAL(CMp3infpConfigApp)
 	public:
 	virtual BOOL InitInstance();
 	//}}AFX_VIRTUAL
 
-	//{{AFX_MSG(CMp3infpSetupApp)
+	//{{AFX_MSG(CMp3infpConfigApp)
 		// メモ -  ClassWizard はこの位置にメンバ関数を追加または削除します。
 		//         この位置に生成されるコードを編集しないでください。
 	//}}AFX_MSG

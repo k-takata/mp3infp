@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
-// Used by mp3infp_setup.rc
+// Used by mp3infp_config.rc
 //
 #define IDD_DIALOG_OGG_EXTTAG           100
 #define IDD_PAGE_APE                    101

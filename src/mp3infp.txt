@@ -50,7 +50,7 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 　Windowsのシェル拡張コンポーネント。mp3infpの本体です。
 2.mp3infp.txt
 　今見ているファイルです。
-3.mp3infp_setup.exe
+3.mp3infp_config.exe
 　mp3infpの設定を行います。
 4.Japanese.chm
 　日本語ヘルプファイルです。(v2.54a 時点)

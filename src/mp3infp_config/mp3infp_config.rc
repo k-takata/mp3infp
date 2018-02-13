@@ -50,7 +50,7 @@ BEGIN
     "LANGUAGE 17, 1\r\n"
     "#pragma code_page(932)\r\n"
     "#endif //_WIN32\r\n"
-    "#include ""res\\mp3infp_setup.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""res\\mp3infp_config.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
     "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
     "#endif\r\n"
     "\0"
@@ -361,7 +361,7 @@ IDI_ICON1               ICON    DISCARDABLE     "res\\mp3infp.ico"
 // 24
 //
 
-1	24      MOVEABLE PURE   "res\\mp3infp_setup.exe.manifest"
+1	24      MOVEABLE PURE   "res\\mp3infp_config.exe.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -371,7 +371,7 @@ IDI_ICON1               ICON    DISCARDABLE     "res\\mp3infp.ico"
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which pushes in LIST-INFO)."
-    IDS_CPL_CAPTION         "mp3infp setup"
+    IDS_CPL_CAPTION         "mp3infp configuration"
     IDS_CPL_NAME            "mp3infp"
     IDS_INFOTIP_MAXLINE_OVER "(It omits after 30 line)"
     IDS_INFOTIP_NOTINFO     "(No tag information)"
@@ -543,7 +543,7 @@ END
 LANGUAGE 17, 1
 #pragma code_page(932)
 #endif //_WIN32
-#include "res\mp3infp_setup.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "res\mp3infp_config.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
 #include "afxres.rc"          // 標準のコンポーネント
 #endif
 

@@ -325,7 +325,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wma(HWND hDlg,UINT uMessage,WPARAM wParam,L
 			regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("PropAOT"),(DWORD )lpcs->m_bPropAOT);
 			break;
 		case IDC_SETUP:
-			OpenSetupPage(hDlg,6);
+			OpenConfigPage(hDlg,6);
 			break;
 		case IDC_HELPVIEW:
 			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));

@@ -3,7 +3,7 @@
 <assemblyIdentity
 	version="2.54.93.0"
 	processorArchitecture="*"
-	name="mp3infp.cpl"
+	name="mp3infp_config.exe"
 />
 <description>app</description>
 <dependency>

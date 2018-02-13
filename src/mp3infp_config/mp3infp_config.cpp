@@ -1,8 +1,8 @@
-// mp3infp_setup.cpp : アプリケーション用の初期化処理の定義を行います。
+// mp3infp_config.cpp : アプリケーション用の初期化処理の定義を行います。
 //
 
 #include "stdafx.h"
-#include "mp3infp_setup.h"
+#include "mp3infp_config.h"
 
 #include "SetupProperty.h"
 
@@ -16,31 +16,31 @@ static char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CMp3infpSetupApp
+// CMp3infpConfigApp
 
-BEGIN_MESSAGE_MAP(CMp3infpSetupApp, CWinApp)
-	//{{AFX_MSG_MAP(CMp3infpSetupApp)
+BEGIN_MESSAGE_MAP(CMp3infpConfigApp, CWinApp)
+	//{{AFX_MSG_MAP(CMp3infpConfigApp)
 		// メモ - ClassWizard はこの位置にマッピング用のマクロを追加または削除します。
 		//        この位置に生成されるコードを編集しないでください。
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// 唯一の CMp3infpSetupApp オブジェクト
+// 唯一の CMp3infpConfigApp オブジェクト
 
-CMp3infpSetupApp theApp;
+CMp3infpConfigApp theApp;
 
 //DWORD g_dwCookie;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMp3infpSetupApp の構築
+// CMp3infpConfigApp の構築
 
-CMp3infpSetupApp::CMp3infpSetupApp()
+CMp3infpConfigApp::CMp3infpConfigApp()
 {
 	//comctl32.dllのロードと初期化
 	InitCommonControls();
 #ifdef _DEBUG
-	OutputDebugString("CMp3infpSetupApp::CMp3infpSetupApp()\n");
+	OutputDebugString("CMp3infpConfigApp::CMp3infpConfigApp()\n");
 #endif
 //	HtmlHelp(
 //			NULL,
@@ -50,11 +50,11 @@ CMp3infpSetupApp::CMp3infpSetupApp()
 
 }
 
-CMp3infpSetupApp::~CMp3infpSetupApp()
+CMp3infpConfigApp::~CMp3infpConfigApp()
 {
 }
 
-BOOL CMp3infpSetupApp::InitInstance()
+BOOL CMp3infpConfigApp::InitInstance()
 {
 	// 標準的な初期化処理
 	// もしこれらの機能を使用せず、実行ファイルのサイズを小さくしたけ
@@ -79,7 +79,7 @@ BOOL CMp3infpSetupApp::InitInstance()
 			&& (argv[1][1] == L'h' || argv[1][1] == L'H' || argv[1][1] == L'?'))
 		{
 			// TODO: Translate this message.
-			AfxMessageBox(_T("Usage: mp3infp_setup [page_num]\n\n  page_num: 1...10"));
+			AfxMessageBox(_T("Usage: mp3infp_config [page_num]\n\n  page_num: 1...10"));
 			return FALSE;
 		}
 		page = _wtoi(argv[1]) - 1;
@@ -97,10 +97,10 @@ BOOL CMp3infpSetupApp::InitInstance()
 	return FALSE;
 }
 
-LONG CMp3infpSetupApp::LoadLanguage()
+LONG CMp3infpConfigApp::LoadLanguage()
 {
 #ifdef _DEBUG
-	OutputDebugString("CMp3infpSetupApp::LoadLanguage()\n");
+	OutputDebugString("CMp3infpConfigApp::LoadLanguage()\n");
 #endif
 	CString strLangPath;
 	strLangPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","c:\\progra~1\\mp3infp");

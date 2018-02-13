@@ -8,7 +8,7 @@ void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable);
 void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
 HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CString strFileName);
-void OpenSetupPage(HWND hwnd, int pagenum);
+void OpenConfigPage(HWND hwnd, int pagenum);
 #define ResultFromShort(i)  ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(i)))
 #define CF_MP3INFP	_T("CF_MP3INFP")
 #define CLP_NAM	1	// ƒ^ƒCƒgƒ‹
