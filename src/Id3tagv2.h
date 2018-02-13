@@ -87,6 +87,8 @@ public:
 private:
 	DWORD LoadApicFrame(const unsigned char *pData, DWORD dwSize, WORD wVer);
 
+	void operator=(const CId3Frame &){};	// ‘ã“ü‰‰ŽZŽq
+
 	unsigned char	*m_data;
 	DWORD	m_dwId;
 	DWORD	m_dwSize;
