@@ -299,7 +299,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	m_bEnable = TRUE;
 	//î•ñ‚ÌÌŽæ
 	int i;
-	mbsncpy2((unsigned char *)m_szTitle,(unsigned char *)tag.Title,30);
+	mbsncpy2((unsigned char *)m_szTitle,(const unsigned char *)tag.Title,30);
 	m_szTitle[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -308,7 +308,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	mbsncpy2((unsigned char *)m_szArtist,(unsigned char *)tag.Artist,30);
+	mbsncpy2((unsigned char *)m_szArtist,(const unsigned char *)tag.Artist,30);
 	m_szArtist[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -317,7 +317,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	mbsncpy2((unsigned char *)m_szAlbum,(unsigned char *)tag.Album,30);
+	mbsncpy2((unsigned char *)m_szAlbum,(const unsigned char *)tag.Album,30);
 	m_szAlbum[30] = '\0';
 	for(i=29; i>=0; i--)
 	{
@@ -326,7 +326,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 		else
 			break;
 	}
-	mbsncpy2((unsigned char *)m_szYear,(unsigned char *)tag.Year,4);
+	mbsncpy2((unsigned char *)m_szYear,(const unsigned char *)tag.Year,4);
 	m_szYear[4] = '\0';
 	for(i=3; i>=0; i--)
 	{
@@ -338,7 +338,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	if((tag.Comment[28] == '\0') && tag.Track)
 	{
 		m_cTrackNo = tag.Track;
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)tag.Comment,28);
+		mbsncpy2((unsigned char *)m_szComment,(const unsigned char *)tag.Comment,28);
 		m_szComment[28] = '\0';
 		for(i=27; i>=0; i--)
 		{
@@ -351,7 +351,7 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	else
 	{
 		m_cTrackNo = 0;
-		mbsncpy2((unsigned char *)m_szComment,(unsigned char *)tag.Comment,30);
+		mbsncpy2((unsigned char *)m_szComment,(const unsigned char *)tag.Comment,30);
 		m_szComment[30] = '\0';
 		for(i=29; i>=0; i--)
 		{

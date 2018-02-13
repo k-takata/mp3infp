@@ -376,7 +376,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 			}
 		}
 		len = readsize - (start - data);	// Subtract the size of BOM.
-		if ((readsize + 2 <= datasize) && (*(WCHAR*)(data + readsize) == L'\0')) {
+		if ((readsize + 2 <= datasize) && (*(LPCWSTR)(data + readsize) == L'\0')) {
 			readsize += 2;
 		}
 	} else {
@@ -1413,12 +1413,12 @@ DWORD CId3tagv2::ConvertApicToV22(const unsigned char *v23, DWORD dwSize, unsign
 {
 	DWORD dwDiff;
 	const char *format;
-	if (strcmp((char*)&v23[1], "image/jpeg") == 0)
+	if (strcmp((const char *)&v23[1], "image/jpeg") == 0)
 	{
 		format = "JPG";
 		dwDiff = 11 - 3;
 	}
-	else if (strcmp((char*)&v23[1], "image/png") == 0)
+	else if (strcmp((const char *)&v23[1], "image/png") == 0)
 	{
 		format = "PNG";
 		dwDiff = 10 - 3;

@@ -270,7 +270,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 			CId3tagv1::GetId3tag(&id3tag,m_bScmpxGenre);
 			char *buf = TstrToDataAlloc(getFileName(szFileName), -1, NULL, DTC_CODE_ANSI);
 			if (buf) {
-				mbsncpy2((unsigned char *)id3tag.Title,(unsigned char *)buf,30);
+				mbsncpy2((unsigned char *)id3tag.Title,(const unsigned char *)buf,30);
 				free(buf);
 			}
 		}
