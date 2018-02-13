@@ -485,7 +485,7 @@ BOOL CShellExt::Load()
 				if(m_bDisable_FDD)//フロッピーディスクドライブ
 					return FALSE;
 			}
-			if(m_bDisable_RAMOVABLE)	//リムーバブルドライブ
+			if(m_bDisable_REMOVABLE)	//リムーバブルドライブ
 				return FALSE;
 			break;
 		case DRIVE_CDROM:		//CDROMドライブ
@@ -696,7 +696,12 @@ void CShellExt::ConfigLoad()
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("ContextMenu"),(DWORD *)&m_bContextMenu,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("SelectDrive"),(DWORD *)&m_bSelectDrive,DEF_SETUP_MAIN_SELECT_DRIVE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_FDD"),(DWORD *)&m_bDisable_FDD,DEF_SETUP_MAIN_DISABLE_FDD);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_RAMOVABLE"),(DWORD *)&m_bDisable_RAMOVABLE,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
+
+	// Workaround for the old wrong value name.
+	DWORD dwTemp;
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_RAMOVABLE"),&dwTemp,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_REMOVABLE"),(DWORD *)&m_bDisable_REMOVABLE,dwTemp);
+
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_CDROM"),(DWORD *)&m_bDisable_CDROM,DEF_SETUP_MAIN_DISABLE_CDROM);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Disable_NETWORK"),(DWORD *)&m_bDisable_NETWORK,DEF_SETUP_MAIN_DISABLE_NETWORK);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Column_8_3"),(DWORD *)&m_bColumn_8_3,DEF_SETUP_MAIN_COLUMN_8_3);

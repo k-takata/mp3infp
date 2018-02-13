@@ -26,7 +26,7 @@ CPageMain::CPageMain() : CPropertyPage(CPageMain::IDD)
 	m_bSaveTimeStamp = FALSE;
 	m_staticInfo = _T("");
 	m_bDisable_FDD = FALSE;
-	m_bDisable_RAMOVABLE = FALSE;
+	m_bDisable_REMOVABLE = FALSE;
 	m_bDisable_NETWORK = FALSE;
 	m_bSelectDrive = FALSE;
 	m_bDisable_CDROM = FALSE;
@@ -38,7 +38,12 @@ CPageMain::CPageMain() : CPropertyPage(CPageMain::IDD)
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ContextMenu",(DWORD *)&m_bContextMenu,TRUE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"SelectDrive",(DWORD *)&m_bSelectDrive,DEF_SETUP_MAIN_SELECT_DRIVE);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_FDD",(DWORD *)&m_bDisable_FDD,DEF_SETUP_MAIN_DISABLE_FDD);
-	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_RAMOVABLE",(DWORD *)&m_bDisable_RAMOVABLE,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
+
+	// Workaround for the old wrong value name.
+	DWORD dwTemp;
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_RAMOVABLE",&dwTemp,DEF_SETUP_MAIN_DISABLE_REMOVABLE);
+	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_REMOVABLE",(DWORD *)&m_bDisable_REMOVABLE,dwTemp);
+
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_CDROM",(DWORD *)&m_bDisable_CDROM,DEF_SETUP_MAIN_DISABLE_CDROM);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_NETWORK",(DWORD *)&m_bDisable_NETWORK,DEF_SETUP_MAIN_DISABLE_NETWORK);
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Column_8_3",(DWORD *)&m_bColumn_8_3,DEF_SETUP_MAIN_COLUMN_8_3);
@@ -57,12 +62,12 @@ void CPageMain::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_DISABLE_CDROM, m_wndDisable_CDROM);
 	DDX_Control(pDX, IDC_CHECK_DISABLE_FDD, m_wndDisable_FDD);
 	DDX_Control(pDX, IDC_CHECK_DISABLE_NETWORK, m_wndDisable_NETWORK);
-	DDX_Control(pDX, IDC_CHECK_DISABLE_REMOVABLE, m_wndDisable_RAMOVABLE);
+	DDX_Control(pDX, IDC_CHECK_DISABLE_REMOVABLE, m_wndDisable_REMOVABLE);
 	DDX_Control(pDX, IDC_CHECK_SELECT_DRIVE, m_wndSelectDrive);
 	DDX_Check(pDX, IDC_SAVE_TIMESTAMP, m_bSaveTimeStamp);
 	DDX_Text(pDX, IDC_STATIC_INFO, m_staticInfo);
 	DDX_Check(pDX, IDC_CHECK_DISABLE_FDD, m_bDisable_FDD);
-	DDX_Check(pDX, IDC_CHECK_DISABLE_REMOVABLE, m_bDisable_RAMOVABLE);
+	DDX_Check(pDX, IDC_CHECK_DISABLE_REMOVABLE, m_bDisable_REMOVABLE);
 	DDX_Check(pDX, IDC_CHECK_DISABLE_NETWORK, m_bDisable_NETWORK);
 	DDX_Check(pDX, IDC_CHECK_SELECT_DRIVE, m_bSelectDrive);
 	DDX_Check(pDX, IDC_CHECK_DISABLE_CDROM, m_bDisable_CDROM);
@@ -141,7 +146,8 @@ BOOL CPageMain::OnApply()
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"ContextMenu",(DWORD )m_bContextMenu);
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"SelectDrive",(DWORD )m_bSelectDrive);
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_FDD",(DWORD )m_bDisable_FDD);
-	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_RAMOVABLE",(DWORD )m_bDisable_RAMOVABLE);
+	regDelVal(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_RAMOVABLE");
+	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_REMOVABLE",(DWORD )m_bDisable_REMOVABLE);
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_CDROM",(DWORD )m_bDisable_CDROM);
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Disable_NETWORK",(DWORD )m_bDisable_NETWORK);
 	regSetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Column_8_3",(DWORD )m_bColumn_8_3);
@@ -166,7 +172,7 @@ void CPageMain::OnDefault()
 	m_bContextMenu			= TRUE;
 	m_bSelectDrive			= DEF_SETUP_MAIN_SELECT_DRIVE;
 	m_bDisable_FDD			= DEF_SETUP_MAIN_DISABLE_FDD;
-	m_bDisable_RAMOVABLE	= DEF_SETUP_MAIN_DISABLE_REMOVABLE;
+	m_bDisable_REMOVABLE	= DEF_SETUP_MAIN_DISABLE_REMOVABLE;
 	m_bDisable_CDROM		= DEF_SETUP_MAIN_DISABLE_CDROM;
 	m_bDisable_NETWORK		= DEF_SETUP_MAIN_DISABLE_NETWORK;
 	m_bColumn_8_3			= DEF_SETUP_MAIN_COLUMN_8_3;
@@ -304,14 +310,14 @@ void CPageMain::SetCheck()
 	if(m_wndSelectDrive.GetCheck())
 	{
 		m_wndDisable_FDD.EnableWindow(TRUE);
-		m_wndDisable_RAMOVABLE.EnableWindow(TRUE);
+		m_wndDisable_REMOVABLE.EnableWindow(TRUE);
 		m_wndDisable_CDROM.EnableWindow(TRUE);
 		m_wndDisable_NETWORK.EnableWindow(TRUE);
 	}
 	else
 	{
 		m_wndDisable_FDD.EnableWindow(FALSE);
-		m_wndDisable_RAMOVABLE.EnableWindow(FALSE);
+		m_wndDisable_REMOVABLE.EnableWindow(FALSE);
 		m_wndDisable_CDROM.EnableWindow(FALSE);
 		m_wndDisable_NETWORK.EnableWindow(FALSE);
 	}

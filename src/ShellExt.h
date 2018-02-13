@@ -113,7 +113,7 @@ protected:
 	BOOL			m_bContextMenu;		//コンテキストメニューに"mp3infp"を追加
 	BOOL			m_bSelectDrive;		//mp3infpを使用しないドライブの種類を指定
 	BOOL			m_bDisable_FDD;		//フロッピーディスクドライブ
-	BOOL			m_bDisable_RAMOVABLE;//リムーバブルドライブ
+	BOOL			m_bDisable_REMOVABLE;//リムーバブルドライブ
 	BOOL			m_bDisable_CDROM;	//CDROMドライブ
 	BOOL			m_bDisable_NETWORK;	//ネットワークドライブ
 

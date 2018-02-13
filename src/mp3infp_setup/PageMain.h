@@ -25,12 +25,12 @@ public:
 	CButton	m_wndDisable_CDROM;
 	CButton	m_wndDisable_FDD;
 	CButton	m_wndDisable_NETWORK;
-	CButton	m_wndDisable_RAMOVABLE;
+	CButton	m_wndDisable_REMOVABLE;
 	CButton	m_wndSelectDrive;
 	BOOL	m_bSaveTimeStamp;
 	CString	m_staticInfo;
 	BOOL	m_bDisable_FDD;
-	BOOL	m_bDisable_RAMOVABLE;
+	BOOL	m_bDisable_REMOVABLE;
 	BOOL	m_bDisable_NETWORK;
 	BOOL	m_bSelectDrive;
 	BOOL	m_bDisable_CDROM;
