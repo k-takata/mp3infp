@@ -27,7 +27,7 @@ typedef struct _DIOC_REGISTERS {
 
 #endif
 
-// Intel x86 processor status fla
+// Intel x86 processor status flag
 #define CARRY_FLAG  0x1
 
 

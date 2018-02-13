@@ -380,7 +380,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 				break;
 			}
 		}
-		len = readsize - (start - data);
+		len = readsize - (start - data);	// Subtract the size of BOM.
 		if ((readsize + 2 <= datasize) && (*(WCHAR*)(data + readsize) == L'\0')) {
 			readsize += 2;
 		}
@@ -1035,7 +1035,7 @@ CString CId3tagv2::GetGenre()
 					CString strGenreNum = strGenre.Mid(1, index);
 					genre = _ttoi(strGenreNum);
 				}
-				strGenre.Delete(0,index+1);	//)'ˆÈ‘O‚ðíœ
+				strGenre.Delete(0,index+1);	//')'ˆÈ‘O‚ðíœ
 				continue;	//Fix 2001-10-24
 			}
 		}
