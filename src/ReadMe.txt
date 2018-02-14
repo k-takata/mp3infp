@@ -6,7 +6,7 @@ Copyright(C) 2009-2018 K.Takata
 
 ■ビルド環境(別途入手してください)
 ・Windows Driver Kit 7.1.0 (7600.16385.1)
-http://www.microsoft.com/downloads/details.aspx?FamilyID=36a2630f-5d56-43b5-b996-7633f2ec14ff&displaylang=en
+https://www.microsoft.com/en-us/download/details.aspx?id=11800
 ・Windows Driver Kit 6001.18002 (Win2k 用にビルドする場合)
 
 ■mp3infp/u (Unicode版) の公開関数

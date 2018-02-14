@@ -21,14 +21,14 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 ・mpeg1.0/2.0/2.5 Layer1～3 (.mp3/.mp2/.mp1/.rmp)
     -> ID3v1/v1.1/v2.2/v2.3/v2.4
     -> RMP3形式のRiffSIF
-・TwinVQ (.vqf) 
-・WAV (.wav) 
-・AVI (.avi) 
-	-> AVI 1.0 (Video for Windows)
-	-> AVI 2.0 (OpenDML)
-・Windows Media (.wma/.wmv/.asf) 
-・Winamp 2.xx/Media Player プレイリストファイル (.m3u) 
-・Ogg Vorbis (.ogg) 
+・TwinVQ (.vqf)
+・WAV (.wav)
+・AVI (.avi)
+    -> AVI 1.0 (Video for Windows)
+    -> AVI 2.0 (OpenDML)
+・Windows Media (.wma/.wmv/.asf)
+・Winamp 2.xx/Media Player プレイリストファイル (.m3u/.m3u8)
+・Ogg Vorbis (.ogg)
 ・Monkey's Audio APE Tag v1(読込)/v2 (.ape)
 ・MP4 (.mp4/.m4a/.m4v/.3gp/.3g2)
 
@@ -82,7 +82,7 @@ https://github.com/k-takata/mp3infp で配布しています。
   mp3infp_setup.exe から mp3infp_config.exe に変更。
 ・リムーバブルメディア用のレジストリ設定名を修正。
   Disable_RAMOVABLE -> Disable_REMOVABLE
-  （レジストリを直接編集しない限り、ユーザーが意識する必要はありません。）
+  (レジストリを直接編集しない限り、ユーザーが意識する必要はありません。)
 
 2018/02/03  Ver.2.55 beta1
 ・libogg 1.3.3 に更新。
