@@ -31,13 +31,13 @@ public:
 	BOOL IsEnable(){return m_bEnable;};
 
 	CString GetTitle(){return m_szTitle;};
-	void SetTitle(LPCTSTR title);
+	void SetTitle(LPCTSTR title) { SetString(m_szTitle, title, 30); };
 	CString GetArtist(){return m_szArtist;};
-	void SetArtist(LPCTSTR artist);
+	void SetArtist(LPCTSTR artist) { SetString(m_szArtist, artist, 30); };
 	CString GetAlbum(){return m_szAlbum;};
-	void SetAlbum(LPCTSTR album);
+	void SetAlbum(LPCTSTR album) { SetString(m_szAlbum, album, 30); };
 	CString GetYear(){return m_szYear;};
-	void SetYear(LPCTSTR year);
+	void SetYear(LPCTSTR year) { SetString(m_szYear, year, 4); };
 	unsigned char GetGenreNum();
 	CString GetGenre(){return GenreNum2String(m_cGenre);};
 	void SetGenre(unsigned char cGenre){m_bEnable = TRUE; m_cGenre = cGenre;};
@@ -47,7 +47,7 @@ public:
 	void SetTrackNo(unsigned char cTrackNo){m_bEnable = TRUE; m_cTrackNo = cTrackNo;};
 	void SetTrackNo(LPCTSTR szTrackNo){m_bEnable = TRUE; m_cTrackNo = _ttoi(szTrackNo);};
 	CString GetComment(){return m_szComment;};
-	void SetComment(LPCTSTR comment);
+	void SetComment(LPCTSTR comment) { SetString(m_szComment, comment, m_cTrackNo ? 28 : 30); };
 
 	static CString GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre);
 	CString GenreNum2String(unsigned char cGenre) {
@@ -68,6 +68,9 @@ public:
 
 private:
 	void Release();
+	void SetString(LPSTR dest, LPCTSTR src, long len);
+	static void ReadTagString(LPSTR dest, LPCSTR src, long len);
+
 	BOOL m_bEnable;			//ID3TAGが無い場合はFALSE
 	BOOL m_bScmpxGenre;		//SCMPX拡張ジャンルを使用する
 	char m_szTitle[30+1];	//タイトル

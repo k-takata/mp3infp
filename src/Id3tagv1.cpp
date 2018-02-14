@@ -77,67 +77,19 @@ void CId3tagv1::Release()
 	m_cTrackNo = 0;
 }
 
-void CId3tagv1::SetTitle(LPCTSTR title)
+void CId3tagv1::SetString(LPSTR dest, LPCTSTR src, long len)
 {
 #ifdef UNICODE
-	char *buf = TstrToDataAlloc(title, -1, NULL, DTC_CODE_ANSI);
+	const char *buf = TstrToDataAlloc(src, -1, NULL, DTC_CODE_ANSI);
 #else
-	char *buf = title;
+	const char *buf = src;
 #endif
 	m_bEnable = TRUE;
-	long length = check2ByteLength(buf,30);
-	strncpy(m_szTitle,buf,length);
-	m_szTitle[length] = '\0';
+	long length = check2ByteLength(buf,len);
+	strncpy(dest,buf,length);
+	dest[length] = '\0';
 #ifdef UNICODE
-	free(buf);
-#endif
-}
-
-void CId3tagv1::SetArtist(LPCTSTR artist)
-{
-#ifdef UNICODE
-	char *buf = TstrToDataAlloc(artist, -1, NULL, DTC_CODE_ANSI);
-#else
-	char *buf = artist;
-#endif
-	m_bEnable = TRUE;
-	long length = check2ByteLength(buf,30);
-	strncpy(m_szArtist,buf,length);
-	m_szArtist[length] = '\0';
-#ifdef UNICODE
-	free(buf);
-#endif
-}
-
-void CId3tagv1::SetAlbum(LPCTSTR album)
-{
-#ifdef UNICODE
-	char *buf = TstrToDataAlloc(album, -1, NULL, DTC_CODE_ANSI);
-#else
-	char *buf = album;
-#endif
-	m_bEnable = TRUE;
-	long length = check2ByteLength(buf,30);
-	strncpy(m_szAlbum,buf,length);
-	m_szAlbum[length] = '\0';
-#ifdef UNICODE
-	free(buf);
-#endif
-}
-
-void CId3tagv1::SetYear(LPCTSTR year)
-{
-#ifdef UNICODE
-	char *buf = TstrToDataAlloc(year, -1, NULL, DTC_CODE_ANSI);
-#else
-	char *buf = year;
-#endif
-	m_bEnable = TRUE;
-	long length = check2ByteLength(buf,4);
-	strncpy(m_szYear,buf,length);
-	m_szYear[length] = '\0';
-#ifdef UNICODE
-	free(buf);
+	free((void *)buf);
 #endif
 }
 
@@ -154,25 +106,6 @@ CString CId3tagv1::GetTrackNo()
 	if(m_cTrackNo)
 		str.Format(_T("%d"),m_cTrackNo);
 	return str;
-}
-
-void CId3tagv1::SetComment(LPCTSTR comment)
-{
-#ifdef UNICODE
-	char *buf = TstrToDataAlloc(comment, -1, NULL, DTC_CODE_ANSI);
-#else
-	char *buf = comment;
-#endif
-	m_bEnable = TRUE;
-	int len=30;
-	if(m_cTrackNo)
-		len = 28;
-	long length = check2ByteLength(buf,len);
-	strncpy(m_szComment,buf,length);
-	m_szComment[length] = '\0';
-#ifdef UNICODE
-	free(buf);
-#endif
 }
 
 CString CId3tagv1::GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre)
@@ -201,6 +134,19 @@ long CId3tagv1::GenreString2Num(LPCTSTR szGenre)
 		}
 	}
 	return cGenre;
+}
+
+void CId3tagv1::ReadTagString(LPSTR dest, LPCSTR src, long len)
+{
+	mbsncpy2((unsigned char *)dest,(const unsigned char *)src,len);
+	dest[len] = '\0';
+	for(int i=len-1; i>=0; i--)
+	{
+		if(dest[i] == ' ')
+			dest[i] = '\0';
+		else
+			break;
+	}
 }
 
 DWORD CId3tagv1::Load(LPCTSTR szFileName)
@@ -233,68 +179,19 @@ DWORD CId3tagv1::Load(LPCTSTR szFileName)
 	
 	m_bEnable = TRUE;
 	//î•ñ‚ÌÌŽæ
-	int i;
-	mbsncpy2((unsigned char *)m_szTitle,(const unsigned char *)tag.Title,30);
-	m_szTitle[30] = '\0';
-	for(i=29; i>=0; i--)
-	{
-		if(m_szTitle[i] == ' ')
-			m_szTitle[i] = '\0';
-		else
-			break;
-	}
-	mbsncpy2((unsigned char *)m_szArtist,(const unsigned char *)tag.Artist,30);
-	m_szArtist[30] = '\0';
-	for(i=29; i>=0; i--)
-	{
-		if(m_szArtist[i] == ' ')
-			m_szArtist[i] = '\0';
-		else
-			break;
-	}
-	mbsncpy2((unsigned char *)m_szAlbum,(const unsigned char *)tag.Album,30);
-	m_szAlbum[30] = '\0';
-	for(i=29; i>=0; i--)
-	{
-		if(m_szAlbum[i] == ' ')
-			m_szAlbum[i] = '\0';
-		else
-			break;
-	}
-	mbsncpy2((unsigned char *)m_szYear,(const unsigned char *)tag.Year,4);
-	m_szYear[4] = '\0';
-	for(i=3; i>=0; i--)
-	{
-		if(m_szYear[i] == ' ')
-			m_szYear[i] = '\0';
-		else
-			break;
-	}
+	ReadTagString(m_szTitle, tag.Title, 30);
+	ReadTagString(m_szArtist, tag.Artist, 30);
+	ReadTagString(m_szAlbum, tag.Album, 30);
+	ReadTagString(m_szYear, tag.Year, 4);
 	if((tag.Comment[28] == '\0') && tag.Track)
 	{
+		ReadTagString(m_szComment, tag.Comment, 28);
 		m_cTrackNo = tag.Track;
-		mbsncpy2((unsigned char *)m_szComment,(const unsigned char *)tag.Comment,28);
-		m_szComment[28] = '\0';
-		for(i=27; i>=0; i--)
-		{
-			if(m_szComment[i] == ' ')
-				m_szComment[i] = '\0';
-			else
-				break;
-		}
 	}
 	else
 	{
+		ReadTagString(m_szComment, tag.Comment, 30);
 		m_cTrackNo = 0;
-		mbsncpy2((unsigned char *)m_szComment,(const unsigned char *)tag.Comment,30);
-		m_szComment[30] = '\0';
-		for(i=29; i>=0; i--)
-		{
-			if(m_szComment[i] == ' ')
-				m_szComment[i] = '\0';
-			else
-				break;
-		}
 	}
 	m_cGenre = tag.Genre;
 	return dwWin32errorCode;
