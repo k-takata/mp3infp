@@ -486,7 +486,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 	memcpy(&dwId,szId,sizeof(dwId));
 
 	//Loadしたファイルにフレームがなかった場合
-	if((lstrlen(szString) == 0) && (strcmp(szId,"COMM") != 0))
+	if((szString[0] == '\0') && (strcmp(szId,"COMM") != 0))
 	{
 		m_frames.erase(dwId);	//消す(あれば)
 		return;
@@ -685,7 +685,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 
 			// 書き換え対象のコメントフレームを発見
 
-			if(lstrlen(szString) == 0)
+			if(szString[0] == '\0')
 			{
 				m_frames.erase(p);	//消す
 				return;

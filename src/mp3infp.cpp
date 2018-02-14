@@ -297,7 +297,7 @@ STDAPI DllUnregisterServer()
 	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		regGetString(HKEY_CLASSES_ROOT,extlist[i],_T(""),szKey,_T(""));
-		if(lstrlen(szKey))
+		if(szKey[0] != '\0')
 		{
 			//(Property) `Ver.2.00Beta2
 			wsprintf(szKey,_T("%s\\shellex\\PropertySheetHandlers\\mp3infp"),szKey);

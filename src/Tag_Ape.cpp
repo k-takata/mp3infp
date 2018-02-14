@@ -72,7 +72,7 @@ BOOL CTag_Ape::SetComment(LPCTSTR name,LPCTSTR value)
 		it++;
 	}
 
-	if(lstrlen(value) == 0)
+	if(value[0] == '\0')
 	{
 		return TRUE;	// ‹ó‚ÍƒZƒbƒg‚µ‚È‚¢
 	}

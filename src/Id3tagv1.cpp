@@ -118,7 +118,7 @@ CString CId3tagv1::GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre)
 long CId3tagv1::GenreString2Num(LPCTSTR szGenre)
 {
 	long cGenre = -1;
-	if(lstrlen(szGenre) == 0)
+	if(szGenre[0] == '\0')
 	{
 		if(m_bScmpxGenre)
 			return SCMPX_GENRE_NULL;

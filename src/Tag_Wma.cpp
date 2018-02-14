@@ -92,7 +92,7 @@ CString CTag_Wma::GetTRACK()
 
 void CTag_Wma::SetTRACK(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/Track"));
 		DellComment(_T("WM/TrackNumber"));
@@ -119,7 +119,7 @@ CString CTag_Wma::GetPRD()
 
 void CTag_Wma::SetPRD(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/AlbumTitle"));
 	}
@@ -142,7 +142,7 @@ CString CTag_Wma::GetCRD()
 
 void CTag_Wma::SetCRD(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/Year"));
 	}
@@ -165,7 +165,7 @@ CString CTag_Wma::GetGNR()
 
 void CTag_Wma::SetGNR(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/Genre"));
 	}
@@ -188,7 +188,7 @@ CString CTag_Wma::GetUrl1()
 
 void CTag_Wma::SetUrl1(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/AlbumCoverURL"));
 	}
@@ -211,7 +211,7 @@ CString CTag_Wma::GetUrl2()
 
 void CTag_Wma::SetUrl2(LPCTSTR str)
 {
-	if(lstrlen(str) == 0)
+	if(str[0] == '\0')
 	{
 		DellComment(_T("WM/PromotionURL"));
 	}
