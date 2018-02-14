@@ -139,7 +139,7 @@ CMp3infpApp theApp;
 // Global variables
 //
 UINT	g_cRefThisDll = 0;	// Reference count of this DLL.
-DWORD	g_dwCookie;
+//DWORD	g_dwCookie;
 
 /////////////////////////////////////////////////////////////////////////////
 ///エクスポート関数

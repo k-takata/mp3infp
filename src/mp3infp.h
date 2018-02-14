@@ -51,7 +51,7 @@
 #include "mp3infp_ExportFunc.h"
 
 extern UINT		g_cRefThisDll;// Reference count of this DLL.
-extern DWORD	g_dwCookie;
+//extern DWORD	g_dwCookie;
 #define REW_TIMER	1
 #define FFW_TIMER	2
 
