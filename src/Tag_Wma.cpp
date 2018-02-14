@@ -69,17 +69,6 @@ void CTag_Wma::Release()
 	m_comments.clear();
 }
 
-CString CTag_Wma::GetNAM()
-{
-	return m_strTitle;
-}
-
-void CTag_Wma::SetNAM(LPCTSTR str)
-{
-	m_strTitle = str;
-	m_bEnable = TRUE;
-}
-
 CString CTag_Wma::GetTRACK()
 {
 	DWORD dwRet;
@@ -118,17 +107,6 @@ void CTag_Wma::SetTRACK(LPCTSTR str)
 	m_bEnable = TRUE;
 }
 
-CString CTag_Wma::GetART()
-{
-	return m_strAuthor;
-}
-
-void CTag_Wma::SetART(LPCTSTR str)
-{
-	m_strAuthor = str;
-	m_bEnable = TRUE;
-}
-
 CString CTag_Wma::GetPRD()
 {
 	CString ret;
@@ -149,17 +127,6 @@ void CTag_Wma::SetPRD(LPCTSTR str)
 	{
 		AddCommentString(_T("WM/AlbumTitle"),str);
 	}
-	m_bEnable = TRUE;
-}
-
-CString CTag_Wma::GetCMT()
-{
-	return m_strDescription;
-}
-
-void CTag_Wma::SetCMT(LPCTSTR str)
-{
-	m_strDescription = str;
 	m_bEnable = TRUE;
 }
 
@@ -209,17 +176,6 @@ void CTag_Wma::SetGNR(LPCTSTR str)
 	m_bEnable = TRUE;
 }
 
-CString CTag_Wma::GetCOPY()
-{
-	return m_strCopyright;
-}
-
-void CTag_Wma::SetCOPY(LPCTSTR str)
-{
-	m_strCopyright = str;
-	m_bEnable = TRUE;
-}
-
 CString CTag_Wma::GetUrl1()
 {
 	CString ret;
@@ -263,17 +219,6 @@ void CTag_Wma::SetUrl2(LPCTSTR str)
 	{
 		AddCommentString(_T("WM/PromotionURL"),str);
 	}
-	m_bEnable = TRUE;
-}
-
-CString CTag_Wma::GetRating()
-{
-	return m_strRating;
-}
-
-void CTag_Wma::SetRating(LPCTSTR str)
-{
-	m_strRating = str;
 	m_bEnable = TRUE;
 }
 

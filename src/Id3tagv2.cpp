@@ -321,11 +321,6 @@ void CId3tagv2::Release()
 	m_frames.clear();
 }
 
-void CId3tagv2::SetEncDefault(LPCTSTR szDefaultEnc)
-{
-	m_strDefaultEnc = szDefaultEnc;
-}
-
 CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 		const unsigned char *data, int datasize, DWORD *pdwReadSize)
 {
@@ -867,78 +862,6 @@ void CId3tagv2::v23IDtov22ID(const char *v23ID,char *v22ID)
 	}
 }
 
-CString CId3tagv2::GetTitle()
-{
-	//タイトル
-	return GetId3String("TIT2");
-}
-
-void CId3tagv2::SetTitle(LPCTSTR title)
-{
-	//タイトル
-	SetId3String("TIT2",title);
-}
-
-CString CId3tagv2::GetTrackNo()
-{
-	//トラック番号
-	return GetId3String("TRCK");
-}
-
-void CId3tagv2::SetTrackNo(LPCTSTR szTrackNo)
-{
-	//トラック番号
-	SetId3String("TRCK",szTrackNo);
-}
-
-CString CId3tagv2::GetDiscNo()
-{
-	//Disc number (Part of a set)
-	return GetId3String("TPOS");
-}
-
-void CId3tagv2::SetDiscNo(LPCTSTR szDiscNo)
-{
-	//Disc number (Part of a set)
-	SetId3String("TPOS",szDiscNo);
-}
-
-CString CId3tagv2::GetArtist()
-{
-	//アーティスト
-	return GetId3String("TPE1");
-}
-
-void CId3tagv2::SetArtist(LPCTSTR artist)
-{
-	//アーティスト
-	SetId3String("TPE1",artist);
-}
-
-CString CId3tagv2::GetAlbumArtist()
-{
-	//アルバムアーティスト
-	return GetId3String("TPE2");
-}
-
-void CId3tagv2::SetAlbumArtist(LPCTSTR albumartist)
-{
-	//アルバムアーティスト
-	SetId3String("TPE2",albumartist);
-}
-
-CString CId3tagv2::GetAlbum()
-{
-	//アルバム
-	return GetId3String("TALB");
-}
-
-void CId3tagv2::SetAlbum(LPCTSTR album)
-{
-	//アルバム
-	SetId3String("TALB",album);
-}
-
 CString CId3tagv2::GetYear()
 {
 	//西暦(および月日)
@@ -1067,90 +990,6 @@ void CId3tagv2::SetGenre(LPCTSTR szGenre)
 	strGenre += szGenre;
 
 	SetId3String("TCON",strGenre);
-}
-
-CString CId3tagv2::GetComment()
-{
-	//コメント
-	return GetId3String("COMM");
-}
-
-void CId3tagv2::SetComment(LPCTSTR comment)
-{
-	//コメント
-	SetId3String("COMM",comment);
-}
-
-CString CId3tagv2::GetComposer()
-{
-	//作曲
-	return GetId3String("TCOM");
-}
-
-void CId3tagv2::SetComposer(LPCTSTR composer)
-{
-	//作曲
-	SetId3String("TCOM",composer);
-}
-
-CString CId3tagv2::GetOrigArtist()
-{
-	//Orig.アーティスト
-	return GetId3String("TOPE");
-}
-
-void CId3tagv2::SetOrigArtist(LPCTSTR origArtist)
-{
-	//Orig.アーティスト
-	SetId3String("TOPE",origArtist);
-}
-
-CString CId3tagv2::GetCopyright()
-{
-	//著作権
-	return GetId3String("TCOP");
-}
-
-void CId3tagv2::SetCopyright(LPCTSTR copyright)
-{
-	//著作権
-	SetId3String("TCOP",copyright);
-}
-
-CString CId3tagv2::GetUrl()
-{
-	//URL
-	return GetId3String("WXXX");
-}
-
-void CId3tagv2::SetUrl(LPCTSTR url)
-{
-	//URL
-	SetId3String("WXXX",url);
-}
-
-CString CId3tagv2::GetEncoder()
-{
-	//エンコーダー
-	return GetId3String("TSSE");
-}
-
-void CId3tagv2::SetEncoder(LPCTSTR encoder)
-{
-	//エンコーダー
-	SetId3String("TSSE",encoder);
-}
-
-CString CId3tagv2::GetEncodedBy()
-{
-	//エンコードした人または組織
-	return GetId3String("TENC");
-}
-
-void CId3tagv2::SetEncodedBy(LPCTSTR encoder)
-{
-	//エンコードした人または組織
-	SetId3String("TENC",encoder);
 }
 
 DWORD CId3tagv2::DecodeUnSynchronization(unsigned char *data,DWORD dwSize)

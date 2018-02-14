@@ -27,26 +27,26 @@ public:
 #pragma pack()
 	CId3tagv1(BOOL bScmpxGenre = FALSE);
 	virtual ~CId3tagv1();
-	void SetScmpxGenre(BOOL bSwitch);
+	void SetScmpxGenre(BOOL bSwitch){m_bScmpxGenre = bSwitch;};
 	BOOL IsEnable(){return m_bEnable;};
 
-	CString GetTitle();
+	CString GetTitle(){return m_szTitle;};
 	void SetTitle(LPCTSTR title);
-	CString GetArtist();
+	CString GetArtist(){return m_szArtist;};
 	void SetArtist(LPCTSTR artist);
-	CString GetAlbum();
+	CString GetAlbum(){return m_szAlbum;};
 	void SetAlbum(LPCTSTR album);
-	CString GetYear();
+	CString GetYear(){return m_szYear;};
 	void SetYear(LPCTSTR year);
 	unsigned char GetGenreNum();
-	CString GetGenre();
-	void SetGenre(unsigned char cGenre);
-	void SetGenre(LPCTSTR szGenre);
-	unsigned char GetTrackNoNum();
+	CString GetGenre(){return GenreNum2String(m_cGenre);};
+	void SetGenre(unsigned char cGenre){m_bEnable = TRUE; m_cGenre = cGenre;};
+	void SetGenre(LPCTSTR szGenre){m_bEnable = TRUE; m_cGenre = GenreString2Num(szGenre);};
+	unsigned char GetTrackNoNum(){return m_cTrackNo;};
 	CString GetTrackNo();
-	void SetTrackNo(unsigned char cTrackNo);
-	void SetTrackNo(LPCTSTR szTrackNo);
-	CString GetComment();
+	void SetTrackNo(unsigned char cTrackNo){m_bEnable = TRUE; m_cTrackNo = cTrackNo;};
+	void SetTrackNo(LPCTSTR szTrackNo){m_bEnable = TRUE; m_cTrackNo = _ttoi(szTrackNo);};
+	CString GetComment(){return m_szComment;};
 	void SetComment(LPCTSTR comment);
 
 	static CString GenreNum2String(unsigned char cGenre,BOOL bScmpxGenre);

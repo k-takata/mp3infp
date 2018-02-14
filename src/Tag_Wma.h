@@ -49,20 +49,21 @@ public:
 	BOOL IsEnable(){return m_bEnable;};
 	DWORD Load(LPCTSTR szFileName);
 	DWORD Save(LPCTSTR szFileName,LPTCPPROGRESS cbProgress = NULL);
-	CString GetNAM();
-	void	SetNAM(LPCTSTR str);
+
+	CString GetNAM() { return m_strTitle; };
+	void	SetNAM(LPCTSTR str) { m_strTitle = str; m_bEnable = TRUE; };
 
 	CString GetTRACK();
 	void	SetTRACK(LPCTSTR str);
 	
-	CString GetART();
-	void	SetART(LPCTSTR str);
+	CString GetART() { return m_strAuthor; };
+	void	SetART(LPCTSTR str) { m_strAuthor = str; m_bEnable = TRUE; };
 	
 	CString GetPRD();
 	void	SetPRD(LPCTSTR str);
 	
-	CString GetCMT();
-	void	SetCMT(LPCTSTR str);
+	CString GetCMT() { return m_strDescription; };
+	void	SetCMT(LPCTSTR str) { m_strDescription = str; m_bEnable = TRUE; };
 	
 	CString GetCRD();
 	void	SetCRD(LPCTSTR str);
@@ -70,8 +71,8 @@ public:
 	CString GetGNR();
 	void	SetGNR(LPCTSTR str);
 	
-	CString GetCOPY();
-	void	SetCOPY(LPCTSTR str);
+	CString GetCOPY() { return m_strCopyright; };
+	void	SetCOPY(LPCTSTR str) { m_strCopyright = str; m_bEnable = TRUE; };
 	
 	CString GetUrl1();
 	void	SetUrl1(LPCTSTR str);
@@ -79,8 +80,8 @@ public:
 	CString GetUrl2();
 	void	SetUrl2(LPCTSTR str);
 	
-	CString GetRating();
-	void	SetRating(LPCTSTR str);
+	CString GetRating() { return m_strRating; };
+	void	SetRating(LPCTSTR str) { m_strRating = str; m_bEnable = TRUE; };
 	
 	BOOL	GetSeekable(){return m_bIsSeekable;};
 	BOOL	GetBroadcast(){return m_bIsBroadcast;};

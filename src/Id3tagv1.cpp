@@ -77,16 +77,6 @@ void CId3tagv1::Release()
 	m_cTrackNo = 0;
 }
 
-void CId3tagv1::SetScmpxGenre(BOOL bSwitch)
-{
-	m_bScmpxGenre = bSwitch;
-}
-
-CString CId3tagv1::GetTitle()
-{
-	return m_szTitle;
-}
-
 void CId3tagv1::SetTitle(LPCTSTR title)
 {
 #ifdef UNICODE
@@ -101,11 +91,6 @@ void CId3tagv1::SetTitle(LPCTSTR title)
 #ifdef UNICODE
 	free(buf);
 #endif
-}
-
-CString CId3tagv1::GetArtist()
-{
-	return m_szArtist;
 }
 
 void CId3tagv1::SetArtist(LPCTSTR artist)
@@ -124,11 +109,6 @@ void CId3tagv1::SetArtist(LPCTSTR artist)
 #endif
 }
 
-CString CId3tagv1::GetAlbum()
-{
-	return m_szAlbum;
-}
-
 void CId3tagv1::SetAlbum(LPCTSTR album)
 {
 #ifdef UNICODE
@@ -143,11 +123,6 @@ void CId3tagv1::SetAlbum(LPCTSTR album)
 #ifdef UNICODE
 	free(buf);
 #endif
-}
-
-CString CId3tagv1::GetYear()
-{
-	return m_szYear;
 }
 
 void CId3tagv1::SetYear(LPCTSTR year)
@@ -173,52 +148,12 @@ unsigned char CId3tagv1::GetGenreNum()
 	return m_cGenre;
 }
 
-CString CId3tagv1::GetGenre()
-{
-	return GenreNum2String(m_cGenre);
-}
-
-void CId3tagv1::SetGenre(unsigned char cGenre)
-{
-	m_bEnable = TRUE;
-	m_cGenre = cGenre;
-}
-
-void CId3tagv1::SetGenre(LPCTSTR szGenre)
-{
-	m_bEnable = TRUE;
-	m_cGenre = GenreString2Num(szGenre);
-}
-
-unsigned char CId3tagv1::GetTrackNoNum()
-{
-	return m_cTrackNo;
-}
-
 CString CId3tagv1::GetTrackNo()
 {
 	CString str;
 	if(m_cTrackNo)
 		str.Format(_T("%d"),m_cTrackNo);
 	return str;
-}
-
-void CId3tagv1::SetTrackNo(unsigned char cTrackNo)
-{
-	m_cTrackNo = cTrackNo;
-}
-
-void CId3tagv1::SetTrackNo(LPCTSTR szTrackNo)
-{
-	if(lstrlen(szTrackNo) == 0)
-		m_cTrackNo = 0;
-	else
-		m_cTrackNo = _ttoi(szTrackNo);
-}
-
-CString CId3tagv1::GetComment()
-{
-	return m_szComment;
 }
 
 void CId3tagv1::SetComment(LPCTSTR comment)
