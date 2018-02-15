@@ -439,7 +439,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wma(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				}
 
 				//èÓïÒÇï\é¶
-				DispInfo(hDlg,lpcs);\
+				DispInfo(hDlg,lpcs);
 
 				SetWindowLongPtr(hDlg,DWLP_MSGRESULT,PSNRET_NOERROR);
 				
