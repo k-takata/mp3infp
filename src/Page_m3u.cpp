@@ -231,14 +231,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		break;
 	//ó‹µˆË‘¶ƒwƒ‹ƒv
 	case WM_HELP:
-	{
-		TCHAR szTmp[256];
-		lstrcpy(szTmp,APP_NAME);
-		lstrcat(szTmp,_T(" "));
-		lstrcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
+		OpenAboutDlg(hDlg);
 		break;
-	}
+
 	case WM_NOTIFY:
 		switch(((NMHDR FAR *)lParam)->code){
 //		case PSN_SETACTIVE:

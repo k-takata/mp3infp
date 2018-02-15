@@ -77,15 +77,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_LAME(HWND hDlg, UINT uMessage, WPARAM w
 
 	//èÛãµàÀë∂ÉwÉãÉv
 	case WM_HELP:
-	{
-		TCHAR szTmp[256];
-		lstrcpy(szTmp,SOFT_NAME);
-		lstrcat(szTmp,_T(" "));
-		lstrcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
+		OpenAboutDlg(hDlg);
 		break;
-	}
-
 
 	default:
 		return FALSE;

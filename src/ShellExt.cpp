@@ -256,6 +256,15 @@ void OpenConfigPage(HWND hwnd, int pagenum)
 	ShellExecute(hwnd,_T("open"),strConfigPath,strParam,NULL,SW_SHOW);
 }
 
+void OpenAboutDlg(HWND hwnd)
+{
+	TCHAR szTmp[256];
+	lstrcpy(szTmp,APP_NAME);
+	lstrcat(szTmp,_T(" "));
+	lstrcat(szTmp,COPY_RIGHT);
+	MessageBox(hwnd,szTmp,_T("About"),MB_APPLMODAL);
+}
+
 CShellExt::CShellExt()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

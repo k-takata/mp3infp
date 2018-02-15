@@ -837,14 +837,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 		break;
 	//ó‹µˆË‘¶ƒwƒ‹ƒv
 	case WM_HELP:
-	{
-		TCHAR szTmp[256];
-		lstrcpy(szTmp,SOFT_NAME);
-		lstrcat(szTmp,_T(" "));
-		lstrcat(szTmp,COPY_RIGHT);
-		MessageBox(hDlg,szTmp,_T("About"),MB_APPLMODAL);
+		OpenAboutDlg(hDlg);
 		break;
-	}
 
 	case WM_NOTIFY:
 		switch (((NMHDR FAR *)lParam)->code){
