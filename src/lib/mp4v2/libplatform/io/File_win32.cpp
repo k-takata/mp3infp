@@ -74,7 +74,7 @@ StandardFileProvider::open( std::string name, Mode mode )
 {
     _orig_name = name;
 
-    TCHAR *modestr;
+    LPCWSTR modestr;
 
     switch( mode ) {
         case MODE_UNDEFINED:
