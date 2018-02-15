@@ -18,7 +18,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CMp3infpConfigApp
-// このクラスの動作の定義に関しては mp3infp_cpl.cpp ファイルを参照してください。
+// このクラスの動作の定義に関しては mp3infp_config.cpp ファイルを参照してください。
 //
 
 class CMp3infpConfigApp : public CWinApp
