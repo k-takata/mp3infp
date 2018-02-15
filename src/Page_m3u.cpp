@@ -268,7 +268,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				lpcs->m_M3u.Release();
 				//I’[‚É‰üs‚ð‚Â‚¯‚é
 				if( (strTmp.GetLength() > 1) &&
-					(lstrcmp((LPCTSTR )strTmp+(strTmp.GetLength()-2),_T("\r\n")) != 0) )
+					(strTmp.Right(2) != _T("\r\n")) )
 				{
 					strTmp += _T("\r\n");
 				}
@@ -281,7 +281,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					{
 						break;
 					}
-					strLine = CString((LPCTSTR )strTmp+start,end-start);
+					strLine = strTmp.Mid(start,end-start);
 					lpcs->m_M3u.Add(strLine);
 					TRACE(_T("lpcs->m_M3u.Add(%s)\n"),strLine);
 					
