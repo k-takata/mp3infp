@@ -323,13 +323,13 @@ BOOL CShellExt::GetItemData_mp3(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		strVal = _T("");
 		if(m_Id3tagv1.IsEnable())
 		{
-			if(m_Id3tagv1.GetTrackNo().GetLength())
+			if(m_Id3tagv1.GetTrackNo().IsEmpty())
 			{
-				strVal += _T("ID3v1.1 ");
+				strVal += _T("ID3v1.0 ");
 			}
 			else
 			{
-				strVal += _T("ID3v1.0 ");
+				strVal += _T("ID3v1.1 ");
 			}
 		}
 		if(m_Id3tagv2.IsEnable())
@@ -382,7 +382,7 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 //2002-01-30
 //INAMを優先、無ければISBJを表示
 		strVal = m_RiffSIF.GetField('I','N','A','M');
-		if(strVal.GetLength() == 0)
+		if(strVal.IsEmpty())
 		{
 			strVal = m_RiffSIF.GetField('I','S','B','J');
 		}
@@ -461,7 +461,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 //2002-03-17
 //INAMを優先、無ければISBJを表示
 		strVal = m_OpenDML.GetField('I','N','A','M');
-		if(strVal.GetLength() == 0)
+		if(strVal.IsEmpty())
 		{
 			strVal = m_OpenDML.GetField('I','S','B','J');
 		}
@@ -483,7 +483,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		break;
 	case IDX_AFMT:	//音声フォーマット
 		//「なし」
-		if(strAudioFormat.GetLength() == 0)
+		if(strAudioFormat.IsEmpty())
 		{
 			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
@@ -496,7 +496,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		strVal = strAudioFormat;
 		break;
 	case IDX_VFMT:	//映像フォーマット
-		if(strVideoFormat.GetLength() == 0)
+		if(strVideoFormat.IsEmpty())
 		{
 			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
@@ -511,7 +511,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		strVal += strStreamFormat;
 		break;
 	case IDX_TIME:	//時間
-		if(strTime.GetLength() == 0)
+		if(strTime.IsEmpty())
 		{
 			GetAviFormat(m_strSelectFile,
 							strAudioFormat,
@@ -524,7 +524,7 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		strVal = strTime;
 		break;
 	case IDX_AVI_VER:	//AVIバージョン
-		if(strTime.GetLength() == 0)
+		if(strTime.IsEmpty())
 		{
 			GetAviFormat(m_strSelectFile,
 							strAudioFormat,

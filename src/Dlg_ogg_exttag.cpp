@@ -65,7 +65,7 @@ void CDlg_ogg_exttag::OnOK()
 	GetDlgItem(IDC_EDIT_NAME)->GetWindowText(strName);
 	GetDlgItem(IDC_EDIT_VALUE)->GetWindowText(strValue);
 	//フィールド名長さチェック
-	if(strName.GetLength() == 0)
+	if(strName.IsEmpty())
 	{
 		AfxMessageBox(IDS_PLEASE_TAG_NAME);
 		::SetFocus(::GetDlgItem(m_hWnd,IDC_EDIT_NAME));

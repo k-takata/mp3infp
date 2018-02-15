@@ -82,7 +82,7 @@ TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 		return S_FALSE;
 	}
 
-	if(strInfoTip.GetLength() == 0)
+	if(strInfoTip.IsEmpty())
 	{
 		CString strTmp;
 		strInfoTip += m_strSelectFile;
@@ -192,13 +192,13 @@ CString CShellExt::GetInfoTip_mp3()
 				i += 3;
 				if(m_Id3tagv1.IsEnable())
 				{
-					if(m_Id3tagv1.GetTrackNo().GetLength())
+					if(m_Id3tagv1.GetTrackNo().IsEmpty())
 					{
-						strInfoTip += _T("ID3v1.1 ");
+						strInfoTip += _T("ID3v1.0 ");
 					}
 					else
 					{
-						strInfoTip += _T("ID3v1.0 ");
+						strInfoTip += _T("ID3v1.1 ");
 					}
 				}
 				if(m_Id3tagv2.IsEnable())
@@ -632,7 +632,7 @@ CString CShellExt::GetInfoTip_wave()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				if(strFormat.GetLength() == 0)
+				if(strFormat.IsEmpty())
 				{
 					GetWaveAudioFormat(m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
@@ -645,7 +645,7 @@ CString CShellExt::GetInfoTip_wave()
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				if(strTime.GetLength() == 0)
+				if(strTime.IsEmpty())
 				{
 					GetWaveAudioFormat(m_strSelectFile,
 						m_RiffSIF.GetStreamSize(),
@@ -663,7 +663,7 @@ CString CShellExt::GetInfoTip_wave()
 				CString tmp;
 				i += 3;
 				tmp = m_RiffSIF.GetField('I','N','A','M');
-				if(tmp.GetLength() == 0)
+				if(tmp.IsEmpty())
 				{
 					tmp = m_RiffSIF.GetField('I','S','B','J');
 				}
@@ -801,7 +801,7 @@ CString CShellExt::GetInfoTip_avi()
 			else if(_tcsncmp(&pFormatString[i],_T("AFMT"),4) == 0)
 			{
 				i += 3;
-				if(strAudioFormat.GetLength() == 0)
+				if(strAudioFormat.IsEmpty())
 				{
 					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
@@ -817,7 +817,7 @@ CString CShellExt::GetInfoTip_avi()
 			else if(_tcsncmp(&pFormatString[i],_T("VFMT"),4) == 0)
 			{
 				i += 3;
-				if(strVideoFormat.GetLength() == 0)
+				if(strVideoFormat.IsEmpty())
 				{
 					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
@@ -834,7 +834,7 @@ CString CShellExt::GetInfoTip_avi()
 			else if(_tcsncmp(&pFormatString[i],_T("TIME"),4) == 0)
 			{
 				i += 3;
-				if(strTime.GetLength() == 0)
+				if(strTime.IsEmpty())
 				{
 					GetAviFormat(m_strSelectFile,
 									strAudioFormat,
@@ -854,7 +854,7 @@ CString CShellExt::GetInfoTip_avi()
 				CString tmp;
 				i += 3;
 				tmp = m_OpenDML.GetField('I','N','A','M');
-				if(tmp.GetLength() == 0)
+				if(tmp.IsEmpty())
 				{
 					tmp = m_OpenDML.GetField('I','S','B','J');
 				}
@@ -908,7 +908,7 @@ CString CShellExt::GetInfoTip_avi()
 			else if(_tcsncmp(&pFormatString[i],_T("AVIV"),4) == 0)
 			{
 				i += 3;
-				if(strTime.GetLength() == 0)
+				if(strTime.IsEmpty())
 				{
 					GetAviFormat(m_strSelectFile,
 									strAudioFormat,

@@ -175,7 +175,7 @@ extern "C" int __stdcall mp3infp_ViewPropEx(HWND hWnd,LPCTSTR szFileName,DWORD d
 	psh.nPages = se.m_tmpPropCount;
 	psh.phpage = se.m_tmpProp;
 	CString retTabName = getFileType(szFileName,dwPage);
-	if(retTabName.GetLength() == 0)
+	if(retTabName.IsEmpty())
 	{
 		psh.pStartPage = _T("mp3infp");
 	}
@@ -213,7 +213,7 @@ extern "C" BOOL __stdcall mp3infp_ViewProp(HWND hWnd,LPCTSTR szFileName,DWORD dw
 		execinfo.hwnd	= GetDesktopWindow();
 	}
 	CString retTabName = getFileType(szFileName,dwPage);
-	if(retTabName.GetLength() == 0)
+	if(retTabName.IsEmpty())
 	{
 		execinfo.lpParameters = _T("mp3infp");
 	}

@@ -865,7 +865,7 @@ DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
 
 	m_strSFT = m_strDefaultSft;
 	//INAM songname
-	if(m_strNAM.GetLength() == 0)
+	if(m_strNAM.IsEmpty())
 	{
 		//デフォルト曲名(ファイル名)
 		m_strNAM = getFileName((CString)szFileName);

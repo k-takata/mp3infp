@@ -1472,7 +1472,7 @@ void GetAviFormat(IN LPCTSTR szFileName,
 				break;
 			}
 		}
-		if(strDivx5Version.GetLength() == 0)
+		if(strDivx5Version.IsEmpty())
 		{
 			strDivx5Version = strDivxVerEtc;
 		}
@@ -1555,7 +1555,7 @@ void GetAviFormat(IN LPCTSTR szFileName,
 				break;
 			}
 		}
-		if(strDivx5Version.GetLength() == 0)
+		if(strDivx5Version.IsEmpty())
 		{
 			strDivx5Version = strDivxVerEtc;
 		}

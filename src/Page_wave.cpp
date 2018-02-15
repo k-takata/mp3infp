@@ -157,7 +157,7 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 //		SetDlgItemText(hDlg,IDC_EDIT_SBJ,lpcs->m_RiffSIF.GetField('I','S','B','J'));
 		CString tmp;
 		tmp = lpcs->m_RiffSIF.GetField('I','N','A','M');
-		if(tmp.GetLength() == 0)
+		if(tmp.IsEmpty())
 		{
 			tmp = lpcs->m_RiffSIF.GetField('I','S','B','J');
 		}
