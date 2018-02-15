@@ -326,6 +326,23 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
+static void SetTagString(const MP4Tags *tags, const CString &str,
+		bool (*setter)(const MP4Tags *, const char *))
+{
+	if(!str.IsEmpty())
+	{
+		char *buf = TstrToDataAlloc(str, -1, NULL, DTC_CODE_UTF8);
+		if (buf != NULL) {
+			setter(tags, buf);
+			free(buf);
+		}
+	}
+	else
+	{
+		setter(tags, NULL);
+	}
+}
+
 DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 {
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
@@ -521,96 +538,13 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 	{
 		MP4TagsFetch(tags, mp4file);
 
-		if(m_strMetadata_Name.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Name, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetName(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetName(tags, NULL);
-		}
-
-		if(m_strMetadata_Artist.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Artist, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetArtist(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetArtist(tags, NULL);
-		}
-
-		if(m_strMetadata_Album.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Album, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetAlbum(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetAlbum(tags, NULL);
-		}
-
-		if(m_strMetadata_AlbumArtist.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_AlbumArtist, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetAlbumArtist(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetAlbumArtist(tags, NULL);
-		}
-
-		if(m_strMetadata_Group.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Group, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetGrouping(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetGrouping(tags, NULL);
-		}
-
-		if(m_strMetadata_Composer.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Composer, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetComposer(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetComposer(tags, NULL);
-		}
-
-		if(m_strMetadata_Genre.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Genre, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetGenre(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetGenre(tags, NULL);
-		}
+		SetTagString(tags, m_strMetadata_Name, MP4TagsSetName);
+		SetTagString(tags, m_strMetadata_Artist, MP4TagsSetArtist);
+		SetTagString(tags, m_strMetadata_Album, MP4TagsSetAlbum);
+		SetTagString(tags, m_strMetadata_AlbumArtist, MP4TagsSetAlbumArtist);
+		SetTagString(tags, m_strMetadata_Group, MP4TagsSetGrouping);
+		SetTagString(tags, m_strMetadata_Composer, MP4TagsSetComposer);
+		SetTagString(tags, m_strMetadata_Genre, MP4TagsSetGenre);
 
 		if((m_iMetadata_Track1 == -1) && (m_iMetadata_Track2 == -1))
 		{
@@ -646,18 +580,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 			MP4TagsSetTempo(tags, &tempo);
 		}
 
-		if(m_strMetadata_Year.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Year, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetReleaseDate(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetReleaseDate(tags, NULL);
-		}
+		SetTagString(tags, m_strMetadata_Year, MP4TagsSetReleaseDate);
 
 		if(m_iMetadata_Compilation != -1)
 		{
@@ -669,31 +592,8 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 			MP4TagsSetCompilation(tags, NULL);
 		}
 
-		if(m_strMetadata_Comment.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Comment, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetComments(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetComments(tags, NULL);
-		}
-
-		if(m_strMetadata_Tool.GetLength())
-		{
-			char *buf = TstrToDataAlloc(m_strMetadata_Tool, -1, NULL, DTC_CODE_UTF8);
-			if (buf != NULL) {
-				MP4TagsSetEncodingTool(tags, buf);
-				free(buf);
-			}
-		}
-		else
-		{
-			MP4TagsSetEncodingTool(tags, NULL);
-		}
+		SetTagString(tags, m_strMetadata_Comment, MP4TagsSetComments);
+		SetTagString(tags, m_strMetadata_Tool, MP4TagsSetEncodingTool);
 
 		MP4TagsStore(tags, mp4file);
 		MP4TagsFree(tags);
