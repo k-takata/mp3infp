@@ -39,7 +39,7 @@ void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable)
 	DestroyMenu(hMenu);
 }
 
-void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
+void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 {
 	if(!OpenClipboard(hDlg))
 	{
@@ -106,7 +106,7 @@ void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 	CloseClipboard();
 }
 
-HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
+HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 {
 	CString strTmp;
 	CWnd wnd;
@@ -163,7 +163,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray)
 	return hg;
 }
 
-HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CString strFileName)
+HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWndArray,CString strFileName)
 {
 	CString strTmp;
 	CWnd wnd;

@@ -2,7 +2,7 @@
 #include "mp3infp.h"
 #include "Resource.h"
 
-static int ids[] =
+static const int ids[] =
 {
 	-1,
 	CLP_NAM,
@@ -24,7 +24,7 @@ static int ids[] =
 	0
 };
 
-static int staticWnd[] =
+static const int staticWnd[] =
 {
 	-1,
 	IDC_STATIC_NAM,
@@ -46,7 +46,7 @@ static int staticWnd[] =
 	0
 };
 
-static int editWnd[] =
+static const int editWnd[] =
 {
 	IDC_EDIT_FORMAT,
 	IDC_EDIT_SBJ,

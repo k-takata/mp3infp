@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "mp3infp.h"
 
-static int ids[] =
+static const int ids[] =
 {
 	-1,
 	-1,
@@ -15,7 +15,7 @@ static int ids[] =
 	0
 };
 
-static int staticWnd[] =
+static const int staticWnd[] =
 {
 	IDC_STATIC_FORMAT_,
 	IDC_STATIC_TIME_,
@@ -29,7 +29,7 @@ static int staticWnd[] =
 	0
 };
 
-static int editWnd[] =
+static const int editWnd[] =
 {
 	IDC_STATIC_FORMAT,
 	IDC_STATIC_TIME,

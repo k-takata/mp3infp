@@ -5,9 +5,9 @@
 #include <shlobj.h>
 
 void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable);
-void SetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
-HGLOBAL GetDlgOutlineTextSp(HWND hDlg,int *idArray,int *editWndArray);
-HGLOBAL GetDlgOutlineText(HWND hDlg,int *staticWndArray,int *editWndArray,CString strFileName);
+void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray);
+HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray);
+HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWndArray,CString strFileName);
 void OpenConfigPage(HWND hwnd, int pagenum);
 void OpenAboutDlg(HWND hwnd);
 #define ResultFromShort(i)  ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, (USHORT)(i)))
