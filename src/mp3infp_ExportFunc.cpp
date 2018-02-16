@@ -11,10 +11,11 @@ static CString getFileType(LPCTSTR szFileName,DWORD dwPage)
 {
 	CString ret;
 
-	if((lstrcmpi(getExtName(szFileName),_T(".mp3")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".mp2")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".mp1")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".rmp")) == 0) )
+	LPCTSTR szExt = getExtName(szFileName);
+	if((lstrcmpi(szExt,_T(".mp3")) == 0) ||
+		(lstrcmpi(szExt,_T(".mp2")) == 0) ||
+		(lstrcmpi(szExt,_T(".mp1")) == 0) ||
+		(lstrcmpi(szExt,_T(".rmp")) == 0) )
 	{
 		BOOL bId3v1 = FALSE;
 		BOOL bId3v2 = FALSE;

@@ -365,10 +365,11 @@ STDMETHODIMP_(ULONG) CShellExt::Release()
 
 CShellExt::EN_FILETYPE CShellExt::GetFileType(LPCTSTR szFileName)
 {
-	if((lstrcmpi(getExtName(szFileName),_T(".mp3")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".mp2")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".mp1")) == 0) ||
-		(lstrcmpi(getExtName(szFileName),_T(".rmp")) == 0) )
+	LPCTSTR szExt = getExtName(szFileName);
+	if((lstrcmpi(szExt,_T(".mp3")) == 0) ||
+		(lstrcmpi(szExt,_T(".mp2")) == 0) ||
+		(lstrcmpi(szExt,_T(".mp1")) == 0) ||
+		(lstrcmpi(szExt,_T(".rmp")) == 0) )
 	{
 		DWORD dwRet;
 		HANDLE hFile = CreateFile(
@@ -399,42 +400,42 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(LPCTSTR szFileName)
 		}
 		return MP3;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".wav")) == 0)
+	/*else*/ if(lstrcmpi(szExt,_T(".wav")) == 0)
 	{
 		return WAVE;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".avi")) == 0)
+	/*else*/ if(lstrcmpi(szExt,_T(".avi")) == 0)
 	{
 		return AVI;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".vqf")) == 0)
+	/*else*/ if(lstrcmpi(szExt,_T(".vqf")) == 0)
 	{
 		return VQF;
 	}
-	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".wma")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".wmv")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".asf")) == 0) )
+	/*else*/ if((lstrcmpi(szExt,_T(".wma")) == 0) ||
+			(lstrcmpi(szExt,_T(".wmv")) == 0) ||
+			(lstrcmpi(szExt,_T(".asf")) == 0) )
 	{
 		return WMA;
 	}
-	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".m3u")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".m3u8")) == 0) )
+	/*else*/ if((lstrcmpi(szExt,_T(".m3u")) == 0) ||
+			(lstrcmpi(szExt,_T(".m3u8")) == 0) )
 	{
 		return M3U;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".ogg")) == 0)
+	/*else*/ if(lstrcmpi(szExt,_T(".ogg")) == 0)
 	{
 		return OGG;
 	}
-	/*else*/ if(lstrcmpi(getExtName(szFileName),_T(".ape")) == 0)
+	/*else*/ if(lstrcmpi(szExt,_T(".ape")) == 0)
 	{
 		return APE;
 	}
-	/*else*/ if((lstrcmpi(getExtName(szFileName),_T(".mp4")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".m4v")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".m4a")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".3gp")) == 0) ||
-			(lstrcmpi(getExtName(szFileName),_T(".3g2")) == 0) )
+	/*else*/ if((lstrcmpi(szExt,_T(".mp4")) == 0) ||
+			(lstrcmpi(szExt,_T(".m4v")) == 0) ||
+			(lstrcmpi(szExt,_T(".m4a")) == 0) ||
+			(lstrcmpi(szExt,_T(".3gp")) == 0) ||
+			(lstrcmpi(szExt,_T(".3g2")) == 0) )
 	{
 		return MP4;
 	}
@@ -442,8 +443,8 @@ CShellExt::EN_FILETYPE CShellExt::GetFileType(LPCTSTR szFileName)
 	DWORD dwUseExtra=0;
 	regGetDword(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("UseExperimentalSupport"),&dwUseExtra,FALSE);
 	if(dwUseExtra){
-		if(lstrcmpi(getExtName(szFileName),_T(".tta")) == 0)return MP3;
-		if(lstrcmpi(getExtName(szFileName),_T(".tak")) == 0)return APE;
+		if(lstrcmpi(szExt,_T(".tta")) == 0)return MP3;
+		if(lstrcmpi(szExt,_T(".tak")) == 0)return APE;
 	}
 
 	return UNKNOWN;
