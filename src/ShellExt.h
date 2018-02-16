@@ -56,7 +56,7 @@ void OpenAboutDlg(HWND hwnd);
 	{	\
 		if(!OpenClipboard(hDlg))	\
 		{	\
-			AfxMessageBox(_T("clipboad fail!"));	\
+			AfxMessageBox(_T("clipboard fail!"));	\
 			break;	\
 		}	\
 		EmptyClipboard();	\

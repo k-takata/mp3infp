@@ -370,7 +370,7 @@ IDI_ICON1               ICON    DISCARDABLE     "res\\mp3infp.ico"
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_AVI_UNCODE          "It does not correspond to rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which pushes in LIST-INFO)."
+    IDS_AVI_UNCODE          "Rewriting of AVI2 (OpenDML) containing AVIX-RIFF CHUNK (and there are no spaces, such as JUNK CHUNK which LIST-INFO is pushed in) is not supported."
     IDS_CPL_CAPTION         "mp3infp configuration"
     IDS_CPL_NAME            "mp3infp"
     IDS_INFOTIP_MAXLINE_OVER "(It omits after 30 line)"
@@ -432,7 +432,7 @@ BEGIN
     IDS_PAGE_MP3APE_MAKE_APE 
                             "APE Tag is created. Is it all right? \n (this change is reflected immediately)"
     IDS_PAGE_MP3ID3V1_CAN_NOT_DEL 
-                            "ID3TAG is not eliminable because of present RMP form. (It is the specification of mp3infp)"
+                            "ID3TAG cannot be eliminated because of present RMP form. (It is the specification of mp3infp)"
     IDS_PAGE_MP3ID3V1_COUNT "%dchars [max=%d (at ID3v1)]"
     IDS_PAGE_MP3ID3V1_COUNT_OVER "%dchars(over %dchars) [max=%d (at ID3v1)]"
     IDS_PAGE_MP3ID3V1_DEL_ID3TAG 
@@ -494,7 +494,7 @@ BEGIN
     IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE_APE 
                             "APE Tag cannot be created because of present RMP form. Please delete Riff SIF."
     IDS_PAGE_MP3ID3V2_CAN_NOT_MAKE2 
-                            "RiffSIF (RMP form) and ID 3v2 cannot live together. Is RiffSIF removed after copying the contents of \nRiffSIF? \n (this change is reflected immediately)"
+                            "RiffSIF (RMP form) and ID3v2 cannot live together. Is RiffSIF removed after copying the contents of \nRiffSIF? \n (this change is reflected immediately)"
     IDS_PAGE_MP3ID3V2_CANNOT_WRITE 
                             "Information has not been updated. It is write-protected in whether the file is locked."
     IDS_PAGE_MP3ID3V2_DEL_ID3TAG 
@@ -506,7 +506,7 @@ BEGIN
     IDS_PAGE_MP3RIFF_CAN_NOT_MAKE_APE 
                             "Since there is APE Tag, it is not convertible for RMP form."
     IDS_PAGE_MP3RIFF_CAN_NOT_MAKE2 
-                            "ID 3v2 and RiffSIF (RMP form) cannot live together. After copying the contents of \nID 3v2, is ID3v2 TAG removed? \n (this change is reflected immediately)"
+                            "ID3v2 and RiffSIF (RMP form) cannot live together. After copying the contents of \nID3v2, is ID3v2 TAG removed? \n (this change is reflected immediately)"
     IDS_PAGE_MP3RIFF_CONV_MP3 
                             "It changes into MP3 form. Is it all right? \n (this change is reflected immediately)"
     IDS_PAGE_MP3RIFF_CONV_RMP 
