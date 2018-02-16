@@ -60,7 +60,6 @@ void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 		return;
 	}
 
-	int arrayOffset = 0;
 	int readOffset = 0;
 	while(*(int *)(&(txtData[readOffset])))
 	{
@@ -98,8 +97,7 @@ void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 				}
 			}
 		}
-		readOffset += (lstrlen((LPCTSTR)&(txtData[readOffset])) + 1) * sizeof(TCHAR);
-		arrayOffset++;
+		readOffset += (len + 1) * sizeof(TCHAR);
 	}
 		
 	GlobalUnlock(hText);
@@ -110,13 +108,15 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 {
 	CString strTmp;
 	CWnd wnd;
-	int totalLen = 1;
+	int totalLen = 0;
 	int i=0;
 	for(; idArray[i]!=0; i++)
 	{
-		totalLen += 4/*ID*/ + 4/*Size*/ + 4/*end of*/;
-		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]))*sizeof(TCHAR);
+		totalLen += 4/*ID*/ + 4/*Size*/;
+		// The following size is not accurate for a checkbox, but it would be enough.
+		totalLen += (GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]))+1)*sizeof(TCHAR);
 	}
+	totalLen += 4;	// end mark
 	
 	HGLOBAL hg = GlobalAlloc(GHND,totalLen);
 	char *txtData = (char *)GlobalLock(hg);
@@ -132,9 +132,6 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 		if(_tcscmp(szClassName,_T("Button")) != 0)
 		{
 			// editbox
-			*(int *)(&(txtData[writeOffset])) = GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]));
-			writeOffset += sizeof(int);
-
 			wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
 			wnd.GetWindowText(strTmp);
 			wnd.Detach();
@@ -150,13 +147,15 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 			{
 				strTmp = _T("0");
 			}
-			*(int *)(&(txtData[writeOffset])) = strTmp.GetLength();
-			writeOffset += sizeof(int);
 		}
+		*(int *)(&(txtData[writeOffset])) = strTmp.GetLength();
+		writeOffset += sizeof(int);
 		lstrcpy((LPTSTR)&(txtData[writeOffset]),strTmp);
 		writeOffset += (strTmp.GetLength() + 1) * sizeof(TCHAR);
 	}
-	*(int *)(&(txtData[writeOffset])) = 0;
+	*(int *)(&(txtData[writeOffset])) = 0;	// end mark
+	writeOffset += sizeof(int);
+	ASSERT(totalLen >= writeOffset);
 
 	GlobalUnlock(hg);
 
