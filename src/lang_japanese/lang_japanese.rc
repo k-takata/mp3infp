@@ -985,7 +985,7 @@ BEGIN
     CTEXT           "Static",IDC_STATIC_VER_INFO,120,0,72,10,SS_SUNKEN
     CONTROL         "常に手前",IDC_CHECK_AOT,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,195,0,31,11
-    LTEXT           "トラック情報:",IDC_STATIC_FORMAT_,6,30,34,8
+    LTEXT           "トラック情報:",IDC_STATIC_FORMAT_,6,30,35,8
     EDITTEXT        IDC_EDIT_FORMAT,6,39,215,33,ES_MULTILINE | 
                     ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | 
                     WS_VSCROLL
