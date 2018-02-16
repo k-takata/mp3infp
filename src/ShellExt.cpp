@@ -167,38 +167,18 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 {
 	CString strTmp;
 	CWnd wnd;
-	int totalLen = 1;
-	int i=0;
-	
-	totalLen += strFileName.GetLength();
-	totalLen += lstrlen(_T("\r\n"));
 
-	for(; editWndArray[i]!=0; i++)
-	{
-		if(staticWndArray[i] != -1)
-		{
-			totalLen += GetWindowTextLength(GetDlgItem(hDlg,staticWndArray[i]));
-		}
-		totalLen += GetWindowTextLength(GetDlgItem(hDlg,editWndArray[i]));
-		totalLen += lstrlen(_T("\t\r\n"));
-	}
-	
-	HGLOBAL hg = GlobalAlloc(GHND,totalLen*sizeof(TCHAR));
-	TCHAR *txtData = (TCHAR *)GlobalLock(hg);
-	lstrcpy(txtData,_T(""));
-				
-	lstrcat(txtData,strFileName);
-	lstrcat(txtData,_T("\r\n"));
+	CString strData = strFileName;
+	strData += _T("\r\n");
 
-	for(i=0; editWndArray[i]!=0; i++)
+	for(int i=0; editWndArray[i]!=0; i++)
 	{
 		if(staticWndArray[i] != -1)
 		{
 			wnd.Attach(GetDlgItem(hDlg,staticWndArray[i]));
 			wnd.GetWindowText(strTmp);
 			wnd.Detach();
-			lstrcat(txtData,strTmp);
-			lstrcat(txtData,_T("\t"));
+			strData += strTmp + _T("\t");
 		}
 
 		_TCHAR szClassName[100];
@@ -211,14 +191,14 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 				wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
-				lstrcat(txtData,strTmp);
+				strData += strTmp;
 				if(staticWndArray[i+1] != -1)	// トラック番号など第二値を / 区切りする
 				{
-					lstrcat(txtData,_T("\r\n"));
+					strData += _T("\r\n");
 				}
 				else
 				{
-					lstrcat(txtData,_T(" / "));
+					strData += _T(" / ");
 				}
 			}
 		}
@@ -227,16 +207,19 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 			// checkbox
 			if(IsDlgButtonChecked(hDlg,editWndArray[i]))
 			{
-				strTmp = _T("Yes\r\n");
+				strData += _T("Yes");
 			}
 			else
 			{
-				strTmp = _T("No\r\n");
+				strData += _T("No");
 			}
-			lstrcat(txtData,strTmp);
+			strData += _T("\r\n");
 		}
 	}
 
+	HGLOBAL hg = GlobalAlloc(GHND,(strData.GetLength()+1)*sizeof(TCHAR));
+	TCHAR *txtData = (TCHAR *)GlobalLock(hg);
+	lstrcpy(txtData,strData);
 	GlobalUnlock(hg);
 
 	return hg;
