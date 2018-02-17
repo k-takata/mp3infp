@@ -39,6 +39,13 @@ void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable)
 	DestroyMenu(hMenu);
 }
 
+static bool IsButton(HWND hwnd)
+{
+	TCHAR szClassName[100];
+	GetClassName(hwnd, szClassName, sizeof_array(szClassName));
+	return lstrcmp(szClassName, _T("Button")) == 0;
+}
+
 void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 {
 	if(!OpenClipboard(hDlg))
@@ -73,9 +80,7 @@ void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 			{
 				if(idArray[i] == id)
 				{
-					_TCHAR szClassName[100];
-					GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
-					if(_tcscmp(szClassName,_T("Button")) != 0)
+					if(!IsButton(GetDlgItem(hDlg,editWndArray[i])))
 					{
 						// Edit
 						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),(LPCTSTR)&(txtData[readOffset]));
@@ -127,9 +132,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 		*(int *)(&(txtData[writeOffset])) = idArray[i];
 		writeOffset += sizeof(int);
 
-		_TCHAR szClassName[100];
-		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
-		if(_tcscmp(szClassName,_T("Button")) != 0)
+		if(!IsButton(GetDlgItem(hDlg,editWndArray[i])))
 		{
 			// editbox
 			wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
@@ -180,9 +183,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 			strData += strTmp + _T("\t");
 		}
 
-		_TCHAR szClassName[100];
-		GetClassName(GetDlgItem(hDlg,editWndArray[i]),szClassName,sizeof_array(szClassName));
-		if(_tcscmp(szClassName,_T("Button")) != 0)
+		if(!IsButton(GetDlgItem(hDlg,editWndArray[i])))
 		{
 			// editbox
 			if(editWndArray[i] != -1)
