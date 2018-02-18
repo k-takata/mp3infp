@@ -827,7 +827,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 		case IDC_HELPVIEW:
 			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
-		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
+		DLG_CLIPBOARD_MACRO(lpcs->m_strSelectFile);
 		}
 		break;
 

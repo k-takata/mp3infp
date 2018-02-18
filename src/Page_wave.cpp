@@ -358,7 +358,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 		case IDC_HELPVIEW:
 			lpcs->OpenHtmlHelp(hDlg,_T("extension.htm"));
 			break;
-		DLG_CLIPBORD_MACRO(lpcs->m_strSelectFile);
+		DLG_CLIPBOARD_MACRO(lpcs->m_strSelectFile);
 		}
 		break;
 	// コンテキストメニュー

@@ -45,7 +45,7 @@ void OpenAboutDlg(HWND hwnd);
 #define CF_TTEXT	CF_TEXT
 #endif
 
-#define DLG_CLIPBORD_MACRO(strFile)	\
+#define DLG_CLIPBOARD_MACRO(strFile)	\
 	case IDCANCEL:	\
 	{				\
 		/* Forward this message to the parent window */ \
