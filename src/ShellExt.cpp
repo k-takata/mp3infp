@@ -19,8 +19,8 @@ void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable)
 		EnableMenuItem(hPopup,ID_MENU_COPY,MF_ENABLED);
 		if(OpenClipboard(hDlg))
 		{
-			UINT cfMp3nfp = RegisterClipboardFormat(CF_MP3INFP);
-			HANDLE hText = GetClipboardData(cfMp3nfp);
+			UINT cfMp3Infp = RegisterClipboardFormat(CF_MP3INFP);
+			HANDLE hText = GetClipboardData(cfMp3Infp);
 			if(hText)
 			{
 				EnableMenuItem(hPopup,ID_MENU_PASTE,MF_ENABLED);
@@ -60,8 +60,8 @@ void HandleMenuCopy(HWND hDlg,const int *idArray,const int *staticWndArray,const
 		CloseClipboard();
 		return;
 	}
-	UINT cfMp3nfp = RegisterClipboardFormat(CF_MP3INFP);
-	SetClipboardData(cfMp3nfp,hg);
+	UINT cfMp3Infp = RegisterClipboardFormat(CF_MP3INFP);
+	SetClipboardData(cfMp3Infp,hg);
 	CloseClipboard();
 }
 
@@ -80,8 +80,8 @@ void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 		return;
 	}
 
-	UINT cfMp3nfp = RegisterClipboardFormat(CF_MP3INFP);
-	HANDLE hText = GetClipboardData(cfMp3nfp);
+	UINT cfMp3Infp = RegisterClipboardFormat(CF_MP3INFP);
+	HANDLE hText = GetClipboardData(cfMp3Infp);
 	if(!hText)
 	{
 		return;
