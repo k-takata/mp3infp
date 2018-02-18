@@ -191,7 +191,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 	return hg;
 }
 
-HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWndArray,CString strFileName)
+HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWndArray,const CString &strFileName)
 {
 	CString strTmp;
 	CWnd wnd;
