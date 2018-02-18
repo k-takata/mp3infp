@@ -39,6 +39,32 @@ void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable)
 	DestroyMenu(hMenu);
 }
 
+void HandleMenuCopy(HWND hDlg,const int *idArray,const int *staticWndArray,const int *editWndArray,const CString &strFile)
+{
+	if(!OpenClipboard(hDlg))
+	{
+		AfxMessageBox(_T("clipboard fail!"));
+		return;
+	}
+	EmptyClipboard();
+	HGLOBAL hg = GetDlgOutlineText(hDlg,staticWndArray,editWndArray,strFile);
+	if(hg == NULL)
+	{
+		CloseClipboard();
+		return;
+	}
+	SetClipboardData(CF_TTEXT,hg);
+	hg = GetDlgOutlineTextSp(hDlg,idArray,editWndArray);
+	if(hg == NULL)
+	{
+		CloseClipboard();
+		return;
+	}
+	UINT cfMp3nfp = RegisterClipboardFormat(CF_MP3INFP);
+	SetClipboardData(cfMp3nfp,hg);
+	CloseClipboard();
+}
+
 static bool IsButton(HWND hwnd)
 {
 	TCHAR szClassName[100];

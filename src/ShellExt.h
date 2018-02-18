@@ -5,6 +5,7 @@
 #include <shlobj.h>
 
 void DlgContextMenu(HWND hDlg,LPARAM lParam,BOOL isEnable);
+void HandleMenuCopy(HWND hDlg,const int *idArray,const int *staticWndArray,const int *editWndArray,const CString &strFile);
 void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray);
 HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray);
 HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWndArray,CString strFileName);
@@ -54,28 +55,7 @@ void OpenAboutDlg(HWND hwnd);
 	}	\
 	case ID_MENU_COPY:	\
 	{	\
-		if(!OpenClipboard(hDlg))	\
-		{	\
-			AfxMessageBox(_T("clipboard fail!"));	\
-			break;	\
-		}	\
-		EmptyClipboard();	\
-		HGLOBAL hg = GetDlgOutlineText(hDlg,staticWnd,editWnd,strFile);	\
-		if(hg == NULL)	\
-		{	\
-			CloseClipboard();	\
-			break;	\
-		}	\
-		SetClipboardData(CF_TTEXT,hg);	\
-		hg = GetDlgOutlineTextSp(hDlg,ids,editWnd);	\
-		if(hg == NULL)	\
-		{	\
-			CloseClipboard();	\
-			break;	\
-		}	\
-		UINT cfMp3nfp = RegisterClipboardFormat(CF_MP3INFP);	\
-		SetClipboardData(cfMp3nfp,hg);	\
-		CloseClipboard();	\
+		HandleMenuCopy(hDlg,ids,staticWnd,editWnd,strFile);	\
 		break;	\
 	}	\
 	case ID_MENU_PASTE:	\
