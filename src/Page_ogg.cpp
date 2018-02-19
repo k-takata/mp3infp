@@ -9,8 +9,10 @@ static const int ids[] =
 	-1,
 	CLP_NAM,
 	CLP_TRACK,
+	CLP_DISC,
 	CLP_ART,
 	CLP_PRD,
+	CLP_AART,
 	CLP_CRD,
 	CLP_GNR,
 	CLP_CMT,
@@ -23,8 +25,10 @@ static const int staticWnd[] =
 	IDC_STATIC_TIME_,
 	IDC_STATIC_NAM,
 	IDC_STATIC_TRK,
+	IDC_STATIC_DISC,
 	IDC_STATIC_ART,
 	IDC_STATIC_PRD,
+	IDC_STATIC_AART,
 	IDC_STATIC_CRD,
 	IDC_STATIC_GNR,
 	IDC_STATIC_CMT,
@@ -37,8 +41,10 @@ static const int editWnd[] =
 	IDC_STATIC_TIME,
 	IDC_EDIT_SBJ,
 	IDC_EDIT_TRK,
+	IDC_EDIT_DISC,
 	IDC_EDIT_ART,
 	IDC_EDIT_PRD,
+	IDC_EDIT_AART,
 	IDC_EDIT_CRD,
 	IDC_EDIT_GNR,
 	IDC_EDIT_CMT,
@@ -149,6 +155,12 @@ static void DispInfo(HWND hDlg,CShellExt *lpcs)
 	lpcs->m_Ogg.GetComment(_T("ALBUM"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_PRD,tmp);
 	
+	lpcs->m_Ogg.GetComment(_T("ALBUMARTIST"),0,tmp);
+	SetDlgItemText(hDlg,IDC_EDIT_AART,tmp);
+
+	lpcs->m_Ogg.GetComment(_T("DISCNUMBER"),0,tmp);
+	SetDlgItemText(hDlg,IDC_EDIT_DISC,tmp);
+
 	lpcs->m_Ogg.GetComment(_T("DATE"),0,tmp);
 	SetDlgItemText(hDlg,IDC_EDIT_CRD,tmp);
 	
@@ -215,6 +227,8 @@ static void DispInfoExt(HWND hDlg,CShellExt *lpcs)
 				!strName.Compare(_T("TRACKNUMBER")) ||
 				!strName.Compare(_T("ARTIST")) ||
 				!strName.Compare(_T("ALBUM")) ||
+				!strName.Compare(_T("ALBUMARTIST")) ||
+				!strName.Compare(_T("DISCNUMBER")) ||
 				!strName.Compare(_T("DATE")) ||
 				!strName.Compare(_T("GENRE")) ||
 				!strName.Compare(_T("COMMENT")))
@@ -377,6 +391,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 		case IDC_EDIT_TRK:
 		case IDC_EDIT_ART:
 		case IDC_EDIT_PRD:
+		case IDC_EDIT_AART:
+		case IDC_EDIT_DISC:
 		case IDC_EDIT_CRD:
 		case IDC_EDIT_CMT:
 			if((HIWORD(wParam) == EN_CHANGE) &&
@@ -513,6 +529,16 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				wnd.GetWindowText(strTmp);
 				wnd.Detach();
 				lpcs->m_Ogg.AddComment(_T("ALBUM"),strTmp);
+
+				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_AART));
+				wnd.GetWindowText(strTmp);
+				wnd.Detach();
+				lpcs->m_Ogg.AddComment(_T("ALBUMARTIST"),strTmp);
+
+				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_DISC));
+				wnd.GetWindowText(strTmp);
+				wnd.Detach();
+				lpcs->m_Ogg.AddComment(_T("DISCNUMBER"),strTmp);
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
 				wnd.GetWindowText(strTmp);
