@@ -250,8 +250,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
-	CString strTmp;
-	HANDLE hFile;
 
 	switch(uMessage){
 	case WM_INITDIALOG:
@@ -505,7 +503,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				}
 				lpcs->m_bApply = FALSE;
 
-				CString strTmp,strLine;
+				CString strTmp;
 				CWnd wnd;
 				//‚¢‚Á‚½‚ñƒŠƒZƒbƒg
 				lpcs->m_Ogg.Release();

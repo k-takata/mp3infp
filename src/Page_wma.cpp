@@ -209,7 +209,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_wma(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
-	CString strTmp;
 
 	switch(uMessage){
 	case WM_INITDIALOG:

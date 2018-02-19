@@ -169,7 +169,6 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 
 	LPCSHELLEXT	lpcs = (CShellExt *)GetWindowLongPtr(hDlg,DWLP_USER);
 	CString strTmp;
-	HANDLE hFile;
 
 	switch(uMessage){
 	case WM_INITDIALOG:
@@ -425,7 +424,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_ape(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					break;
 				}
 
-				CString strTmp,strLine;
+				CString strTmp;
 				CWnd wnd;
 
 				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SBJ));
