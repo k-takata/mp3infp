@@ -267,13 +267,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				}
 				int start = 0;
 				int end = 0;
-				while(1)
+				while((end = strTmp.Find(_T("\r\n"),start)) != -1)
 				{
-					end = strTmp.Find(_T("\r\n"),start);
-					if(end == -1)
-					{
-						break;
-					}
 					strLine = strTmp.Mid(start,end-start);
 					lpcs->m_M3u.Add(strLine);
 					TRACE(_T("lpcs->m_M3u.Add(%s)\n"),strLine);
