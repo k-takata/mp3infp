@@ -4,11 +4,11 @@ TARGETPATH=obj
 
 TARGETTYPE=LIBRARY
 
-#TARGETLIBS=\
-#	..\bmff\$(O)\bmff.lib \
-
-#NTTARGETFILE2=$(O)\mp4v2_all.lib
-
+OBJLIBFILES=\
+	..\bmff\$(O)\bmff.lib \
+	..\itmf\$(O)\itmf.lib \
+	..\qtff\$(O)\qtff.lib \
+	..\..\libplatform\src\$(O)\libplatform.lib
 
 INCLUDES=$(DDK_INC_PATH);..\..;..\..\include
 

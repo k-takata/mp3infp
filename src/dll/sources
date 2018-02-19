@@ -26,10 +26,6 @@ TARGETLIBS=\
 	$(SDK_LIB_PATH)\oldnames.lib \
 	$(SDK_LIB_PATH)\psapi.lib \
 	..\lib\mp4v2\src\build\$(O)\mp4v2.lib \
-	..\lib\mp4v2\src\bmff\$(O)\bmff.lib \
-	..\lib\mp4v2\src\itmf\$(O)\itmf.lib \
-	..\lib\mp4v2\src\qtff\$(O)\qtff.lib \
-	..\lib\mp4v2\libplatform\src\$(O)\libplatform.lib \
 	..\lib\oggvorbis\lib\ogg\$(O)\ogg.lib \
 	..\lib\oggvorbis\lib\vorbis\$(O)\vorbis.lib \
 
