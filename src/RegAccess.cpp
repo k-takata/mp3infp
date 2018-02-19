@@ -82,15 +82,18 @@ CString regGetStringEx(HKEY hRootKey, LPCTSTR szKey,LPCTSTR szVal,LPCTSTR szDefa
 		//ÉTÉCÉYÇéÊìæ
 		if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)NULL,&dwSize) == ERROR_SUCCESS)
 		{
-			//é¿ç€Ç…ï∂éöóÒÇéÊìæ
-			if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)strRet.GetBuffer(dwSize/sizeof(TCHAR)-1),&dwSize) == ERROR_SUCCESS)
+			if(dwSize == 0)
 			{
-				if(dwSize == 0)
-				{
-					strRet = _T("");
-				}
+				strRet = _T("");
 			}
-			strRet.ReleaseBuffer();
+			else
+			{
+				//é¿ç€Ç…ï∂éöóÒÇéÊìæ
+				if(RegQueryValueEx(hKey,szVal,NULL,&dwType,(LPBYTE)strRet.GetBuffer(dwSize/sizeof(TCHAR)-1),&dwSize) == ERROR_SUCCESS)
+				{
+				}
+				strRet.ReleaseBuffer();
+			}
 		}
 		RegCloseKey(hKey);
 	}
