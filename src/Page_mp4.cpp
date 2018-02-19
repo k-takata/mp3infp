@@ -390,44 +390,31 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SBJ));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_SBJ,strTmp);
 				lpcs->m_Mp4.SetMetadata_Name(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Mp4.SetMetadata_Artist(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Mp4.SetMetadata_Album(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_AART));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_AART,strTmp);
 				lpcs->m_Mp4.SetMetadata_AlbumArtist(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GRP));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_GRP,strTmp);
 				lpcs->m_Mp4.SetMetadata_Group(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COMPOSE));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_COMPOSE,strTmp);
 				lpcs->m_Mp4.SetMetadata_Composer(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Mp4.SetMetadata_Genre(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRK));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_TRK,strTmp);
 				if(strTmp.GetLength())
 				{
 					lpcs->m_Mp4.SetMetadata_Track1(_ttoi(strTmp));
@@ -437,9 +424,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					lpcs->m_Mp4.SetMetadata_Track1(-1);
 				}
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRK2));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_TRK2,strTmp);
 				if(strTmp.GetLength())
 				{
 					lpcs->m_Mp4.SetMetadata_Track2(_ttoi(strTmp));
@@ -449,9 +434,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					lpcs->m_Mp4.SetMetadata_Track2(-1);
 				}
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_DISC));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_DISC,strTmp);
 				if(strTmp.GetLength())
 				{
 					lpcs->m_Mp4.SetMetadata_Disc1(_ttoi(strTmp));
@@ -461,9 +444,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					lpcs->m_Mp4.SetMetadata_Disc1(-1);
 				}
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_DISC2));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_DISC2,strTmp);
 				if(strTmp.GetLength())
 				{
 					lpcs->m_Mp4.SetMetadata_Disc2(_ttoi(strTmp));
@@ -473,9 +454,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					lpcs->m_Mp4.SetMetadata_Disc2(-1);
 				}
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_BPM));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_BPM,strTmp);
 				if(strTmp.GetLength())
 				{
 					lpcs->m_Mp4.SetMetadata_Tempo(_ttoi(strTmp));
@@ -485,19 +464,13 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 					lpcs->m_Mp4.SetMetadata_Tempo(-1);
 				}
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Mp4.SetMetadata_Year(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Mp4.SetMetadata_Comment(strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TOOL));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_TOOL,strTmp);
 				lpcs->m_Mp4.SetMetadata_Tool(strTmp);
 
 				if(IsDlgButtonChecked(hDlg,IDC_COMPILATION))
@@ -508,6 +481,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp4(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				{
 					lpcs->m_Mp4.SetMetadata_Compilation(-1);
 				}
+
+				wnd.Detach();
 
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);

@@ -508,50 +508,36 @@ BOOL CALLBACK CShellExt::PageDlgProc_ogg(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				//‚¢‚Á‚½‚ñƒŠƒZƒbƒg
 				lpcs->m_Ogg.Release();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SBJ));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_SBJ,strTmp);
 				lpcs->m_Ogg.AddComment(_T("TITLE"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRK));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_TRK,strTmp);
 				lpcs->m_Ogg.AddComment(_T("TRACKNUMBER"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Ogg.AddComment(_T("ARTIST"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Ogg.AddComment(_T("ALBUM"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_AART));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_AART,strTmp);
 				lpcs->m_Ogg.AddComment(_T("ALBUMARTIST"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_DISC));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_DISC,strTmp);
 				lpcs->m_Ogg.AddComment(_T("DISCNUMBER"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Ogg.AddComment(_T("DATE"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Ogg.AddComment(_T("GENRE"),strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Ogg.AddComment(_T("COMMENT"),strTmp);
+
+				wnd.Detach();
 
 				//‚»‚Ì‘¼•ª‚ð•Û‘¶
 				long items = ListBox_GetCount(GetDlgItem(hDlg,IDC_LIST_VALUE));

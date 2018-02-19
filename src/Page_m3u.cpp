@@ -98,8 +98,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 	{
 		CString strTmp;
 		CWnd wnd;
-		wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_LIST));
-		wnd.GetWindowText(strTmp);
+		wnd.Attach(hDlg);
+		wnd.GetDlgItemText(IDC_EDIT_LIST,strTmp);
 		wnd.Detach();
 
 		TCHAR szFile[MAX_PATH];
@@ -254,8 +254,8 @@ BOOL CALLBACK CShellExt::PageDlgProc_m3u(HWND hDlg,UINT uMessage,WPARAM wParam,L
 
 				CString strTmp,strLine;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_LIST));
-				wnd.GetWindowText(strTmp);
+				wnd.Attach(hDlg);
+				wnd.GetDlgItemText(IDC_EDIT_LIST,strTmp);
 				wnd.Detach();
 
 				lpcs->m_M3u.Release();

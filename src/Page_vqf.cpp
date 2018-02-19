@@ -286,29 +286,24 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
-				wnd.GetWindowText(strTmp);
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_NAM,strTmp);
 				lpcs->m_Vqf.SetField('N','A','M','E',strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Vqf.SetField('A','U','T','H',strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_FILE));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_FILE,strTmp);
 				lpcs->m_Vqf.SetField('F','I','L','E',strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COP));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_COP,strTmp);
 				lpcs->m_Vqf.SetField('(','c',')',' ',strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Vqf.SetField('C','O','M','T',strTmp);
+
 				wnd.Detach();
 
 				//タイムスタンプを保存

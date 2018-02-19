@@ -736,39 +736,30 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
-				wnd.GetWindowText(strTmp);
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_NAM,strTmp);
 				lpcs->m_Id3tagv1.SetTitle(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRACK));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_TRACK,strTmp);
 				lpcs->m_Id3tagv1.SetTrackNo(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Id3tagv1.SetArtist(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Id3tagv1.SetAlbum(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Id3tagv1.SetYear(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Id3tagv1.SetGenre(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Id3tagv1.SetComment(strTmp);
+
 				wnd.Detach();
 
 				//タイムスタンプを保存

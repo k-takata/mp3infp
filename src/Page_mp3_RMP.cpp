@@ -591,54 +591,39 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
-				wnd.GetWindowText(strTmp);
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_NAM,strTmp);
 				lpcs->m_Rmp3.SetNAM(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Rmp3.SetART(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Rmp3.SetPRD(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Rmp3.SetCRD(strTmp);
-				wnd.Detach(); 
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Rmp3.SetGNR(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Rmp3.SetCMT(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COP));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_COP,strTmp);
 				lpcs->m_Rmp3.SetCOP(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ENG));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_ENG,strTmp);
 				lpcs->m_Rmp3.SetENG(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SRC));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_SRC,strTmp);
 				lpcs->m_Rmp3.SetSRC(strTmp);
-				wnd.Detach();
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_SFT));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_SFT,strTmp);
 				lpcs->m_Rmp3.SetSFT(strTmp);
+
 				wnd.Detach();
 
 				//タイムスタンプを保存

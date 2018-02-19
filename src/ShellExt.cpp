@@ -152,7 +152,8 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 	HGLOBAL hg = GlobalAlloc(GHND,totalLen);
 	char *txtData = (char *)GlobalLock(hg);
 	int writeOffset = 0;
-				
+
+	wnd.Attach(hDlg);
 	for(i=0; idArray[i]!=0; i++)
 	{
 		*(int *)(&(txtData[writeOffset])) = idArray[i];
@@ -161,9 +162,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 		if(!IsButton(GetDlgItem(hDlg,editWndArray[i])))
 		{
 			// editbox
-			wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
-			wnd.GetWindowText(strTmp);
-			wnd.Detach();
+			wnd.GetDlgItemText(editWndArray[i],strTmp);
 		}
 		else
 		{
@@ -182,6 +181,7 @@ HGLOBAL GetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray
 		lstrcpy((LPTSTR)&(txtData[writeOffset]),strTmp);
 		writeOffset += (strTmp.GetLength() + 1) * sizeof(TCHAR);
 	}
+	wnd.Detach();
 	*(int *)(&(txtData[writeOffset])) = 0;	// end mark
 	writeOffset += sizeof(int);
 	ASSERT(totalLen >= writeOffset);
@@ -199,13 +199,12 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 	CString strData = strFileName;
 	strData += _T("\r\n");
 
+	wnd.Attach(hDlg);
 	for(int i=0; editWndArray[i]!=0; i++)
 	{
 		if(staticWndArray[i] != -1)
 		{
-			wnd.Attach(GetDlgItem(hDlg,staticWndArray[i]));
-			wnd.GetWindowText(strTmp);
-			wnd.Detach();
+			wnd.GetDlgItemText(staticWndArray[i],strTmp);
 			strData += strTmp + _T("\t");
 		}
 
@@ -214,9 +213,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 			// editbox
 			if(editWndArray[i] != -1)
 			{
-				wnd.Attach(GetDlgItem(hDlg,editWndArray[i]));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(editWndArray[i],strTmp);
 				strData += strTmp;
 				if(staticWndArray[i+1] != -1)	// トラック番号など第二値を / 区切りする
 				{
@@ -242,6 +239,7 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 			strData += _T("\r\n");
 		}
 	}
+	wnd.Detach();
 
 	HGLOBAL hg = GlobalAlloc(GHND,(strData.GetLength()+1)*sizeof(TCHAR));
 	TCHAR *txtData = (TCHAR *)GlobalLock(hg);

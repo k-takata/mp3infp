@@ -363,54 +363,39 @@ BOOL CALLBACK CShellExt::PageDlgProc_wma(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				//タイトル
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
-				wnd.GetWindowText(strTmp);
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_NAM,strTmp);
 				lpcs->m_Wma.SetNAM(strTmp);
-				wnd.Detach();
 				//トラック
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRK));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_TRK,strTmp);
 				lpcs->m_Wma.SetTRACK(strTmp);
-				wnd.Detach();
 				//アーティスト
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Wma.SetART(strTmp);
-				wnd.Detach();
 				//アルバム
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Wma.SetPRD(strTmp);
-				wnd.Detach();
 				//説明
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Wma.SetCMT(strTmp);
-				wnd.Detach();
 				//作成日
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Wma.SetCRD(strTmp);
-				wnd.Detach();
 				//ジャンル
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Wma.SetGNR(strTmp);
-				wnd.Detach();
 				//著作権
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_COP));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_COP,strTmp);
 				lpcs->m_Wma.SetCOPY(strTmp);
-				wnd.Detach();
 				//URL(album)
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_URL1));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_URL1,strTmp);
 				lpcs->m_Wma.SetUrl1(strTmp);
-				wnd.Detach();
 				//URL(関連)	
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_URL2));
-				wnd.GetWindowText(strTmp);
+				wnd.GetDlgItemText(IDC_EDIT_URL2,strTmp);
 				lpcs->m_Wma.SetUrl2(strTmp);
+
 				wnd.Detach();
 
 				//タイムスタンプを保存

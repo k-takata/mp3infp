@@ -502,40 +502,31 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_APE(HWND hDlg,UINT uMessage,WPARAM wPar
 
 				CString strTmp;
 				CWnd wnd;
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_NAM));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+
+				wnd.Attach(hDlg);
+
+				wnd.GetDlgItemText(IDC_EDIT_NAM,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_TRACK));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_TRACK,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_TRACK,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_ART));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_ART,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ARTIST,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_PRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_PRD,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_ALBUM,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CRD));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CRD,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_YEAR,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_GNR));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_GNR,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_GENRE,strTmp);
 
-				wnd.Attach(GetDlgItem(hDlg,IDC_EDIT_CMT));
-				wnd.GetWindowText(strTmp);
-				wnd.Detach();
+				wnd.GetDlgItemText(IDC_EDIT_CMT,strTmp);
 				lpcs->m_Ape.SetComment(CTag_Ape::APE_TAG_FIELD_COMMENT,strTmp);
+
+				wnd.Detach();
 
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
