@@ -942,6 +942,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		{
 			theApp.m_Ogg.GetComment(_T("TRACKNUMBER"),0,strRet);
 		}
+		else if(_tcsncmp(szValueName,_T("DISC"),4) == 0)
+		{
+			theApp.m_Ogg.GetComment(_T("DISCNUMBER"),0,strRet);
+		}
 		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			theApp.m_Ogg.GetComment(_T("ARTIST"),0,strRet);
@@ -949,6 +953,10 @@ extern "C" BOOL __stdcall mp3infp_GetValue(LPCTSTR szValueName,TCHAR **buf)
 		else if(_tcsncmp(szValueName,_T("IPRD"),4) == 0)
 		{
 			theApp.m_Ogg.GetComment(_T("ALBUM"),0,strRet);
+		}
+		else if(_tcsncmp(szValueName,_T("AART"),4) == 0)
+		{
+			theApp.m_Ogg.GetComment(_T("ALBUMARTIST"),0,strRet);
 		}
 		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{
@@ -1682,6 +1690,11 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 			theApp.m_Ogg.DelComment(_T("TRACKNUMBER"),0);
 			theApp.m_Ogg.AddComment(_T("TRACKNUMBER"),buf);
 		}
+		else if(_tcsncmp(szValueName,_T("DISC"),4) == 0)
+		{
+			theApp.m_Ogg.DelComment(_T("DISCNUMBER"),0);
+			theApp.m_Ogg.AddComment(_T("DISCNUMBER"),buf);
+		}
 		else if(_tcsncmp(szValueName,_T("IART"),4) == 0)
 		{
 			theApp.m_Ogg.DelComment(_T("ARTIST"),0);
@@ -1691,6 +1704,11 @@ extern "C" DWORD __stdcall mp3infp_SetValue(LPCTSTR szValueName,LPCTSTR buf)
 		{
 			theApp.m_Ogg.DelComment(_T("ALBUM"),0);
 			theApp.m_Ogg.AddComment(_T("ALBUM"),buf);
+		}
+		else if(_tcsncmp(szValueName,_T("AART"),4) == 0)
+		{
+			theApp.m_Ogg.DelComment(_T("ALBUMARTIST"),0);
+			theApp.m_Ogg.AddComment(_T("ALBUMARTIST"),buf);
 		}
 		else if(_tcsncmp(szValueName,_T("ICMT"),4) == 0)
 		{

@@ -3,10 +3,11 @@
 
 /*
 ■改変履歴
-2018-02-04 Ver.2.55
+2018-02-20 Ver.2.55
 ・mp3infp_GetValue()/mp3infp_SetValue()関連の修正
 >MP3で"AART_v2", "DISC_v2"に対応
 >MP4で"AART"に対応
+>OGGで"AART", "DISC"に対応
 ・mp3infp_SetConf()の引数をconstポインタに変更
 
 2009-12-01 Ver.2.54h/u8
@@ -264,10 +265,12 @@ typedef DWORD (WINAPI *LPMP3INFP_LOADW)(HWND hWnd,LPCWSTR szFileName);
 	タイトル				"INAM"
 	アーティスト			"IART"
 	アルバム				"IPRD"
+	アルバムアーティスト	"AART" (v2.55～)
 	コメント				"ICMT"
 	作成日					"ICRD"
 	ジャンル				"IGNR"
 	トラック番号			"TRACK"
+	ディスク番号			"DISC" (v2.55～)
 
 	[APE]
 	フォーマット(※1)		"AFMT"
