@@ -41,11 +41,11 @@ public:
 	unsigned char GetGenreNum();
 	CString GetGenre(){return GenreNum2String(m_cGenre);};
 	void SetGenre(unsigned char cGenre){m_bEnable = TRUE; m_cGenre = cGenre;};
-	void SetGenre(LPCTSTR szGenre){m_bEnable = TRUE; m_cGenre = GenreString2Num(szGenre);};
+	void SetGenre(LPCTSTR szGenre){m_bEnable = TRUE; m_cGenre = (unsigned char)GenreString2Num(szGenre);};
 	unsigned char GetTrackNoNum(){return m_cTrackNo;};
 	CString GetTrackNo();
 	void SetTrackNo(unsigned char cTrackNo){m_bEnable = TRUE; m_cTrackNo = cTrackNo;};
-	void SetTrackNo(LPCTSTR szTrackNo){m_bEnable = TRUE; m_cTrackNo = _ttoi(szTrackNo);};
+	void SetTrackNo(LPCTSTR szTrackNo){m_bEnable = TRUE; m_cTrackNo = (unsigned char)_ttoi(szTrackNo);};
 	CString GetComment(){return m_szComment;};
 	void SetComment(LPCTSTR comment) { SetString(m_szComment, comment, m_cTrackNo ? 28 : 30); };
 
