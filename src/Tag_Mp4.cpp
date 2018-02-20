@@ -576,7 +576,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		}
 		else
 		{
-			uint16_t tempo = m_iMetadata_Tempo;
+			uint16_t tempo = (uint16_t)m_iMetadata_Tempo;
 			MP4TagsSetTempo(tags, &tempo);
 		}
 

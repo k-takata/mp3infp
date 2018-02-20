@@ -203,7 +203,7 @@ private:
 	DWORD GetTotalFrameSize();
 //	void _SetStringEncoding(int encoding);
 	static void v23IDtov22ID(const char *v23ID,char *v22ID);
-	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, int dataize, DWORD *pdwReadSize);
+	static CString ReadEncodedTextString(unsigned char encoding, const unsigned char *data, DWORD dataize, DWORD *pdwReadSize);
 	static CharEncoding GetFrameEncoding(const CId3Frame &frame);
 	static DWORD ConvertApicToV22(const unsigned char *v23, DWORD dwSize, unsigned char *v22);
 

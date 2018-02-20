@@ -232,9 +232,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
-				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
+				if(lpcs->m_Id3tagv1.GenreNum2String((unsigned char)i).GetLength())
 					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
-							lpcs->m_Id3tagv1.GenreNum2String(i));
+							lpcs->m_Id3tagv1.GenreNum2String((unsigned char)i));
 			}
 			//オーナードローボタンの初期化
 /*			RECT rect;

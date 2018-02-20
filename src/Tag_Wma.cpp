@@ -308,7 +308,7 @@ DWORD CTag_Wma::Walk(HANDLE hFile,__int64 llSize)
 		return -1;
 	}
 	// 2006-12-04
-	if((llTop + guidSize.size) > llFileSize)
+	if((llTop + guidSize.size) > (ULONGLONG)llFileSize)
 	{
 		return -1;
 	}
@@ -872,7 +872,7 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 	DWORD	dwRet;
 	///////////////////////////////
 	// Content Descriptors Count
-	WORD wCount = m_comments.size();
+	WORD wCount = (WORD)m_comments.size();
 	if(!WriteFile(hFile,&wCount,sizeof(wCount),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -971,7 +971,7 @@ BOOL CTag_Wma::AddCommentString(LPCTSTR name,CString str)
 	int size;
 	char *buf = TstrToDataAlloc(str, -1, &size, DTC_CODE_UTF16LE);
 	if (buf != NULL) {
-		ret = AddComment(name, 0, buf, size);
+		ret = AddComment(name, 0, buf, (WORD)size);
 		free(buf);
 	}
 	return ret;
@@ -1015,7 +1015,7 @@ BOOL CTag_Wma::GetCommentString(LPCTSTR name,CString &str)
 	}
 	LPWSTR wbuf = (LPWSTR)buf;
 	int i;
-	for (i = 0; i < len/sizeof(WCHAR); i++)
+	for (i = 0; i < (int)(len/sizeof(WCHAR)); i++)
 	{
 		if (wbuf[i] == L'\0')
 			break;

@@ -62,7 +62,7 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 		if ((eptr > ptr) && (eptr[-1] == '\n')) {
 			--eptr;
 		}
-		m_strLines.Add(DataToCString(ptr, eptr - ptr, input_code));	//1çsí«â¡
+		m_strLines.Add(DataToCString(ptr, (int)(eptr - ptr), input_code));	//1çsí«â¡
 	}
 	fclose(fp);
 

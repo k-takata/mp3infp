@@ -161,7 +161,7 @@ BOOL CMp3Info::Load(LPCTSTR szFileName,BOOL bVbrScan)
 		if(!mp3head_check(head))
 		{
 			//+1
-			if(SetFilePointer(hFile,-3,NULL,FILE_CURRENT) > (lDataPtr + 10 * 1024))
+			if(SetFilePointer(hFile,-3,NULL,FILE_CURRENT) > (DWORD)(lDataPtr + 10 * 1024))
 			{
 				//æ“ª‚Ì10K‚¾‚¯‚ğ’²‚×‚é
 				break;

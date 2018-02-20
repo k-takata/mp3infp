@@ -1454,7 +1454,7 @@ void GetAviFormat(IN LPCTSTR szFileName,
 							{
 								break;
 							}
-							buildNo[a] = c;
+							buildNo[a] = (char)c;
 						}
 						strDivxVerEtc = _T("DivX5/6.\?.\?(");
 						strDivxVerEtc += buildNo;
@@ -1537,7 +1537,7 @@ void GetAviFormat(IN LPCTSTR szFileName,
 							{
 								break;
 							}
-							buildNo[a] = c;
+							buildNo[a] = (char)c;
 						}
 						strDivxVerEtc = _T("XviD (");
 						strDivxVerEtc += buildNo;
@@ -1804,7 +1804,7 @@ int IsPlayingWinamp(LPCTSTR szFileName)
 	// If it returns 1, it is playing. if it returns 3, it is paused, if it returns 0, it is not playing.
 	if(hwndWinamp)
 	{
-		long isplaying = SendMessageTimeout(hwndWinamp,WM_WA_IPC,0,IPC_ISPLAYING,
+		int isplaying = (int)SendMessageTimeout(hwndWinamp,WM_WA_IPC,0,IPC_ISPLAYING,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet);
 /*		if((isplaying == 1) || (isplaying == 3))
 		{
@@ -1848,7 +1848,7 @@ int GetPosWinamp()
 
 	if(hwndWinamp)
 	{
-		long song_pos = SendMessageTimeout(hwndWinamp,WM_WA_IPC,0,IPC_GETOUTPUTTIME,
+		int song_pos = (int)SendMessageTimeout(hwndWinamp,WM_WA_IPC,0,IPC_GETOUTPUTTIME,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet);
 		return song_pos;
 	}

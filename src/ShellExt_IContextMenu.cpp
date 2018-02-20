@@ -124,7 +124,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 		int len;
 		LPWSTR buf = (LPWSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_UTF16LE);
 		if (buf != NULL) {
-			if(len > cchMax) {
+			if((UINT)len > cchMax) {
 				len = cchMax;
 			}
 			wcsncpy((LPWSTR)pszName, buf, len-1);
@@ -138,7 +138,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 		int len;
 		LPSTR buf = (LPSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_ANSI);
 		if (buf != NULL) {
-			if(len > cchMax) {
+			if((UINT)len > cchMax) {
 				len = cchMax;
 			}
 			strncpy(pszName, buf, len-1);

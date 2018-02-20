@@ -166,7 +166,7 @@ DWORD CTag_Ape::_LoadApeTagV1(HANDLE hFile)
 	// ID3TAGの正当性をチェック
 	BOOL bId3v1 = CId3tagv1::IsTagValid(&m_id3tag);
 	
-	int rawFieldBytes = m_footer.size - sizeof(APE_TAG_FOOTER);
+	DWORD rawFieldBytes = m_footer.size - sizeof(APE_TAG_FOOTER);
 	char *pRawTag = (char *)malloc(rawFieldBytes);
 	// ヘッダの先頭に移動
 	SetFilePointer(hFile,-m_footer.size-(bId3v1?128:0),NULL,FILE_END);
@@ -284,7 +284,7 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 		return dwWin32errorCode;
 	}
 	// 各フィールドの取り込み
-	int rawTagOffset = 0;
+	DWORD rawTagOffset = 0;
 	for(int i=0; i<m_footer.fields; i++)
 	{
 		if(rawFieldBytes < 4+4+1)

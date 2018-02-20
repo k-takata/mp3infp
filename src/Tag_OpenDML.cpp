@@ -228,7 +228,7 @@ BOOL CTag_OpenDML::FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC ty
 				__int64 ptr = llChunkHead + 12;
 				if((llFileSize - ptr) < *pdwSize)
 				{
-					*pdwSize = llFileSize - ptr;
+					*pdwSize = (DWORD)(llFileSize - ptr);
 				}
 				return TRUE;
 			}
@@ -251,7 +251,7 @@ BOOL CTag_OpenDML::FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC ty
 				__int64 ptr = llChunkHead + 12;
 				if((llFileSize - ptr) < *pdwSize)
 				{
-					*pdwSize = llFileSize - ptr;
+					*pdwSize = (DWORD)(llFileSize - ptr);
 				}
 				return TRUE;
 			}
@@ -265,7 +265,7 @@ BOOL CTag_OpenDML::FindChunk(HANDLE hFile,__int64 llFileSize,UINT flag,FOURCC ty
 				__int64 ptr = llChunkHead + 8;
 				if((llFileSize - ptr) < *pdwSize)
 				{
-					*pdwSize = llFileSize - ptr;
+					*pdwSize = (DWORD)(llFileSize - ptr);
 				}
 				return TRUE;
 			}
@@ -475,7 +475,6 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 	DWORD dwInfoSize;
 	FOURCC id,type;
 	BOOL bFindJUNK;
-	int i;
 
 	DWORD dwSize;
 	__int64 llOffset;
@@ -584,7 +583,7 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 				//LIST-INFOを削除
 				SetEndOfFile(hFile);
 				
-				dwRiffAviSize = llOffset - 12 - 8;
+				dwRiffAviSize = (DWORD)(llOffset - 12 - 8);
 				//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 				//RIFF-AVI チャンクサイズを修正
 				SetFilePointer(hFile,4,NULL,FILE_BEGIN);
@@ -625,9 +624,9 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 					dwLastJUNKSize += dwSize + 8;
 					dwSize = dwLastJUNKSize - 8;
 					WriteFile(hFile,&dwSize,sizeof(dwSize),&dwRet,NULL);
-					for(int i=0; i<dwSize; i++)
+					for(DWORD i=0; i<dwSize; i++)
 					{
-						if(m_strJunkHeader.GetLength() > i)
+						if((DWORD)m_strJunkHeader.GetLength() > i)
 						{
 							char c = (char)m_strJunkHeader[i];	// QQQ ANSI文字のみ対応
 							WriteFile(hFile,&c,1,&dwRet,NULL);
@@ -721,9 +720,9 @@ DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
 		WriteFile(hFile,&id,sizeof(id),&dwRet,NULL);
 		WriteFile(hFile,&dwSize,sizeof(dwSize),&dwRet,NULL);
 		TRACE(_T("Start dwSize=%d\n"),dwSize);
-		for(i=0; i<dwSize; i++)
+		for(DWORD i=0; i<dwSize; i++)
 		{
-			if(m_strJunkHeader.GetLength() > i)
+			if((DWORD)m_strJunkHeader.GetLength() > i)
 			{
 				char c = (char)m_strJunkHeader[i];	// QQQ ANSI文字のみ対応
 				WriteFile(hFile,&c,1,&dwRet,NULL);

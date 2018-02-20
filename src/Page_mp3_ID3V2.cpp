@@ -372,9 +372,9 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 			ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR), _T(""));
 			for(int i=0; i<256; i++)
 			{
-				if(lpcs->m_Id3tagv1.GenreNum2String(i).GetLength())
+				if(lpcs->m_Id3tagv1.GenreNum2String((unsigned char)i).GetLength())
 					ComboBox_AddString(GetDlgItem(hDlg,IDC_EDIT_GNR),
-							lpcs->m_Id3tagv1.GenreNum2String(i));
+							lpcs->m_Id3tagv1.GenreNum2String((unsigned char)i));
 			}
 			LPCTSTR id3tags[] = {_T("v2.2"),_T("v2.3"),_T("v2.4")};
 			for(int i=0; i<sizeof_array(id3tags); i++)

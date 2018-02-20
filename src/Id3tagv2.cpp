@@ -322,7 +322,7 @@ void CId3tagv2::Release()
 }
 
 CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
-		const unsigned char *data, int datasize, DWORD *pdwReadSize)
+		const unsigned char *data, DWORD datasize, DWORD *pdwReadSize)
 {
 	DWORD len = 0;
 	DWORD readsize = 0;
@@ -370,7 +370,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 				break;
 			}
 		}
-		len = readsize - (start - data);	// Subtract the size of BOM.
+		len = (DWORD)(readsize - (start - data));	// Subtract the size of BOM.
 		if ((readsize + 2 <= datasize) && (*(LPCWSTR)(data + readsize) == L'\0')) {
 			readsize += 2;
 		}
@@ -959,7 +959,7 @@ CString CId3tagv2::GetGenre()
 	}
 	//ジャンルが番号のみで指定されている場合は、文字列に変換
 	if ((genre >= 0) && strGenre.IsEmpty()) {
-		strGenre = CId3tagv1::GenreNum2String(genre,FALSE);
+		strGenre = CId3tagv1::GenreNum2String((unsigned char)genre,FALSE);
 	}
 	return strGenre;
 }
@@ -1656,7 +1656,7 @@ DWORD CId3tagv2::Save(LPCTSTR szFileName)
 	free(framedata);
 
 	//パディング領域を0でパディング
-	for(int i=0; i<(dwId3Size - dwTotalFrameSize); i++)
+	for(DWORD i=0; i<(dwId3Size - dwTotalFrameSize); i++)
 	{
 		DWORD dwRet;
 		unsigned char pad = 0x00;
@@ -2103,7 +2103,7 @@ DWORD CId3tagv2::MakeTag(LPCTSTR szFileName)
 	free(framedata);
 
 	//パディング領域を0でパディング
-	for(int i=0; i<dwPaddingSize; i++)
+	for(DWORD i=0; i<dwPaddingSize; i++)
 	{
 		DWORD dwRet;
 		unsigned char pad = 0x00;
