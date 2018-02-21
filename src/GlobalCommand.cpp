@@ -450,7 +450,7 @@ CString divString(LPCTSTR src,char c,int n)
 	return ret;
 }
 
-CString DataToCString(const char *data, int size, int code)
+CString DataToCString(const char *data, int size, DTC_CODE code)
 {
 	CString ret;
 	
@@ -493,7 +493,7 @@ CString DataToCString(const char *data, int size, int code)
 	return ret;
 }
 
-int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code)
+int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
 {
 	int ret_size = 0;
 	
@@ -571,7 +571,7 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, int code)
 	return ret_size;
 }
 
-char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, int code, int offset)
+char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, DTC_CODE code, int offset)
 {
 	int size = TstrToData(tstr, tlen, NULL, 0, code);
 	if (size == 0) {

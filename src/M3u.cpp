@@ -42,7 +42,7 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 	if (fp == NULL) {
 		return ERROR_INVALID_FUNCTION;	// QQQ âΩÇ©ÉGÉâÅ[Çï‘ÇµÇƒÇ®Ç≠
 	}
-	int input_code = DTC_CODE_ANSI;
+	DTC_CODE input_code = DTC_CODE_ANSI;
 	BOOL firstline = TRUE;
 	char buf[1024*64];
 	char *ptr, *eptr;
@@ -78,7 +78,7 @@ DWORD CM3u::Save(LPCTSTR szFileName)
 			m_encoding = ENC_UTF8N;
 		}
 	}
-	int output_code = DTC_CODE_ANSI;
+	DTC_CODE output_code = DTC_CODE_ANSI;
 	if ((m_encoding == ENC_UTF8N) || (m_encoding == ENC_UTF8B)) {
 		output_code = DTC_CODE_UTF8;
 	}

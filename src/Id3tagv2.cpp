@@ -335,7 +335,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 		return _T("");
 	}
 	
-	int code;
+	DTC_CODE code;
 	const unsigned char *start = data;
 	switch (encoding) {
 	case ID3V2CHARENCODING_ISO_8859_1:
