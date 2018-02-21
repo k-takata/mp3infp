@@ -65,7 +65,7 @@ BOOL CVqf::SetField(char id1,char id2,char id3,char id4,const unsigned char *szD
 BOOL CVqf::SetField(char id1,char id2,char id3,char id4,LPCTSTR szStr)
 {
 	int size;
-	char *buf = TstrToDataAlloc(szStr, lstrlen(szStr), &size, DTC_CODE_ANSI);
+	char *buf = TstrToBytesAlloc(szStr, lstrlen(szStr), &size, BTC_CODE_ANSI);
 	if (buf == NULL) {
 		return FALSE;
 	}

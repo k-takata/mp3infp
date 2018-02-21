@@ -329,7 +329,7 @@ DWORD CTag_Ape::_LoadApeTagV2(HANDLE hFile)
 		memcpy(pFieldBuffer,&pRawTag[rawTagOffset],fieldValueSize);
 		pFieldBuffer[fieldValueSize] = '\0';
 		// UTF-8->TCHAR
-		CString str = DataToCString(pFieldBuffer, fieldValueSize, DTC_CODE_UTF8);
+		CString str = BytesToCString(pFieldBuffer, fieldValueSize, BTC_CODE_UTF8);
 		rawTagOffset += fieldValueSize;
 		SetComment(CString(nameBuffer),str);
 		TRACE(_T("APE:%s:%s\n"),nameBuffer,pFieldBuffer);
@@ -512,7 +512,7 @@ DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 		int utf8len = 0;
 		unsigned char *dataUtf8 = NULL;
 		{
-			dataUtf8 = (unsigned char *)TstrToDataAlloc(it->second, lstrlen(it->second), &utf8len, DTC_CODE_UTF8);
+			dataUtf8 = (unsigned char *)TstrToBytesAlloc(it->second, lstrlen(it->second), &utf8len, BTC_CODE_UTF8);
 			if(!dataUtf8)
 			{
 				continue;
@@ -528,7 +528,7 @@ DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 		footer.size += 4;
 		
 		char nameBuffer[256];
-		size = TstrToData(it->first, -1, nameBuffer, sizeof(nameBuffer), DTC_CODE_UTF8);
+		size = TstrToBytes(it->first, -1, nameBuffer, sizeof(nameBuffer), BTC_CODE_UTF8);
 		WriteFile(hFile,nameBuffer,size,&dwRet,NULL);
 		header.size += size;
 		footer.size += size;

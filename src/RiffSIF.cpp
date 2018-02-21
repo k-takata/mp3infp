@@ -58,7 +58,7 @@ DWORD CRiffSIF::GetTotalFieldSize()
 	while(p != m_fields.end())
 	{
 		CString *pStr = &p->second;
-		DWORD len = TstrToData(*pStr, -1, NULL, 0, DTC_CODE_ANSI);
+		DWORD len = TstrToBytes(*pStr, -1, NULL, 0, BTC_CODE_ANSI);
 		dwSize += len + (len&0x1)?1:0;	//WORD‹«ŠE‡‚í‚¹
 		p++;
 	}
@@ -183,7 +183,7 @@ DWORD CRiffSIF::GetInfoChunkSize()
 	{
 		FOURCC id = p->first;
 		CString *pStr = &p->second;
-		DWORD len = TstrToData(*pStr, -1, NULL, 0, DTC_CODE_ANSI);
+		DWORD len = TstrToBytes(*pStr, -1, NULL, 0, BTC_CODE_ANSI);
 		dwSize += len + 8 + ((len%2)?1:0);
 		p++;
 	}
@@ -487,7 +487,7 @@ DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
 		FOURCC id = p->first;
 		CString *pStr = &p->second;
 		DWORD len;
-		char *str = TstrToDataAlloc(*pStr, -1, (int*)&len, DTC_CODE_ANSI);
+		char *str = TstrToBytesAlloc(*pStr, -1, (int*)&len, BTC_CODE_ANSI);
 		if(str)
 		{
 			if(len > 1)

@@ -105,8 +105,8 @@ STDMETHODIMP CShellExt::GetColumnInfo(DWORD dwIndex,SHCOLUMNINFO *psci)
 	psci->csFlags	= cf[dwIndex].csFlags | SHCOLSTATE_SLOW | SHCOLSTATE_SECONDARYUI;
 	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwTitleId,szTitle,sizeof_array(szTitle));
 	LoadString(AfxGetResourceHandle(),cf[dwIndex].dwDescriptionId,szDescription,sizeof_array(szDescription));
-	TstrToData(szTitle, -1, (char *)psci->wszTitle, MAX_COLUMN_NAME_LEN*sizeof(WCHAR), DTC_CODE_UTF16LE);
-	TstrToData(szDescription, -1, (char *)psci->wszDescription, MAX_COLUMN_DESC_LEN*sizeof(WCHAR), DTC_CODE_UTF16LE);
+	TstrToBytes(szTitle, -1, (char *)psci->wszTitle, MAX_COLUMN_NAME_LEN*sizeof(WCHAR), BTC_CODE_UTF16LE);
+	TstrToBytes(szDescription, -1, (char *)psci->wszDescription, MAX_COLUMN_DESC_LEN*sizeof(WCHAR), BTC_CODE_UTF16LE);
 
 	return S_OK;
 }
@@ -220,11 +220,11 @@ BOOL CShellExt::GetItemData_all(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	default:
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -351,11 +351,11 @@ BOOL CShellExt::GetItemData_mp3(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	default:
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -427,11 +427,11 @@ BOOL CShellExt::GetItemData_wave(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIAN
 		//ISFT ソフトウェア
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -544,11 +544,11 @@ BOOL CShellExt::GetItemData_avi(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//ISFT ソフトウェア
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -588,11 +588,11 @@ BOOL CShellExt::GetItemData_vqf(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 	default:
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -652,11 +652,11 @@ TRACE(_T("CShellExt::GetItemData_wma(\n"));
 		//著作権
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -712,11 +712,11 @@ BOOL CShellExt::GetItemData_ogg(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//著作権
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -772,11 +772,11 @@ BOOL CShellExt::GetItemData_ape(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//著作権
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;
@@ -856,11 +856,11 @@ BOOL CShellExt::GetItemData_mp4(LPCSHCOLUMNID pscid,LPCSHCOLUMNDATA pscd,VARIANT
 		//ツール
 		return FALSE;
 	}
-	iSize = TstrToData(strVal, -1, NULL, 0, DTC_CODE_UTF16LE) / sizeof(WCHAR);
+	iSize = TstrToBytes(strVal, -1, NULL, 0, BTC_CODE_UTF16LE) / sizeof(WCHAR);
 	pvarData->bstrVal = SysAllocStringLen(NULL,iSize);
 	if(!pvarData->bstrVal)
 		return FALSE;
-	if(!TstrToData(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), DTC_CODE_UTF16LE))
+	if(!TstrToBytes(strVal, -1, (char *)pvarData->bstrVal, iSize*sizeof(WCHAR), BTC_CODE_UTF16LE))
 	{
 		SysFreeString(pvarData->bstrVal);
 		return FALSE;

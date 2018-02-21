@@ -228,23 +228,23 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 
 	//予想される増加サイズ
 	dwNewSize = strlen("LIST----INFO");
-	dwNewSize += TstrToData(m_strNAM,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;//+1はワードアラインメントを考慮しての数値
-	dwNewSize += TstrToData(m_strART,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strPRD,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strCMT,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strCRD,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strGNR,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strCOP,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strENG,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strSRC,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strSFT,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strKEY,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strTCH,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strLYC,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strCMS,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strMED,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strSBJ,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
-	dwNewSize += TstrToData(m_strMP3,-1,NULL,0,DTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strNAM,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;//+1はワードアラインメントを考慮しての数値
+	dwNewSize += TstrToBytes(m_strART,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strPRD,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strCMT,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strCRD,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strGNR,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strCOP,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strENG,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strSRC,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strSFT,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strKEY,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strTCH,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strLYC,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strCMS,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strMED,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strSBJ,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
+	dwNewSize += TstrToBytes(m_strMP3,-1,NULL,0,BTC_CODE_ANSI)+1+4+4;
 	dwNewSize += 128+2+4+4;	//szId3dummy
 
 	hFile = CreateFile(szFileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
@@ -268,7 +268,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 		if(m_bHasId3tag)
 		{
 			CId3tagv1::GetId3tag(&id3tag,m_bScmpxGenre);
-			char *buf = TstrToDataAlloc(getFileName(szFileName), -1, NULL, DTC_CODE_ANSI);
+			char *buf = TstrToBytesAlloc(getFileName(szFileName), -1, NULL, BTC_CODE_ANSI);
 			if (buf) {
 				mbsncpy2((unsigned char *)id3tag.Title,(const unsigned char *)buf,30);
 				free(buf);
@@ -644,7 +644,7 @@ BOOL CRMP::WriteStringChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,LPCTSTR pStr
 {
 #ifdef UNICODE
 	int size;
-	char *buf = TstrToDataAlloc(pStr, dwLen, &size, DTC_CODE_ANSI);
+	char *buf = TstrToBytesAlloc(pStr, dwLen, &size, BTC_CODE_ANSI);
 	if (buf == NULL) {
 		return FALSE;
 	}

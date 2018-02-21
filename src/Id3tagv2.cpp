@@ -335,11 +335,11 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 		return _T("");
 	}
 	
-	DTC_CODE code;
+	BTC_CODE code;
 	const unsigned char *start = data;
 	switch (encoding) {
 	case ID3V2CHARENCODING_ISO_8859_1:
-		code = DTC_CODE_ANSI;
+		code = BTC_CODE_ANSI;
 		break;
 	case ID3V2CHARENCODING_UTF_16:
 		if (datasize < 2) {
@@ -349,19 +349,19 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 		readsize += 2;	// BOM
 		start += 2;
 		if (memcmp(data, "\xff\xfe", 2) == 0) {
-			code = DTC_CODE_UTF16LE;
+			code = BTC_CODE_UTF16LE;
 		} else if (memcmp(data, "\xfe\xff", 2) == 0) {
-			code = DTC_CODE_UTF16BE;
+			code = BTC_CODE_UTF16BE;
 		} else {
 			*pdwReadSize = readsize;
 			return _T("");
 		}
 		break;
 	case ID3V2CHARENCODING_UTF_16BE:
-		code = DTC_CODE_UTF16BE;
+		code = BTC_CODE_UTF16BE;
 		break;
 	case ID3V2CHARENCODING_UTF_8:
-		code = DTC_CODE_UTF8;
+		code = BTC_CODE_UTF8;
 		break;
 	}
 	if ((encoding == ID3V2CHARENCODING_UTF_16) || (encoding == ID3V2CHARENCODING_UTF_16BE)) {
@@ -386,7 +386,7 @@ CString CId3tagv2::ReadEncodedTextString(unsigned char encoding,
 		}
 	}
 	*pdwReadSize = readsize;
-	return DataToCString((const char *)start, len, code);
+	return BytesToCString((const char *)start, len, code);
 }
 
 CString CId3tagv2::GetId3String(const char szId[])
@@ -509,7 +509,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(encoding){
 		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 1);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 1);
 			if(!data)
 			{
 				return;
@@ -518,7 +518,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 3);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16LE, 3);
 			if(!data)
 			{
 				return;
@@ -528,7 +528,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0xfe;
 			break;
 #else
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 3);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16BE, 3);
 			if(!data)
 			{
 				return;
@@ -539,7 +539,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 #endif
 		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 1);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16BE, 1);
 			if(!data)
 			{
 				return;
@@ -547,7 +547,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[0] = 2;	//encoding
 			break;
 		case ID3V2CHARENCODING_UTF_8:	// UTF-8
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 1);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF8, 1);
 			if(!data)
 			{
 				return;
@@ -583,7 +583,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(m_encoding){
 		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -593,7 +593,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -605,7 +605,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[4] = 0;
 			break;
 #else	// ビックエンディアン
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 5);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -618,7 +618,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 #endif
 		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 3);	//URL本体（常にISO-8859-1）
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 3);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -628,7 +628,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[2] = 0;
 			break;
 		case ID3V2CHARENCODING_UTF_8:	// UTF-8
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 2);	//URL本体（常にISO-8859-1）
 			if(!data)
 			{
 				return;
@@ -695,7 +695,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 		switch(m_encoding){
 		case ID3V2CHARENCODING_ISO_8859_1:
 		default:	// ISO-8859-1
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_ANSI, 5);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_ANSI, 5);
 			if(!data)
 			{
 				return;
@@ -708,7 +708,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 		case ID3V2CHARENCODING_UTF_16:	// UTF-16
 #ifndef UTF16_BIGENDIAN
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16LE, 10);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16LE, 10);
 			if(!data)
 			{
 				return;
@@ -725,7 +725,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[9] = 0xfe;
 			break;
 #else	// ビッグエンディアン
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 10);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16BE, 10);
 			if(!data)
 			{
 				return;
@@ -743,7 +743,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			break;
 #endif
 		case ID3V2CHARENCODING_UTF_16BE:	// UTF-16BE
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF16BE, 6);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF16BE, 6);
 			if(!data)
 			{
 				return;
@@ -756,7 +756,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 			data[5] = 0;	//説明文(省略)
 			break;
 		case ID3V2CHARENCODING_UTF_8:	// UTF-8
-			data = (unsigned char *)TstrToDataAlloc(szString, -1, &size, DTC_CODE_UTF8, 5);
+			data = (unsigned char *)TstrToBytesAlloc(szString, -1, &size, BTC_CODE_UTF8, 5);
 			if(!data)
 			{
 				return;

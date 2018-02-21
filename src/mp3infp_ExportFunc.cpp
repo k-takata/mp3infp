@@ -383,7 +383,7 @@ extern "C" BOOL __stdcall mp3infp_GetValueA(const char *szValueName,char **buf)
 		if (strRet != NULL) {
 			free(strRet);
 		}
-		strRet = TstrToDataAlloc(tbuf, -1, NULL, DTC_CODE_ANSI);
+		strRet = TstrToBytesAlloc(tbuf, -1, NULL, BTC_CODE_ANSI);
 		*buf = strRet;
 		if (strRet == NULL) {
 			ret = FALSE;

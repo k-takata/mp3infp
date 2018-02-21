@@ -105,7 +105,7 @@ TRACE(_T("[%s]CShellExt::GetInfoTip(10)\n"),APP_NAME);
 	if(!*ppwszTip)
 		return E_OUTOFMEMORY;
 
-	TstrToData(strInfoTip, -1, (char *)*ppwszTip, (strInfoTip.GetLength()+1)*sizeof(OLECHAR), DTC_CODE_UTF16LE);
+	TstrToBytes(strInfoTip, -1, (char *)*ppwszTip, (strInfoTip.GetLength()+1)*sizeof(OLECHAR), BTC_CODE_UTF16LE);
 
 	return S_OK;
 }

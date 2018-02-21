@@ -112,24 +112,24 @@ CString divString(LPCTSTR src,char c,int n);
 
 
 // Functions for encoding conversion
-enum DTC_CODE {
-	DTC_CODE_ANSI = 0,
-	DTC_CODE_UTF16LE = 1,
-	DTC_CODE_UTF16BE = 2,
-	DTC_CODE_UTF8 = 3
+enum BTC_CODE {
+	BTC_CODE_ANSI = 0,
+	BTC_CODE_UTF16LE = 1,
+	BTC_CODE_UTF16BE = 2,
+	BTC_CODE_UTF8 = 3
 };
 
 // バイト列をCStringに変換する
-CString DataToCString(const char *data, int size, DTC_CODE code);
+CString BytesToCString(const char *data, int size, BTC_CODE code);
 
 // TSTRを指定コードのバイト列に変換する
-int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code);
+int TstrToBytes(LPCTSTR tstr, int tlen, char *data, int dsize, BTC_CODE code);
 
 // TSTRを指定コードのバイト列に変換する（メモリ自動割り当て）
 // 使用後はfree()で解放すること
 // offset を指定すると、そのバイト数だけ余計にメモリを確保し、
 // 先頭を空けてデータを書き込む
-char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, DTC_CODE code, int offset = 0);
+char *TstrToBytesAlloc(LPCTSTR tstr, int tlen, int *dsize, BTC_CODE code, int offset = 0);
 
 // Convert UTF-16LE <-> UTF-16BE.
 static inline void ConvertUTF16Endian(WCHAR *str, int len)

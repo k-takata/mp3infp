@@ -450,18 +450,18 @@ CString divString(LPCTSTR src,char c,int n)
 	return ret;
 }
 
-CString DataToCString(const char *data, int size, DTC_CODE code)
+CString BytesToCString(const char *data, int size, BTC_CODE code)
 {
 	CString ret;
 	
 	switch (code) {
-	case DTC_CODE_ANSI:
+	case BTC_CODE_ANSI:
 		return CString(data, size);
 		
-	case DTC_CODE_UTF16LE:
+	case BTC_CODE_UTF16LE:
 		return CString((LPCWSTR)data, size/sizeof(WCHAR));
 		
-	case DTC_CODE_UTF16BE:
+	case BTC_CODE_UTF16BE:
 		{
 			LPWSTR wstr = (LPWSTR) malloc(size + sizeof(WCHAR));
 			if (wstr != NULL) {
@@ -476,7 +476,7 @@ CString DataToCString(const char *data, int size, DTC_CODE code)
 		}
 		break;
 		
-	case DTC_CODE_UTF8:
+	case BTC_CODE_UTF8:
 		{
 			// Win95‚Å‚ÍCP_UTF8‚ªŽg‚¦‚È‚¢‚ªl—¶‚µ‚È‚¢
 			int wsize = MultiByteToWideChar(CP_UTF8, 0, data, size, NULL, 0);
@@ -493,7 +493,7 @@ CString DataToCString(const char *data, int size, DTC_CODE code)
 	return ret;
 }
 
-int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
+int TstrToBytes(LPCTSTR tstr, int tlen, char *data, int dsize, BTC_CODE code)
 {
 	int ret_size = 0;
 	
@@ -508,7 +508,7 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
 	}
 	
 	switch (code) {
-	case DTC_CODE_ANSI:
+	case BTC_CODE_ANSI:
 		{
 #ifdef UNICODE
 			ret_size = WideCharToMultiByte(CP_ACP, 0, tstr, tlen, data, dsize, NULL, NULL);
@@ -524,8 +524,8 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
 		}
 		break;
 		
-	case DTC_CODE_UTF16LE:
-	case DTC_CODE_UTF16BE:
+	case BTC_CODE_UTF16LE:
+	case BTC_CODE_UTF16BE:
 		{
 #ifdef UNICODE
 			ret_size = tlen * sizeof(WCHAR);
@@ -538,14 +538,14 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
 #else
 			ret_size = MultiByteToWideChar(CP_ACP, 0, tstr, tlen, (LPWSTR)data, dsize/sizeof(WCHAR)) * sizeof(WCHAR);
 #endif
-			if ((data != NULL) && (code == DTC_CODE_UTF16BE)) {
+			if ((data != NULL) && (code == BTC_CODE_UTF16BE)) {
 				// UTF-16LE -> UTF-16BE
 				ConvertUTF16Endian((LPWSTR)data, ret_size/sizeof(WCHAR));
 			}
 		}
 		break;
 		
-	case DTC_CODE_UTF8:
+	case BTC_CODE_UTF8:
 		{
 			LPWSTR buf;
 			int buf_len;
@@ -571,9 +571,9 @@ int TstrToData(LPCTSTR tstr, int tlen, char *data, int dsize, DTC_CODE code)
 	return ret_size;
 }
 
-char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, DTC_CODE code, int offset)
+char *TstrToBytesAlloc(LPCTSTR tstr, int tlen, int *dsize, BTC_CODE code, int offset)
 {
-	int size = TstrToData(tstr, tlen, NULL, 0, code);
+	int size = TstrToBytes(tstr, tlen, NULL, 0, code);
 	if (size == 0) {
 		return NULL;
 	}
@@ -584,7 +584,7 @@ char *TstrToDataAlloc(LPCTSTR tstr, int tlen, int *dsize, DTC_CODE code, int off
 	if (dsize != NULL) {
 		*dsize = size + offset;
 	}
-	TstrToData(tstr, tlen, buf + offset, size, code);
+	TstrToBytes(tstr, tlen, buf + offset, size, code);
 	return buf;
 }
 

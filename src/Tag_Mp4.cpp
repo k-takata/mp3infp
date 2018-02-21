@@ -62,7 +62,7 @@ void CTag_Mp4::ClearMetadata()
 
 static CString _CnvMetadata(const char *utf8val)
 {
-	return DataToCString(utf8val, -1, DTC_CODE_UTF8);
+	return BytesToCString(utf8val, -1, BTC_CODE_UTF8);
 }
 
 #if 0
@@ -140,7 +140,7 @@ DWORD CTag_Mp4::Load(LPCTSTR szFileName)
 	DWORD dwWin32errorCode = ERROR_SUCCESS;
 	Release();
 
-	char *pFileName = TstrToDataAlloc(szFileName, -1, NULL, DTC_CODE_UTF8);
+	char *pFileName = TstrToBytesAlloc(szFileName, -1, NULL, BTC_CODE_UTF8);
 	if (pFileName == NULL) {
 		return -1;
 	}
@@ -331,7 +331,7 @@ static void SetTagString(const MP4Tags *tags, const CString &str,
 {
 	if(!str.IsEmpty())
 	{
-		char *buf = TstrToDataAlloc(str, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(str, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			setter(tags, buf);
 			free(buf);
@@ -351,7 +351,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 		return -1;
 	}
 	
-	char *pFileName = TstrToDataAlloc(szFileName, -1, NULL, DTC_CODE_UTF8);
+	char *pFileName = TstrToBytesAlloc(szFileName, -1, NULL, BTC_CODE_UTF8);
 	if (pFileName == NULL) {
 		return -1;
 	}
@@ -365,7 +365,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 #ifdef USE_OLD_TAG_API
 	if(m_strMetadata_Name.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Name, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Name, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataName(mp4file,buf);
 			free(buf);
@@ -378,7 +378,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Artist.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Artist, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Artist, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataArtist(mp4file,buf);
 			free(buf);
@@ -391,7 +391,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Album.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Album, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Album, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataAlbum(mp4file,buf);
 			free(buf);
@@ -404,7 +404,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Group.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Group, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Group, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataGrouping(mp4file,buf);
 			free(buf);
@@ -417,7 +417,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Composer.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Composer, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Composer, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataWriter(mp4file,buf);
 			free(buf);
@@ -430,7 +430,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Genre.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Genre, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Genre, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataGenre(mp4file,buf);
 			free(buf);
@@ -486,7 +486,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Year.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Year, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Year, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataYear(mp4file,buf);
 			free(buf);
@@ -508,7 +508,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Comment.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Comment, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Comment, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataComment(mp4file,buf);
 			free(buf);
@@ -521,7 +521,7 @@ DWORD CTag_Mp4::Save(LPCTSTR szFileName)
 
 	if(m_strMetadata_Tool.GetLength())
 	{
-		char *buf = TstrToDataAlloc(m_strMetadata_Tool, -1, NULL, DTC_CODE_UTF8);
+		char *buf = TstrToBytesAlloc(m_strMetadata_Tool, -1, NULL, BTC_CODE_UTF8);
 		if (buf != NULL) {
 			MP4SetMetadataTool(mp4file,buf);
 			free(buf);

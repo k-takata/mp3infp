@@ -1713,7 +1713,7 @@ void PlayWinamp(HWND hWnd,LPCTSTR szPlayFile)
 	if(hwndWinamp)
 	{
 		char bufPlayFile[MAX_PATH];
-		TstrToData(szPlayFile, -1, bufPlayFile, sizeof(bufPlayFile), DTC_CODE_ANSI);
+		TstrToBytes(szPlayFile, -1, bufPlayFile, sizeof(bufPlayFile), BTC_CODE_ANSI);
 		SendMessageTimeout(hwndWinamp,WM_WA_IPC,0,IPC_DELETE,
 			SMTO_ABORTIFHUNG | SMTO_BLOCK,100,&dwRet);
 		for(DWORD i=0; i<=strlen(bufPlayFile); i++)

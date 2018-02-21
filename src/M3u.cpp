@@ -42,7 +42,7 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 	if (fp == NULL) {
 		return ERROR_INVALID_FUNCTION;	// QQQ 何かエラーを返しておく
 	}
-	DTC_CODE input_code = DTC_CODE_ANSI;
+	BTC_CODE input_code = BTC_CODE_ANSI;
 	BOOL firstline = TRUE;
 	char buf[1024*64];
 	char *ptr, *eptr;
@@ -54,7 +54,7 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 				ptr += 3;
 			}
 			if ((m_encoding == ENC_UTF8N) || (m_encoding == ENC_UTF8B)) {
-				input_code = DTC_CODE_UTF8;
+				input_code = BTC_CODE_UTF8;
 			}
 			firstline = FALSE;
 		}
@@ -62,7 +62,7 @@ DWORD CM3u::Load(LPCTSTR szFileName)
 		if ((eptr > ptr) && (eptr[-1] == '\n')) {
 			--eptr;
 		}
-		m_strLines.Add(DataToCString(ptr, (int)(eptr - ptr), input_code));	//1行追加
+		m_strLines.Add(BytesToCString(ptr, (int)(eptr - ptr), input_code));	//1行追加
 	}
 	fclose(fp);
 
@@ -78,9 +78,9 @@ DWORD CM3u::Save(LPCTSTR szFileName)
 			m_encoding = ENC_UTF8N;
 		}
 	}
-	DTC_CODE output_code = DTC_CODE_ANSI;
+	BTC_CODE output_code = BTC_CODE_ANSI;
 	if ((m_encoding == ENC_UTF8N) || (m_encoding == ENC_UTF8B)) {
-		output_code = DTC_CODE_UTF8;
+		output_code = BTC_CODE_UTF8;
 	}
 
 	//ファイルをオープン
@@ -116,7 +116,7 @@ DWORD CM3u::Save(LPCTSTR szFileName)
 		str = m_strLines.GetAt(i);
 		str += _T("\r\n");
 		int size;
-		char *buf = TstrToDataAlloc(str, str.GetLength(), &size, output_code);
+		char *buf = TstrToBytesAlloc(str, str.GetLength(), &size, output_code);
 		if (buf != NULL) {
 			int ret = WriteFile(hFile,buf,size,&dwWritten,NULL);
 			free(buf);

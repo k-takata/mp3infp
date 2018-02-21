@@ -80,7 +80,7 @@ void CId3tagv1::Release()
 void CId3tagv1::SetString(LPSTR dest, LPCTSTR src, long len)
 {
 #ifdef UNICODE
-	const char *buf = TstrToDataAlloc(src, -1, NULL, DTC_CODE_ANSI);
+	const char *buf = TstrToBytesAlloc(src, -1, NULL, BTC_CODE_ANSI);
 #else
 	const char *buf = src;
 #endif

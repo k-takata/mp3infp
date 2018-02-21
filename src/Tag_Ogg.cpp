@@ -293,7 +293,7 @@ DWORD CTag_Ogg::Load(LPCTSTR szFileName)
 			int index = str.Find(_T("="));
 			if(index != -1)
 			{
-				AddComment(CString(str,index),DataToCString(&((*ptr)[index+1]),-1,DTC_CODE_UTF8));
+				AddComment(CString(str,index),BytesToCString(&((*ptr)[index+1]),-1,BTC_CODE_UTF8));
 			}
 
 //			fprintf(stderr,"%s\n",*ptr);
@@ -605,8 +605,8 @@ DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 			if(strValue.GetLength())
 			{
 				char bufName[256];
-				TstrToData(strName, -1, bufName, sizeof(bufName), DTC_CODE_UTF8);
-				char *bufVal = TstrToDataAlloc(strValue, -1, NULL, DTC_CODE_UTF8);
+				TstrToBytes(strName, -1, bufName, sizeof(bufName), BTC_CODE_UTF8);
+				char *bufVal = TstrToBytesAlloc(strValue, -1, NULL, BTC_CODE_UTF8);
 				if (bufVal != NULL) {
 					vorbis_comment_add_tag(&_vc,bufName,bufVal);
 					TRACE(_T("vorbis_comment_add_tag(%s=%s)\n"),bufName,bufVal);
@@ -648,7 +648,7 @@ DWORD CTag_Ogg::Save(LPCTSTR szFileName)
 		ogg_packet header_comments;
 //		vorbis_commentheader_out(&_vc,&header_comments);
 		char bufVendor[256];
-		TstrToData(strVendor, -1, bufVendor, sizeof(bufVendor), DTC_CODE_UTF8);
+		TstrToBytes(strVendor, -1, bufVendor, sizeof(bufVendor), BTC_CODE_UTF8);
 		_commentheader_out(&_vc,bufVendor,&header_comments);
 
 		ogg_stream_packetin(&streamout,&header_main);

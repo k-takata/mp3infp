@@ -122,7 +122,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 	{
 		//unicode
 		int len;
-		LPWSTR buf = (LPWSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_UTF16LE);
+		LPWSTR buf = (LPWSTR) TstrToBytesAlloc(strTmp, -1, &len, BTC_CODE_UTF16LE);
 		if (buf != NULL) {
 			if((UINT)len > cchMax) {
 				len = cchMax;
@@ -136,7 +136,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd,
 	{
 		//ansi
 		int len;
-		LPSTR buf = (LPSTR) TstrToDataAlloc(strTmp, -1, &len, DTC_CODE_ANSI);
+		LPSTR buf = (LPSTR) TstrToBytesAlloc(strTmp, -1, &len, BTC_CODE_ANSI);
 		if (buf != NULL) {
 			if((UINT)len > cchMax) {
 				len = cchMax;

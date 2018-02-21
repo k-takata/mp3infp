@@ -788,7 +788,7 @@ DWORD CTag_Wma::WriteWchar(HANDLE hFile,CString str)
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	
 	int size;
-	char *ctmp = TstrToDataAlloc(str, -1, &size, DTC_CODE_UTF16LE);
+	char *ctmp = TstrToBytesAlloc(str, -1, &size, BTC_CODE_UTF16LE);
 	if (ctmp == NULL) {
 		return ERROR_INSUFFICIENT_BUFFER;
 	}
@@ -892,7 +892,7 @@ DWORD CTag_Wma::WriteDescString(HANDLE hFile,ULONGLONG &ullNewLength)
 		char *buf = desc->m_buf;
 		// Descriptor Name Length
 		int size;
-		char *wname = TstrToDataAlloc(*name, -1, &size, DTC_CODE_UTF16LE);
+		char *wname = TstrToBytesAlloc(*name, -1, &size, BTC_CODE_UTF16LE);
 		if (wname != NULL) {
 			WORD clength = (WORD)size;
 			if(!WriteFile(hFile,&clength,sizeof(clength),&dwRet,NULL))
@@ -969,7 +969,7 @@ BOOL CTag_Wma::AddCommentString(LPCTSTR name,CString str)
 {
 	BOOL ret = FALSE;
 	int size;
-	char *buf = TstrToDataAlloc(str, -1, &size, DTC_CODE_UTF16LE);
+	char *buf = TstrToBytesAlloc(str, -1, &size, BTC_CODE_UTF16LE);
 	if (buf != NULL) {
 		ret = AddComment(name, 0, buf, (WORD)size);
 		free(buf);
@@ -1418,7 +1418,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	ullNewSize += sizeof(guidSize);
 
 	WORD clength;
-	clength = (WORD)TstrToData(m_strTitle, -1, NULL, 0, DTC_CODE_UTF16LE);
+	clength = (WORD)TstrToBytes(m_strTitle, -1, NULL, 0, BTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1427,7 +1427,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD)TstrToData(m_strAuthor, -1, NULL, 0, DTC_CODE_UTF16LE);
+	clength = (WORD)TstrToBytes(m_strAuthor, -1, NULL, 0, BTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1436,7 +1436,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD)TstrToData(m_strCopyright, -1, NULL, 0, DTC_CODE_UTF16LE);
+	clength = (WORD)TstrToBytes(m_strCopyright, -1, NULL, 0, BTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1445,7 +1445,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD)TstrToData(m_strDescription, -1, NULL, 0, DTC_CODE_UTF16LE);
+	clength = (WORD)TstrToBytes(m_strDescription, -1, NULL, 0, BTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
@@ -1454,7 +1454,7 @@ DWORD CTag_Wma::Save_Header_Object(HANDLE hFile,HANDLE hTempFile,ULONGLONG size,
 	writeSize += sizeof(clength) + clength;
 	ullNewSize += sizeof(clength) + clength;
 	
-	clength = (WORD)TstrToData(m_strRating, -1, NULL, 0, DTC_CODE_UTF16LE);
+	clength = (WORD)TstrToBytes(m_strRating, -1, NULL, 0, BTC_CODE_UTF16LE);
 	if(!WriteFile(hTempFile,&clength,sizeof(clength),&dwRet,NULL))
 	{
 		dwWin32errorCode = GetLastError();
