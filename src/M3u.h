@@ -26,8 +26,8 @@ public:
 	BOOL	Add(LPCTSTR szLine);
 	BOOL	GetLine(int iLine,CString &str);
 
-	void		SetEncoding(EN_ENCODING enc);
-	EN_ENCODING	GetEncoding();
+	//void		SetEncoding(EN_ENCODING enc){m_encoding = enc;};
+	//EN_ENCODING	GetEncoding(){return m_encoding;};
 
 private:
 
