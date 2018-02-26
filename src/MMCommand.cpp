@@ -25,7 +25,7 @@ typedef struct _AUDIO_CODEC_TYPE{
 }AUDIO_CODEC_TYPE;
 
 typedef struct _VIDEO_CODEC_TYPE{
-	char *type;
+	const char *type;
 	LPCTSTR format;
 }VIDEO_CODEC_TYPE;
 
