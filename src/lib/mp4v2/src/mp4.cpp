@@ -2331,7 +2331,11 @@ MP4FileHandle MP4ReadProvider( const char* fileName, const MP4FileProvider* file
     {
         if (MP4_IS_VALID_FILE_HANDLE(hFile)) {
             try {
-                return ((MP4File*)hFile)->GetTrackTimeScale(trackId);
+                uint32_t timeScale = ((MP4File*)hFile)->GetTrackTimeScale(trackId);
+                if (MP4GetTrackAudioMpeg4Type(hFile, trackId) == MP4_MPEG4_AAC_HE_AUDIO_TYPE) {
+                    timeScale *= 2;
+                }
+                return timeScale;
             }
             catch( Exception* x ) {
                 mp4v2::impl::log.errorf(*x);
