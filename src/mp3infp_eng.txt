@@ -1,5 +1,5 @@
 mp3infp/u - Shell extension type tag editor -
-Ver.2.55 beta2 for Windows 7/8/10
+Ver.2.55 beta3 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
 Copyright(C) 2009-2018 K.Takata

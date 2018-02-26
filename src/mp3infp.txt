@@ -1,5 +1,5 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.55 beta2 for Windows 7/8/10
+Ver.2.55 beta3 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
 Copyright(C) 2009-2018 K.Takata
@@ -73,6 +73,12 @@ https://github.com/k-takata/mp3infp で配布しています。
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
 
+2018/02/26  Ver.2.55 beta3
+・OggVorbis でアルバムアーティストとディスク番号に対応。
+・コード整理。
+・mp4の 'colr' アトムで 'nclx' プロパティが扱えなかったのを修正。(Issue #5)
+・mp4のHE-AACでサンプリング周波数が半分の値で表示されていたのを修正。(Issue #2)
+
 2018/02/14  Ver.2.55 beta2
 ・ID3v2で、年だけでなく YYYY-MM-DD 形式の日付の設定に対応。
   - ID3v2.3: TYER, TDAT に対応。
@@ -93,6 +99,7 @@ https://github.com/k-takata/mp3infp で配布しています。
   従来の間違った処理を行ったファイルも読み込めるが、保存時に正しい処理で
   非同期化し直される。
 ・インストーラを大幅修正。
+  - NSIS 3.02 の Unicode 版に更新。
   - Modern UI 2.0 を使ったモダンな UI に変更。
   - High DPI に対応。
   - mp3infp_regist.exe を廃止。
