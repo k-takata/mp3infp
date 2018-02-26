@@ -38,6 +38,20 @@ MP4ColrAtom::MP4ColrAtom(MP4File &file)
     AddProperty( /* 3 */ new MP4Integer16Property(*this,"matrixIndex"));
 }
 
+void MP4ColrAtom::Read()
+{
+    MP4Atom::ReadProperties(0, 4);
+
+    if (strcmp(((MP4StringProperty*)m_pProperties[0])->GetValue(), "nclx") == 0) {
+        if (GetCount() == 4) {
+            // nclx has an additional property.
+            AddProperty( /* 4 */ new MP4Integer8Property(*this,"fullRangeFlag"));
+        }
+        MP4Atom::ReadProperties(4);
+    }
+    MP4Atom::Skip();
+}
+
 void MP4ColrAtom::Generate()
 {
     MP4Atom::Generate();

@@ -674,6 +674,7 @@ private:
 class MP4ColrAtom : public MP4Atom {
 public:
     MP4ColrAtom(MP4File &file);
+    void Read();
     void Generate();
 private:
     MP4ColrAtom();
