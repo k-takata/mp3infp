@@ -402,46 +402,10 @@ void CId3tagv1::GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre)
 
 DWORD CId3tagv1::MakeTag(LPCTSTR szFileName)
 {
-	DWORD	dwWin32errorCode = ERROR_SUCCESS;
-	HANDLE	hFile;
-	DWORD	dwWritten = 0;
-	ID3_TAG	tag;
-	TCHAR	szDefaultName[MAX_PATH];
-	
-	hFile = CreateFile(
-				szFileName,
-				GENERIC_WRITE|GENERIC_READ,
-				FILE_SHARE_READ,
-				NULL,
-				OPEN_EXISTING,
-				FILE_ATTRIBUTE_NORMAL,
-				NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		dwWin32errorCode = GetLastError();
-		return dwWin32errorCode;
-	}
-
-	//ファイルの終端までSEEK
-	if(SetFilePointer(hFile,0,NULL,FILE_END) == INVALID_SET_FILE_POINTER)
-	{
-		dwWin32errorCode = GetLastError();
-		CloseHandle(hFile);
-		return dwWin32errorCode;
-	}
 	//ID3タグを作成
-	GetId3tag(&tag);
 	Release();
-	SetTitle(getFileName(CString(szFileName)));
-	strncpy(tag.Title,m_szTitle,strlen(m_szTitle));
-	if(WriteFile(hFile,&tag,sizeof(tag),&dwWritten,NULL) == 0)
-	{
-		dwWin32errorCode = GetLastError();
-		CloseHandle(hFile);
-		return dwWin32errorCode;
-	}
-	CloseHandle(hFile);
-	
-	return dwWin32errorCode;
+	SetTitle(getFileName(szFileName));
+
+	return Save(szFileName);
 }
 
