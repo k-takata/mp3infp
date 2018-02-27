@@ -65,15 +65,15 @@ CId3tagv1::~CId3tagv1()
 void CId3tagv1::Release()
 {
 	m_bEnable = FALSE;
-	strcpy(m_szTitle,"");
-	strcpy(m_szArtist,"");
-	strcpy(m_szAlbum,"");
-	strcpy(m_szYear,"");
+	m_szTitle[0] = '\0';
+	m_szArtist[0] = '\0';
+	m_szAlbum[0] = '\0';
+	m_szYear[0] = '\0';
 	if(m_bScmpxGenre)
 		m_cGenre = SCMPX_GENRE_NULL;
 	else
 		m_cGenre = WINAMP_GENRE_NULL;
-	strcpy(m_szComment,"");
+	m_szComment[0] = '\0';
 	m_cTrackNo = 0;
 }
 
