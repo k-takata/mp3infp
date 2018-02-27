@@ -483,19 +483,19 @@ DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 	}
 
 	CommentMap::iterator it = m_comments.begin();
-	APE_TAG_FOOTER footer;
 	// ApeTag header Çç\íz
 	APE_TAG_FOOTER header;
 	memset(&header,0,sizeof(header));
-	strncpy(header.id,"APETAGEX",8);
+	memcpy(header.id,"APETAGEX",8);
 	header.version = CURRENT_APE_TAG_VERSION;
 	header.size = sizeof(header);
 	header.fields = m_comments.size();
 	header.flags =	APE_FLAG_TAG_HAS_HEADER | APE_FLAG_THIS_IS_THE_HEADER;
 
-	// ApeTag fotter Çç\íz
+	// ApeTag footer Çç\íz
+	APE_TAG_FOOTER footer;
 	memset(&footer,0,sizeof(footer));
-	strncpy(footer.id,"APETAGEX",8);
+	memcpy(footer.id,"APETAGEX",8);
 	footer.version = CURRENT_APE_TAG_VERSION;
 	footer.size = sizeof(footer);
 	footer.fields = m_comments.size();
