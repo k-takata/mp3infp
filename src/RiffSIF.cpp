@@ -346,7 +346,7 @@ exit:
 	ret:	-1 = 更新失敗
 			-2 = ファイルサイズが2Gを超過している
 */
-DWORD CRiffSIF::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CRiffSIF::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;

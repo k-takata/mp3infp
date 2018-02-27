@@ -214,7 +214,7 @@ DWORD CRMP::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CRMP::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	DWORD		mp3Size;
@@ -465,7 +465,7 @@ DWORD CRMP::Save(HWND hWnd,LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CRMP::DelTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CRMP::DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	// バッファ付きI/Oを使ってファイルを開く
@@ -707,7 +707,7 @@ BOOL CRMP::WriteChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,const char *pData,
 	return TRUE;
 }
 
-DWORD CRMP::MakeTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CRMP::MakeTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;

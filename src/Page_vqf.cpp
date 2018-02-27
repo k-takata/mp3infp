@@ -309,7 +309,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_vqf(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
-				DWORD dwRet = lpcs->m_Vqf.Save(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_Vqf.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
 				{
 					lpcs->m_bApply = TRUE;

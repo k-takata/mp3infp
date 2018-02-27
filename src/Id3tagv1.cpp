@@ -261,7 +261,7 @@ DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 }
 #endif
 
-DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -333,7 +333,7 @@ DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv1::DelTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -400,7 +400,7 @@ void CId3tagv1::GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre)
 		tag->Genre = WINAMP_GENRE_NULL;
 }
 
-DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::MakeTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE	hFile;

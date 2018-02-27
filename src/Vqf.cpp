@@ -241,7 +241,7 @@ DWORD CVqf::Load(LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CVqf::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CVqf::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	if(!m_bEnable)

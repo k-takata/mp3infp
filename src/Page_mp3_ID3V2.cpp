@@ -694,7 +694,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V2(HWND hDlg, UINT uMessage, WPARAM 
 					nowPlayPos = GetPosWinamp();
 					StopWinamp();
 				}*/
-				DWORD dwRet = lpcs->m_Rmp3.DelTag(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_Rmp3.DelTag(lpcs->m_strSelectFile);
 				
 				// Winamp‚ğÄŠJ
 /*				if(nowPlaying)

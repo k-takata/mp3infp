@@ -84,7 +84,7 @@ public:
 	CString GetVer(){return m_strVer;};
 	
 	DWORD	Load(LPCTSTR szFileName);
-	DWORD	Save(HWND hWnd,LPCTSTR szFileName);
+	DWORD	Save(LPCTSTR szFileName);
 
 	CString GetFormatString();
 	CString GetTimeString();

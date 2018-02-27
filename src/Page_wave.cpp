@@ -434,7 +434,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_wave(HWND hDlg,UINT uMessage,WPARAM wParam,
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
-				DWORD dwRet = lpcs->m_RiffSIF.Save(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_RiffSIF.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
 				{
 					lpcs->m_bApply = TRUE;
