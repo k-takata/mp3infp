@@ -106,23 +106,27 @@ void SetDlgOutlineTextSp(HWND hDlg,const int *idArray,const int *editWndArray)
 			{
 				if(idArray[i] == id)
 				{
-					if(!IsButton(GetDlgItem(hDlg,editWndArray[i])))
+					HWND hwnd = GetDlgItem(hDlg,editWndArray[i]);
+					LPCTSTR szTxt = (LPCTSTR)&(txtData[readOffset]);
+
+					if(!IsButton(hwnd))
 					{
-						// Edit
-						SetWindowText(GetDlgItem(hDlg,editWndArray[i]),(LPCTSTR)&(txtData[readOffset]));
+						// Edit or ComboBox
+						if(GetWindowStyle(hwnd) & CBS_DROPDOWNLIST)
+						{
+							// TODO: Do we need to check the window class?
+							ComboBox_SelectString(hwnd, 0, szTxt);
+						}
+						else
+						{
+							SetWindowText(hwnd, szTxt);
+						}
 					}
 					else
 					{
 						// Checkbox
-						int val = _ttoi((LPCTSTR)&(txtData[readOffset]));
-						if(val)
-						{
-							CheckDlgButton(hDlg,editWndArray[i],1);
-						}
-						else
-						{
-							CheckDlgButton(hDlg,editWndArray[i],0);
-						}
+						int val = _ttoi(szTxt) ? 1 : 0;
+						CheckDlgButton(hDlg,editWndArray[i],val);
 					}
 					break;
 				}
