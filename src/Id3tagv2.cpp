@@ -701,7 +701,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				return;
 			}
 			data[0] = 0;	//encoding
-			data[1] = 'e';	//Language
+			data[1] = 'e';	//Language (Always use English for compatibility.)
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0;	//ê‡ñæï∂(è»ó™)
@@ -714,7 +714,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				return;
 			}
 			data[0] = 1;	//encoding
-			data[1] = 'e';	//Language
+			data[1] = 'e';	//Language (Always use English for compatibility.)
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0xff;	//BOM
@@ -731,7 +731,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				return;
 			}
 			data[0] = 1;	//encoding
-			data[1] = 'e';	//Language
+			data[1] = 'e';	//Language (Always use English for compatibility.)
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0xfe;	//BOM
@@ -749,7 +749,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				return;
 			}
 			data[0] = 2;	//encoding
-			data[1] = 'e';	//Language
+			data[1] = 'e';	//Language (Always use English for compatibility.)
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0;	//ê‡ñæï∂(è»ó™)
@@ -762,7 +762,7 @@ void CId3tagv2::SetId3String(const char szId[],LPCTSTR szString,LPCTSTR szDescri
 				return;
 			}
 			data[0] = 3;	//encoding
-			data[1] = 'e';	//Language
+			data[1] = 'e';	//Language (Always use English for compatibility.)
 			data[2] = 'n';
 			data[3] = 'g';
 			data[4] = 0;	//ê‡ñæï∂(è»ó™)
