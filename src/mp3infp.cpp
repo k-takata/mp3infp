@@ -264,7 +264,6 @@ STDAPI DllRegisterServer()
 //	regSetString(HKEY_LOCAL_MACHINE,_T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"),APP_NAME,szRegExePath);
 
 	//関連付け
-	TCHAR szKey[256];
 	//(ContextMenu)
 	regSetString(HKEY_CLASSES_ROOT,_T("*\\shellex\\ContextMenuHandlers\\mp3infp"),_T(""),CLSID_STR_ShellExt);
 	//(Property)
@@ -272,8 +271,9 @@ STDAPI DllRegisterServer()
 	for(int i=0; i<sizeof_array(extlist); i++)
 	{
 		//(InfoTip)
-		wsprintf(szKey,_T("%s\\shellex\\{00021500-0000-0000-C000-000000000046}"),extlist[i]);
-		regExSet(szKey,CLSID_STR_ShellExt);
+		CString strKey = extlist[i];
+		strKey += _T("\\shellex\\{00021500-0000-0000-C000-000000000046}");
+		regExSet(strKey,CLSID_STR_ShellExt);
 	}
 	//ドライブ
 //	regSetString(HKEY_CLASSES_ROOT,_T("Drive\\shellex\\PropertySheetHandlers\\") CLSID_STR_ShellExt,_T(""),_T("mp3infp"));
@@ -287,25 +287,23 @@ STDAPI DllUnregisterServer()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	//関連付け解除
-	TCHAR szKey[MAX_PATH];
 	//(ContextMenu)
-	wsprintf(szKey,_T("*\\shellex\\ContextMenuHandlers\\mp3infp"));
-	RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
+	RegDeleteKey(HKEY_CLASSES_ROOT,_T("*\\shellex\\ContextMenuHandlers\\mp3infp"));
 	//(Property)
-	wsprintf(szKey,_T("*\\shellex\\PropertySheetHandlers\\mp3infp"));
-	RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
+	RegDeleteKey(HKEY_CLASSES_ROOT,_T("*\\shellex\\PropertySheetHandlers\\mp3infp"));
 	for(int i=0; i<sizeof_array(extlist); i++)
 	{
-		regGetString(HKEY_CLASSES_ROOT,extlist[i],_T(""),szKey,_T(""));
-		if(szKey[0] != '\0')
+		CString strKey = regGetStringEx(HKEY_CLASSES_ROOT,extlist[i],_T(""),_T(""));
+		if(!strKey.IsEmpty())
 		{
 			//(Property) ～Ver.2.00Beta2
-			wsprintf(szKey,_T("%s\\shellex\\PropertySheetHandlers\\mp3infp"),szKey);
-			RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
+			strKey += _T("\\shellex\\PropertySheetHandlers\\mp3infp");
+			RegDeleteKey(HKEY_CLASSES_ROOT,strKey);
 		}
 		//(InfoTip)
-		wsprintf(szKey,_T("%s\\shellex\\{00021500-0000-0000-C000-000000000046}"),extlist[i]);
-		RegDeleteKey(HKEY_CLASSES_ROOT,szKey);
+		strKey = extlist[i];
+		strKey += _T("\\shellex\\{00021500-0000-0000-C000-000000000046}");
+		RegDeleteKey(HKEY_CLASSES_ROOT,strKey);
 	}
 	//ドライブ
 	RegDeleteKey(HKEY_CLASSES_ROOT,_T("Drive\\shellex\\PropertySheetHandlers\\") CLSID_STR_ShellExt);

@@ -256,11 +256,9 @@ HGLOBAL GetDlgOutlineText(HWND hDlg,const int *staticWndArray,const int *editWnd
 void OpenConfigPage(HWND hwnd, int pagenum)
 {
 	// install path of mp3infp
-	TCHAR szMp3infpPath[MAX_PATH];
-	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szMp3infpPath,_T(""));
-	AddTailYenSign(szMp3infpPath);
-	CString strConfigPath = szMp3infpPath;
-	strConfigPath += _T("mp3infp_config.exe");
+	CString strMp3infpPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),_T(""));
+	AddTailYenSign(strMp3infpPath);
+	CString strConfigPath = strMp3infpPath + _T("mp3infp_config.exe");
 	CString strParam;
 	strParam.Format(_T("%d"),pagenum);
 
@@ -269,11 +267,10 @@ void OpenConfigPage(HWND hwnd, int pagenum)
 
 void OpenAboutDlg(HWND hwnd)
 {
-	TCHAR szTmp[256];
-	lstrcpy(szTmp,APP_NAME);
-	lstrcat(szTmp,_T(" "));
-	lstrcat(szTmp,COPY_RIGHT);
-	MessageBox(hwnd,szTmp,_T("About"),MB_APPLMODAL);
+	CString strTmp = APP_NAME;
+	strTmp += _T(" ");
+	strTmp += COPY_RIGHT;
+	MessageBox(hwnd,strTmp,_T("About"),MB_APPLMODAL);
 }
 
 CShellExt::CShellExt()
@@ -648,22 +645,21 @@ void CShellExt::OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile)
 {
 	CString strHelpPath;
 	// mp3infpのインストールパス
-	TCHAR szMp3infpPath[MAX_PATH];
-	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),szMp3infpPath,_T(""));
-	AddTailYenSign(szMp3infpPath);
+	CString strMp3infpPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,_T("path"),_T(""));
+	AddTailYenSign(strMp3infpPath);
 	// 選択言語
 	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,_T("Language"),DEF_SETUP_MAIN_LANGUAGE);
 	if(strLanguage.Compare(DEF_SETUP_MAIN_LANGUAGE) == 0)
 	{
 		// デフォルト選択
-		strHelpPath = szMp3infpPath;
+		strHelpPath = strMp3infpPath;
 		strHelpPath += _T("\\mp3infp_eng.txt");
 		ShellExecute(NULL,_T("open"),strHelpPath,NULL,NULL,SW_SHOW);
 		return;
 	}
 	else
 	{
-		strHelpPath = szMp3infpPath;
+		strHelpPath = strMp3infpPath;
 		strHelpPath += _T("language\\");
 		strHelpPath += strLanguage;
 		strHelpPath += _T(".chm");
@@ -672,7 +668,7 @@ void CShellExt::OpenHtmlHelp(HWND hWnd,LPCTSTR szViewFile)
 		if(CFile::GetStatus(strHelpPath,status) == FALSE)
 		{
 			// chmが無ければtxtを開く
-			strHelpPath = szMp3infpPath;
+			strHelpPath = strMp3infpPath;
 			strHelpPath += _T("language\\");
 			strHelpPath += strLanguage;
 			strHelpPath += _T(".txt");
