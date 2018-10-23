@@ -1,5 +1,5 @@
 mp3infp/u シェル拡張型タグエディタ (mp3インフピー) (Unicode版)
-Ver.2.55 beta3 for Windows 7/8/10
+Ver.2.55 for Windows 7/8/10
 Copyright(C) 1998-2007 T-Matsuo (win32lab.com)
 Copyright(C) 2009 Rem
 Copyright(C) 2009-2018 K.Takata
@@ -53,7 +53,7 @@ mp3infp/u は、T-Matsuo 氏が作成した mp3infp 2.54a を元に、Rem 氏が
 3.mp3infp_config.exe
 　mp3infpの設定を行います。
 4.Japanese.chm
-　日本語ヘルプファイルです。(v2.54a 時点)
+　日本語ヘルプファイルです。
 5.Japanese.lng
 　日本語言語パックです。
 6.mp3infp_eng.txt
@@ -72,6 +72,12 @@ https://github.com/k-takata/mp3infp で配布しています。
 
 ■改変履歴
 * K.Takata による mp3infp/u の履歴
+
+2018/10/23  Ver.2.55
+・正式版として初リリース。
+・ヘルプファイルの更新。
+・ID3v1にペーストしたときに、ジャンルが反映されないのを修正。
+・ID3v1,v2のタグの作成処理を簡素化し、重複コードを削除。
 
 2018/02/26  Ver.2.55 beta3
 ・OggVorbis でアルバムアーティストとディスク番号に対応。
