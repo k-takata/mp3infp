@@ -28,7 +28,7 @@ public:
 	BOOL SetField(char id1,char id2,char id3,char id4,LPCTSTR szData);
 	CString GetField(char id1,char id2,char id3,char id4);
 	DWORD Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4);
-	DWORD Save(HWND hWnd,LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
 
 protected:
 	BOOL m_bEnable;

@@ -1892,7 +1892,7 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 	case CShellExt::MP3:
 		if(theApp.m_Id3tagv1.IsEnable())
 		{
-			dwRet = theApp.m_Id3tagv1.Save(NULL,szFileName);
+			dwRet = theApp.m_Id3tagv1.Save(szFileName);
 			if(dwRet != ERROR_SUCCESS)
 			{
 				break;
@@ -1908,7 +1908,7 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 		}
 		else if(theApp.m_Rmp3.IsEnable())
 		{
-			dwRet = theApp.m_Rmp3.Save(NULL,szFileName);
+			dwRet = theApp.m_Rmp3.Save(szFileName);
 			if(dwRet != ERROR_SUCCESS)
 			{
 				break;
@@ -1924,13 +1924,13 @@ extern "C" DWORD __stdcall mp3infp_Save(LPCTSTR szFileName)
 		}
 		break;
 	case CShellExt::WAVE:
-		dwRet = theApp.m_RiffSIF.Save(NULL,szFileName);
+		dwRet = theApp.m_RiffSIF.Save(szFileName);
 		break;
 	case CShellExt::AVI:
-		dwRet = theApp.m_OpenDML.Save(NULL,szFileName);
+		dwRet = theApp.m_OpenDML.Save(szFileName);
 		break;
 	case CShellExt::VQF:
-		dwRet = theApp.m_Vqf.Save(NULL,szFileName);
+		dwRet = theApp.m_Vqf.Save(szFileName);
 		break;
 	case CShellExt::WMA:
 		dwRet = theApp.m_Wma.Save(szFileName);
@@ -1987,7 +1987,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 	if(theApp.m_Rmp3.IsEnable())
 	{
 		theApp.m_Rmp3.SetHasId3tag(TRUE);
-		dwRet = theApp.m_Rmp3.Save(NULL,szFileName);
+		dwRet = theApp.m_Rmp3.Save(szFileName);
 		if(dwRet != ERROR_SUCCESS)
 		{
 			theApp.m_Rmp3.SetHasId3tag(FALSE);
@@ -1995,7 +1995,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeId3v1(LPCTSTR szFileName)
 	}
 	else
 	{
-		dwRet = theApp.m_Id3tagv1.MakeTag(NULL,szFileName);
+		dwRet = theApp.m_Id3tagv1.MakeTag(szFileName);
 	}
 
 	//タイムスタンプを復元
@@ -2033,7 +2033,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 	{
 		BOOL bHasBack = theApp.m_Rmp3.HasId3tag();
 		theApp.m_Rmp3.SetHasId3tag(FALSE);
-		dwRet = theApp.m_Rmp3.Save(NULL,szFileName);
+		dwRet = theApp.m_Rmp3.Save(szFileName);
 		if(dwRet != ERROR_SUCCESS)
 		{
 			// 書込みに失敗したら設定を戻しておく
@@ -2043,7 +2043,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelId3v1(LPCTSTR szFileName)
 	}
 	else
 	{
-		dwRet = theApp.m_Id3tagv1.DelTag(NULL,szFileName);
+		dwRet = theApp.m_Id3tagv1.DelTag(szFileName);
 	}
 
 	//タイムスタンプを復元
@@ -2173,7 +2173,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_MakeRMP(LPCTSTR szFileName)
 	timestamp.Push(szFileName);
 	
 	//Riff SIFを作成
-	dwRet = theApp.m_Rmp3.MakeTag(NULL,szFileName);
+	dwRet = theApp.m_Rmp3.MakeTag(szFileName);
 	
 	theApp.m_Id3tagv1.Load(szFileName);
 	theApp.m_Id3tagv2.Load(szFileName);
@@ -2215,7 +2215,7 @@ extern "C" DWORD __stdcall mp3infp_mp3_DelRMP(LPCTSTR szFileName)
 	timestamp.Push(szFileName);
 	
 	//Riff SIFを消去
-	dwRet = theApp.m_Rmp3.DelTag(NULL,szFileName);
+	dwRet = theApp.m_Rmp3.DelTag(szFileName);
 	
 	//タイムスタンプを復元
 	timestamp.Pop();

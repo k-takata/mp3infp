@@ -508,7 +508,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				if(lpcs->m_Rmp3.IsEnable())
 				{
 					lpcs->m_Rmp3.SetHasId3tag(FALSE);
-					DWORD dwRet = lpcs->m_Rmp3.Save(hDlg,lpcs->m_strSelectFile);
+					DWORD dwRet = lpcs->m_Rmp3.Save(lpcs->m_strSelectFile);
 					if(dwRet == -1)
 					{
 						//「ファイルを正しく更新できませんでした。」
@@ -525,7 +525,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				}
 				else
 				{
-					DWORD dwRet = lpcs->m_Id3tagv1.DelTag(hDlg,lpcs->m_strSelectFile);
+					DWORD dwRet = lpcs->m_Id3tagv1.DelTag(lpcs->m_strSelectFile);
 					if(dwRet == -1)
 					{
 						//「ファイルを正しく更新できませんでした。」
@@ -577,7 +577,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				if(lpcs->m_Rmp3.IsEnable())
 				{
 					lpcs->m_Rmp3.SetHasId3tag(TRUE);
-					DWORD dwRet = lpcs->m_Rmp3.Save(hDlg,lpcs->m_strSelectFile);
+					DWORD dwRet = lpcs->m_Rmp3.Save(lpcs->m_strSelectFile);
 					if(dwRet == -1)
 					{
 						lpcs->m_Rmp3.SetHasId3tag(FALSE);
@@ -596,7 +596,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				}
 				else
 				{
-					DWORD dwRet = lpcs->m_Id3tagv1.MakeTag(hDlg,lpcs->m_strSelectFile);
+					DWORD dwRet = lpcs->m_Id3tagv1.MakeTag(lpcs->m_strSelectFile);
 					if(dwRet == -1)
 					{
 						//「ファイルを正しく更新できませんでした。」
@@ -765,7 +765,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_ID3V1(HWND hDlg,UINT uMessage,WPARAM wP
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 				
-				DWORD dwRet = lpcs->m_Id3tagv1.Save(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_Id3tagv1.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
 				{
 					lpcs->m_bId3v1Apply = TRUE;

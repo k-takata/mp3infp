@@ -308,7 +308,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 				//Riff SIFを消去
-				DWORD dwRet = lpcs->m_Rmp3.DelTag(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_Rmp3.DelTag(lpcs->m_strSelectFile);
 				if(dwRet == -1)
 				{
 					//「ファイルを正しく更新できませんでした。」
@@ -370,7 +370,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 					//タイムスタンプを保存
 					lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 					//Riff SIFを作成
-					DWORD dwRet = lpcs->m_Rmp3.MakeTag(hDlg,lpcs->m_strSelectFile);
+					DWORD dwRet = lpcs->m_Rmp3.MakeTag(lpcs->m_strSelectFile);
 					if(dwRet == -1)
 					{
 						//「ファイルを正しく更新できませんでした。」
@@ -460,7 +460,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 					errMessageBox(hDlg,dwRet);
 					break;
 				}
-				dwRet = lpcs->m_Rmp3.MakeTag(hDlg,lpcs->m_strSelectFile);
+				dwRet = lpcs->m_Rmp3.MakeTag(lpcs->m_strSelectFile);
 				if(dwRet == -1)
 				{
 					//「ファイルを正しく更新できませんでした。」
@@ -629,7 +629,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_mp3_RMP(HWND hDlg, UINT uMessage, WPARAM wP
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
-				DWORD dwRet = lpcs->m_Rmp3.Save(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_Rmp3.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
 				{
 					lpcs->m_bRiffApply = TRUE;

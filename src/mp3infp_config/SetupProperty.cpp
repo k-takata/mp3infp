@@ -88,22 +88,21 @@ void CSetupProperty::OpenHtmlHelp(HWND hWnd,char *szViewFile)
 {
 	CString strHelpPath;
 	// mp3infpのインストールパス
-	char szMp3infpPath[MAX_PATH];
-	regGetString(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path",szMp3infpPath,"");
-	AddTailYenSign(szMp3infpPath);
+	CString strMp3infpPath = regGetStringEx(HKEY_LOCAL_MACHINE,MP3INFP_REG_ENTRY,"path","");
+	AddTailYenSign(strMp3infpPath);
 	// 選択言語
 	CString strLanguage = regGetStringEx(HKEY_CURRENT_USER,MP3INFP_REG_ENTRY,"Language",DEF_SETUP_MAIN_LANGUAGE);
 	if(strLanguage.Compare(DEF_SETUP_MAIN_LANGUAGE) == 0)
 	{
 		// デフォルト選択
-		strHelpPath = szMp3infpPath;
+		strHelpPath = strMp3infpPath;
 		strHelpPath += "\\mp3infp_eng.txt";
 		ShellExecute(NULL,"open",strHelpPath,NULL,NULL,SW_SHOW);
 		return;
 	}
 	else
 	{
-		strHelpPath = szMp3infpPath;
+		strHelpPath = strMp3infpPath;
 		strHelpPath += "language\\";
 		strHelpPath += strLanguage;
 		strHelpPath += ".chm";
@@ -112,7 +111,7 @@ void CSetupProperty::OpenHtmlHelp(HWND hWnd,char *szViewFile)
 		if(CFile::GetStatus(strHelpPath,status) == FALSE)
 		{
 			// chmが無ければtxtを開く
-			strHelpPath = szMp3infpPath;
+			strHelpPath = strMp3infpPath;
 			strHelpPath += "language\\";
 			strHelpPath += strLanguage;
 			strHelpPath += ".txt";
@@ -140,7 +139,7 @@ TRACE("strHelPath=%s\n",strHelpPath);
 	}
 	else
 	{
-//		strcpy(szHelpFile,szHelpPath);
+//		strcpy(szHelpFile,strHelpPath);
 //		lstrcat(szHelpFile,README_FILE);
 //		ShellExecute(hWnd,"open",szHelpFile,NULL,NULL,SW_SHOWNORMAL);
 	}*/

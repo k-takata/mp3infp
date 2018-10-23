@@ -30,7 +30,7 @@ public:
 	BOOL FindChunk(HANDLE hFile,DWORD dwFileSize,UINT flag,FOURCC type,DWORD *pdwSize,BOOL bModify);
 	DWORD GetTotalFieldSize();
 	DWORD Load(LPCTSTR szFileName,char id1,char id2,char id3,char id4);
-	DWORD Save(HWND hWnd,LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
 
 protected:
 	BOOL m_bEnable;

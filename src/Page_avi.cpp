@@ -406,7 +406,7 @@ BOOL CALLBACK CShellExt::PageDlgProc_avi(HWND hDlg,UINT uMessage,WPARAM wParam,L
 				//タイムスタンプを保存
 				lpcs->PushTimeStamp(lpcs->m_strSelectFile);
 
-				DWORD dwRet = lpcs->m_OpenDML.Save(hDlg,lpcs->m_strSelectFile);
+				DWORD dwRet = lpcs->m_OpenDML.Save(lpcs->m_strSelectFile);
 				if(dwRet != ERROR_SUCCESS)
 				{
 					lpcs->m_bApply = TRUE;

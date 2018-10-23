@@ -231,10 +231,9 @@ BOOL CPageMain::OnInitDialog()
 			ComboBox_InsertString(
 					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
 					0, strLangDisp);
-			char tmp[MAX_PATH];
-			strcpy(tmp,fd.cFileName);
-			cutExtName(tmp);
-			CString *str = new CString(tmp);
+			CString *str = new CString(fd.cFileName);
+			cutExtName(str->GetBuffer(0));
+			str->ReleaseBuffer();
 			ComboBox_SetItemData(
 					GetDlgItem(IDC_COMBO_LANGUAGE)->GetSafeHwnd(),
 					0, str);

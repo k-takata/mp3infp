@@ -57,11 +57,11 @@ public:
 
 	DWORD Load(LPCTSTR szFileName);
 //	DWORD LoadMulti(LPCTSTR szFileName);
-	DWORD Save(HWND hWnd,LPCTSTR szFileName);
-	DWORD DelTag(HWND hWnd,LPCTSTR szFileName);
+	DWORD Save(LPCTSTR szFileName);
+	DWORD DelTag(LPCTSTR szFileName);
 	static void GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre);
 	void GetId3tag(ID3_TAG *tag){GetId3tag(tag,m_bScmpxGenre);};
-	DWORD MakeTag(HWND hWnd,LPCTSTR szFileName);
+	DWORD MakeTag(LPCTSTR szFileName);
 	static BOOL IsTagValid(const ID3_TAG *tag) {
 		return memcmp(tag->TagHeader,"TAG",3) == 0;
 	};

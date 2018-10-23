@@ -4,8 +4,8 @@ Compiled file=..\Installer\Japanese.chm
 Contents file=Table of Contents.hhc
 Default topic=ov.htm
 Display compile progress=Yes
-Language=0x411 日本語
-Title=mp3infp ヘルプ
+Language=0x411 日本語 (日本)
+Title=mp3infp/u ヘルプ
 
 
 [INFOTYPES]

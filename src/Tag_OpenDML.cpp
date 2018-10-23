@@ -460,7 +460,7 @@ DWORD CTag_OpenDML::Save_1(HANDLE hFile)
 	ret:	-1 = 更新失敗
 			-2 = Avi2のため更新できず（avi2でriff-avixの書き換えは未実装なため）
 */
-DWORD CTag_OpenDML::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CTag_OpenDML::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	HANDLE hFile;

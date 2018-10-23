@@ -65,15 +65,15 @@ CId3tagv1::~CId3tagv1()
 void CId3tagv1::Release()
 {
 	m_bEnable = FALSE;
-	strcpy(m_szTitle,"");
-	strcpy(m_szArtist,"");
-	strcpy(m_szAlbum,"");
-	strcpy(m_szYear,"");
+	m_szTitle[0] = '\0';
+	m_szArtist[0] = '\0';
+	m_szAlbum[0] = '\0';
+	m_szYear[0] = '\0';
 	if(m_bScmpxGenre)
 		m_cGenre = SCMPX_GENRE_NULL;
 	else
 		m_cGenre = WINAMP_GENRE_NULL;
-	strcpy(m_szComment,"");
+	m_szComment[0] = '\0';
 	m_cTrackNo = 0;
 }
 
@@ -261,7 +261,7 @@ DWORD CId3tagv1::LoadMulti(LPCTSTR szFileName)
 }
 #endif
 
-DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::Save(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -333,7 +333,7 @@ DWORD CId3tagv1::Save(HWND hWnd,LPCTSTR szFileName)
 	return dwWin32errorCode;
 }
 
-DWORD CId3tagv1::DelTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::DelTag(LPCTSTR szFileName)
 {
 	DWORD	dwWin32errorCode = ERROR_SUCCESS;
 	FILE	*fp;
@@ -400,48 +400,12 @@ void CId3tagv1::GetId3tag(ID3_TAG *tag,BOOL bScmpxGenre)
 		tag->Genre = WINAMP_GENRE_NULL;
 }
 
-DWORD CId3tagv1::MakeTag(HWND hWnd,LPCTSTR szFileName)
+DWORD CId3tagv1::MakeTag(LPCTSTR szFileName)
 {
-	DWORD	dwWin32errorCode = ERROR_SUCCESS;
-	HANDLE	hFile;
-	DWORD	dwWritten = 0;
-	ID3_TAG	tag;
-	TCHAR	szDefaultName[MAX_PATH];
-	
-	hFile = CreateFile(
-				szFileName,
-				GENERIC_WRITE|GENERIC_READ,
-				FILE_SHARE_READ,
-				NULL,
-				OPEN_EXISTING,
-				FILE_ATTRIBUTE_NORMAL,
-				NULL);
-	if(hFile == INVALID_HANDLE_VALUE)
-	{
-		dwWin32errorCode = GetLastError();
-		return dwWin32errorCode;
-	}
-
-	//ファイルの終端までSEEK
-	if(SetFilePointer(hFile,0,NULL,FILE_END) == INVALID_SET_FILE_POINTER)
-	{
-		dwWin32errorCode = GetLastError();
-		CloseHandle(hFile);
-		return dwWin32errorCode;
-	}
 	//ID3タグを作成
-	GetId3tag(&tag);
 	Release();
-	SetTitle(getFileName(CString(szFileName)));
-	strncpy(tag.Title,m_szTitle,strlen(m_szTitle));
-	if(WriteFile(hFile,&tag,sizeof(tag),&dwWritten,NULL) == 0)
-	{
-		dwWin32errorCode = GetLastError();
-		CloseHandle(hFile);
-		return dwWin32errorCode;
-	}
-	CloseHandle(hFile);
-	
-	return dwWin32errorCode;
+	SetTitle(getFileName(szFileName));
+
+	return Save(szFileName);
 }
 

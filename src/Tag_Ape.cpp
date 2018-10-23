@@ -483,19 +483,19 @@ DWORD CTag_Ape::_SaveApeTagV2(LPCTSTR szFileName)
 	}
 
 	CommentMap::iterator it = m_comments.begin();
-	APE_TAG_FOOTER footer;
 	// ApeTag header を構築
 	APE_TAG_FOOTER header;
 	memset(&header,0,sizeof(header));
-	strncpy(header.id,"APETAGEX",8);
+	memcpy(header.id,"APETAGEX",8);
 	header.version = CURRENT_APE_TAG_VERSION;
 	header.size = sizeof(header);
 	header.fields = m_comments.size();
 	header.flags =	APE_FLAG_TAG_HAS_HEADER | APE_FLAG_THIS_IS_THE_HEADER;
 
-	// ApeTag fotter を構築
+	// ApeTag footer を構築
+	APE_TAG_FOOTER footer;
 	memset(&footer,0,sizeof(footer));
-	strncpy(footer.id,"APETAGEX",8);
+	memcpy(footer.id,"APETAGEX",8);
 	footer.version = CURRENT_APE_TAG_VERSION;
 	footer.size = sizeof(footer);
 	footer.fields = m_comments.size();
@@ -588,13 +588,9 @@ DWORD CTag_Ape::Save(LPCTSTR szFileName)
 	if(m_bHasId3tag && !m_bDoNotSaveId3v1)
 	{
 		dwWin32errorCode = _SaveId3TagV1(szFileName);
-		if(dwWin32errorCode != ERROR_SUCCESS)
-		{
-			return dwWin32errorCode;
-		}
 	}
 
-	return ERROR_SUCCESS;
+	return dwWin32errorCode;
 }
 
 DWORD CTag_Ape::DelTag(LPCTSTR szFileName)
@@ -716,8 +712,7 @@ DWORD CTag_Ape::MakeTag(LPCTSTR szFileName)
 	}
 
 	// Apeタグを保存
-	CString strFileName = szFileName;
-	CString strDefaultName = getFileName(strFileName);
+	CString strDefaultName = getFileName(szFileName);
 	
 	SetComment(CTag_Ape::APE_TAG_FIELD_TITLE,strDefaultName);
 	
@@ -730,10 +725,10 @@ DWORD CTag_Ape::MakeTag(LPCTSTR szFileName)
 	// Id3v1タグを復元
 	if(m_bHasId3tag && !m_bDoNotSaveId3v1)
 	{
-		_SaveId3TagV1(szFileName);
+		dwWin32errorCode = _SaveId3TagV1(szFileName);
 	}
 
-	return ERROR_SUCCESS;
+	return dwWin32errorCode;
 }
 
 #if 0

@@ -62,9 +62,9 @@ public:
 	BOOL	WriteChunk(HMMIO hmmio,MMCKINFO mmckinfo,FOURCC id,const char *pData,DWORD dwSize);
 
 	DWORD	Load(LPCTSTR szFileName);
-	DWORD	Save(HWND hWnd,LPCTSTR szFileName);
-	DWORD	DelTag(HWND hWnd,LPCTSTR szFileName);
-	DWORD	MakeTag(HWND hWnd,LPCTSTR szFileName);
+	DWORD	Save(LPCTSTR szFileName);
+	DWORD	DelTag(LPCTSTR szFileName);
+	DWORD	MakeTag(LPCTSTR szFileName);
 
 private:
 	BOOL		m_bEnable;			//RIFFSIFÇ™ñ≥Ç¢èÍçáÇÕFALSE
